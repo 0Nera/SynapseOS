@@ -1,0 +1,9 @@
+*.o
+*.elf
+*.log
+*.iso
+*.img
+/.vscode
+*.uibak
+*.BIN
+*.qcow2
