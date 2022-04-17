@@ -1,0 +1,1 @@
+# REPOSITORY MOVED TO https://github.com/0Nera/SynapseOS
