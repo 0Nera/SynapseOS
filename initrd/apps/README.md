@@ -1,0 +1,2 @@
+# apps
+Программы для SynapseOS

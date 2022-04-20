@@ -1,0 +1,3 @@
+[submodule "apps"]
+	path = apps
+	url = https://github.com/0Nera/SynapseApps.git
