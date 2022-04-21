@@ -238,6 +238,7 @@ int keyboard_getscancode() {
     }
 
     input_type = 1;
+    
     return keycode;
 }
 

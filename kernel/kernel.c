@@ -6,7 +6,8 @@
 
 #include <kernel.h>
 
-int mode = 1; // 0 - мало ОЗУ, 1 - обычный режим, 2 - режим повышенной производительности, 3 - сервер
+
+int os_mode = 1; // 0 - мало ОЗУ, 1 - обычный режим, 2 - режим повышенной производительности, 3 - сервер
 
 // Входная точка ядра SynapseOS
 void kernel(int magic_number, struct multiboot_info *mboot_info) {
