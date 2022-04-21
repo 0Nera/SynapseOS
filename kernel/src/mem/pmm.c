@@ -69,7 +69,7 @@ void pmm_parse_memory_map(multiboot_memory_map_entry *mmap_addr, uint32_t length
         os_mode = 1;
     } else if (phys_available_memory_size / 1024 >= 13000) {
         tty_setcolor(VESA_LIGHT_MAGENTA);
-        tty_printf("\n. High mem. Using server mode.");
+        tty_printf("\nHigh mem. Using server mode.");
         os_mode = 2;
     } else {
         tty_setcolor(VESA_LIGHT_GREEN);
