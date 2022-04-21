@@ -1,6 +1,6 @@
 #include <kernel.h>
 
-char current_dir[256] = "/initrd/";
+char current_dir[256] = "/initrd/apps/";
 
 void ksh_main() {
 
@@ -18,6 +18,7 @@ void ksh_main() {
         if (strlen(cmd) == 0) {
             continue;
         }
+        tty_printf("\n");
 
         if (strcmp(cmd, "about") == 0) {
             tty_printf("SynapseOS is a simple x86 C operating system with a well-documented kernel.");
@@ -37,7 +38,7 @@ void ksh_main() {
             if (fname != 0) {
                 cat(tok);
             } else {
-                tty_printf("\ncat: incorrect argument\n");
+                tty_printf("cat: incorrect argument\n");
             }
         } else if (strlen(cmd) > 3 && strncmp(cmd, "cd ", 3) == 0) {
             char dname[100];
@@ -61,12 +62,36 @@ void ksh_main() {
             if (fname != 0) {
                 run(tok);
             } else {
-                tty_printf("\nrun: incorrect argument\n");
+                tty_printf("run: incorrect argument\n");
             }
-        } else if (strcmp(cmd, "") == 0) {
+        } else if (strlen(cmd) > 4 && strncmp(cmd, "sbf  ", 4) == 0) {
+            char fname[100];
+            char *tok = strtok(cmd, " ");
 
+            tok = strtok(0, " "); // tok - now is filename
+
+            if (fname != 0) {
+                sbf(tok);
+            } else {
+                tty_printf("run: incorrect argument\n");
+            }
+        } else if (strlen(cmd) > 2 && strncmp(cmd, "./", 2) == 0) {
+            char fname[100];
+            char *tok = strtok(cmd, "/");
+
+            tok = strtok(0, "/"); // tok - now is filename
+
+            if (fname != 0) {
+                char temp[256] = {0};
+                strcpy(temp, current_dir);
+                strcat(temp, tok);
+                run_elf_file(temp);
+
+            } else {
+                tty_printf("run: incorrect argument\n");
+            }
         } else {
-            tty_printf("\nUncnown: [%s]\n", cmd);
+            tty_printf("Uncnown: [%s]\n", cmd);
         }
     }
 }
@@ -118,7 +143,7 @@ void cd(char *dname) {
     if (vfs_exists(dname) && vfs_is_dir(dname)) {
         strcpy(current_dir, dname);
     } else {
-        tty_printf("\ncd: no such directory\n");
+        tty_printf("cd: no such directory\n");
     }
 }
 
@@ -140,7 +165,7 @@ void cat(char *fname) {
     char *buf = (char*) kheap_malloc(1000);
 
     if (!vfs_exists(fname)) {
-        tty_printf("\ncat: error file not found\n");
+        tty_printf("cat: error file not found\n");
     } else {
         uint32_t fsize = vfs_get_size(fname);
         int res = vfs_read(fname, 0, fsize, buf);
@@ -148,5 +173,21 @@ void cat(char *fname) {
         buf[fsize] = '\0';
         tty_printf("%s:\n\n%s\n", fname, buf);
         kheap_free(buf);
+    }
+}
+
+
+
+void sbf(char *src){
+    for (int i = 0; src[i] != 0; i++) {
+        switch (src[i])
+        {
+        case '+':
+            /* code */
+            break;
+        
+        default:
+            break;
+        }
     }
 }
