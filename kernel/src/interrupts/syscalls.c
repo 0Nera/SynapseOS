@@ -6,40 +6,48 @@ uint32_t sc_puts(char *str) {
     return (uint32_t)0;
 }
 
+
 uint32_t sc_getscancode() {
     return keyboard_getscancode();
 }
+
 
 uint32_t sc_getchar() {
     return keyboard_getchar();
 }
 
+
 uint32_t sc_gets() {
     return keyboard_gets();
 }
+
 
 uint32_t sc_putpixel(int x, int y, uint32_t color) {
     set_pixel(x, y, color);
     return (uint32_t)0;
 }
 
+
 uint32_t sc_drawline(int x, int y, int xe, int ye, uint32_t color){
     set_line(x, y, xe, ye, color);
     return (uint32_t)0;
 }
 
-void syscall_init() {
-    register_interrupt_handler(SYSCALL_IDT_INDEX, &syscall_handler);
-    qemu_putstring("SYSCALL INIT\n");
-}
 
 uint32_t* malloc(int size){
     return (uint32_t*)kheap_malloc(size);
 }
 
+
 uint32_t free(void* addr){
     kheap_free(addr);
     return (uint32_t)0;
+}
+
+
+void syscall_init() {
+    register_interrupt_handler(SYSCALL_IDT_INDEX, &syscall_handler);
+    qemu_putstring("SYSCALL INIT\n");
 }
 
 

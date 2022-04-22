@@ -13,6 +13,7 @@
 
 #include <drivers/vfs.h>
 #include <drivers/ramdisk.h>
+#include <drivers/floppy.h>
 
 #include <io/tty.h>
 #include <io/vgafnt.h>

@@ -19,6 +19,7 @@ void *memcpy(void *destination, const void *source, size_t n){
         n--;
     }
 
+
     return destination;
 }
 
@@ -47,6 +48,7 @@ int strcmp(const char *str1, const char *str2) {
     return (s1 < s2) ? -1 : (s1 > s2);
 }
 
+
 char *strcpy(char *dest, const char *src) {
     do {
       *dest++ = *src++;
@@ -71,7 +73,6 @@ int memcmp(const void *s1, const void *s2, size_t n) {
 }
 
 
-
 size_t str_bksp(char *str, char c) {
     size_t i = strlen(str);
     i--;
@@ -86,7 +87,6 @@ size_t str_bksp(char *str, char c) {
 }
 
 
-
 char *strpbrk(const char *s, const char *accept) {
     while (*s != '\0') {
         const char *a = accept;
@@ -99,6 +99,7 @@ char *strpbrk(const char *s, const char *accept) {
     }
     return NULL;
 }
+
 
 size_t strspn(const char *s, const char *accept) {
     const char *p;
@@ -119,6 +120,8 @@ size_t strspn(const char *s, const char *accept) {
     }
     return count;
 }
+
+
 int strncmp(const char *s1, const char *s2, size_t num) {
     for (size_t i=0; i<num; i++) {
         if (s1[i] != s2[i]) {
@@ -128,6 +131,7 @@ int strncmp(const char *s1, const char *s2, size_t num) {
     return 0;
 }
 
+
 char *strtok(char *s, const char *delim) {
     static char *olds = NULL;
     char *token;
@@ -136,11 +140,13 @@ char *strtok(char *s, const char *delim) {
         s = olds;
     }
 
+
     s += strspn(s, delim);
     if (*s == '\0') {
         olds = s;
         return NULL;
     }
+
 
     token = s;
     s = strpbrk(token, delim);
