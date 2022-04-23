@@ -55,6 +55,11 @@ if __name__ == "__main__":
             pass
         else:
             os.system("qemu-img create -f qcow2 -o compat=1.1 ata.qcow2 8G")
+        
+        if os.path.exists("fdb.img"):
+            pass
+        else:
+            os.system("qemu-img create fdb.img 1.44M")
 
         os.chdir("apps/")
         os.system("python build.py")
@@ -75,6 +80,6 @@ if __name__ == "__main__":
         else:
             os.system("""wsl grub-mkrescue -o "SynapseOS.iso" isodir/ -V SynapseOS """)
 
-        os.system("qemu-system-i386 -m 5 -name SynapseOS -soundhw all -cdrom SynapseOS.iso -fda fda.img -fdb fdb.img -hda ata.qcow2 -serial  file:Qemu.log -no-reboot")
+        os.system("qemu-system-i386 -m 8 -name SynapseOS -soundhw all -cdrom SynapseOS.iso -fdb fdb.img -hda ata.qcow2 -serial  file:Qemu.log -no-reboot")
     except Exception as E:
         print(E)

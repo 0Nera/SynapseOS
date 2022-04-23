@@ -27,7 +27,7 @@ enum {
 };
 static volatile int floppy_motor_ticks = 0;
 static volatile int floppy_motor_state = 0;
-
+int floppy_i = 0;
 
 // Obviously you'd have this return the data, start drivers or something.
 void floppy_detect_drives() {
@@ -39,14 +39,13 @@ void floppy_detect_drives() {
 
 }
 
-void floppy_motor() {
-
-}
 void irq_wait(){
-
+    while(floppy_i != 1);
+    floppy_i = 0;
 }
 
 void floppy_handler(struct regs *r) {
+    floppy_i = 1;
     uint32_t adr;
     asm volatile("movl %%cr2, %0" : "=r" (adr));
     qemu_printf("\nFLOPPY cr2 = %x  r->idt_index = %x eax = %x  ebx = %x" \
@@ -71,7 +70,7 @@ void floppy_handler(struct regs *r) {
 void floppy_write_cmd(int base, char cmd) {
     int i; // do timeout, 60 seconds
     for(i = 0; i < 600; i++) {
-        sleep(10); // sleep 10 ms
+        sleep(1); // sleep 10 ms
         if(0x80 & inb(base+FLOPPY_MSR)) {
             return (void) outb(base+FLOPPY_FIFO, cmd);
         }
@@ -84,7 +83,7 @@ unsigned char floppy_read_data(int base) {
 
     int i; // do timeout, 60 seconds
     for(i = 0; i < 600; i++) {
-        sleep(10); // sleep 10 ms
+        sleep(1); // sleep 10 ms
         if(0x80 & inb(base+FLOPPY_MSR)) {
             return inb(base+FLOPPY_FIFO);
         }
@@ -92,17 +91,7 @@ unsigned char floppy_read_data(int base) {
     tty_printf("floppy_read_data: timeout");
     return 0; // not reached
 }
-int floppy_init(int drive) {
-    floppy_detect_drives();
-    register_interrupt_handler(38, &floppy_handler);
-    sleep(1000);
-    tty_printf("\ndata = [");
-    for (int i = 256; i != 0; i--){
-        tty_printf("%d", floppy_read_data(1));
-    }
-    tty_printf("]\n");
-    return 0;
-}
+
 
 
 
@@ -117,6 +106,24 @@ void floppy_check_interrupt(int base, int *st0, int *cyl) {
     *cyl = floppy_read_data(base);
 }
 
+void floppy_motor(int base, int onoff) {
+
+    if(onoff) {
+        if(!floppy_motor_state) {
+            // need to turn on
+            outb(base + FLOPPY_DOR, 0x1c);
+            sleep(5); // wait 500 ms = hopefully enough for modern drives
+        }
+        floppy_motor_state = floppy_motor_on;
+    } else {
+        if(floppy_motor_state == floppy_motor_wait) {
+            tty_printf("floppy_motor: strange, fd motor-state already waiting..\n");
+        }
+        floppy_motor_ticks = 300; // 3 seconds, see floppy_timer() below
+        floppy_motor_state = floppy_motor_wait;
+    }
+}
+
 // Move to cylinder 0, which calibrates the drive..
 int floppy_calibrate(int base) {
 
@@ -129,6 +136,7 @@ int floppy_calibrate(int base) {
         floppy_write_cmd(base, CMD_RECALIBRATE);
         floppy_write_cmd(base, 0); // argument is drive, we only support 0
 
+        tty_printf("irq_wait: floppy_irq = %d\n", floppy_irq);
         irq_wait(floppy_irq);
         floppy_check_interrupt(base, &st0, &cyl);
        
@@ -151,6 +159,8 @@ int floppy_calibrate(int base) {
 
 
 int floppy_reset(int base) {
+    tty_printf("floppy_reset: base = %d\n", base);
+
 
     outb(base + FLOPPY_DOR, 0x00); // disable controller
     outb(base + FLOPPY_DOR, 0x0C); // enable controller
@@ -182,6 +192,7 @@ int floppy_reset(int base) {
 }
 
 
+// Used by floppy_dma_init and floppy_do_track to specify direction
 typedef enum {
     floppy_dir_read = 1,
     floppy_dir_write = 2
@@ -193,7 +204,7 @@ typedef enum {
 // and must not cross 64k borders so easiest thing is to align it
 // to 2^N boundary at least as big as the block
 #define floppy_dmalen 0x4800
-static const char floppy_dmabuf[floppy_dmalen]
+char floppy_dmabuf[floppy_dmalen]
                   __attribute__((aligned(0x8000)));
 
 static void floppy_dma_init(floppy_dir dir) {
@@ -239,4 +250,20 @@ static void floppy_dma_init(floppy_dir dir) {
     outb(0x0b, mode);   // set mode (see above)
 
     outb(0x0a, 0x02);   // unmask chan 2
+}
+
+int floppy_init() {
+    register_interrupt_handler(38, &floppy_handler);
+    //floppy_dma_init(1);
+    //floppy_reset(1);
+
+    floppy_detect_drives();
+    //sleep(100);
+    
+    //tty_printf("\ndata = [");
+    //for (int i = 256; i != 0; i--){
+    //    tty_printf("%d", floppy_read_data(1));
+    //}
+    //tty_printf("]\n");
+    return 0;
 }

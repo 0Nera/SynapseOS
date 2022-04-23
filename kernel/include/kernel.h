@@ -33,7 +33,7 @@
 
 #define VERSION_MAJOR   0   // Версия ядра
 #define VERSION_MINOR   2   // Пре-релиз 
-#define VERSION_PATCH   5   // Патч
+#define VERSION_PATCH   6   // Патч
 
 #define isDistr         0   // 0 - не дистрибутив, 1 - дистрибутив
 #define DistrName       ""  // Имя дистрибутива
