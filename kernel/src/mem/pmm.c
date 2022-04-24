@@ -60,7 +60,7 @@ void pmm_parse_memory_map(multiboot_memory_map_entry *mmap_addr, uint32_t length
     tty_printf(" = %d MB\n", phys_available_memory_size / (1024 * 1024));
     
     if (phys_available_memory_size / 1024 < 4600) {
-        tty_setcolor(VESA_LIGHT_RED);
+        tty_setcolor(COLOR_ERROR);
         tty_printf("\nWarning! Low memory! Using 0 mode.\n");
         os_mode = 1;
     } else if (phys_available_memory_size / 1024 < 13000) {
@@ -76,7 +76,7 @@ void pmm_parse_memory_map(multiboot_memory_map_entry *mmap_addr, uint32_t length
         tty_printf("\nUnknown. Using normal mode.\n");
         os_mode = 1;
     }
-    tty_setcolor(VESA_LIGHT_CYAN);
+    tty_setcolor(COLOR_SYS_TEXT);
 }
 
 int pmm_find_free_block() {

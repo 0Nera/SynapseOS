@@ -33,7 +33,13 @@
 
 #define VERSION_MAJOR   0   // Версия ядра
 #define VERSION_MINOR   2   // Пре-релиз 
-#define VERSION_PATCH   6   // Патч
+#define VERSION_PATCH   7   // Патч
+
+#define COLOR_TEXT      VESA_LIGHT_GREY
+#define COLOR_SYS_TEXT  VESA_LIGHT_CYAN
+#define COLOR_SYS_PATH  VESA_LIGHT_GREEN
+#define COLOR_ERROR     VESA_LIGHT_RED
+#define COLOR_ALERT     VESA_LIGHT_YELLOW
 
 #define isDistr         0   // 0 - не дистрибутив, 1 - дистрибутив
 #define DistrName       ""  // Имя дистрибутива

@@ -14,7 +14,7 @@ void kernel(int magic_number, struct multiboot_info *mboot_info) {
     tty_init(mboot_info);   // Настройка графики
     
     // Вывод информации о ядре
-    tty_printf("\t\tSynapseOS kernel version: %d.%d.%d, Builded: %s\n", 
+    tty_printf("\t\tSynapseOS kernel version: %d.%d.%d, Built: %s\n", 
         VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH,    // Версия ядра 
         __TIMESTAMP__                                   // Время окончания компиляции ядра
         );
@@ -22,8 +22,8 @@ void kernel(int magic_number, struct multiboot_info *mboot_info) {
     // Проверка, является ли сборка дистрибутивом
     if (isDistr) {
         //Вывод информации о дистрибутиве
-        tty_printf("\tDistribution \"%s\", version %d.%d.%d",
-            dVERSION_MAJOR, dVERSION_MINOR, dVERSION_PATCH
+        tty_printf("\tDistribution \"%s\", version %d.%d.%d\n",
+            DistrName, dVERSION_MAJOR, dVERSION_MINOR, dVERSION_PATCH
             );
     }
 

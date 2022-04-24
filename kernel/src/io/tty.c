@@ -59,7 +59,7 @@ void tty_init(struct multiboot_info *mboot_info) {
     tty_pos_y = 0;
     tty_pos_x = 0;
 
-    tty_text_color = VESA_LIGHT_CYAN;
+    tty_text_color = COLOR_SYS_TEXT;
 
     svga_mode_info_t *svga_mode = (svga_mode_info_t*) mboot_info->vbe_mode_info;
 
