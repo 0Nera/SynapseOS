@@ -68,9 +68,12 @@ if __name__ == "__main__":
         shutil.copytree("../bin/apps", "../initrd/apps")
 
         os.chdir("../initrd")
+        print
+        
 
         with tarfile.open("../isodir/boot/initrd.tar", "w") as tar:
-            tar.add("apps/")
+            for i in os.listdir():
+                tar.add(i)
         
         os.chdir("../")
 
