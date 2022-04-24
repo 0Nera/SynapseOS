@@ -13,7 +13,7 @@ uint32_t sc_getscancode() {
 
 
 uint32_t sc_getchar() {
-    return keyboard_getchar();
+    return (uint32_t)keyboard_getchar();
 }
 
 

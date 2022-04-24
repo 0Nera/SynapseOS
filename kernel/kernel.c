@@ -51,6 +51,8 @@ void kernel(int magic_number, struct multiboot_info *mboot_info) {
     syscall_init();                         // Инициализация системного api для программ
 
     keyboard_install();                     // Установка драйвера клавиатуры
-    run_elf_file("/initrd/apps/test.elf");
+
+    //run_elf_file("/initrd/apps/test.elf");
+
     ksh_main();                             // Активация терминала
 }
