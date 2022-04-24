@@ -3,7 +3,7 @@
 
 uint32_t sc_puts(char *str) {
     tty_printf("%s", str);
-    return (uint32_t)0;
+    return (uint32_t)100;
 }
 
 
@@ -50,12 +50,26 @@ void syscall_init() {
     qemu_putstring("SYSCALL INIT\n");
 }
 
+#define SC_CODE_puts            0
+#define SC_CODE_getscancode     1
+#define SC_CODE_getchar         2
+#define SC_CODE_gets            3
+#define SC_CODE_malloc          4
+#define SC_CODE_free            5
+#define SC_CODE_putpixel        32
+#define SC_CODE_drawline        33
+#define SC_CODE_version         40
 
 void syscall_handler(struct regs *r) {
     uint32_t result = -1;
     uint32_t* argptr = (uint32_t*) (r->ebx);
+    /*uint32_t adr;
+    asm volatile("movl %%cr2, %0" : "=r" (adr));
 
-
+    tty_printf("\nsyscall_handler cr2 = %d  r->idt_index = %d eax = %d  ebx = %d" \
+        "  ecx = %d  edx = %d  esp = %d  ebp = %d  eip = %d\n", 
+        adr, r->idt_index, r->eax, r->ebx, 
+        r->ecx, r->edx, r->esp, r->ebp, r->eip);*/
     switch (r->eax) {
         case SC_CODE_puts:
             //qemu_printf("str = %x\n", (char*) (argptr[0]));
@@ -64,6 +78,12 @@ void syscall_handler(struct regs *r) {
         case SC_CODE_getscancode:
             result = sc_getscancode();
             qemu_printf("input eax: %d result = %d, [%c] [%s]\n", r->eax, result, result, result);
+            break;
+        case SC_CODE_getchar:
+            result = sc_getchar();
+            break;
+        case SC_CODE_gets:
+            result = sc_gets();
             break;
         case SC_CODE_malloc:
             result = malloc((int)argptr[0]);
@@ -85,8 +105,6 @@ void syscall_handler(struct regs *r) {
             tty_printf("Invalid syscall #%x\n", r->eax);
     }
 
-    if (r->eax == SC_CODE_getscancode){
-        r->eax = (uint32_t)result;
-        qemu_printf("return eax: %d result = %d, [%c] [%s]\n", r->eax, result, result, result);
-    }
+
+    r->edx = (uint32_t)result;
 }

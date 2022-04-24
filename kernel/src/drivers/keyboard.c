@@ -125,6 +125,9 @@ void keyboard_handler_main(void) {
             return;
         }
         if (input_type == 2) {
+            if (keycode < 0){
+                return;
+            }
             if (keycode == 42) {
                 SHIFT = 1;
                 return;
@@ -227,6 +230,7 @@ int keyboard_getchar() {
 
     input_type = 1;
     tty_putchar(last_char);
+
     return last_char;
 }
 
