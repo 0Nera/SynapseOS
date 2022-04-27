@@ -4,7 +4,7 @@ import os, shutil, sys, tarfile, os.path
 SYS_OBJ = "bin/kernel/kernel.o bin/kernel/sys/elf.o"
 ARCH_OBJ = "bin/kernel/starter.o bin/kernel/interrupts.o bin/kernel/paging.o"
 MEM_OBJ = "bin/kernel/mem/pmm.o bin/kernel/mem/vmm.o bin/kernel/mem/kheap.o"
-DRIVERS_OBJ = "bin/kernel/drivers/vfs.o bin/kernel/drivers/ramdisk.o bin/kernel/drivers/keyboard.o bin/kernel/drivers/pci.o "
+DRIVERS_OBJ = "bin/kernel/drivers/vfs.o bin/kernel/drivers/ramdisk.o bin/kernel/drivers/keyboard.o bin/kernel/drivers/pci.o bin/kernel/drivers/ata.o "
 IO_OBJ = "bin/kernel/io/tty.o bin/kernel/io/vgafnt.o bin/kernel/io/ports.o bin/kernel/io/shell.o"
 INTERRUPTS_OBJ = "bin/kernel/interrupts/gdt.o bin/kernel/interrupts/idt.o bin/kernel/interrupts/tss.o bin/kernel/interrupts/syscalls.o"
 LIBK_OBJ = "bin/kernel/libk/stdlib.o bin/kernel/libk/string.o"
@@ -28,6 +28,7 @@ def build_all():
     os.system("i686-elf-gcc -g -ffreestanding -Wall -Wextra -w -O0 -I kernel/include/ -c kernel/src/drivers/ramdisk.c -o bin/kernel/drivers/ramdisk.o")
     os.system("i686-elf-gcc -g -ffreestanding -Wall -Wextra -w -O0 -I kernel/include/ -c kernel/src/drivers/keyboard.c -o bin/kernel/drivers/keyboard.o")
     os.system("i686-elf-gcc -g -ffreestanding -Wall -Wextra -w -O0 -I kernel/include/ -c kernel/src/drivers/pci.c -o bin/kernel/drivers/pci.o")
+    os.system("i686-elf-gcc -g -ffreestanding -Wall -Wextra -w -O0 -I kernel/include/ -c kernel/src/drivers/ata.c -o bin/kernel/drivers/ata.o")
 
     os.system("i686-elf-gcc -g -ffreestanding -Wall -Wextra -w -O0 -I kernel/include/ -c kernel/src/io/tty.c -o bin/kernel/io/tty.o")
     os.system("i686-elf-gcc -g -ffreestanding -Wall -Wextra -w -O0 -I kernel/include/ -c kernel/src/io/vgafnt.c -o bin/kernel/io/vgafnt.o")

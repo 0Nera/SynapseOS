@@ -68,8 +68,8 @@ void checkAllBuses(void) {
         for (uint8_t device = 0; device < 32; device++) {
             for (uint8_t function = 1; function < 8; function++) {
                 if (getDeviceID(bus, device, function) != 0 & getDeviceID(bus, device, function) != 65535 ){    
-                    tty_printf("bus %d->", bus);
-                    qemu_printf("bus %d->", bus);
+                    tty_printf("\t%d->", bus);
+                    qemu_printf("\t%d->", bus);
 
 					switch (getDeviceID(bus, device, function)) {
 						case 0x7010:
@@ -108,6 +108,7 @@ uint32_t get_device_type(pci_dev_t dev) {
 
 pci_dev_t pci_scan_function(uint16_t vendor_id, uint16_t device_id, uint32_t bus, uint32_t device, uint32_t function, int device_type) {
 	pci_dev_t dev = {0};
+
 	dev.bus_num = bus;
 	dev.device_num = device;
 	dev.function_num = function;
@@ -194,6 +195,7 @@ pci_dev_t pci_get_device(uint16_t vendor_id, uint16_t device_id, int device_type
 
 
 void pci_init() {
+	tty_printf("PCI devices:\n");
 	checkAllBuses();
-	tty_printf("PCI driver support loaded.\n");
+	qemu_printf("PCI installed\n");
 }
