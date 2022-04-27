@@ -16,6 +16,23 @@ uint8_t inb(uint16_t port) {
     return ret;
 }
 
+void outl(uint16_t port, uint32_t val) {
+    asm volatile ( "outl %0, %1" : : "a"(val), "Nd"(port) );
+}
+
+uint32_t inl(uint16_t port) {
+    uint32_t ret;
+    asm volatile ( "inl %1, %0"
+                   : "=a"(ret)
+                   : "Nd"(port) );
+    return ret;
+}
+
+uint16_t ins(uint16_t _port) {
+    uint16_t rv;
+    asm volatile ("inw %1, %0" : "=a" (rv) : "dN" (_port));
+    return rv;
+}
 
 int com1_is_transmit_empty() {
     return inb(PORT_COM1 + 5) & 0x20;
