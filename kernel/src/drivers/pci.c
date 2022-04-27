@@ -60,14 +60,32 @@ void checkAllBuses(void) {
     for (uint16_t bus = 0; bus < 256; bus++) {
         for (uint8_t device = 0; device < 32; device++) {
             for (uint8_t function = 1; function < 8; function++) {
-                if (getDeviceID(bus, device, function) != 0 & getDeviceID(bus, device, function) != 65535 ){
-                    if (getDeviceID(bus, device, function) == 0x7010) {
-                        tty_printf("bus %d->device ATA %x: vendor %x\n", bus, getDeviceID(bus, device, function), getVendorID(bus, device, function));
-                        qemu_printf("bus %d->device ATA %x: vendor %x\n", bus, getDeviceID(bus, device, function), getVendorID(bus, device, function));
-                    } else {
-                        tty_printf("bus %d->device %x: vendor %x\n", bus, getDeviceID(bus, device, function), getVendorID(bus, device, function));
-                        qemu_printf("bus %d->device %x: vendor %x\n", bus, getDeviceID(bus, device, function), getVendorID(bus, device, function));
-                    }
+                if (getDeviceID(bus, device, function) != 0 & getDeviceID(bus, device, function) != 65535 ){    
+                    tty_printf("bus %d->", bus);
+                    qemu_printf("bus %d->", bus);
+
+					switch (getDeviceID(bus, device, function)) {
+						case 0x7010:
+							tty_printf("ATA ");
+							qemu_printf("ATA ");
+							break;
+						
+						default:
+							tty_printf("device %x ", getDeviceID(bus, device, function));
+							qemu_printf("device %x ", getDeviceID(bus, device, function));
+							break;
+					}
+					switch (getVendorID(bus, device, function)) {
+						case 0x8086:
+							tty_printf("intel\n");
+							qemu_printf("intel\n");
+							break;
+						
+						default:
+							tty_printf("vendor %x\n", getVendorID(bus, device, function));
+							qemu_printf("vendor %x\n", getVendorID(bus, device, function));
+							break;
+					}
                 }
             }
         }
