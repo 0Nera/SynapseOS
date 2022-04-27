@@ -14,11 +14,13 @@
 #include <drivers/vfs.h>
 #include <drivers/ramdisk.h>
 #include <drivers/floppy.h>
+#include <drivers/keyboard.h>
+#include <drivers/dma.h>
+#include <drivers/pci.h>
 
 #include <io/tty.h>
 #include <io/vgafnt.h>
 #include <io/ports.h>
-#include <drivers/keyboard.h>
 
 #include <interrupts/gdt.h>
 #include <interrupts/idt.h>
@@ -48,3 +50,10 @@
 #define dVERSION_PATCH  0   // Патч дистрибутива
 
 extern int os_mode;
+
+
+#define IRQ_START asm volatile("add $0x1c, %esp"); \
+		asm volatile("pusha");
+
+#define IRQ_END asm volatile("popa"); \
+	asm volatile("iret");

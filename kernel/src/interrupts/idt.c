@@ -25,6 +25,17 @@ void interrupt_enable_all() {
 void interrupt_disable_all() {
     asm volatile("cli");
 }
+#define PIC_MASTER_CMD 0x20
+#define PIC_MASTER_DATA 0x21
+#define PIC_SLAVE_CMD 0xA0
+#define PIC_SLAVE_DATA 0xA1
+
+#define PIC_CMD_EOI 0x20
+void pic_send_eoi(uint8_t irq) {
+	if(irq >= 8)
+		outb(PIC_SLAVE_CMD, PIC_CMD_EOI);
+	outb(PIC_MASTER_CMD, PIC_CMD_EOI);
+}
 
 // Defines an IDT entry
 struct idt_entry {

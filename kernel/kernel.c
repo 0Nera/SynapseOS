@@ -46,13 +46,13 @@ void kernel(int magic_number, struct multiboot_info *mboot_info) {
     vfs_init();                             // Инициализация виртуальной файловой системы
 
     initrd_init(initrd_beg, initrd_end);    // Инициализация ramdisk
-    floppy_init();                         // Инициализация драйвера гибких дисков
+    floppy_init(38);                         // Инициализация драйвера гибких дисков
 
     syscall_init();                         // Инициализация системного api для программ
 
     keyboard_install();                     // Установка драйвера клавиатуры
 
     //run_elf_file("/initrd/apps/test.elf");
-
+    pci_init();
     ksh_main();                             // Активация терминала
 }

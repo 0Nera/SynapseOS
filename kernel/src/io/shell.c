@@ -97,7 +97,7 @@ void ksh_main() {
             }
         } else {
             tty_setcolor(COLOR_ERROR);
-            tty_printf("Uncnown: [%s]\n", cmd);
+            tty_printf("Unknown: [%s]\n", cmd);
         }
     }
 }
