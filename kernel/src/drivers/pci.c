@@ -2,6 +2,8 @@
 
 pci_dev_t dev_zero = {0};
 uint32_t pci_size_map[100];
+
+
 uint16_t pci_read_word(uint16_t bus, uint16_t slot, uint16_t func, uint16_t offset) {
 	uint64_t address;
     uint64_t lbus = (uint64_t)bus;
@@ -29,6 +31,7 @@ uint16_t getDeviceID(uint16_t bus, uint16_t device, uint16_t function) {
         return r0;
 }
 
+
 uint32_t pci_read(pci_dev_t dev, uint32_t field) {
 	// Only most significant 6 bits of the field
 	dev.field_num = (field & 0xFC) >> 2;
@@ -53,9 +56,13 @@ uint32_t pci_read(pci_dev_t dev, uint32_t field) {
 	}
 	return 0xffff;
 }
+
+
 uint32_t get_secondary_bus(pci_dev_t dev) {
 	return pci_read(dev, PCI_SECONDARY_BUS);
 }
+
+
 void checkAllBuses(void) {
     for (uint16_t bus = 0; bus < 256; bus++) {
         for (uint8_t device = 0; device < 32; device++) {
@@ -91,10 +98,14 @@ void checkAllBuses(void) {
         }
     }
 }
+
+
 uint32_t get_device_type(pci_dev_t dev) {
 	uint32_t t = pci_read(dev, PCI_CLASS) << 8;
 	return t | pci_read(dev, PCI_SUBCLASS);
 }
+
+
 pci_dev_t pci_scan_function(uint16_t vendor_id, uint16_t device_id, uint32_t bus, uint32_t device, uint32_t function, int device_type) {
 	pci_dev_t dev = {0};
 	dev.bus_num = bus;
@@ -113,10 +124,13 @@ pci_dev_t pci_scan_function(uint16_t vendor_id, uint16_t device_id, uint32_t bus
 	}
 	return dev_zero;
 }
+
+
 uint32_t pci_reach_end(pci_dev_t dev) {
 	uint32_t t = pci_read(dev, PCI_HEADER_TYPE);
 	return !t;
 }
+
 
 pci_dev_t pci_scan_device(uint16_t vendor_id, uint16_t device_id, uint32_t bus, uint32_t device, int device_type) {
 	pci_dev_t dev = {0};
