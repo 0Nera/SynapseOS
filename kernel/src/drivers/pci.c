@@ -169,10 +169,13 @@ pci_dev_t pci_scan_bus(uint16_t vendor_id, uint16_t device_id, uint32_t bus, int
 
 
 pci_dev_t pci_get_device(uint16_t vendor_id, uint16_t device_id, int device_type) {
-
 	pci_dev_t t = pci_scan_bus(vendor_id, device_id, 0, device_type);
-	if(t.bits)
+
+	if(t.bits){
+		tty_printf("t.bits...\n");
+		qemu_printf("t.bits...\n");
 		return t;
+	}
 
 	// Handle multiple pci host controllers
 
@@ -180,16 +183,24 @@ pci_dev_t pci_get_device(uint16_t vendor_id, uint16_t device_id, int device_type
 		tty_printf("PCI Get device failed...\n");
 		qemu_printf("PCI Get device failed...\n");
 	}
+
 	for(int function = 1; function < FUNCTION_PER_DEVICE; function++) {
 		pci_dev_t dev = {0};
 		dev.function_num = function;
 
 		if(pci_read(dev, PCI_VENDOR_ID) == PCI_NONE)
 			break;
+		
 		t = pci_scan_bus(vendor_id, device_id, function, device_type);
-		if(t.bits)
+		
+		if(t.bits){
+			tty_printf("t.bits...\n");
+			qemu_printf("t.bits...\n");
 			return t;
+		}
 	}
+	tty_printf("dev zero!");
+	qemu_printf("dev zero!");
 	return dev_zero;
 }
 

@@ -119,7 +119,7 @@ void keyboard_handler_main(void) {
     // Проверяем статус используя нижний бит
     if (status & 0x01) {
         keycode = inb(KEYBOARD_DATA_PORT);
-        qemu_printf("KEY %d\n", keycode);
+        //qemu_printf("KEY %d\n", keycode);
 
         if (input_type == 0) {
             return;

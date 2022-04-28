@@ -3,21 +3,27 @@
 char current_dir[256] = "/initrd/apps/";
 
 void ksh_main() {
+    tty_setcolor(COLOR_ALERT);
+    tty_printf("\nUse \"help\" command to get info about commands.");
 
     while (1) {
-        
-
         tty_setcolor(COLOR_SYS_TEXT);
         tty_printf("\nROOT ");
         tty_setcolor(COLOR_SYS_PATH);
         tty_printf("%s>", current_dir);
+
         tty_setcolor(COLOR_TEXT);
 
         char *cmd = keyboard_gets();
 
         if (strlen(cmd) == 0) {
             continue;
+        } else if (strlen(cmd) > 256) {
+            tty_setcolor(COLOR_ERROR);
+            tty_printf("\nERROR: limit 256 char's!");
+            continue;
         }
+
         tty_printf("\n");
 
         if (strcmp(cmd, "about") == 0) {
@@ -27,12 +33,14 @@ void ksh_main() {
                         "->help                |get list of commands\n" \
                         "->cat   <filename>    |open file to read\n" \
                         "->cd    <folder>      |open folder\n" \
-                        "->run   <file>        |run .elf programm\n" \
+                        "->./<file>            |run .elf programm in current folder\n" \
                         "->ls                  |print list of files\n" 
                         );
         } else if (strlen(cmd) > 4 && strncmp(cmd, "cat ", 4) == 0) {
-            char fname[100];
+            char fname[256];
+
             char *tok = strtok(cmd, " ");
+            
             tok = strtok(0, " "); // tok - now is filename
 
             if (fname != 0) {
@@ -42,8 +50,10 @@ void ksh_main() {
                 tty_printf("cat: incorrect argument\n");
             }
         } else if (strlen(cmd) > 3 && strncmp(cmd, "cd ", 3) == 0) {
-            char dname[100];
+            char dname[256];
+            
             char *tok = strtok(cmd, " ");
+            
             tok = strtok(0, " "); // tok - now is dirname
 
             if (dname != 0) {
@@ -54,21 +64,9 @@ void ksh_main() {
             }
         } else if (strcmp(cmd, "ls") == 0) {
             initrd_list(0, 0);
-
-        } else if (strlen(cmd) > 4 && strncmp(cmd, "run ", 4) == 0) {
-            char fname[100];
-            char *tok = strtok(cmd, " ");
-
-            tok = strtok(0, " "); // tok - now is filename
-
-            if (fname != 0) {
-                run(tok);
-            } else {
-                tty_setcolor(COLOR_ERROR);
-                tty_printf("run: incorrect argument\n");
-            }
         } else if (strlen(cmd) > 4 && strncmp(cmd, "sbf  ", 4) == 0) {
-            char fname[100];
+            char fname[256];
+
             char *tok = strtok(cmd, " ");
 
             tok = strtok(0, " "); // tok - now is filename
@@ -80,7 +78,8 @@ void ksh_main() {
                 tty_printf("sbf: incorrect argument\n");
             }
         } else if (strlen(cmd) > 2 && strncmp(cmd, "./", 2) == 0) {
-            char fname[100];
+            char fname[256];
+
             char *tok = strtok(cmd, "/");
 
             tok = strtok(0, "/"); // tok - now is filename
@@ -102,28 +101,6 @@ void ksh_main() {
     }
 }
 
-
-
-void run(char *dname) {
-    if (dname[0] != '/') {
-        char temp[256];
-
-        strcpy(temp, current_dir);
-
-        temp[strlen(temp) - 1] = 0;
-
-        strcat(temp, dname);
-
-        temp[strlen(temp) - 1] = 0;
-        temp[strlen(temp) - 1] = 0;
-
-        strcpy(dname, temp);
-    }
-
-
-    
-    run_elf_file(dname);
-}
 
 void cd(char *dname) {
     if (dname[0] != '/') {
@@ -170,7 +147,7 @@ void cat(char *fname) {
         strcpy(fname, temp);
     }
 
-    char *buf = (char*) kheap_malloc(1000);
+    char *buf = (char*) kheap_malloc(2048);
 
     if (!vfs_exists(fname)) {
         tty_setcolor(COLOR_ERROR);
