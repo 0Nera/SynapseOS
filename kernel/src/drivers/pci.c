@@ -204,8 +204,35 @@ pci_dev_t pci_get_device(uint16_t vendor_id, uint16_t device_id, int device_type
 	return dev_zero;
 }
 
+void pci_write(pci_dev_t dev, uint32_t field, uint32_t value) {
+	dev.field_num = (field & 0xFC) >> 2;
+	dev.enable = 1;
+	// Tell where we want to write
+	outl(PCI_CONFIG_ADDRESS, dev.bits);
+	// Value to write
+	outl(PCI_CONFIG_DATA, value);
+}
 
 void pci_init() {
+	// Init size map
+	pci_size_map[PCI_VENDOR_ID] =	2;
+	pci_size_map[PCI_DEVICE_ID] =	2;
+	pci_size_map[PCI_COMMAND]	=	2;
+	pci_size_map[PCI_STATUS]	=	2;
+	pci_size_map[PCI_SUBCLASS]	=	1;
+	pci_size_map[PCI_CLASS]		=	1;
+	pci_size_map[PCI_CACHE_LINE_SIZE]	= 1;
+	pci_size_map[PCI_LATENCY_TIMER]		= 1;
+	pci_size_map[PCI_HEADER_TYPE] = 1;
+	pci_size_map[PCI_BIST] = 1;
+	pci_size_map[PCI_BAR0] = 4;
+	pci_size_map[PCI_BAR1] = 4;
+	pci_size_map[PCI_BAR2] = 4;
+	pci_size_map[PCI_BAR3] = 4;
+	pci_size_map[PCI_BAR4] = 4;
+	pci_size_map[PCI_BAR5] = 4;
+	pci_size_map[PCI_INTERRUPT_LINE]	= 1;
+	pci_size_map[PCI_SECONDARY_BUS]		= 1;
 	tty_printf("PCI devices:\n");
 	checkAllBuses();
 	qemu_printf("PCI installed\n");

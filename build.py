@@ -3,7 +3,7 @@ import os, shutil, sys, tarfile, os.path
 
 SYS_OBJ = "bin/kernel/kernel.o bin/kernel/sys/elf.o"
 ARCH_OBJ = "bin/kernel/starter.o bin/kernel/interrupts.o bin/kernel/paging.o"
-MEM_OBJ = "bin/kernel/mem/pmm.o bin/kernel/mem/vmm.o bin/kernel/mem/kheap.o"
+MEM_OBJ = "bin/kernel/mem/pmm.o bin/kernel/mem/vmm.o bin/kernel/mem/kheap.o bin/kernel/mem/paging.o"
 DRIVERS_OBJ = "bin/kernel/drivers/vfs.o bin/kernel/drivers/ramdisk.o bin/kernel/drivers/keyboard.o bin/kernel/drivers/pci.o bin/kernel/drivers/ata.o "
 IO_OBJ = "bin/kernel/io/tty.o bin/kernel/io/vgafnt.o bin/kernel/io/ports.o bin/kernel/io/shell.o"
 INTERRUPTS_OBJ = "bin/kernel/interrupts/gdt.o bin/kernel/interrupts/idt.o bin/kernel/interrupts/tss.o bin/kernel/interrupts/syscalls.o"
@@ -23,6 +23,7 @@ def build_all():
     os.system("i686-elf-gcc -g -ffreestanding -Wall -Wextra -w -O0 -I kernel/include/ -c kernel/src/mem/pmm.c -o bin/kernel/mem/pmm.o")
     os.system("i686-elf-gcc -g -ffreestanding -Wall -Wextra -w -O0 -I kernel/include/ -c kernel/src/mem/vmm.c -o bin/kernel/mem/vmm.o")
     os.system("i686-elf-gcc -g -ffreestanding -Wall -Wextra -w -O0 -I kernel/include/ -c kernel/src/mem/kheap.c -o bin/kernel/mem/kheap.o")
+    os.system("i686-elf-gcc -g -ffreestanding -Wall -Wextra -w -O0 -I kernel/include/ -c kernel/src/mem/paging.c -o bin/kernel/mem/paging.o")
 
     os.system("i686-elf-gcc -g -ffreestanding -Wall -Wextra -w -O0 -I kernel/include/ -c kernel/src/drivers/vfs.c -o bin/kernel/drivers/vfs.o")
     os.system("i686-elf-gcc -g -ffreestanding -Wall -Wextra -w -O0 -I kernel/include/ -c kernel/src/drivers/ramdisk.c -o bin/kernel/drivers/ramdisk.o")
