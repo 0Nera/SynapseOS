@@ -4,7 +4,7 @@
 page_directory *kernel_page_dir; // Pointer (physical) to kernel page dircetory structure
 
 bool vmm_alloc_page(virtual_addr vaddr) {
-    physical_addr paddr = pmm_alloc_block();
+    physical_addres paddr = pmm_alloc_block();
     if (!paddr) {
         return false;
     }
@@ -14,7 +14,7 @@ bool vmm_alloc_page(virtual_addr vaddr) {
 }
 
 bool vmm_alloc_page_with_userbit(virtual_addr vaddr) {
-    physical_addr paddr = pmm_alloc_block();
+    physical_addres paddr = pmm_alloc_block();
     if (!paddr) {
         return false;
     }
@@ -32,7 +32,7 @@ void vmm_free_page(virtual_addr vaddr) {
         return;
     }
 
-    physical_addr block = page_table_entry_frame(*pte);
+    physical_addres block = page_table_entry_frame(*pte);
     if (block) {
         pmm_free_block(block);
     }
@@ -47,7 +47,7 @@ void vmm_create_kernel_page_dir() {
         return;
     }
 
-    //page_directory *pd = (page_directory*) vmm_temp_map_page((physical_addr) kernel_page_dir);
+    //page_directory *pd = (page_directory*) vmm_temp_map_page((physical_addres) kernel_page_dir);
     page_directory *pd = kernel_page_dir;
     memset(pd, 0, sizeof(page_directory));
 
@@ -59,17 +59,17 @@ void vmm_create_kernel_page_dir() {
 
         if (i == PAGE_ENTRIES - 1) { // Fractal(recursive) mapping technique, which allows us to access PD and PT
             page_dir_entry_add_attrib(pde, I86_PTE_PRESENT);
-            page_dir_entry_set_frame(pde, (physical_addr) kernel_page_dir);
+            page_dir_entry_set_frame(pde, (physical_addres) kernel_page_dir);
 
             //tty_printf("pd[1023] = %x\n", pd->entries[1023]);
         }
     }
 }
 
-void vmm_map_page(physical_addr paddr, virtual_addr vaddr) {
+void vmm_map_page(physical_addres paddr, virtual_addr vaddr) {
     page_dir_entry *pde = GET_PDE(vaddr);
     if (!page_dir_entry_is_present(*pde)) { // If page table isnt present, create it
-        physical_addr pt_p = pmm_alloc_block(); // It's phys addr!
+        physical_addres pt_p = pmm_alloc_block(); // It's phys addr!
         if (pt_p == 0xFFFFFFFF) {
             tty_printf("No free phys memory. Minimum 3 mb\n");
             return;
@@ -89,7 +89,7 @@ void vmm_map_page(physical_addr paddr, virtual_addr vaddr) {
     flush_tlb_entry(vaddr);
 }
 
-virtual_addr vmm_temp_map_page(physical_addr paddr) {
+virtual_addr vmm_temp_map_page(physical_addres paddr) {
     page_table_entry *pte = GET_PTE(TEMP_PAGE_ADDR);
     page_table_entry_set_frame(pte, PAGE_ALIGN_DOWN(paddr)); // Old:DOWN
     page_table_entry_add_attrib(pte, I86_PTE_PRESENT);
@@ -120,7 +120,7 @@ void vmm_init() {
     memset((void*) table2, 0, sizeof(page_table));
 
     // Maps first MB to 3GB
-    physical_addr frame;
+    physical_addres frame;
     virtual_addr virt;
     for (frame = 0x0, virt = 0xC0000000;
          frame < 0x100000/*0x100000*/;
@@ -144,23 +144,23 @@ void vmm_init() {
     page_dir_entry *pde1 = (page_dir_entry*) &kernel_page_dir->entries[PAGE_DIRECTORY_INDEX(0x00000000)]; //pdirectory_lookup_entry(cur_directory, 0x00000000);
     page_dir_entry_add_attrib(pde1, I86_PDE_PRESENT);
     page_dir_entry_add_attrib(pde1, I86_PDE_WRITABLE);
-    page_dir_entry_set_frame(pde1, (physical_addr) table1);
+    page_dir_entry_set_frame(pde1, (physical_addres) table1);
 
     page_dir_entry **pde2 = (page_dir_entry*) &kernel_page_dir->entries[PAGE_DIRECTORY_INDEX(0xC0100000)]; //pdirectory_lookup_entry(cur_directory, 0xC0100000);
     page_dir_entry_add_attrib(pde2, I86_PDE_PRESENT);
     page_dir_entry_add_attrib(pde2, I86_PDE_WRITABLE);
-    page_dir_entry_set_frame(pde2, (physical_addr) table2);
+    page_dir_entry_set_frame(pde2, (physical_addres) table2);
 
-    update_phys_memory_bitmap_addr(KERNEL_END_VADDR);
+    update_phys_memory_bitmap_addres(KERNEL_END_VADDR);
 
-    enable_paging((physical_addr) kernel_page_dir);
+    enable_paging((physical_addres) kernel_page_dir);
 
 }
 
 void vmm_test() {
-    tty_printf("kernel_page_dir = %x\n", (physical_addr) kernel_page_dir);
+    tty_printf("kernel_page_dir = %x\n", (physical_addres) kernel_page_dir);
 
-    physical_addr padr1 = 0xC0500000;
+    physical_addres padr1 = 0xC0500000;
     virtual_addr vadr1 = vmm_temp_map_page(padr1);
     *(uint8_t*) vadr1 = 77;
     tty_printf("%x = %x\n", padr1, *(uint8_t*) vadr1);
@@ -184,7 +184,7 @@ void page_table_entry_del_attrib(page_table_entry *entry, uint32_t attrib) {
 }
 
 // Map pte to physical frame
-void page_table_entry_set_frame(page_table_entry *entry, physical_addr addr) {
+void page_table_entry_set_frame(page_table_entry *entry, physical_addres addr) {
     *entry = (*entry & ~I86_PTE_FRAME) | addr;
 }
 
@@ -197,7 +197,7 @@ bool page_table_entry_is_writable(page_table_entry entry) {
 }
 
 // Return the address of physical frame which pte refers to
-physical_addr page_table_entry_frame(page_table_entry entry) {
+physical_addres page_table_entry_frame(page_table_entry entry) {
     return entry & I86_PTE_FRAME;
 }
 
@@ -214,7 +214,7 @@ void page_dir_entry_del_attrib(page_dir_entry *entry, uint32_t attrib) {
 }
 
 // Map pde to physical frame (where the appropriate page table stores)
-void page_dir_entry_set_frame(page_dir_entry *entry, physical_addr addr) {
+void page_dir_entry_set_frame(page_dir_entry *entry, physical_addres addr) {
     *entry = (*entry & ~I86_PDE_FRAME) | addr;
 }
 
@@ -235,7 +235,7 @@ bool page_dir_entry_is_writable(page_dir_entry entry) {
 }
 
 // Return the address of physical frame which pde refers to
-physical_addr page_dir_entry_frame(page_dir_entry entry) {
+physical_addres page_dir_entry_frame(page_dir_entry entry) {
     return entry & I86_PDE_FRAME;
 }
 

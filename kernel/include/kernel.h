@@ -24,6 +24,7 @@
 #include <interrupts/gdt.h>
 #include <interrupts/idt.h>
 #include <interrupts/tss.h>
+#include <interrupts/time.h>
 #include <interrupts/syscalls.h>
 
 #include <libk/string.h>
@@ -65,9 +66,7 @@ typedef struct idt_ptr idt_ptr_t;
 
 extern int os_mode;
 
-
-#define IRQ_START asm volatile("add $0x1c, %esp"); \
-		asm volatile("pusha");
-
-#define IRQ_END asm volatile("popa"); \
-	asm volatile("iret");
+void shell();
+void sbf(char *src);
+void cat(char *fname);
+void cd(char *dname);

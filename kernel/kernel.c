@@ -57,5 +57,5 @@ void kernel(int magic_number, struct multiboot_info *mboot_info) {
 
     //ata_init();                             // Установка драйвера ATA
 
-    ksh_main();                             // Активация терминала
+    shell();                             // Активация терминала
 }

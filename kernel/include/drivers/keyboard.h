@@ -10,5 +10,6 @@ extern int input_type;
 void keyboard_install(void);
 void keyboard_handler(regs *r);
 void keyboard_handler_main(void);
-char getchar();
 char *keyboard_gets();
+char keyboard_getchar();
+int keyboard_getscancode();

@@ -37,6 +37,9 @@ void *elf_open(const char *fname) { // Returns pointer to ELF file.
     uint32_t fsize = vfs_get_size(fname);
     void *addr = kheap_malloc(fsize);
     int res = vfs_read(fname, 0, fsize, addr);
+    
+    qemu_printf("elf_open res = %d\n", res);
+
     struct elf_hdr *hdr = addr;
 
 
@@ -115,7 +118,7 @@ void elf_info(const char *name) {
     if (!vfs_exists(name)) {
         tty_printf("\nelf_info: elf [%s] does not exist\n", name);
         qemu_printf("\nelf_info: elf [%s] does not exist\n", name);
-        return 0;
+        return;
     }
     void *elf_file = elf_open(name);
     tty_printf("pointer to this elf_file = %x\n", elf_file);

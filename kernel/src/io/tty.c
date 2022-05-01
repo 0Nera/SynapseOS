@@ -32,7 +32,7 @@ void init_vbe(multiboot_info *mboot) {
     framebuffer_height = svga_mode->screen_height;
     framebuffer_size = framebuffer_height * framebuffer_pitch;
 
-    physical_addr frame;
+    physical_addres frame;
     virtual_addr virt;
     for (frame = framebuffer_addr, virt = framebuffer_addr;
          frame < (framebuffer_addr + framebuffer_size/*0x00400000*//*0x002C0000 0x000F0000*/);

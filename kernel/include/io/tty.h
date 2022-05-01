@@ -39,9 +39,6 @@ enum colors  {
     VESA_WHITE = 0xFFFFFF,
 };
 
-void tty_init();
-void tty_printf(char *text, ...);
-
 typedef struct svga_mode_info {
     uint16_t attributes;
     uint8_t windowA, windowB;
@@ -70,3 +67,11 @@ typedef struct svga_mode_info {
 } __attribute__ ((packed)) svga_mode_info_t;
 
 extern volatile uint8_t tty_feedback;
+
+
+void tty_init();
+void init_vbe(multiboot_info *mboot);
+void tty_printf(char *text, ...);
+void tty_putchar(char c);
+void set_line(int x, int y, int xe, int ye, uint32_t color);
+void set_pixel(int x, int y, uint32_t color);

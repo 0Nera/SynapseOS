@@ -43,3 +43,4 @@ typedef struct tss_entry {
 
 extern void tss_flush();
 void task_switch();
+void tss_init(uint32_t idx, uint32_t kss, uint32_t kesp);

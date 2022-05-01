@@ -130,7 +130,7 @@ int pmm_find_free_blocks(uint32_t count) {
 }
 
 // Functions to manage a single block in memory
-physical_addr pmm_alloc_block() {
+physical_addres pmm_alloc_block() {
     if (phys_block_count - phys_used_block_count <= 0) {
         return 0xFFFFFFFF; // Old: return 0;
     }
@@ -147,20 +147,20 @@ physical_addr pmm_alloc_block() {
     return addr;
 }
 
-void pmm_free_block(physical_addr addr) {
+void pmm_free_block(physical_addres addr) {
     int block = addr / PHYS_BLOCK_SIZE;
     bitmap_unset(block);
     phys_used_block_count--;
 }
 
-bool pmm_is_block_alloced(physical_addr addr) {
+bool pmm_is_block_alloced(physical_addres addr) {
     int block = addr / PHYS_BLOCK_SIZE;
     return bitmap_test(block);
 }
 
 // Functions to allocate multiple blocks of memory
 
-physical_addr pmm_alloc_blocks(uint32_t count) {
+physical_addres pmm_alloc_blocks(uint32_t count) {
     if (phys_block_count - phys_used_block_count <= 0) {
         return 0xFFFFFFFF; // Old: return 0;
     }
@@ -179,7 +179,7 @@ physical_addr pmm_alloc_blocks(uint32_t count) {
     return addr;
 }
 
-void pmm_free_blocks(physical_addr addr, uint32_t count) {
+void pmm_free_blocks(physical_addres addr, uint32_t count) {
     int block = addr / PHYS_BLOCK_SIZE;
     for (uint32_t i = 0; i < count; i++) {
         bitmap_unset(block + i);
@@ -308,7 +308,7 @@ void pmm_init(struct multiboot_info *mboot_info) {
 
 void pmm_test() {
     tty_printf("TEST: ");
-    physical_addr myptr= pmm_alloc_block();
+    physical_addres myptr= pmm_alloc_block();
     tty_printf("myptr = %x,  ", myptr);
 
     char *str = "Hello world!";
@@ -319,6 +319,6 @@ void pmm_test() {
     tty_printf("read from memory str = %s\n", buf);
 }
 
-void update_phys_memory_bitmap_addr(physical_addr addr) {
+void update_phys_memory_bitmap_addres(physical_addres addr) {
     phys_memory_bitmap = (uint32_t*) addr;
 }

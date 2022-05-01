@@ -1,8 +1,11 @@
 #include <kernel.h>
+#include <libk/string.h>
+
 
 char current_dir[256] = "/initrd/apps/";
 
-void ksh_main() {
+
+void shell() {
     tty_setcolor(COLOR_ALERT);
     tty_printf("\nUse \"help\" command to get info about commands.");
 
@@ -40,9 +43,9 @@ void ksh_main() {
         } else if (strlen(cmd) > 4 && strncmp(cmd, "cat ", 4) == 0) {
             char fname[256];
 
-            char *tok = strtok(cmd, " ");
+            char *tok = (char *)strtok(cmd, " ");
             
-            tok = strtok(0, " "); // tok - now is filename
+            tok = (char *)strtok(0, " "); // tok - now is filename
 
             if (fname != 0) {
                 cat(tok);
@@ -53,9 +56,9 @@ void ksh_main() {
         } else if (strlen(cmd) > 3 && strncmp(cmd, "cd ", 3) == 0) {
             char dname[256];
             
-            char *tok = strtok(cmd, " ");
+            char *tok = (char *)strtok(cmd, " ");
             
-            tok = strtok(0, " "); // tok - now is dirname
+            tok = (char *)strtok(0, " "); // tok - now is dirname
 
             if (dname != 0) {
                 cd(tok);
@@ -68,9 +71,9 @@ void ksh_main() {
         } else if (strlen(cmd) > 4 && strncmp(cmd, "sbf  ", 4) == 0) {
             char fname[256];
 
-            char *tok = strtok(cmd, " ");
+            char *tok = (char *)strtok(cmd, " ");
 
-            tok = strtok(0, " "); // tok - now is filename
+            tok = (char *)strtok(0, " "); // tok - now is filename
 
             if (fname != 0) {
                 sbf(tok);
@@ -81,9 +84,9 @@ void ksh_main() {
         } else if (strlen(cmd) > 2 && strncmp(cmd, "./", 2) == 0) {
             char fname[256];
 
-            char *tok = strtok(cmd, "/");
+            char *tok = (char *)strtok(cmd, "/");
 
-            tok = strtok(0, "/"); // tok - now is filename
+            tok = (char *)strtok(0, "/"); // tok - now is filename
 
             if (fname != 0) {
                 char temp[256] = {0};
