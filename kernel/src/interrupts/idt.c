@@ -1,67 +1,20 @@
 #include <kernel.h>
 
 
-#define SET_IDT_ENTRY(idx) \
-    set_idt_entry(idx, (uint32_t) &interrupt_handler_##idx,\
-                  0x08, 0x8E);
+idt_entry_t idt[IDT_NUM_ENTRIES];
+idt_ptr_t idtp;
 
-//....{}
-#define DECLARE_INTERRUPT_HANDLER(i) void interrupt_handler_##i(void)
+extern void idt_load(struct idt_ptr *idt_ptr_addr);
 
-#define ICW1 0x11
-#define ICW4 0x01
-#define PIC1 0x20 /* IO base address for master PIC */
-#define PIC2 0xA0 /* IO base address for slave  PIC */
 
-#define PIC1_COMMAND PIC1
-#define PIC1_DATA    (PIC1 + 1)
-#define PIC2_COMMAND PIC2
-#define PIC2_DATA    (PIC2 + 1)
-
-void interrupt_enable_all() {
-    asm volatile("sti");
-}
-
-void interrupt_disable_all() {
-    asm volatile("cli");
-}
-#define PIC_MASTER_CMD 0x20
-#define PIC_MASTER_DATA 0x21
-#define PIC_SLAVE_CMD 0xA0
-#define PIC_SLAVE_DATA 0xA1
-
-#define PIC_CMD_EOI 0x20
 void pic_send_eoi(uint8_t irq) {
 	if(irq >= 8)
 		outb(PIC_SLAVE_CMD, PIC_CMD_EOI);
 	outb(PIC_MASTER_CMD, PIC_CMD_EOI);
 }
 
-// Defines an IDT entry
-struct idt_entry {
-    uint16_t handler_lo;
-    uint16_t sel;
-    uint8_t always0;
-    uint8_t flags;
-    uint16_t handler_hi;
-} __attribute__((packed));
-typedef struct idt_entry idt_entry_t;
-
-struct idt_ptr {
-    uint16_t limit;
-    uint32_t base;
-} __attribute__((packed));
-typedef struct idt_ptr idt_ptr_t;
-
-// Declare an IDT of 256 entries
-idt_entry_t idt[IDT_NUM_ENTRIES];
-idt_ptr_t idtp;
-
-// Function arch/i386/idt.S, loads IDT from a pointer to an idt_ptr
-extern void idt_load(struct idt_ptr *idt_ptr_addr);
 
 /* ISRs */
-//void interrupt_handler_0(void) {};
 DECLARE_INTERRUPT_HANDLER(0);
 DECLARE_INTERRUPT_HANDLER(1);
 DECLARE_INTERRUPT_HANDLER(2);
@@ -114,8 +67,8 @@ DECLARE_INTERRUPT_HANDLER(45);
 DECLARE_INTERRUPT_HANDLER(46);
 DECLARE_INTERRUPT_HANDLER(47);
 
-
 DECLARE_INTERRUPT_HANDLER(128);//for syscalls
+
 
 void set_idt_entry(uint8_t num, uint64_t handler, uint16_t sel, uint8_t flags) {
     idt[num].handler_lo = handler & 0xFFFF;
@@ -124,6 +77,7 @@ void set_idt_entry(uint8_t num, uint64_t handler, uint16_t sel, uint8_t flags) {
     idt[num].flags = flags;
     idt[num].sel = sel;
 }
+
 
 void IRQ_set_mask(unsigned char IRQline) {
     uint16_t port;
@@ -140,6 +94,7 @@ void IRQ_set_mask(unsigned char IRQline) {
     outb(port, value);
 }
 
+
 void IRQ_clear_mask(unsigned char IRQline) {
     uint16_t port;
     uint8_t value;
@@ -154,6 +109,7 @@ void IRQ_clear_mask(unsigned char IRQline) {
     value = inb(port) & ~(1 << IRQline);
     outb(port, value);
 }
+
 
 void init_pics(int pic1, int pic2) {
     outb(PIC1, ICW1);
@@ -178,7 +134,7 @@ void idt_init() {
     idtp.limit = (sizeof(struct idt_entry) * IDT_NUM_ENTRIES) - 1;
     idtp.base = (uint32_t) &idt;
 
-    //tty_printf("idtp.base = %x, idtp.limit = %x\n", idtp.base, idtp.limit); //!!!!
+    //tty_printf("ib  dtp.base = %x, idtp.limit = %x\n", idtp.base, idtp.limit); //!!!!
 
     // Clear out the entire IDT, initializing it to zeros
     memset(&idt, 0, sizeof(struct idt_entry) * IDT_NUM_ENTRIES);
@@ -194,8 +150,6 @@ void idt_init() {
         idt[i].sel = 0;
     }
 
-    /* ISRs */
-    //set_idt_entry(0, (uint32_t) &interrupt_handler_0,0x08, 0x8E);
     SET_IDT_ENTRY(0);
     SET_IDT_ENTRY(1);
     SET_IDT_ENTRY(2);
@@ -229,7 +183,6 @@ void idt_init() {
     SET_IDT_ENTRY(30);
     SET_IDT_ENTRY(31);
 
-    /* IRQs */
     outb(0x20, 0x11);
     outb(0xA0, 0x11);
     outb(0x21, 0x20);
@@ -241,29 +194,17 @@ void idt_init() {
     outb(0x21, 0x0);
     outb(0xA1, 0x0);
 
-    //SET_IDT_ENTRY(32); // !!!
+    SET_IDT_ENTRY(32);
     // Install scheduler by timer interrupt
-    //set_idt_entry(TIMER_IDT_INDEX, (uint32_t) &task_switch, 0x08, 0x8E);
-    //timer_set_frequency(TICKS_PER_SECOND);
+    set_idt_entry(TIMER_IDT_INDEX, (uint32_t) &task_switch, 0x08, 0x8E);
+    timer_set_frequency(TICKS_PER_SECOND);
 
     SET_IDT_ENTRY(33);
-    SET_IDT_ENTRY(34);
-    SET_IDT_ENTRY(35);
-    SET_IDT_ENTRY(36);
-    SET_IDT_ENTRY(37);
-    SET_IDT_ENTRY(38);
-    SET_IDT_ENTRY(39);
-    SET_IDT_ENTRY(40);
-    SET_IDT_ENTRY(41);
-    SET_IDT_ENTRY(42);
-    SET_IDT_ENTRY(43);
     SET_IDT_ENTRY(44);
-    SET_IDT_ENTRY(45);
-    SET_IDT_ENTRY(46);
     SET_IDT_ENTRY(47);
 
 
-    SET_IDT_ENTRY(128); // Need for system calls - int 0x80 , 0x80 = 128 in decimal
+    SET_IDT_ENTRY(128); // Need for system calls - int 0x80 , 0x80 = 128 inв виде числа
 
     for (int i = 0; i < 16; ++i) {
         IRQ_clear_mask(i);
@@ -291,14 +232,9 @@ int register_interrupt_handler(uint32_t idt_index, interrupt_handler_t handler) 
 }
 
 void fault_handler(struct regs *r) {
-    //void *linearAddress;
-    // Retrieve the linear address of the page fault stored in CR2
-    //ASM( "movl %%cr2, %0" : "=r" (linearAddress) );
-    //asm volatile( "movl %cr2, %eax");
-    //for (;;);
-
     uint32_t adr;
     asm volatile("movl %%cr2, %0" : "=r" (adr));
+
     qemu_printf("\nSystem Exception. System Halted! cr2 = %x  r->idt_index = %x eax = %x  ebx = %x" \
                 "  ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x\n", 
         adr, r->idt_index, r->eax, r->ebx, 
@@ -322,7 +258,6 @@ void fault_handler(struct regs *r) {
 }
 
 void irq_handler(struct regs *r) {
-    //if (r->idt_index != 32) tty_printf("idt_index = %d\n", r->idt_index);
     // Blank function pointer
     void (*handler)(struct regs *r);
 

@@ -9,6 +9,30 @@
 #define SYSCALL_IDT_INDEX  0x80 //128
 #define MOUSE_IDT_INDEX    44 
 
+#define PIC_MASTER_CMD 0x20
+#define PIC_MASTER_DATA 0x21
+#define PIC_SLAVE_CMD 0xA0
+#define PIC_SLAVE_DATA 0xA1
+
+#define PIC_CMD_EOI 0x20
+
+#define SET_IDT_ENTRY(idx) \
+    set_idt_entry(idx, (uint32_t) &interrupt_handler_##idx,\
+                  0x08, 0x8E);
+
+#define DECLARE_INTERRUPT_HANDLER(i) void interrupt_handler_##i(void)
+
+#define ICW1 0x11
+#define ICW4 0x01
+#define PIC1 0x20 /* IO base address for master PIC */
+#define PIC2 0xA0 /* IO base address for slave  PIC */
+
+#define PIC1_COMMAND PIC1
+#define PIC1_DATA    (PIC1 + 1)
+#define PIC2_COMMAND PIC2
+#define PIC2_DATA    (PIC2 + 1)
+
+
 // Удерживает регистры во время прерывания
 typedef struct regs {
     uint32_t gs, fs, es, ds;                         // Последние отправленные сегменты

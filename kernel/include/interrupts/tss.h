@@ -42,3 +42,4 @@ typedef struct tss_entry {
 } tss_entry_t;
 
 extern void tss_flush();
+void task_switch();

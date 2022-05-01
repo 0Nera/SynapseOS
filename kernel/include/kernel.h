@@ -48,6 +48,21 @@
 #define dVERSION_MINOR  0   // Пре-релиз дистрибутива
 #define dVERSION_PATCH  0   // Патч дистрибутива
 
+struct idt_entry {
+    uint16_t handler_lo;
+    uint16_t sel;
+    uint8_t always0;
+    uint8_t flags;
+    uint16_t handler_hi;
+} __attribute__((packed));
+typedef struct idt_entry idt_entry_t;
+
+struct idt_ptr {
+    uint16_t limit;
+    uint32_t base;
+} __attribute__((packed));
+typedef struct idt_ptr idt_ptr_t;
+
 extern int os_mode;
 
 
