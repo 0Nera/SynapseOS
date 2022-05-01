@@ -1,6 +1,6 @@
 # О проекте
 SynapseOS - простая x86 операционная система на языке C с хорошо документированным ядром.
-
+![SynapseOS](https://raw.githubusercontent.com/0Nera/SynapseOS/master/screenshots/test.png "SynapseOS")
 
 ## Сборка и запуск
 Для сборки требуется:
