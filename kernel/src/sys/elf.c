@@ -191,7 +191,7 @@ int run_elf_file(const char *name/*, char **argv, char **env __attribute__((unus
     
     int code = entry_point();
 
-    tty_printf("\n[PROGRAMM FINISHED WITH CODE <%d>\n", code);
+    tty_printf("\n[PROGRAMM FINISHED WITH CODE <%d>]\n", code);
     qemu_printf("\n[PROGRAMM FINISHED WITH CODE <%d>\n", code);
     qemu_printf("\nCleaning VMM:\n");
 
@@ -199,7 +199,7 @@ int run_elf_file(const char *name/*, char **argv, char **env __attribute__((unus
         qemu_printf("\tCleaning %d: %x\n", i, vmm_alloced[i]);
         vmm_free_page(vmm_alloced[i]);
     }
-    tty_printf("\n[CLEANED <%d> PAGES\n", ptr_vmm_alloced);
+    qemu_printf("\n[CLEANED <%d> PAGES]\n", ptr_vmm_alloced);
 
     return 0;
 }
