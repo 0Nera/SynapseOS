@@ -142,8 +142,8 @@ void ata_device_detect(ata_dev_t * dev, int primary) {
 
 
 void ata_handler(struct regs *r) {
-    tty_printf("ATA interrupt\n");
-    qemu_printf("ATA interrupt\n");
+    tty_printf("ATA interrupt %d\n", r->idt_index);
+    qemu_printf("ATA interrupt%d\n", r->idt_index);
 
     inb(primary_master.status);
     inb(primary_master.BMR_STATUS);

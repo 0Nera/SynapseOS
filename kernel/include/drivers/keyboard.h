@@ -11,5 +11,5 @@ void keyboard_install(void);
 void keyboard_handler(regs *r);
 void keyboard_handler_main(void);
 char *keyboard_gets();
-char keyboard_getchar();
+int keyboard_getchar();
 int keyboard_getscancode();

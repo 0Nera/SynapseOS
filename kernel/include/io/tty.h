@@ -71,7 +71,11 @@ extern volatile uint8_t tty_feedback;
 
 void tty_init();
 void init_vbe(multiboot_info *mboot);
+void tty_backspace();
 void tty_printf(char *text, ...);
 void tty_putchar(char c);
 void set_line(int x, int y, int xe, int ye, uint32_t color);
 void set_pixel(int x, int y, uint32_t color);
+void tty_setcolor(int color);
+void draw_vga_character(uint8_t c, int x, int y, int fg, int bg, bool bgon);
+void create_back_framebuffer();

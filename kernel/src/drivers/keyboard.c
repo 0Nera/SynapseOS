@@ -109,7 +109,6 @@ void keyboard_install(void) {
 void keyboard_handler_main(void) {
 
     unsigned char status;
-    char res[32];
 
     // Запись EOI 
     outb(0x20, 0x20);

@@ -179,10 +179,11 @@ void initrd_init(uint32_t phys_begin, uint32_t phys_end) {
     strcpy(dev->name, "initrd");
 
     vfs_filesystem_handles_t *fs_handles = kheap_malloc(sizeof(vfs_filesystem_handles_t));
+
     fs_handles->read = &initrd_read;
     fs_handles->exists = &initrd_file_exists;
     fs_handles->get_size = &initrd_get_filesize;
-    fs_handles->is_dir = &initrd_is_dir;
+    fs_handles->is_dir = (uint32_t*)&initrd_is_dir;
     fs_handles->write = 0;
     fs_handles->readdir = 0;
     fs_handles->mkfile = 0;

@@ -60,7 +60,7 @@ void sleep(int i) {
 }
 
 void qemu_breakpoint()  {
-    qemu_putstring("\nBREAKPOINT!\n");
+    qemu_printf("\nBREAKPOINT!\n");
 }
 
 
