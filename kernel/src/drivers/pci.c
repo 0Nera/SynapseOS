@@ -73,10 +73,10 @@ void checkAllBuses(void) {
 
 					switch (getDeviceID(bus, device, function)) {
 						case 0x7010:
-							tty_printf("ATA ");
-							qemu_printf("ATA ");
+							tty_printf("82371SB PIIX3 IDE [Natoma/Triton II] ");
+							qemu_printf("82371SB PIIX3 IDE [Natoma/Triton II] ");
 							break;
-						case 0x7011:
+						case 0x7111:
 							tty_printf("82371AB/EB/MB PIIX4 IDE ");
 							qemu_printf("82371AB/EB/MB PIIX4 IDE ");
 							break;

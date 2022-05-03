@@ -1,13 +1,13 @@
 import os, shutil, sys, tarfile, os.path
 
 
-SYS_OBJ = "bin/kernel/kernel.o bin/kernel/elf.o"
+SYS_OBJ = "bin/kernel/kernel.o bin/kernel/elf.o bin/kernel/tss.o bin/kernel/syscalls.o"
 ARCH_OBJ = "bin/kernel/starter.o bin/kernel/interrupts.o bin/kernel/paging.o"
 MEM_OBJ = "bin/kernel/pmm.o bin/kernel/vmm.o bin/kernel/kheap.o bin/kernel/paging_c.o"
 DRIVERS_OBJ = "bin/kernel/vfs.o bin/kernel/ramdisk.o bin/kernel/keyboard.o bin/kernel/pci.o bin/kernel/ata.o bin/kernel/time.o"
 IO_OBJ = "bin/kernel/tty.o bin/kernel/vgafnt.o bin/kernel/ports.o bin/kernel/shell.o"
-INTERRUPTS_OBJ = "bin/kernel/gdt.o bin/kernel/idt.o bin/kernel/tss.o bin/kernel/syscalls.o"
-LIBK_OBJ = "bin/kernel/stdlib.o bin/kernel/string.o"
+INTERRUPTS_OBJ = "bin/kernel/gdt.o bin/kernel/idt.o"
+LIBK_OBJ = "bin/kernel/stdlib.o bin/kernel/string.o bin/kernel/list.o"
 
 OBJ = SYS_OBJ + " " + ARCH_OBJ + " " + MEM_OBJ + " " + DRIVERS_OBJ + " " + IO_OBJ + " " + INTERRUPTS_OBJ + " " + LIBK_OBJ
 
@@ -39,13 +39,15 @@ def build_all():
 
     os.system("i686-elf-gcc -g -ffreestanding -Wall -Wextra -O0 -I kernel/include/ -c kernel/src/interrupts/gdt.c -o bin/kernel/gdt.o")
     os.system("i686-elf-gcc -g -ffreestanding -Wall -Wextra -O0 -I kernel/include/ -c kernel/src/interrupts/idt.c -o bin/kernel/idt.o")
-    os.system("i686-elf-gcc -g -ffreestanding -Wall -Wextra -O0 -I kernel/include/ -c kernel/src/interrupts/tss.c -o bin/kernel/tss.o")
-    os.system("i686-elf-gcc -g -ffreestanding -Wall -Wextra -O0 -I kernel/include/ -c kernel/src/interrupts/syscalls.c -o bin/kernel/syscalls.o")
+    
 
     os.system("i686-elf-gcc -g -ffreestanding -Wall -Wextra -O0 -I kernel/include/ -c kernel/src/libk/stdlib.c -o bin/kernel/stdlib.o")
     os.system("i686-elf-gcc -g -ffreestanding -Wall -Wextra -O0 -I kernel/include/ -c kernel/src/libk/string.c -o bin/kernel/string.o")
+    os.system("i686-elf-gcc -g -ffreestanding -Wall -Wextra -O0 -I kernel/include/ -c kernel/src/libk/list.c   -o bin/kernel/list.o")
 
     os.system("i686-elf-gcc -g -ffreestanding -Wall -Wextra -O0 -I kernel/include/ -c kernel/src/sys/elf.c -o bin/kernel/elf.o")
+    os.system("i686-elf-gcc -g -ffreestanding -Wall -Wextra -O0 -I kernel/include/ -c kernel/src/sys/tss.c -o bin/kernel/tss.o")
+    os.system("i686-elf-gcc -g -ffreestanding -Wall -Wextra -O0 -I kernel/include/ -c kernel/src/sys/syscalls.c -o bin/kernel/syscalls.o")
 
     os.system("i686-elf-gcc -T kernel/link.ld -nostdlib -lgcc -o isodir/boot/kernel.elf " + OBJ)
 

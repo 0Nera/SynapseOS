@@ -38,7 +38,9 @@ void shell() {
                         "->cd    <folder>      |open folder\n" \
                         "->./<file>            |run .elf programm in current folder\n" \
                         "->sbf   <code>        |run sbf programm\n" \
-                        "->ls                  |print list of files\n" 
+                        "->ls                  |print list of files\n" \
+                        "->sysinfo             |print information about system\n" \
+                        "->ata                 |test ATA read/write\n" 
                         );
         } else if (strlen(cmd) > 4 && strncmp(cmd, "cat ", 4) == 0) {
             char fname[256];
@@ -66,6 +68,10 @@ void shell() {
                 tty_setcolor(COLOR_ERROR);
                 tty_printf("\ncd: incorrect argument\n");
             }
+        } else if (strcmp(cmd, "ata") == 0) {
+            ata_test();
+        } else if (strcmp(cmd, "sysinfo") == 0) {
+            sysinfo();
         } else if (strcmp(cmd, "ls") == 0) {
             initrd_list(0, 0);
         } else if (strlen(cmd) > 4 && strncmp(cmd, "sbf  ", 4) == 0) {
@@ -169,6 +175,54 @@ void cat(char *fname) {
     }
 }
 
+
+void sysinfo(){
+    tty_printf("                       ........--........        SynapseOS by Aren Elchinyan\n");
+    tty_printf("                       ....+***:**+*....         Arch %s\n", ARCH_TYPE);
+    tty_printf("                         .**.......**....                       \n");
+    tty_printf("                       ...**.......**...                        \n");
+    tty_printf("                        ..:**.....-**....                       \n");
+    tty_printf("                       . ...+******.....                        \n");
+    tty_printf("                        .  ...***...                            \n");
+    tty_printf("                           ...:**..                             \n");
+    tty_printf("                            ..+**...... .                       \n");
+    tty_printf("                            ..+*+.......                        \n");
+    tty_printf("                    . ........-******:.. ...                    \n");
+    tty_printf("                    ....**..........+**-... .                   \n");
+    tty_printf("                     .-**....:***+....***....                   \n");
+    tty_printf("                    ..**....********...**...                    \n");
+    tty_printf("                   ...**...+********...**-.                     \n");
+    tty_printf("                    ..+*-...*******:...**...                    \n");
+    tty_printf(".  ...........  ......***-....+**-....***-.... ....... ......   \n");
+    tty_printf("  ................-*****+**-........***-+***:.....*****:....    \n");
+    tty_printf("....********...:****......+*********+......+*****+:....+*+..    \n");
+    tty_printf("..***......***+*-...  . . ............  ......:**........*+.    \n");
+    tty_printf(".**.. . .. .-**.         ..   .  .    ...  ...**.... ....**.    \n");
+    tty_printf("**+.    . ...**..                           . .+*.......-*+..   \n");
+    tty_printf(".+*..........**.                            ....+**:..****..    \n");
+    tty_printf(".***.......-**..                            .......-+*.......   \n");
+    tty_printf("...+********+...                            ..  .  .   .        \n");
+    tty_printf("................                                                  ");
+}
+
+
+void ata_test(){
+    const int DRIVE = ata_get_drive_by_model("QEMU HARDDISK");
+    const uint32_t LBA = 0;
+    const uint8_t NO_OF_SECTORS = 1;
+    char buf[ATA_SECTOR_SIZE] = {0};
+
+    // write message to drive
+    strcpy(buf, "Hello World");
+    ide_write_sectors(DRIVE, NO_OF_SECTORS, LBA, (uint32_t)buf);
+
+    tty_printf("data written\n");
+
+    // read message from drive
+    memset(buf, 0, sizeof(buf));
+    ide_read_sectors(DRIVE, NO_OF_SECTORS, LBA, (uint32_t)buf);
+    tty_printf("read data: %s\n", buf);
+}
 
 
 void sbf(char *src){

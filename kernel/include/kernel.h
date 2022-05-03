@@ -16,6 +16,7 @@
 #include <drivers/keyboard.h>
 #include <drivers/pci.h>
 #include <drivers/ata.h>
+#include <drivers/time.h>
 
 #include <io/tty.h>
 #include <io/vgafnt.h>
@@ -29,13 +30,15 @@
 
 #include <libk/string.h>
 #include <libk/stdlib.h>
+#include <libk/list.h>
 
 #include <sys/elf.h>
 
 
-#define VERSION_MAJOR   0   // Версия ядра
-#define VERSION_MINOR   2   // Пре-релиз 
-#define VERSION_PATCH   9   // Патч
+#define VERSION_MAJOR   0       // Версия ядра
+#define VERSION_MINOR   2       // Пре-релиз 
+#define VERSION_PATCH   10       // Патч
+#define ARCH_TYPE       "x86"   // Архитектура
 
 #define COLOR_TEXT      VESA_LIGHT_GREY
 #define COLOR_SYS_TEXT  VESA_LIGHT_CYAN
