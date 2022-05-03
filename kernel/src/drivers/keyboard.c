@@ -236,9 +236,7 @@ int keyboard_getchar() {
 int keyboard_getscancode() {
     input_type = 2;
 
-    while (input_type != -2) {
-        keyboard_handler_main();
-    }
+    keyboard_handler_main();
 
     input_type = 1;
     
