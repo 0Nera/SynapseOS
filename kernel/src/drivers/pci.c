@@ -76,7 +76,30 @@ void checkAllBuses(void) {
 							tty_printf("ATA ");
 							qemu_printf("ATA ");
 							break;
-						
+						case 0x7011:
+							tty_printf("82371AB/EB/MB PIIX4 IDE ");
+							qemu_printf("82371AB/EB/MB PIIX4 IDE ");
+							break;
+						case 0x7113:
+							tty_printf("82371AB/EB/MB PIIX4 ACPI ");
+							qemu_printf("82371AB/EB/MB PIIX4 ACPI ");
+							break;
+						case 0x5513:
+							tty_printf("5513 IDE Controller ");
+							qemu_printf("5513 IDE Controller ");
+							break;
+						case 0x7001:
+							tty_printf("USB 1.1 Controller ");
+							qemu_printf("USB 1.1 Controller ");
+							break;
+						case 0x7002:
+							tty_printf("USB 2.0 Controller ");
+							qemu_printf("USB 2.0 Controller ");
+							break;
+						case 0xAA28:
+							tty_printf("RV620 HDMI Audio [Radeon HD 3450/3470/3550/3570] ");
+							qemu_printf("RV620 HDMI Audio [Radeon HD 3450/3470/3550/3570] ");
+							break;
 						default:
 							tty_printf("device %x ", getDeviceID(bus, device, function));
 							qemu_printf("device %x ", getDeviceID(bus, device, function));
@@ -84,10 +107,21 @@ void checkAllBuses(void) {
 					}
 					switch (getVendorID(bus, device, function)) {
 						case 0x8086:
-							tty_printf("intel\n");
-							qemu_printf("intel\n");
+							tty_printf("Intel Corporation\n");
+							qemu_printf("Intel Corporation\n");
 							break;
-						
+						case 0x1002:
+							tty_printf("Advanced Micro Devices, Inc. [AMD/ATI]\n");
+							qemu_printf("Advanced Micro Devices, Inc. [AMD/ATI]\n");
+							break;
+						case 0x1039:
+							tty_printf("Silicon Integrated Systems [SiS]\n");
+							qemu_printf("Silicon Integrated Systems [SiS]\n");
+							break;
+						case 0x0B05:
+							tty_printf("ASUSTek Computer, Inc.\n");
+							qemu_printf("ASUSTek Computer, Inc.\n");
+							break;
 						default:
 							tty_printf("vendor %x\n", getVendorID(bus, device, function));
 							qemu_printf("vendor %x\n", getVendorID(bus, device, function));
