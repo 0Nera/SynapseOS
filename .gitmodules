@@ -1,7 +1,0 @@
-[submodule "apps"]
-	path = apps
-	url = https://github.com/0Nera/SynapseApps.git
-
-[submodule "docs"]
-	path = docs
-	url = https://github.com/0Nera/SynapseDocs.git
