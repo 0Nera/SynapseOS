@@ -40,7 +40,8 @@ void shell() {
                         "->sbf   <code>        |run sbf programm\n" \
                         "->ls                  |print list of files\n" \
                         "->sysinfo             |print information about system\n" \
-                        "->ata                 |test ATA read/write\n" 
+                        "->pcilist             |List of pci devices\n" \
+                        "->ata test            |test ATA read/write\n" 
                         );
         } else if (strlen(cmd) > 4 && strncmp(cmd, "cat ", 4) == 0) {
             char fname[256];
@@ -68,8 +69,32 @@ void shell() {
                 tty_setcolor(COLOR_ERROR);
                 tty_printf("\ncd: incorrect argument\n");
             }
-        } else if (strcmp(cmd, "ata") == 0) {
-            ata_test();
+        } else if (strcmp(cmd, "pcilist") == 0) {
+            tty_printf("PCI devices:\n");
+	        checkAllBuses();
+        } else if (strcmp(cmd, "ata test") == 0) {
+            int DRIVE = 0;
+            const uint32_t LBA = 0;
+            const uint8_t NO_OF_SECTORS = 1;
+            char buf[ATA_SECTOR_SIZE] = {0};
+            char *dev = (char *)strtok(cmd, " ");
+            char *string = (char *)strtok(cmd, ",");
+            tty_printf("dev [%s], str [%s]\n", dev, string);
+
+            dev = (char *)strtok(0, " "); // dev - now is DRIVE
+            string = (char *)strtok(0, ","); // dev - now is DRIVE
+            tty_printf("dev [%s], str [%s]\n", dev, string);
+            // write message to drive
+            strcpy(buf, "Hello World!");
+            buf[511] = 0x90;
+            ide_write_sectors(DRIVE, NO_OF_SECTORS, LBA, (uint32_t)buf);
+
+            tty_printf("data written\n");
+
+            // read message from drive
+            memset(buf, 0, sizeof(buf));
+            ide_read_sectors(DRIVE, NO_OF_SECTORS, LBA, (uint32_t)buf);
+            tty_printf("read data: %s\n", buf);
         } else if (strcmp(cmd, "sysinfo") == 0) {
             sysinfo();
         } else if (strcmp(cmd, "ls") == 0) {
@@ -203,25 +228,6 @@ void sysinfo(){
     tty_printf(".***.......-**..                            .......-+*.......   \n");
     tty_printf("...+********+...                            ..  .  .   .        \n");
     tty_printf("................                                                  ");
-}
-
-
-void ata_test(){
-    const int DRIVE = ata_get_drive_by_model("QEMU HARDDISK");
-    const uint32_t LBA = 0;
-    const uint8_t NO_OF_SECTORS = 1;
-    char buf[ATA_SECTOR_SIZE] = {0};
-
-    // write message to drive
-    strcpy(buf, "Hello World");
-    ide_write_sectors(DRIVE, NO_OF_SECTORS, LBA, (uint32_t)buf);
-
-    tty_printf("data written\n");
-
-    // read message from drive
-    memset(buf, 0, sizeof(buf));
-    ide_read_sectors(DRIVE, NO_OF_SECTORS, LBA, (uint32_t)buf);
-    tty_printf("read data: %s\n", buf);
 }
 
 

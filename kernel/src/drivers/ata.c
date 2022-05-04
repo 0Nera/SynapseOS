@@ -323,7 +323,7 @@ void ide_init(uint32_t prim_channel_base_addr, uint32_t prim_channel_control_bas
     }
 
     // 4- Print Summary:
-    for (i = 0; i < 4; i++)
+    for (i = 0; i < 5; i++)
         if (g_ide_devices[i].reserved == 1) {
             tty_printf("%d:-\n", i);
             tty_printf("  model: %s\n", g_ide_devices[i].model);
@@ -517,6 +517,9 @@ int ide_write_sectors(uint8_t drive, uint8_t num_sectors, uint32_t lba, uint32_t
 void ata_init() {
     ide_init(0x1F0, 0x3F6, 0x170, 0x376, 0x000);
 
+    for(int i = 0; i < MAXIMUM_IDE_DEVICES; i++) {
+        tty_printf("%d ide_device: [%s]\n", i, g_ide_devices[i].model);
+    }
     
 }
 
