@@ -100,6 +100,42 @@ void checkAllBuses(void) {
 							tty_printf("RV620 HDMI Audio [Radeon HD 3450/3470/3550/3570] ");
 							qemu_printf("RV620 HDMI Audio [Radeon HD 3450/3470/3550/3570] ");
 							break;
+						case 0xA012:
+							tty_printf("Atom Processor D4xx/D5xx/N4xx/N5xx Integrated Graphics Controller ");
+							qemu_printf("Atom Processor D4xx/D5xx/N4xx/N5xx Integrated Graphics Controller ");
+							break;
+						case 0x27D2:
+							tty_printf("NM10/ICH7 Family PCI Express Port 2 ");
+							qemu_printf("NM10/ICH7 Family PCI Express Port 2 ");
+							break;
+						case 0x27D6:
+							tty_printf("NM10/ICH7 Family PCI Express Port 4 ");
+							qemu_printf("NM10/ICH7 Family PCI Express Port 4 ");
+							break;
+						case 0x27C9:
+							tty_printf("NM10/ICH7 Family USB UHCI Controller #2 ");
+							qemu_printf("NM10/ICH7 Family USB UHCI Controller #2 ");
+							break;
+						case 0x27CA:
+							tty_printf("NM10/ICH7 Family USB UHCI Controller #3 ");
+							qemu_printf("NM10/ICH7 Family USB UHCI Controller #3 ");
+							break;
+						case 0x27CB:
+							tty_printf("NM10/ICH7 Family USB UHCI Controller #4 ");
+							qemu_printf("NM10/ICH7 Family USB UHCI Controller #4 ");
+							break;
+						case 0x27CC:
+							tty_printf("NM10/ICH7 Family USB2 EHCI Controller ");
+							qemu_printf("NM10/ICH7 Family USB2 EHCI Controller ");
+							break;
+						case 0x27C1:
+							tty_printf("NM10/ICH7 Family SATA Controller [AHCI mode] ");
+							qemu_printf("NM10/ICH7 Family SATA Controller [AHCI mode] ");
+							break;
+						case 0x27DA:
+							tty_printf("NM10/ICH7 Family SMBus Controller ");
+							qemu_printf("NM10/ICH7 Family SMBus Controller ");
+							break;
 						default:
 							tty_printf("device %x ", getDeviceID(bus, device, function));
 							qemu_printf("device %x ", getDeviceID(bus, device, function));
