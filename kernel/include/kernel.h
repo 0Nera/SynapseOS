@@ -6,6 +6,10 @@
 
 #include <multyboot.h>
 
+#include <libk/string.h>
+#include <libk/stdlib.h>
+#include <libk/list.h>
+
 #include <mem/mem.h>
 #include <mem/pmm.h>
 #include <mem/vmm.h>
@@ -27,10 +31,6 @@
 #include <interrupts/tss.h>
 #include <interrupts/time.h>
 #include <interrupts/syscalls.h>
-
-#include <libk/string.h>
-#include <libk/stdlib.h>
-#include <libk/list.h>
 
 #include <sys/elf.h>
 

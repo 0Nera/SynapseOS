@@ -13,6 +13,12 @@ static volatile unsigned char g_ide_irq_invoked = 0;
 static uint8_t ide_read_register(uint8_t channel, uint8_t reg);
 static void ide_write_register(uint8_t channel, uint8_t reg, uint8_t data);
 
+
+uint32_t ide_get_size(int drive){
+    return g_ide_devices[drive].size;
+}
+
+
 // read register value from the given channel
 static uint8_t ide_read_register(uint8_t channel, uint8_t reg) {
     uint8_t ret;
