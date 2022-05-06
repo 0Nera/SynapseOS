@@ -57,6 +57,5 @@ void kernel(int magic_number, struct multiboot_info *mboot_info) {
 
     ata_init();                             // Установка драйвера ATA
     SSFS_format(0);
-    SSFS_format(1);
     shell();                             // Активация терминала
 }
