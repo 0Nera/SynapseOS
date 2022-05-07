@@ -31,24 +31,31 @@ int SSFS_file_exists(char filename[12]){
 }
 
 
-int SSFS_write(char filename[12], char buffer[500]){
-    int file_id = SSFS_file_exists(filename);
+int SSFS_find_free(){
+    for (uint32_t i = 2; i < ide_get_size(SSFS_device); i++){
+        char buffer[512];
 
-    if (file_id){
-        char fname[13];
+        ide_read_sectors(SSFS_device, 1, i, (uint32_t)buffer);
 
-        ide_read_sectors(SSFS_device, 1, file_id, (uint32_t)SSFS_buffer);
-
-        for (int j = 0; j < 12; j++){
-            fname[j] = SSFS_buffer[j];
+        if (buffer[0] == 0) {
+            return i;
         }
+    }
+    return -1;
+}
 
-        fname[13] = 0;
-            
+
+int SSFS_write(char filename[12], char buffer[500]){
+    char sector[512];
+
+    if (!SSFS_file_exists(filename)){
+        memset(sector, 0, 512);
+        strcpy(sector, filename);
+        strcpy(&sector[12], buffer);
+        ide_write_sectors(SSFS_device, 1, SSFS_find_free(), (uint32_t)sector);
         return 1;
     }
-    return 0;
-    
+    return -1;
 }
 
 
@@ -57,41 +64,34 @@ int SSFS_read(char filename[12], char buffer[500]){
 
     if (file_id){
         memset(SSFS_buffer, 0, 500);
-
         ide_read_sectors(SSFS_device, 1, file_id, (uint32_t)SSFS_buffer);
-
         strcpy(buffer, &SSFS_buffer[12]);
-            
         return 1;
     }
     return 0;
-    
 }
 
 
 
 void SSFS_format(int device){
+    char buffer[512];
     SSFS_set_device(device);
-    memset(SSFS_buffer, 0, 512);
+    memset(buffer, 0, 512);
 
     for (uint32_t i = 0; i < ide_get_size(SSFS_device); i++){
-        ide_write_sectors(SSFS_device, 1, i, (uint32_t)SSFS_buffer);
+        ide_write_sectors(SSFS_device, 1, i, (uint32_t)buffer);
     }
 
-    memset(SSFS_buffer, 0, 512);
-
     strcpy(SSFS_buffer, "Simple Sector FileSystem");
-
     ide_write_sectors(SSFS_device, 1, 1, (uint32_t)SSFS_buffer);
 
-    memset(SSFS_buffer, 0, 512);
-    strcpy(SSFS_buffer, "Hi World.txtHelloWorld!");
-    ide_write_sectors(SSFS_device, 1, 2, (uint32_t)SSFS_buffer);
+    memset(SSFS_buffer, 0, 500);
+    strcpy(SSFS_buffer, "Hello World!\nI'm the Simple Sector FileSystem!\n Now I can:\n->Read and write single-sector files\n->Format hard drives\n->Search for empty and busy sectors");
+    SSFS_write("test.txt", SSFS_buffer);
 
-    char data[500];
-    memset(&data, 0, 500);
-    SSFS_read("Hi World.txt", data);
-    tty_printf("data: [%s] %d %d\n", data, strlen(data), data);
+    memset(&SSFS_buffer, 0, 500);
+    SSFS_read("test.txt", SSFS_buffer);
+    tty_printf("data: [%s] %d %d\n", SSFS_buffer, strlen(SSFS_buffer), SSFS_buffer);
 }
 
 
