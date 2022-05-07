@@ -88,6 +88,6 @@ if __name__ == "__main__":
         else:
             os.system("""ubuntu run grub-mkrescue -o "SynapseOS.iso" isodir/ -V SynapseOS """)
 
-        os.system("qemu-system-i386 -m 16 -name SynapseOS -soundhw all -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log -no-reboot")
+        os.system("qemu-system-i386 -m 8m -name SynapseOS -soundhw all -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log -no-reboot")
     except Exception as E:
         print(E)
