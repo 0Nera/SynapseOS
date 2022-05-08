@@ -56,5 +56,5 @@ void kernel(int magic_number, struct multiboot_info *mboot_info) {
     pci_init();                             // Установка драйвера PCI
 
     ata_init();                             // Установка драйвера ATA
-    shell();                             // Активация терминала
+    shell();                                // Активация терминала
 }
