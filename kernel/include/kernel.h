@@ -4,11 +4,12 @@
 #include <stdint.h>
 #include <stdarg.h>
 
-#include <multyboot.h>
-
 #include <libk/string.h>
 #include <libk/stdlib.h>
 #include <libk/list.h>
+
+#include <multyboot.h>
+
 
 #include <mem/mem.h>
 #include <mem/pmm.h>
@@ -70,6 +71,7 @@ typedef struct idt_ptr idt_ptr_t;
 extern int os_mode;
 
 void shell();
+void sysinfo();
 void sbf(char *src);
 void cat(char *fname);
 void cd(char *dname);
