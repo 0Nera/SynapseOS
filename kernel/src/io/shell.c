@@ -48,7 +48,7 @@ void shell() {
 
             char *tok = (char *)strtok(cmd, " ");
             
-            tok = (char *)strtok(0, " "); // tok - now is filename
+            tok = (char *)strtok(0, " "); // tok - имя файла
 
             if (fname != 0) {
                 cat(tok);
@@ -83,7 +83,7 @@ void shell() {
 
             char *tok = (char *)strtok(cmd, " ");
 
-            tok = (char *)strtok(0, " "); // tok - now is filename
+            tok = (char *)strtok(0, " "); // tok - имя файла
 
             if (fname != 0) {
                 sbf(tok);
@@ -96,7 +96,7 @@ void shell() {
 
             char *tok = (char *)strtok(cmd, "/");
 
-            tok = (char *)strtok(0, "/"); // tok - now is filename
+            tok = (char *)strtok(0, "/"); // tok - имя файла
 
             if (fname != 0) {
                 char temp[256] = {0};
