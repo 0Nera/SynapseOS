@@ -151,9 +151,6 @@ void initrd_init(uint32_t phys_begin, uint32_t phys_end) {
 
     qemu_printf("\ninitrd phys begin = %x\ninitrd phys end = %x\n", phys_begin, phys_end);
 
-    //int i;
-    //uint32_t v1 = vmm_temp_map_page(phys_begin);
-    //for (i = 0; i < 20; i++) tty_printf("%c", *(char*) (phys_begin + i));
 
     initrd_size = phys_end - phys_begin;
     initrd_begin = kheap_malloc(initrd_size + 4 * PAGE_SIZE);
@@ -168,12 +165,7 @@ void initrd_init(uint32_t phys_begin, uint32_t phys_end) {
     initrd_begin = PAGE_ALIGN_DOWN(initrd_begin) + PAGE_SIZE + phys_begin % PAGE_SIZE;
     initrd_end = initrd_begin + initrd_size;
 
-    //int i;
-    //for (i = 0; i < 100; i++) tty_printf("%c", *(char*) (initrd_begin + i));
-
-    //uint32_t v1 = vmm_temp_map_page(phys_begin);
-    //for (i = 0; i < 4096; i++) tty_printf("%c", *(char*) (v1 + i));
-
+ 
     vfs_storage_dev_t *dev = kheap_malloc(sizeof(vfs_storage_dev_t));
     dev->type = 4;
     strcpy(dev->name, "initrd");
@@ -183,7 +175,7 @@ void initrd_init(uint32_t phys_begin, uint32_t phys_end) {
     fs_handles->read = &initrd_read;
     fs_handles->exists = &initrd_file_exists;
     fs_handles->get_size = &initrd_get_filesize;
-    fs_handles->is_dir = (uint32_t*)&initrd_is_dir;
+    fs_handles->is_dir = (char *fn)&initrd_is_dir;
     fs_handles->write = 0;
     fs_handles->readdir = 0;
     fs_handles->mkfile = 0;
