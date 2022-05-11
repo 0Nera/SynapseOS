@@ -5,5 +5,6 @@ msg: .string "\nHello, World!"
 main:
   mov $msg, %ebx
   mov (%ebx), %edi
+  extern printf
   call printf
   ret
