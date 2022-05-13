@@ -9,10 +9,8 @@ void syscall_init() {
 
 void syscall_handler(struct regs *r) {
     uint32_t* argptr = (uint32_t*) (r->ebx);
-   
-
     switch (r->eax) {
-        case SC_CODE_puts:
+        case SC_CODE_puts:                  // I/O
             tty_printf("%s", (char*) (argptr[0]));
             r->edx = (uint32_t)1;
             break;
@@ -32,7 +30,14 @@ void syscall_handler(struct regs *r) {
             kheap_free((void*)argptr[0]);
             r->edx = (uint32_t)1;
             break;
-        case SC_CODE_putpixel:
+        case SC_CODE_setdev:                // Хранилище
+            r->edx = (uint32_t)SSFS_set_device((int)argptr[0]);
+            break;
+        case SC_CODE_readfile:
+            SSFS_read((argptr[0]),(argptr[1]));
+            r->edx = (uint32_t)0;
+            break;
+        case SC_CODE_putpixel:              // Графика
             set_pixel((int) (argptr[0]), (int) (argptr[1]), (uint32_t)(argptr[2]));
             r->edx = (uint32_t)1;
             break;
@@ -40,7 +45,7 @@ void syscall_handler(struct regs *r) {
             set_line((int) (argptr[0]), (int) (argptr[1]),(int) (argptr[2]), (int) (argptr[3]), (uint32_t) (argptr[4]));
             r->edx = (uint32_t)1;
             break;
-        case SC_CODE_version:
+        case SC_CODE_version:               // Система
             r->edx = (uint32_t)(VERSION_MAJOR * 100 + VERSION_MINOR);
             break;
         default: 
