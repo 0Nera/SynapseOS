@@ -1,4 +1,7 @@
+#pragma warning(disable: _IMPLICIT_FUNCTION_DECLARATION)
+
 #pragma once
+
 
 #include <stddef.h>
 #include <stdint.h>
@@ -9,7 +12,6 @@
 #include <libk/list.h>
 
 #include <multyboot.h>
-
 
 #include <mem/mem.h>
 #include <mem/pmm.h>
@@ -38,7 +40,7 @@
 
 #define VERSION_MAJOR   0       // Версия ядра
 #define VERSION_MINOR   2       // Пре-релиз 
-#define VERSION_PATCH   10       // Патч
+#define VERSION_PATCH   11       // Патч
 #define ARCH_TYPE       "x86"   // Архитектура
 
 #define COLOR_TEXT      VESA_LIGHT_GREY
@@ -53,22 +55,9 @@
 #define dVERSION_MINOR  0   // Пре-релиз дистрибутива
 #define dVERSION_PATCH  0   // Патч дистрибутива
 
-struct idt_entry {
-    uint16_t handler_lo;
-    uint16_t sel;
-    uint8_t always0;
-    uint8_t flags;
-    uint16_t handler_hi;
-} __attribute__((packed));
-typedef struct idt_entry idt_entry_t;
-
-struct idt_ptr {
-    uint16_t limit;
-    uint32_t base;
-} __attribute__((packed));
-typedef struct idt_ptr idt_ptr_t;
 
 extern int os_mode;
+
 
 void shell();
 void sysinfo();

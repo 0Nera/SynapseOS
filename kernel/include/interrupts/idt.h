@@ -41,6 +41,24 @@ typedef struct regs {
     uint32_t eip, cs, eflags, useresp, ss;           // Отправлено автоматически
 } regs;
 
+
+struct idt_entry {
+    uint16_t handler_lo;
+    uint16_t sel;
+    uint8_t always0;
+    uint8_t flags;
+    uint16_t handler_hi;
+} __attribute__((packed));
+
+struct idt_ptr {
+    uint16_t limit;
+    uint32_t base;
+} __attribute__((packed));
+
+
+typedef struct idt_ptr idt_ptr_t;
+typedef struct idt_entry idt_entry_t;
+
 // Тип Interrupt_handler_t — это указатель на функцию, которая получает struct regs *r и ничего не возвращает (void).
 // Таким образом, обработчик прерывания должен получать состояние регистров процессора.
 typedef void (*interrupt_handler_t)(struct regs *r);
