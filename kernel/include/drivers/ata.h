@@ -24,6 +24,12 @@ typedef struct {
 #define MAXIMUM_CHANNELS    2
 #define MAXIMUM_IDE_DEVICES    5
 
+#define ATA_PRIMARY_IO 0x1F0
+#define ATA_SECONDARY_IO 0x170
+
+#define ATA_MASTER     0x00
+#define ATA_SLAVE      0x01
+
 // ATA register ports for read/write
 #define ATA_REG_DATA         0x00
 #define ATA_REG_ERROR        0x01
