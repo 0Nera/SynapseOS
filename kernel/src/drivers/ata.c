@@ -17,6 +17,18 @@ static void ide_write_register(uint8_t channel, uint8_t reg, uint8_t data);
 uint32_t ide_get_size(int32_t drive){
     return g_ide_devices[drive].size;
 }
+struct dma_prdt {
+    uint32_t prdt_offset;
+    uint16_t prdt_bytes;
+    uint16_t prdt_last;
+} __packed;
+
+struct ata_dma_priv {
+    int adp_busmaster;
+    int adp_last_count;
+    char *adp_dma_area;
+    struct dma_prdt *adp_dma_prdt;
+};
 
 
 // read register value from the given channel
@@ -430,8 +442,10 @@ uint8_t ide_ata_access(uint8_t direction, uint8_t drive, uint32_t lba, uint8_t n
     ide_write_register(channel, ATA_REG_COMMAND, cmd);  // Send the Command.
 
     if (dma) {
+        tty_printf("DMA!!!");
         if (direction == ATA_READ) {
             // DMA Read
+            
         } else {
             // DMA write
         }
@@ -536,4 +550,119 @@ int32_t ata_get_drive_by_model(const char *model) {
             return i;
     }
     return -1;
+}
+
+int ata_status_wait(int io_base, int timeout) {
+	int status;
+
+	if (timeout > 0) {
+		int i = 0;
+		while ((status = inb(io_base + ATA_REG_STATUS)) & ATA_SR_BSY && (i < timeout)) i++;
+	} else {
+		while ((status = inb(io_base + ATA_REG_STATUS)) & ATA_SR_BSY);
+	}
+	return status;
+}
+
+void ata_io_wait(int32_t io_base) {
+	inb(io_base + ATA_REG_ALTSTATUS);
+	inb(io_base + ATA_REG_ALTSTATUS);
+	inb(io_base + ATA_REG_ALTSTATUS);
+	inb(io_base + ATA_REG_ALTSTATUS);
+}
+
+int32_t ata_wait(int32_t io, int32_t adv) {
+    uint8_t status = 0;
+
+    ata_io_wait(io);
+
+    status = ata_status_wait(io, -1);
+
+    if (adv) {
+        status = inb(io + ATA_REG_STATUS);
+        if (status & ATA_SR_ERR) return 1;
+        if (status & ATA_SR_DF)  return 1;
+        if (!(status & ATA_SR_DRQ)) return 1;
+    }
+
+    return 0;
+}
+
+int ata_read_one_sector_dma(struct ata_dma_priv *adp, char *buf, size_t lba) {
+    uint16_t io = ATA_PRIMARY_IO;
+    uint8_t  dr = ATA_MASTER;
+    /* XXX: io & dr need to be dynamic once multiple ATA devices
+     * are implemented
+     */
+
+    uint8_t cmd = 0xE0;
+    int errors = 0;
+    uint8_t slavebit = 0x00;
+
+    ata_wait(io, 0);
+
+    /* set up DMA transfer by sending STOP */
+    outb(adp->adp_busmaster, 0x00);
+
+    /* send the PRDT */
+    outl(adp->adp_busmaster + 0x04, kv2p(adp->adp_dma_prdt));
+
+    /* enable ERR & IRQ status */
+    outb(adp->adp_busmaster + 0x02,
+                inb(adp->adp_busmaster + 0x02) | 0x04 | 0x02);
+
+    /* set direction */
+    outb(adp->adp_busmaster, 0x08);
+
+    /* wait till the device is ready */
+	while (1) {
+		uint8_t status = inb(io + ATA_REG_STATUS);
+		if (!(status & ATA_SR_BSY)) break;
+	}
+
+    //printk("ata: lba: %d\n", lba);
+    outb(io + ATA_REG_CONTROL, 0x00);
+
+    outb(io + ATA_REG_HDDEVSEL, (cmd | (uint8_t)((lba >> 24 & 0x0F))));
+    ata_io_wait(io);
+    outb(io + ATA_REG_FEATURES, 0x00);
+    outb(io + ATA_REG_SECCOUNT0, 1);
+    outb(io + ATA_REG_LBA0, (uint8_t)(lba));
+    outb(io + ATA_REG_LBA1, (uint8_t)(lba >> 8));
+    outb(io + ATA_REG_LBA2, (uint8_t)(lba >> 16));
+
+	/* wait again */
+    //printk("about to wait 1\n");
+    while (1) {
+		uint8_t status = inb(io + ATA_REG_STATUS);
+		if (!(status & ATA_SR_BSY) && (status & ATA_SR_DRDY)) break;
+	}
+    //printk("finished wait 1\n");
+
+    outb(io + ATA_REG_COMMAND, ATA_CMD_READ_DMA);
+
+    //printk("about to wait 2\n");
+	ata_io_wait(io);
+    //printk("finished wait 2\n");
+
+	outb(adp->adp_busmaster, 0x08 | 0x01);
+
+    //printk("about to wait 3\n");
+    while (1) {
+		int status = inb(adp->adp_busmaster + 0x02);
+		int dstatus = inb(io + ATA_REG_STATUS);
+		if (!(status & 0x04)) {
+			continue;
+		}
+		if (!(dstatus & ATA_SR_BSY)) {
+			break;
+		}
+	}
+    //printk("finished wait 3\n");
+
+    memcpy(buf, adp->adp_dma_area, 512);
+
+    outb(adp->adp_busmaster+ 0x2, inb(adp->adp_busmaster + 0x02) | 0x04 | 0x02);
+
+    return 0;
 }
