@@ -176,7 +176,7 @@ uint32_t get_device_type(pci_dev_t dev) {
 }
 
 
-pci_dev_t pci_scan_function(uint16_t vendor_id, uint16_t device_id, uint32_t bus, uint32_t device, uint32_t function, int device_type) {
+pci_dev_t pci_scan_function(uint16_t vendor_id, uint16_t device_id, uint32_t bus, uint32_t device, uint32_t function, int32_t device_type) {
 	pci_dev_t dev = {0};
 
 	dev.bus_num = bus;
@@ -203,7 +203,7 @@ uint32_t pci_reach_end(pci_dev_t dev) {
 }
 
 
-pci_dev_t pci_scan_device(uint16_t vendor_id, uint16_t device_id, uint32_t bus, uint32_t device, int device_type) {
+pci_dev_t pci_scan_device(uint16_t vendor_id, uint16_t device_id, uint32_t bus, uint32_t device, int32_t device_type) {
 	pci_dev_t dev = {0};
 	dev.bus_num = bus;
 	dev.device_num = device;
@@ -218,7 +218,7 @@ pci_dev_t pci_scan_device(uint16_t vendor_id, uint16_t device_id, uint32_t bus, 
 	if(pci_reach_end(dev))
 		return dev_zero;
 
-	for(int function = 1; function < FUNCTION_PER_DEVICE; function++) {
+	for(int32_t function = 1; function < FUNCTION_PER_DEVICE; function++) {
 		if(pci_read(dev,PCI_VENDOR_ID) != PCI_NONE) {
 			t = pci_scan_function(vendor_id, device_id, bus, device, function, device_type);
 			if(t.bits)
@@ -228,8 +228,8 @@ pci_dev_t pci_scan_device(uint16_t vendor_id, uint16_t device_id, uint32_t bus, 
 	return dev_zero;
 }
 
-pci_dev_t pci_scan_bus(uint16_t vendor_id, uint16_t device_id, uint32_t bus, int device_type) {
-	for(int device = 0; device < DEVICE_PER_BUS; device++) {
+pci_dev_t pci_scan_bus(uint16_t vendor_id, uint16_t device_id, uint32_t bus, int32_t device_type) {
+	for(int32_t device = 0; device < DEVICE_PER_BUS; device++) {
 		pci_dev_t t = pci_scan_device(vendor_id, device_id, bus, device, device_type);
 		if(t.bits)
 			return t;
@@ -238,7 +238,7 @@ pci_dev_t pci_scan_bus(uint16_t vendor_id, uint16_t device_id, uint32_t bus, int
 }
 
 
-pci_dev_t pci_get_device(uint16_t vendor_id, uint16_t device_id, int device_type) {
+pci_dev_t pci_get_device(uint16_t vendor_id, uint16_t device_id, int32_t device_type) {
 	pci_dev_t t = pci_scan_bus(vendor_id, device_id, 0, device_type);
 
 	if(t.bits){
@@ -254,7 +254,7 @@ pci_dev_t pci_get_device(uint16_t vendor_id, uint16_t device_id, int device_type
 		qemu_printf("PCI Get device failed...\n");
 	}
 
-	for(int function = 1; function < FUNCTION_PER_DEVICE; function++) {
+	for(int32_t function = 1; function < FUNCTION_PER_DEVICE; function++) {
 		pci_dev_t dev = {0};
 		dev.function_num = function;
 

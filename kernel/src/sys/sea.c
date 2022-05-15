@@ -4,7 +4,7 @@
 #include <kernel.h>
 
 
-int sea_validate(char *data){
+int32_t sea_validate(char *data){
     if (data[0] != 0x60 || 
         data[1] != 0x05 || 
         data[2] != 0x05 || 
@@ -30,12 +30,12 @@ void *sea_load(char *fname){
 
     void *addr = kheap_malloc(fsize);
 
-    int res = vfs_read(fname, 0, fsize, addr);
+    int32_t res = vfs_read(fname, 0, fsize, addr);
 
     return res;
 }
 
-int sea_run(const char *name/*, char **argv, char **env __attribute__((unused)), int argc*/) {
+int32_t sea_run(const char *name/*, char **argv, char **env __attribute__((unused)), int32_t argc*/) {
     void *sea_file = sea_load(name);
     if (sea_file == NULL) {
         return -1;

@@ -72,11 +72,11 @@ void DG_Init(){
 void DG_DrawFrame(){
 }
 
-void DG_SleepMs(uint32_t ms){
+void DG_SleepMs(unsigned int ms){
     Sleep(ms);
 }
 
-uint32_t DG_GetTicksMs(){
+uint DG_GetTicksMs(){
     return GetTickCount();
 }
 

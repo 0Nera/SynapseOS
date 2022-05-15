@@ -36,7 +36,7 @@ void *elf_open(const char *fname) { // Returns pointer to ELF file.
 
     uint32_t fsize = vfs_get_size(fname);
     void *addr = kheap_malloc(fsize);
-    int res = vfs_read(fname, 0, fsize, addr);
+    int32_t res = vfs_read(fname, 0, fsize, addr);
     
     qemu_printf("elf_open res = %d\n", res);
 
@@ -46,17 +46,17 @@ void *elf_open(const char *fname) { // Returns pointer to ELF file.
     return hdr;
 }
 
-struct elf_section_header *elf_get_section_header(void *elf_file, int num) {
+struct elf_section_header *elf_get_section_header(void *elf_file, int32_t num) {
     struct elf_hdr *hdr = (struct elf_hdr*) elf_file;
     return (struct elf_section_header *) (elf_file + hdr->shoff + hdr->sh_ent_size*num);
 }
 
-struct elf_program_header *elf_get_program_header(void *elf_file, int num) {
+struct elf_program_header *elf_get_program_header(void *elf_file, int32_t num) {
     struct elf_hdr *hdr = (struct elf_hdr*) elf_file;
     return (struct elf_program_header*) (elf_file + hdr->phoff + hdr->ph_ent_size*num);
 }
 
-const char *elf_get_section_name(void *elf_file, int num) {
+const char *elf_get_section_name(void *elf_file, int32_t num) {
     struct elf_hdr *hdr = (struct elf_hdr*) elf_file;
     return (hdr->sh_name_index == SH_UNDEF) 
            ? "no section" 
@@ -107,7 +107,7 @@ void elf_info_short(const char *name) {
     elf_hdr_info(hdr);
     tty_printf("\t\tSection list:\n");
 
-    int i;
+    int32_t i;
     for(i = 1; i<hdr->sh_ent_cnt; i++) {
         struct elf_section_header *shdr = (struct elf_section_header*) (elf_file + hdr->shoff + hdr->sh_ent_size * i);
         tty_printf("\t\t\tSection %d: name: %s, data offset: %u.\n", i, elf_get_section_name(elf_file, i), shdr->offset, shdr->name, i);
@@ -131,7 +131,7 @@ void elf_info(const char *name) {
     tty_printf("\tFile size: %u\n\tELF file info:\n", vfs_get_size(name));
     elf_hdr_info(hdr);
 
-    int i;
+    int32_t i;
     for (i = 0; i < hdr->sh_ent_cnt; i++) {
         struct elf_section_header *shdr = (struct elf_section_header*) (elf_file + hdr->shoff + hdr->sh_ent_size * i);
         tty_printf("\t\t\tSection %d:\n", i);
@@ -142,7 +142,7 @@ void elf_info(const char *name) {
     //kheap_free(elf_file); //!!!!!!
 }
 
-int run_elf_file(const char *name/*, char **argv, char **env __attribute__((unused)), int argc*/) {
+int32_t run_elf_file(const char *name/*, char **argv, char **env __attribute__((unused)), int32_t argc*/) {
     if (!vfs_exists(name)) {
         tty_printf("\nrun_elf_file: elf [%s] does not exist\n", name);
         qemu_printf("\nrun_elf_file: elf [%s] does not exist\n", name);
@@ -157,9 +157,9 @@ int run_elf_file(const char *name/*, char **argv, char **env __attribute__((unus
 
     qemu_printf("\nloading segments:\n");
     uint32_t vmm_alloced[4096] = {0};
-    int ptr_vmm_alloced = 0;
+    int32_t ptr_vmm_alloced = 0;
 
-    for (int i = 0; i < hdr->ph_ent_cnt; i++) {
+    for (int32_t i = 0; i < hdr->ph_ent_cnt; i++) {
         //printf("Segment [%i/%i]: ", i, hdr->ph_ent_cnt);
         struct elf_program_header *phdr = elf_get_program_header(elf_file, i);
         if (phdr->type != SEGTYPE_LOAD) {
@@ -192,13 +192,13 @@ int run_elf_file(const char *name/*, char **argv, char **env __attribute__((unus
 
     qemu_printf("Executing");
     
-    int code = entry_point();
+    int32_t code = entry_point();
 
     tty_printf("\n[PROGRAMM FINISHED WITH CODE <%d>]\n", code);
     qemu_printf("\n[PROGRAMM FINISHED WITH CODE <%d>\n", code);
     qemu_printf("\nCleaning VMM:\n");
 
-    for (int i = 0; i != ptr_vmm_alloced; i++){
+    for (int32_t i = 0; i != ptr_vmm_alloced; i++){
         qemu_printf("\tCleaning %d: %x\n", i, vmm_alloced[i]);
         vmm_free_page(vmm_alloced[i]);
     }

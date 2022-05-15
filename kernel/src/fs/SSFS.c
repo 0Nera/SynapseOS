@@ -1,25 +1,25 @@
 #include <kernel.h>
 
 
-int SSFS_device = 0;        // Текущее устройство
-int SSFS_MAX = 4096;  // Максимум файлов
+int32_t SSFS_device = 0;        // Текущее устройство
+int32_t SSFS_MAX = 4096;  // Максимум файлов
 char SSFS_filename[12];      // Буффер содержимого
 char SSFS_data[500];      // Буффер содержимого
 
 
-void SSFS_set_device(int device){
+void SSFS_set_device(int32_t device){
     SSFS_device = device;
 }
 
 
-int SSFS_file_exists(char filename[12]){
+int32_t SSFS_file_exists(char filename[12]){
     for (uint32_t i = 2; i < SSFS_MAX; i++){
         char fname[13];
         char buffer[512];
 
         ide_read_sectors(SSFS_device, 1, i, (uint32_t)buffer);
 
-        for (int j = 0; j < 12; j++){
+        for (int32_t j = 0; j < 12; j++){
             fname[j] = buffer[j];
         }
 
@@ -33,7 +33,7 @@ int SSFS_file_exists(char filename[12]){
 }
 
 
-int SSFS_find_free(){
+int32_t SSFS_find_free(){
     for (uint32_t i = 2; i < SSFS_MAX; i++){
         char buffer[512];
 
@@ -47,10 +47,10 @@ int SSFS_find_free(){
 }
 
 
-int SSFS_list(){
+int32_t SSFS_list(){
     char fname[13];
     char buffer[512];
-    int len = 0;
+    int32_t len = 0;
 
     tty_printf("\nList of files:\n");
 
@@ -61,7 +61,7 @@ int SSFS_list(){
             continue;
         }
 
-        for (int j = 0; j < 12; j++){
+        for (int32_t j = 0; j < 12; j++){
             fname[j] = buffer[j];
         }
 
@@ -73,7 +73,7 @@ int SSFS_list(){
 }
 
 
-int SSFS_write(char filename[12], char buffer[500]){
+int32_t SSFS_write(char filename[12], char buffer[500]){
     char sector[512];
 
     if (!SSFS_file_exists(filename)){
@@ -87,8 +87,8 @@ int SSFS_write(char filename[12], char buffer[500]){
 }
 
 
-int SSFS_read(char filename[12], char buffer[500]){
-    int file_id = SSFS_file_exists(filename);
+int32_t SSFS_read(char filename[12], char buffer[500]){
+    int32_t file_id = SSFS_file_exists(filename);
 
     if (file_id){
         memset(SSFS_data, 0, 500);
@@ -102,7 +102,7 @@ int SSFS_read(char filename[12], char buffer[500]){
 
 void SSFS_delete(char filename[12]){
     char sector[512];
-    int file_id = SSFS_file_exists(filename);
+    int32_t file_id = SSFS_file_exists(filename);
 
     if (file_id){
         memset(sector, 0, 512);
@@ -113,7 +113,7 @@ void SSFS_delete(char filename[12]){
 }
 
 
-void SSFS_format(int device){
+void SSFS_format(int32_t device){
     tty_printf("\nThis action will remove all data in device %d, enter y(es)/n(not):\n", SSFS_device);
     char buffer[512];
     char SSFS_cmd_char = keyboard_getchar();
@@ -153,12 +153,12 @@ void SSFS_format(int device){
 
 
 void SSFS_cmd() {
-    int cmd_alive = 1;
+    int32_t cmd_alive = 1;
 
     while(cmd_alive){
         char *filename;
         char *buffer;
-        int n;
+        int32_t n;
 
         tty_printf("\nSingle Sector FileSystem:\n" \ 
                 "->1 Set drive\n"             \ 

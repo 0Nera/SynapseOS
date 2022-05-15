@@ -6,8 +6,8 @@ uint32_t initrd_begin = 0;
 uint32_t initrd_end = 0;
 uint32_t initrd_size;
 
-int oct2bin(unsigned char *str, int size) {
-    int n = 0;
+int32_t oct2bin(unsigned char *str, int32_t size) {
+    int32_t n = 0;
     unsigned char *c = str;
     while (size-- > 0) {
         n *= 8;
@@ -17,10 +17,10 @@ int oct2bin(unsigned char *str, int size) {
     return n;
 }
 
-unsigned int tar_getsize(const char *in) {
-    unsigned int size = 0;
-    unsigned int j;
-    unsigned int count = 1;
+uint32_t tar_getsize(const char *in) {
+    uint32_t size = 0;
+    uint32_t j;
+    uint32_t count = 1;
 
     for (j = 11; j > 0; j--, count *= 8) {
         size += ((in[j - 1] - '0') * count);
@@ -30,12 +30,12 @@ unsigned int tar_getsize(const char *in) {
 }
 
 /* Returns pointer to file data */
-int tar_lookup(unsigned char *archive, char *filename) {
+int32_t tar_lookup(unsigned char *archive, char *filename) {
     unsigned char *ptr = archive;
  
     while (!memcmp(ptr + 257, "ustar", 5)) 
     {
-        int filesize = oct2bin(ptr + 0x7c, 11);
+        int32_t filesize = oct2bin(ptr + 0x7c, 11);
         if (!memcmp(ptr, filename, strlen(filename) + 1)) {
             return ptr + 512;
         }
@@ -51,8 +51,8 @@ int tar_lookup(unsigned char *archive, char *filename) {
     return 0;
 }
 
-uint32_t initrd_read(char *filename, int offset, int size, vfs_filesystem_t *fs, void *buffer) {
-    int read_size = 0;
+uint32_t initrd_read(char *filename, int32_t offset, int32_t size, vfs_filesystem_t *fs, void *buffer) {
+    int32_t read_size = 0;
     if (!filename) {
         return 0;
     }
@@ -60,7 +60,7 @@ uint32_t initrd_read(char *filename, int offset, int size, vfs_filesystem_t *fs,
         return 0;
     }
 
-    int file_addr = tar_lookup(initrd_begin, filename);
+    int32_t file_addr = tar_lookup(initrd_begin, filename);
     if (!file_addr) { // File not found
         return 0;
     }
@@ -85,7 +85,7 @@ uint32_t initrd_file_exists(char *filename, vfs_filesystem_t *fs) {
         return 0;
     }
 
-    int file_addr = tar_lookup(initrd_begin, filename);
+    int32_t file_addr = tar_lookup(initrd_begin, filename);
     if (!file_addr) { // file not found
         return 0;
     } else {
@@ -98,7 +98,7 @@ uint32_t initrd_get_filesize(char *filename) {
         return 0;
     }
 
-    int file_addr = tar_lookup(initrd_begin, filename);
+    int32_t file_addr = tar_lookup(initrd_begin, filename);
     if (!file_addr) { // file not found
         return 0;
     } else {
@@ -113,7 +113,7 @@ uint32_t initrd_is_dir(char *filename) {
         return 0;
     }
 
-    int file_addr = tar_lookup(initrd_begin, filename);
+    int32_t file_addr = tar_lookup(initrd_begin, filename);
     if (!file_addr) { // file not found
         return 0;
     } else {
@@ -122,11 +122,11 @@ uint32_t initrd_is_dir(char *filename) {
     }
 }
 
-void initrd_list(int argc, char **arg) {
-    int addr = initrd_begin;
+void initrd_list(int32_t argc, char **arg) {
+    int32_t addr = initrd_begin;
 
     while (!memcmp(addr + 257, "ustar", 5)) {
-        int filesize = oct2bin(addr + 0x7c, 11);
+        int32_t filesize = oct2bin(addr + 0x7c, 11);
         ustar_file_t *file = (struct ustar_file_t*) addr;
 
         if (file->type == USTAR_DIRECTORY) {

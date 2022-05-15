@@ -2,10 +2,10 @@
 
 
 // Holds how many ticks that the system has been running for
-int timer_ticks = 0;
+int32_t timer_ticks = 0;
 
-void timer_set_frequency(int hz) {
-    /*int divisor = INPUT_CLOCK_FREQUENCY / hz;
+void timer_set_frequency(int32_t hz) {
+    /*int32_t divisor = INPUT_CLOCK_FREQUENCY / hz;
     outb(TIMER_COMMAND, TIMER_OCW); // Means Init, Square Wave Mode, non-BCD, first transfer LSB then MSB
     outb(TIMER_DATA, divisor & 0xFF); // Set low byte of divisor
     outb(TIMER_DATA, divisor >> 8); // Set high byte of divisor
@@ -25,7 +25,7 @@ void timer_handler(struct regs *r) {
     */
 }
 
-int timer_get_ticks() {
+int32_t timer_get_ticks() {
     return timer_ticks;
 }
 

@@ -51,18 +51,18 @@ rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 
 struct FB_BitField
 {
-	uint32_t offset;			/* beginning of bitfield	*/
-	uint32_t length;			/* length of bitfield		*/
+	uint offset;			/* beginning of bitfield	*/
+	uint length;			/* length of bitfield		*/
 };
 
 struct FB_ScreenInfo
 {
-	uint32_t xres;			/* visible resolution		*/
-	uint32_t yres;
-	uint32_t xres_virtual;		/* virtual resolution		*/
-	uint32_t yres_virtual;
+	uint xres;			/* visible resolution		*/
+	uint yres;
+	uint xres_virtual;		/* virtual resolution		*/
+	uint yres_virtual;
 
-	uint32_t bits_per_pixel;		/* guess what			*/
+	uint bits_per_pixel;		/* guess what			*/
 	
 							/* >1 = FOURCC			*/
 	struct FB_BitField red;		/* bitfield in s_Fb mem if true color, */
@@ -76,10 +76,10 @@ int fb_scaling = 1;
 int usemouse = 0;
 
 struct color {
-    uint32_t b:8;
-    uint32_t g:8;
-    uint32_t r:8;
-    uint32_t a:8;
+    unsigned int b:8;
+    unsigned int g:8;
+    unsigned int r:8;
+    unsigned int a:8;
 };
 
 static struct color colors[256];
@@ -151,7 +151,7 @@ void cmap_to_fb(uint8_t * out, uint8_t * in, int in_pixels)
 {
     int i, j, k;
     struct color c;
-    uint32_t pix;
+    unsigned int pix;
     uint16_t r, g, b;
 
     for (i = 0; i < in_pixels; i++)

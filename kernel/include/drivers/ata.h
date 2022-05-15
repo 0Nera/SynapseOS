@@ -127,11 +127,11 @@ void ide_wait_irq();
 void ide_irq();
 
 // start from lba = 0
-int ide_read_sectors(uint8_t drive, uint8_t num_sectors, uint32_t lba, uint32_t buffer);
+int32_t ide_read_sectors(uint8_t drive, uint8_t num_sectors, uint32_t lba, uint32_t buffer);
 
 // start from lba = 0
-int ide_write_sectors(uint8_t drive, uint8_t num_sectors, uint32_t lba, uint32_t buffer);
+int32_t ide_write_sectors(uint8_t drive, uint8_t num_sectors, uint32_t lba, uint32_t buffer);
 
 
 void ata_init();
-int ata_get_drive_by_model(const char *model);
+int32_t ata_get_drive_by_model(const char *model);

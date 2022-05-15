@@ -5,8 +5,8 @@ volatile uint8_t tty_feedback = 1;
 
 size_t tty_line_fill[1024];
 
-int tty_pos_x;
-int tty_pos_y;
+int32_t tty_pos_x;
+int32_t tty_pos_y;
 
 
 uint32_t tty_text_color;
@@ -18,7 +18,7 @@ uint16_t vga_entry(uint8_t c, uint8_t tty_color) {
     return (uint16_t) c | (uint16_t) tty_color << 8;
 }
 
-void tty_setcolor(int color) {
+void tty_setcolor(int32_t color) {
     tty_text_color = color;
 }
 
@@ -75,7 +75,7 @@ void tty_init(struct multiboot_info *mboot_info) {
 
 void tty_scroll() {
     // charheight = 16???
-    unsigned int num_rows = 1;
+    uint32_t num_rows = 1;
     tty_pos_y -= 17*num_rows;
 
     // Copy rows upwards
@@ -92,7 +92,7 @@ void tty_scroll() {
     memcpy(framebuffer_addr, back_framebuffer_addr, framebuffer_size);
 }
 
-void set_pixel(int x, int y, uint32_t color) {
+void set_pixel(int32_t x, int32_t y, uint32_t color) {
     if (x < 0 || y < 0 || 
         x >= (int) VESA_WIDTH || 
         y >= (int) VESA_HEIGHT) {
@@ -112,9 +112,9 @@ void set_pixel(int x, int y, uint32_t color) {
 
 }
 
-void set_line(int x, int y, int xe, int ye, uint32_t color){
-    for (int i = x; i < xe; i++) {
-        for (int j = y; j < ye; j++) {
+void set_line(int32_t x, int32_t y, int32_t xe, int32_t ye, uint32_t color){
+    for (int32_t i = x; i < xe; i++) {
+        for (int32_t j = y; j < ye; j++) {
             set_pixel(i, j, color);
         }
         
@@ -146,10 +146,10 @@ void tty_putchar(char c) {
     }
 }
 
-void draw_vga_character(uint8_t c, int x, int y, int fg, int bg, bool bgon) {
+void draw_vga_character(uint8_t c, int32_t x, int32_t y, int32_t fg, int32_t bg, bool bgon) {
 
-    int cx, cy;
-    int mask[8] = { 128, 64, 32, 16, 8, 4, 2, 1 };
+    int32_t cx, cy;
+    int32_t mask[8] = { 128, 64, 32, 16, 8, 4, 2, 1 };
     unsigned char *glyph = (uint8_t*) vgafnt + (int) c * 16;
 
     for (cy = 0; cy < 16; cy++) {
@@ -185,9 +185,9 @@ void tty_puts(const char c[]) {
 
 
 /*
-    tty_putint - вывод числа
+    tty_putint32_t - вывод числа
 */
-void tty_putint(const int i) {
+void tty_putint(const int32_t i) {
     char res[32];
 
     if (i < 0) {
@@ -205,7 +205,7 @@ void tty_putint(const int i) {
 */
 void tty_puthex(uint32_t i) {
     const unsigned char hex[16]  =  { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
-    unsigned int n, d = 0x10000000;
+    uint32_t n, d = 0x10000000;
 
     tty_puts("0x");
 
@@ -224,10 +224,10 @@ void tty_puthex(uint32_t i) {
 
 
 /*
-    tty_print - строгий, форматированный вывод
+    tty_print32_t - строгий, форматированный вывод
 */
 void tty_print(char *format, va_list args) {
-    int i = 0;
+    int32_t i = 0;
 
     while (format[i]) {
         if (format[i] == '%') {

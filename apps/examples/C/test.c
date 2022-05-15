@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 #define SC_CODE_puts            0
 #define SC_CODE_getscancode     1
 #define SC_CODE_getchar         2

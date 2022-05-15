@@ -3,6 +3,7 @@
 #pragma once
 
 
+
 #include <stddef.h>
 #include <stdint.h>
 #include <stdarg.h>
@@ -56,7 +57,7 @@
 #define dVERSION_PATCH  0   // Патч дистрибутива
 
 
-extern int os_mode;
+extern int32_t os_mode;
 
 
 void shell();

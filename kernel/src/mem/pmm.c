@@ -16,29 +16,29 @@ uint64_t initrd_mmap_entry_addr = -1;
 uint32_t mmap_avail_entries_count = 0;
 multiboot_memory_map_entry mmap_avail_entries_array[100];
 
-inline static void bitmap_set(int bit) {
+inline static void bitmap_set(int32_t bit) {
     phys_memory_bitmap[bit / 32] |= (1 << (bit % 32));
 }
 
-inline static void bitmap_unset(int bit) {
+inline static void bitmap_unset(int32_t bit) {
     phys_memory_bitmap[bit / 32] &= ~(1 << (bit % 32));
 }
 
-inline static bool bitmap_test(int bit) {
+inline static bool bitmap_test(int32_t bit) {
     return phys_memory_bitmap[bit / 32] & (1 << (bit % 32));
 }
 
 void pmm_parse_memory_map(multiboot_memory_map_entry *mmap_addr, uint32_t length) {
     multiboot_memory_map_entry *mentry = 0;	
 
-    int i = 0;
+    int32_t i = 0;
     /* Entries number in memory map structure */
-    int n = length / sizeof(multiboot_memory_map_entry);
+    int32_t n = length / sizeof(multiboot_memory_map_entry);
 
     /* Set pointer to memory map */
     mentry = mmap_addr;
 
-    /* Print info about physical memory allocation */
+    /* Print32_t info about physical memory allocation */
     //tty_printf("Physical memory map:\n");
     for (i = 0; i < n; i++) {
         if ((mentry + i)->type == 1) {
@@ -79,12 +79,12 @@ void pmm_parse_memory_map(multiboot_memory_map_entry *mmap_addr, uint32_t length
     tty_setcolor(COLOR_SYS_TEXT);
 }
 
-int pmm_find_free_block() {
+int32_t pmm_find_free_block() {
     for (uint32_t i = 0; i < phys_block_count / 32; i++) {
         uint32_t block = phys_memory_bitmap[i];
         if (block != 0xFFFFFFFF) {
             for (uint8_t j = 0; j < 32; j++) {
-                int bit = 1 << j;
+                int32_t bit = 1 << j;
                 if (!(bit & block)) {
                     return (32 * i) + j;
                 }
@@ -94,9 +94,9 @@ int pmm_find_free_block() {
     return -1;
 }
 
-int pmm_find_free_blocks(uint32_t count) {
-    int starting_block = -1;
-    int starting_block_bit = -1;
+int32_t pmm_find_free_blocks(uint32_t count) {
+    int32_t starting_block = -1;
+    int32_t starting_block_bit = -1;
     uint32_t cur_block_num = 0;
 
     for (uint32_t i = 0; i < phys_block_count / 32; i++) {
@@ -107,7 +107,7 @@ int pmm_find_free_blocks(uint32_t count) {
         }
 
         for (uint8_t j = 0; j < 32; j++) {
-            int bit = 1 << j;
+            int32_t bit = 1 << j;
             if (bit & cur_block) { // Bit is set
                 cur_block_num = 0;
                 continue;
@@ -135,7 +135,7 @@ physical_addres pmm_alloc_block() {
         return 0xFFFFFFFF; // Old: return 0;
     }
 
-    int free_block = pmm_find_free_block();
+    int32_t free_block = pmm_find_free_block();
     if (free_block == -1) {
         return 0xFFFFFFFF; // Old: return 0;
     }
@@ -148,13 +148,13 @@ physical_addres pmm_alloc_block() {
 }
 
 void pmm_free_block(physical_addres addr) {
-    int block = addr / PHYS_BLOCK_SIZE;
+    int32_t block = addr / PHYS_BLOCK_SIZE;
     bitmap_unset(block);
     phys_used_block_count--;
 }
 
 bool pmm_is_block_alloced(physical_addres addr) {
-    int block = addr / PHYS_BLOCK_SIZE;
+    int32_t block = addr / PHYS_BLOCK_SIZE;
     return bitmap_test(block);
 }
 
@@ -165,7 +165,7 @@ physical_addres pmm_alloc_blocks(uint32_t count) {
         return 0xFFFFFFFF; // Old: return 0;
     }
 
-    int free_block = pmm_find_free_blocks(count);
+    int32_t free_block = pmm_find_free_blocks(count);
     if (free_block == -1) {
         return 0xFFFFFFFF; // Old: return 0;
     }
@@ -180,7 +180,7 @@ physical_addres pmm_alloc_blocks(uint32_t count) {
 }
 
 void pmm_free_blocks(physical_addres addr, uint32_t count) {
-    int block = addr / PHYS_BLOCK_SIZE;
+    int32_t block = addr / PHYS_BLOCK_SIZE;
     for (uint32_t i = 0; i < count; i++) {
         bitmap_unset(block + i);
     }
@@ -190,8 +190,8 @@ void pmm_free_blocks(physical_addres addr, uint32_t count) {
 // Internal functions to allocate ranges of memory
 
 void pmm_alloc_chunk(uint64_t base_addr, uint64_t length) {
-    int cur_block_addr = base_addr / PHYS_BLOCK_SIZE;
-    int num_blocks = length / PHYS_BLOCK_SIZE;
+    int32_t cur_block_addr = base_addr / PHYS_BLOCK_SIZE;
+    int32_t num_blocks = length / PHYS_BLOCK_SIZE;
     while (num_blocks-- >= 0) {
         bitmap_set(cur_block_addr++);
         phys_used_block_count--;
@@ -199,8 +199,8 @@ void pmm_alloc_chunk(uint64_t base_addr, uint64_t length) {
 }
 
 void pmm_free_chunk(uint64_t base_addr, uint64_t length) {
-    int cur_block_addr = base_addr / PHYS_BLOCK_SIZE;
-    int num_blocks = length / PHYS_BLOCK_SIZE;
+    int32_t cur_block_addr = base_addr / PHYS_BLOCK_SIZE;
+    int32_t num_blocks = length / PHYS_BLOCK_SIZE;
     while (num_blocks--) {
         bitmap_unset(cur_block_addr++);
         phys_used_block_count--;
@@ -250,7 +250,7 @@ void pmm_relocate_initrd_to_high_mem(struct multiboot_info *mb) {
         mm = (multiboot_memory_map_entry*) ((unsigned int) mm + mm->size + sizeof(mm->size));
     }
 
-    int i;
+    int32_t i;
     //tty_printf("mmap_avail_entries_count = %x \n\n", mmap_avail_entries_count);
     for (i = mmap_avail_entries_count - 1; i >= 0; i--) {
         //tty_printf("addr = %x  | len = %x \n", mmap_avail_entries_array[i].addr, mmap_avail_entries_array[i].len);

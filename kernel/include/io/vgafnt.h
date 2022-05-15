@@ -5,4 +5,4 @@
 #include <stdint.h>
 
 extern uint8_t vgafnt[4096];
-extern int vgafnt_size;
+extern int32_t vgafnt_size;

@@ -5,7 +5,7 @@
   2 - getchar
   3 - gets
 */
-int input_type = 1, SHIFT = 0, string_mem_counter = 0;
+int32_t input_type = 1, SHIFT = 0, string_mem_counter = 0;
 char keycode, last_char; 
 char string_mem[256];
 
@@ -220,7 +220,7 @@ void keyboard_handler_main(void) {
     }
 }
 
-int keyboard_getchar() {
+int32_t keyboard_getchar() {
     input_type = 2;
 
     while (input_type != -2) {
@@ -233,7 +233,7 @@ int keyboard_getchar() {
     return last_char;
 }
 
-int keyboard_getscancode() {
+int32_t keyboard_getscancode() {
     input_type = 2;
 
     keyboard_handler_main();

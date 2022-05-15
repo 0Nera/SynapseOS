@@ -59,6 +59,6 @@ typedef union pci_dev {
 
 
 void pci_init();
-pci_dev_t pci_scan_bus(uint16_t vendor_id, uint16_t device_id, uint32_t bus, int device_type);
-pci_dev_t pci_get_device(uint16_t vendor_id, uint16_t device_id, int device_type);
+pci_dev_t pci_scan_bus(uint16_t vendor_id, uint16_t device_id, uint32_t bus, int32_t device_type);
+pci_dev_t pci_get_device(uint16_t vendor_id, uint16_t device_id, int32_t device_type);
 void pci_write(pci_dev_t dev, uint32_t field, uint32_t value);

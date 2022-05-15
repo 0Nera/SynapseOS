@@ -32,6 +32,6 @@ char *gets();
 int getversion();
 int print_str(char *str);
 void putint(const int i);
-void puthex(uint32_t i);
+void puthex(unsigned int i);
 void print(char *format, va_list args);
 void printf(char *text, ...);

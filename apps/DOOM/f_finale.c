@@ -52,7 +52,7 @@ typedef enum
 // Stage of animation:
 finalestage_t finalestage;
 
-unsigned int finalecount;
+uint finalecount;
 
 #define	TEXTSPEED	3
 #define	TEXTWAIT	250

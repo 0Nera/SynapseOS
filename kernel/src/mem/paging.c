@@ -1,6 +1,6 @@
 #include <kernel.h>
 /*
-int paging_enabled = 0;
+int32_t paging_enabled = 0;
 #define PAGE_SIZE 4096
 
 // Alignment related macro
@@ -25,29 +25,29 @@ int paging_enabled = 0;
 
 
 typedef struct page_dir_entry {
-    unsigned int present    : 1;
-    unsigned int rw         : 1;
-    unsigned int user       : 1;
-    unsigned int w_through  : 1;
-    unsigned int cache      : 1;
-    unsigned int access     : 1;
-    unsigned int reserved   : 1;
-    unsigned int page_size  : 1;
-    unsigned int global     : 1;
-    unsigned int available  : 3;
-    unsigned int frame      : 20;
+    uint32_t present    : 1;
+    uint32_t rw         : 1;
+    uint32_t user       : 1;
+    uint32_t w_through  : 1;
+    uint32_t cache      : 1;
+    uint32_t access     : 1;
+    uint32_t reserved   : 1;
+    uint32_t page_size  : 1;
+    uint32_t global     : 1;
+    uint32_t available  : 3;
+    uint32_t frame      : 20;
 }page_dir_entry_t;
 
 typedef struct page_table_entry {
-    unsigned int present    : 1;
-    unsigned int rw         : 1;
-    unsigned int user       : 1;
-    unsigned int reserved   : 2;
-    unsigned int accessed   : 1;
-    unsigned int dirty      : 1;
-    unsigned int reserved2  : 2;
-    unsigned int available  : 3;
-    unsigned int frame      : 20;
+    uint32_t present    : 1;
+    uint32_t rw         : 1;
+    uint32_t user       : 1;
+    uint32_t reserved   : 2;
+    uint32_t accessed   : 1;
+    uint32_t dirty      : 1;
+    uint32_t reserved2  : 2;
+    uint32_t available  : 3;
+    uint32_t frame      : 20;
 }page_table_entry_t;
 
 

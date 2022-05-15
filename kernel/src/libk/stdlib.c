@@ -3,9 +3,9 @@
 
 void strver(char *str) {
     char c;
-    int j = strlen(str) - 1;
+    int32_t j = strlen(str) - 1;
 
-    for (int i = 0; i < j; i++) {
+    for (int32_t i = 0; i < j; i++) {
         c = str[i];
         str[i] = str[j];
         str[j] = c;
@@ -14,8 +14,8 @@ void strver(char *str) {
 }
 
 
-int itoa(int n, char *buffer) {
-    int length = n < 0;
+int32_t itoa(int32_t n, char *buffer) {
+    int32_t length = n < 0;
     
     if (length) {
         n = -n;

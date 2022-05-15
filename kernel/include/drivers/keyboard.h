@@ -6,10 +6,10 @@
 #define ENTER_KEY_CODE 0x1C
 
 extern unsigned char keyboard_map[128];
-extern int input_type;
+extern int32_t input_type;
 void keyboard_install(void);
 void keyboard_handler(regs *r);
 void keyboard_handler_main(void);
 char *keyboard_gets();
-int keyboard_getchar();
-int keyboard_getscancode();
+int32_t keyboard_getchar();
+int32_t keyboard_getscancode();

@@ -120,12 +120,12 @@ void DG_DrawFrame()
   handleKeyInput();
 }
 
-void DG_SleepMs(uint32_t ms)
+void DG_SleepMs(unsigned int ms)
 {
   SDL_Delay(ms);
 }
 
-uint32_t DG_GetTicksMs()
+uint DG_GetTicksMs()
 {
   return SDL_GetTicks();
 }

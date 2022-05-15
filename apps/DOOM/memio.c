@@ -33,7 +33,7 @@ struct _MEMFILE {
 	unsigned char *buf;
 	size_t buflen;
 	size_t alloced;
-	unsigned int position;
+	uint position;
 	memfile_mode_t mode;
 };
 
@@ -163,7 +163,7 @@ long mem_ftell(MEMFILE *stream)
 
 int mem_fseek(MEMFILE *stream, signed long position, mem_rel_t whence)
 {
-	unsigned int newpos;
+	uint newpos;
 
 	switch (whence)
 	{

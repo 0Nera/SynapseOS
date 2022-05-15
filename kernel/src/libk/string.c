@@ -24,7 +24,7 @@ void *memcpy(void *destination, const void *source, size_t n){
 }
 
 
-void *memset(void *destination, int c, size_t n){
+void *memset(void *destination, int32_t c, size_t n){
     if (destination){
        char *tmp_mem = (char*)destination;
        while (n--) *tmp_mem++ = c;
@@ -34,9 +34,9 @@ void *memset(void *destination, int c, size_t n){
 }
 
 
-int strcmp(const char *str1, const char *str2) {
-    int s1;
-    int s2;
+int32_t strcmp(const char *str1, const char *str2) {
+    int32_t s1;
+    int32_t s2;
 
     do {
         s1 = *str1++;
@@ -59,7 +59,7 @@ char *strcpy(char *dest, const char *src) {
 }
 
 
-int memcmp(const void *s1, const void *s2, size_t n) { 
+int32_t memcmp(const void *s1, const void *s2, size_t n) { 
     unsigned char u1, u2;
 
     for (; n-- ; s1++, s2++) {
@@ -122,7 +122,7 @@ size_t strspn(const char *s, const char *accept) {
 }
 
 
-int strncmp(const char *s1, const char *s2, size_t num) {
+int32_t strncmp(const char *s1, const char *s2, size_t num) {
     for (size_t i=0; i<num; i++) {
         if (s1[i] != s2[i]) {
             return 1;

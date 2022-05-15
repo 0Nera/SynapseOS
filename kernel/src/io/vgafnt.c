@@ -1,6 +1,6 @@
 #include <stdint.h>
 
-int vgafnt_size = 4096;
+int32_t vgafnt_size = 4096;
 
 uint8_t vgafnt[] = {
 	0x00, // 0b00000000

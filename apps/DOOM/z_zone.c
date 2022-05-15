@@ -481,7 +481,7 @@ int Z_FreeMemory (void)
     return free;
 }
 
-unsigned int Z_ZoneSize(void)
+uint Z_ZoneSize(void)
 {
     return mainzone->size;
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdint.h>
+
 #define SC_CODE_putpixel        32
 #define SC_CODE_drawline        33
 #define SC_CODE_version         40

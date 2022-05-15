@@ -11,13 +11,13 @@
     4 - Другое
 */
 typedef struct vfs_storage_dev_t {
-    int type; 
+    int32_t type; 
 
-    int disk_id;
-    int partition_id;
+    int32_t disk_id;
+    int32_t partition_id;
 
-    int lba_start;
-    int lba_end;
+    int32_t lba_start;
+    int32_t lba_end;
 
     char *name;
 
@@ -27,8 +27,8 @@ typedef struct vfs_storage_dev_t {
 
 // Некоторые файловые системы
 typedef struct vfs_filesystem_t {
-    int fs_type; // 0 - tar-fs, 1 - ext2, 2 - ext3, 3 - ext4, 4 - fat32
-    int block_size;
+    int32_t fs_type; // 0 - tar-fs, 1 - ext2, 2 - ext3, 3 - ext4, 4 - fat32
+    int32_t block_size;
 
     vfs_storage_dev_t *dev;
 } vfs_filesystem_t;
@@ -60,20 +60,20 @@ typedef struct vfs_mount_info_t  {
 void vfs_init();
 
 void vfs_mount_list();
-int vfs_mount(vfs_storage_dev_t *dev, vfs_filesystem_handles_t *fs_handles, int type, char *location, int block_size);
-int vfs_mount_find(char *path, int *filename_add);
+int32_t vfs_mount(vfs_storage_dev_t *dev, vfs_filesystem_handles_t *fs_handles, int32_t type, char *location, int32_t block_size);
+int32_t vfs_mount_find(char *path, int32_t *filename_add);
 
-int vfs_read(const char *filename, int offset, int size, void *buf);
-int vfs_get_size(const char *filename);
-int vfs_write(char *filename, int offset, int size, void *buf);
+int32_t vfs_read(const char *filename, int32_t offset, int32_t size, void *buf);
+int32_t vfs_get_size(const char *filename);
+int32_t vfs_write(char *filename, int32_t offset, int32_t size, void *buf);
 
-int vfs_mkdir(char *filename, char *path, uint16_t perms);
-int vfs_mkfile(char *filename, char *path, uint16_t perms);
+int32_t vfs_mkdir(char *filename, char *path, uint16_t perms);
+int32_t vfs_mkfile(char *filename, char *path, uint16_t perms);
 
-int vfs_list(char *path, void *buf);
-int vfs_rm(char *filename);
+int32_t vfs_list(char *path, void *buf);
+int32_t vfs_rm(char *filename);
 
-int vfs_exists(const char *filename);
-int vfs_is_dir(char *filename);
+int32_t vfs_exists(const char *filename);
+int32_t vfs_is_dir(char *filename);
 
 void vfs_get_file_name_from_path(char *fpath, char *buf); 

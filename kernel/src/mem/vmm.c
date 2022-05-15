@@ -51,7 +51,7 @@ void vmm_create_kernel_page_dir() {
     page_directory *pd = kernel_page_dir;
     memset(pd, 0, sizeof(page_directory));
 
-    int i;
+    int32_t i;
     for (i = 0; i < PAGE_ENTRIES; i++) {
         page_dir_entry *pde = (page_dir_entry*) &pd->entries[i];
         page_dir_entry_add_attrib(pde, I86_PTE_WRITABLE);
@@ -168,7 +168,7 @@ void vmm_test() {
     //IT WILL CAUSE PAGE FAULT!!!! BEACUSE WE 1:1 MAPPED UP TO 1MB PHYS MEM BUT NEVKLYUCHITELNO!
     tty_printf("%x = %x\n", (0x00100000 - 1), *(uint8_t*) (0x00100000 - 1));
 
-    int eip;
+    int32_t eip;
     asm volatile("1: lea 1b, %0": "=a"(eip));
     tty_printf("EIP = %x  ", eip);
 }

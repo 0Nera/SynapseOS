@@ -34,7 +34,7 @@ uint16_t ins(uint16_t _port) {
     return rv;
 }
 
-int com1_is_transmit_empty() {
+int32_t com1_is_transmit_empty() {
     return inb(PORT_COM1 + 5) & 0x20;
 }
 
@@ -53,8 +53,8 @@ void io_wait(void) {
     outb(0x80, 0);
 }
 
-void sleep(int i) {
-    for (int j = i * 1000; j != 0; j--){
+void sleep(int32_t i) {
+    for (int32_t j = i * 1000; j != 0; j--){
         io_wait();
     }
 }
@@ -65,10 +65,10 @@ void qemu_breakpoint()  {
 
 
 
-void qemu_putuint(int i) {
-    unsigned int n, d = 1000000000;
+void qemu_putuint(int32_t i) {
+    uint32_t n, d = 1000000000;
     char str[255];
-    unsigned int dec_index = 0;
+    uint32_t dec_index = 0;
 
     while ((i / d == 0) && (d >= 10)) {
         d /= 10;
@@ -86,7 +86,7 @@ void qemu_putuint(int i) {
     qemu_putstring(str);
 }
 
-void qemu_putint(int i) {
+void qemu_putint(int32_t i) {
     if (i >= 0) {
         qemu_putuint(i);
     } else {
@@ -97,7 +97,7 @@ void qemu_putint(int i) {
 
 void qemu_puthex(uint32_t i) {
     const unsigned char hex[16]  =  { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
-    unsigned int n, d = 0x10000000;
+    uint32_t n, d = 0x10000000;
 
     qemu_putstring("0x");
 
@@ -115,7 +115,7 @@ void qemu_puthex(uint32_t i) {
 }
 
 void qemu_print(char *format, va_list args) {
-    int i = 0;
+    int32_t i = 0;
     char *string;
 
     while (format[i]) {
@@ -156,7 +156,7 @@ void qemu_printf(char *text, ...) {
     va_list args;
     // find the first argument
     va_start(args, text);
-    // pass print the output handle the format text and the first argument
+    // pass print32_t the output handle the format text and the first argument
     qemu_print(text, args);
 }
 

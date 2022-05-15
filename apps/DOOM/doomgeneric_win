@@ -67,7 +67,7 @@ static void addKeyToQueue(int pressed, unsigned char keyCode)
 	s_KeyQueueWriteIndex %= KEYQUEUE_SIZE;
 }
 
-static LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+static LRESULT CALLBACK wndProc(HWND hwnd, unsigned int msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
@@ -157,12 +157,12 @@ void DG_DrawFrame()
 	SwapBuffers(s_Hdc);
 }
 
-void DG_SleepMs(uint32_t ms)
+void DG_SleepMs(unsigned int ms)
 {
 	Sleep(ms);
 }
 
-uint32_t DG_GetTicksMs()
+uint DG_GetTicksMs()
 {
 	return GetTickCount();
 }

@@ -44,17 +44,17 @@ typedef struct {
     char reserved[12];
 } __attribute__((packed)) ustar_file_t;
 
-int oct2bin(unsigned char *str, int size);
+int32_t oct2bin(unsigned char *str, int32_t size);
 
-unsigned int tar_getsize(const char *in);
-int tar_lookup(unsigned char *archive, char *filename);
+uint32_t tar_getsize(const char *in);
+int32_t tar_lookup(unsigned char *archive, char *filename);
 
-uint32_t initrd_read(char *filename, int offset, int size, vfs_filesystem_t *u, void *buffer);
+uint32_t initrd_read(char *filename, int32_t offset, int32_t size, vfs_filesystem_t *u, void *buffer);
 
 uint32_t initrd_file_exists(char *filename, vfs_filesystem_t *u);
 uint32_t initrd_get_filesize(char *filename);
 
 uint32_t initrd_is_dir(char *filename);
 
-void initrd_list(int argc, char **arg);
+void initrd_list(int32_t argc, char **arg);
 void initrd_init(uint32_t begin, uint32_t end);

@@ -54,8 +54,8 @@ void SHA1_Init(sha1_context_t *hd)
  */
 static void Transform(sha1_context_t *hd, byte *data)
 {
-    uint32_t a,b,c,d,e,tm;
-    uint32_t x[16];
+    unsigned int a,b,c,d,e,tm;
+    unsigned int x[16];
 
     /* get values from the chaining vars */
     a = hd->h0;
@@ -237,7 +237,7 @@ void SHA1_Update(sha1_context_t *hd, byte *inbuf, size_t inlen)
 
 void SHA1_Final(sha1_digest_t digest, sha1_context_t *hd)
 {
-    uint32_t t, msb, lsb;
+    unsigned int t, msb, lsb;
     byte *p;
 
     SHA1_Update(hd, NULL, 0); /* flush */;

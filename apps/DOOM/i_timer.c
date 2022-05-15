@@ -31,7 +31,7 @@
 // returns time in 1/35th second tics
 //
 
-static uint32_t basetime = 0;
+static unsigned int basetime = 0;
 
 
 int I_GetTicks(void)
@@ -41,7 +41,7 @@ int I_GetTicks(void)
 
 int  I_GetTime (void)
 {
-    uint32_t ticks;
+    unsigned int ticks;
 
     ticks = I_GetTicks();
 
@@ -60,7 +60,7 @@ int  I_GetTime (void)
 
 int I_GetTimeMS(void)
 {
-    uint32_t ticks;
+    unsigned int ticks;
 
     ticks = I_GetTicks();
 

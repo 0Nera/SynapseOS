@@ -59,7 +59,7 @@ typedef struct
 // Location of each lump on disk.
 
 lumpinfo_t *lumpinfo;		
-unsigned int numlumps = 0;
+uint numlumps = 0;
 
 // Hash table for fast lookups
 
@@ -67,7 +67,7 @@ static lumpinfo_t **lumphash;
 
 // Hash function used for lump names.
 
-unsigned int W_LumpNameHash(const char *s)
+uint W_LumpNameHash(const char *s)
 {
     // This is the djb2 string hash function, modded to work on strings
     // that have a maximum length of 8.

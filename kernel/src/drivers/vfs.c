@@ -2,12 +2,12 @@
 
 #define MOUNTPOINTS_SIZE 100
 
-int __vfs_init = 0;
-int vfs_lastmnt = 0;
+int32_t __vfs_init = 0;
+int32_t vfs_lastmnt = 0;
 vfs_mount_info_t **vfs_mount_points = 0;
 
 void vfs_mount_list() {
-    for (int i = 0; i < vfs_lastmnt; ++i) {
+    for (int32_t i = 0; i < vfs_lastmnt; ++i) {
         qemu_printf("\n%s on %s type ", vfs_mount_points[i]->fs->dev->name, vfs_mount_points[i]->location);
 
         if (vfs_mount_points[i]->fs->fs_type == 0) {
@@ -26,8 +26,8 @@ void vfs_mount_list() {
     }
 }
 
-int vfs_mount(vfs_storage_dev_t *dev, vfs_filesystem_handles_t *fs_handles, int type, char *location, int block_size) {
-    for (int i = 0; i < vfs_lastmnt; ++i) {
+int32_t vfs_mount(vfs_storage_dev_t *dev, vfs_filesystem_handles_t *fs_handles, int32_t type, char *location, int32_t block_size) {
+    for (int32_t i = 0; i < vfs_lastmnt; ++i) {
         if (strcmp(vfs_mount_points[i]->location, location) == 0) {
             qemu_printf("\nVFS: Device %s already mounted.", location);
             return 0;
@@ -49,18 +49,18 @@ int vfs_mount(vfs_storage_dev_t *dev, vfs_filesystem_handles_t *fs_handles, int 
     return 1;
 }
 
-int vfs_mount_find(char *path, int *filename_add) {
+int32_t vfs_mount_find(char *path, int32_t *filename_add) {
     char *a = (char*) kheap_malloc(strlen(path) + 1);
     memset(a, 0, strlen(path) + 1);
     memcpy(a, path, strlen(path) + 1);
     
-    int at = 0;
+    int32_t at = 0;
     if (a[strlen(a)] == '/') {
         str_bksp(a, '/');
     }
 
     while (1) {
-        for (int i = 0; i < MOUNTPOINTS_SIZE; ++i) {
+        for (int32_t i = 0; i < MOUNTPOINTS_SIZE; ++i) {
             if (!vfs_mount_points[i]) {
                 break;
             }
@@ -81,9 +81,9 @@ int vfs_mount_find(char *path, int *filename_add) {
     return 0;
 }
 
-int vfs_read(const char *filename, int offset, int size, void *buf) {
-    int a = 0;
-    int mntn = vfs_mount_find(filename, &a);
+int32_t vfs_read(const char *filename, int32_t offset, int32_t size, void *buf) {
+    int32_t a = 0;
+    int32_t mntn = vfs_mount_find(filename, &a);
     filename += a + 1;
 
     if (vfs_mount_points[mntn]->fs_handles->read == 0) {
@@ -94,9 +94,9 @@ int vfs_read(const char *filename, int offset, int size, void *buf) {
     return 1;
 }
 
-int vfs_get_size(const char *filename) {
-    int a = 0;
-    int mntn = vfs_mount_find(filename, &a);
+int32_t vfs_get_size(const char *filename) {
+    int32_t a = 0;
+    int32_t mntn = vfs_mount_find(filename, &a);
     filename += a + 1; // Change the pointer (its not const, but char its pointing to is const)
 
     if (vfs_mount_points[mntn]->fs_handles->read == 0) {
@@ -106,9 +106,9 @@ int vfs_get_size(const char *filename) {
     return vfs_mount_points[mntn]->fs_handles->get_size(filename, vfs_mount_points[mntn]->fs);
 }
 
-int vfs_is_dir(char *filename) {
-    int a = 0;
-    int mntn = vfs_mount_find(filename, &a);
+int32_t vfs_is_dir(char *filename) {
+    int32_t a = 0;
+    int32_t mntn = vfs_mount_find(filename, &a);
     filename += a + 1;
 
     if (vfs_mount_points[mntn]->fs_handles->is_dir == 0) {
@@ -117,9 +117,9 @@ int vfs_is_dir(char *filename) {
     return vfs_mount_points[mntn]->fs_handles->is_dir(filename, vfs_mount_points[mntn]->fs);
 }
 
-int vfs_write(char *filename, int offset, int size, void *buf) {
-    int a = 0;
-    int mntn = vfs_mount_find(filename, &a);
+int32_t vfs_write(char *filename, int32_t offset, int32_t size, void *buf) {
+    int32_t a = 0;
+    int32_t mntn = vfs_mount_find(filename, &a);
     filename += a + 1;
 
     if (vfs_mount_points[mntn]->fs_handles->write == 0) {
@@ -130,9 +130,9 @@ int vfs_write(char *filename, int offset, int size, void *buf) {
     return 1;
 }
 
-int vfs_mkdir(char *filename, char *path, uint16_t perms) {
-    int a = 0;
-    int mntn = vfs_mount_find(path, &a);
+int32_t vfs_mkdir(char *filename, char *path, uint16_t perms) {
+    int32_t a = 0;
+    int32_t mntn = vfs_mount_find(path, &a);
     path += a + 1;
 
     if (vfs_mount_points[mntn]->fs_handles->mkdir == 0) {
@@ -143,9 +143,9 @@ int vfs_mkdir(char *filename, char *path, uint16_t perms) {
     return 1;
 }
 
-int vfs_mkfile(char *filename, char *path, uint16_t perms) {
-    int a = 0;
-    int mntn = vfs_mount_find(path, &a);
+int32_t vfs_mkfile(char *filename, char *path, uint16_t perms) {
+    int32_t a = 0;
+    int32_t mntn = vfs_mount_find(path, &a);
     path += a + 1;
 
     if (vfs_mount_points[mntn]->fs_handles->mkfile == 0) {
@@ -156,17 +156,17 @@ int vfs_mkfile(char *filename, char *path, uint16_t perms) {
     return 1;
 }
 
-int vfs_list(char *path, void *buf) {
+int32_t vfs_list(char *path, void *buf) {
     if (strcmp(path, "/") == 0) {
-        for (int i = 0; i < vfs_lastmnt; ++i) {
+        for (int32_t i = 0; i < vfs_lastmnt; ++i) {
             tty_printf(" %s ", vfs_mount_points[i]->location);
         }
 
         return 1;
     }
 
-    int a = 0;
-    int mntn = vfs_mount_find(path, &a);
+    int32_t a = 0;
+    int32_t mntn = vfs_mount_find(path, &a);
     path += a + 1;
 
     if (vfs_mount_points[mntn]->fs_handles->readdir == 0) {
@@ -177,9 +177,9 @@ int vfs_list(char *path, void *buf) {
     return 1;
 }
 
-int vfs_rm(char *filename) {
-    int a = 0;
-    int mntn = vfs_mount_find(filename, &a);
+int32_t vfs_rm(char *filename) {
+    int32_t a = 0;
+    int32_t mntn = vfs_mount_find(filename, &a);
     filename += a + 1;
 
     if (vfs_mount_points[mntn]->fs_handles->rm == 0) {
@@ -190,9 +190,9 @@ int vfs_rm(char *filename) {
     return 1;
 }
 
-int vfs_exists(const char *filename) {
-    int a = 0;
-    int mntn = vfs_mount_find(filename, &a);
+int32_t vfs_exists(const char *filename) {
+    int32_t a = 0;
+    int32_t mntn = vfs_mount_find(filename, &a);
     filename += a + 1;
 
     if (vfs_mount_points[mntn]->fs_handles->read == 0) {
@@ -202,7 +202,7 @@ int vfs_exists(const char *filename) {
 }
 
 void vfs_get_file_name_from_path(char *fpath, char *buf) {
-    int len = strlen(fpath), last_slash, was_slash = 0, p1, i;
+    int32_t len = strlen(fpath), last_slash, was_slash = 0, p1, i;
     last_slash = len - 1;
 
     for (i = len - 1; i >= 0; i--) {

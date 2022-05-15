@@ -5,7 +5,7 @@ virtual_addr kheap_begin; // Начало кучи ядра
 virtual_addr kheap_end; // Конец кучи ядра
 
 uint32_t kheap_memory_used; // Использованно памяти
-int kheap_alloc_number; // Число выделений
+int32_t kheap_alloc_number; // Число выделений
 
 
 void kheap_init() {
@@ -26,7 +26,7 @@ void *kheap_morecore(uint32_t size) {
     void *first_kheap_end = kheap_end; // Установка адреса возврата
     
     // Создание страниц
-    for (int pages = (size / PAGE_SIZE) + 1; pages-- > 0; kheap_end += PAGE_SIZE) {
+    for (int32_t pages = (size / PAGE_SIZE) + 1; pages-- > 0; kheap_end += PAGE_SIZE) {
         vmm_alloc_page(kheap_end);
         memset(kheap_end, 0x00, PAGE_SIZE);
     }
@@ -35,7 +35,7 @@ void *kheap_morecore(uint32_t size) {
 }
 
 // Освобождение ранее выделенного элемента из кучи ядра
-int kheap_free(void *address) {
+int32_t kheap_free(void *address) {
     kheap_item *temp_item, *item;
 
     if (address == NULL) {

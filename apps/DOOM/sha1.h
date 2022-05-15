@@ -24,8 +24,8 @@ typedef struct sha1_context_s sha1_context_t;
 typedef byte sha1_digest_t[20];
 
 struct sha1_context_s {
-    uint32_t h0,h1,h2,h3,h4;
-    uint32_t nblocks;
+    unsigned int h0,h1,h2,h3,h4;
+    unsigned int nblocks;
     byte buf[64];
     int count;
 };

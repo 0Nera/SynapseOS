@@ -14,7 +14,7 @@ static uint8_t ide_read_register(uint8_t channel, uint8_t reg);
 static void ide_write_register(uint8_t channel, uint8_t reg, uint8_t data);
 
 
-uint32_t ide_get_size(int drive){
+uint32_t ide_get_size(int32_t drive){
     return g_ide_devices[drive].size;
 }
 
@@ -66,16 +66,16 @@ static void ide_write_register(uint8_t channel, uint8_t reg, uint8_t data) {
 }
 
 // read long word from reg port for quads times
-void insl(uint16_t reg, uint32_t *buffer, int quads) {
-    int index;
+void insl(uint16_t reg, uint32_t *buffer, int32_t quads) {
+    int32_t index;
     for (index = 0; index < quads; index++) {
         buffer[index] = inl(reg);
     }
 }
 
 // write long word to reg port for quads times
-void outsl(uint16_t reg, uint32_t *buffer, int quads) {
-    int index;
+void outsl(uint16_t reg, uint32_t *buffer, int32_t quads) {
+    int32_t index;
     for (index = 0; index < quads; index++) {
         outl(reg, buffer[index]);
     }
@@ -133,7 +133,7 @@ void ide_write_buffer(uint8_t channel, uint8_t reg, uint32_t *buffer, uint32_t q
 // wait until drive is ready, keep polling ide device until it is not busy status
 uint8_t ide_polling(uint8_t channel, uint8_t advanced_check) {
     // (I) Delay 400 nanosecond for BSY to be set:
-    for (int i = 0; i < 4; i++)
+    for (int32_t i = 0; i < 4; i++)
         // Reading the Alternate Status port wastes 100ns; loop four times.
         ide_read_register(channel, ATA_REG_ALTSTATUS);
 
@@ -229,7 +229,7 @@ bus_master_addr: Bus master address(pass 0 for now)
 void ide_init(uint32_t prim_channel_base_addr, uint32_t prim_channel_control_base_addr,
               uint32_t sec_channel_base_addr, uint32_t sec_channel_control_addr,
               uint32_t bus_master_addr) {
-    int i, j, k, count = 0;
+    int32_t i, j, k, count = 0;
     unsigned char ide_buf[2048] = {0};
 
     // 1- Detect I/O Ports which interface IDE Controller:
@@ -290,7 +290,7 @@ void ide_init(uint32_t prim_channel_base_addr, uint32_t prim_channel_control_bas
             }
 
             // (V) Read Identification Space of the Device:
-            ide_read_buffer(i, ATA_REG_DATA, (unsigned int *)ide_buf, 128);
+            ide_read_buffer(i, ATA_REG_DATA, (uint32_t *)ide_buf, 128);
 
             // (VI) Read Device Parameters:
             g_ide_devices[count].reserved = 1;
@@ -299,15 +299,15 @@ void ide_init(uint32_t prim_channel_base_addr, uint32_t prim_channel_control_bas
             g_ide_devices[count].drive = j;
             g_ide_devices[count].signature = *((unsigned short *)(ide_buf + ATA_IDENT_DEVICETYPE));
             g_ide_devices[count].features = *((unsigned short *)(ide_buf + ATA_IDENT_CAPABILITIES));
-            g_ide_devices[count].command_sets = *((unsigned int *)(ide_buf + ATA_IDENT_COMMANDSETS));
+            g_ide_devices[count].command_sets = *((uint32_t *)(ide_buf + ATA_IDENT_COMMANDSETS));
 
             // (VII) Get Size:
             if (g_ide_devices[count].command_sets & (1 << 26))
                 // Device uses 48-Bit Addressing:
-                g_ide_devices[count].size = *((unsigned int *)(ide_buf + ATA_IDENT_MAX_LBA_EXT));
+                g_ide_devices[count].size = *((uint32_t *)(ide_buf + ATA_IDENT_MAX_LBA_EXT));
             else
                 // Device uses CHS or 28-bit Addressing:
-                g_ide_devices[count].size = *((unsigned int *)(ide_buf + ATA_IDENT_MAX_LBA));
+                g_ide_devices[count].size = *((uint32_t *)(ide_buf + ATA_IDENT_MAX_LBA));
 
             // (VIII) String indicates model of device (like Western Digital HDD and SONY DVD-RW...):
             for (k = 0; k < 40; k += 2) {
@@ -328,7 +328,7 @@ void ide_init(uint32_t prim_channel_base_addr, uint32_t prim_channel_control_bas
         }
     }
 
-    // 4- Print Summary:
+    // 4- Print32_t Summary:
     for (i = 0; i < 5; i++)
         if (g_ide_devices[i].reserved == 1) {
             tty_printf("%d:-\n", i);
@@ -477,7 +477,7 @@ void ide_irq() {
 }
 
 // start from lba = 0
-int ide_read_sectors(uint8_t drive, uint8_t num_sectors, uint32_t lba, uint32_t buffer) {
+int32_t ide_read_sectors(uint8_t drive, uint8_t num_sectors, uint32_t lba, uint32_t buffer) {
     // 1: Check if the drive presents:
     if (drive > MAXIMUM_IDE_DEVICES || g_ide_devices[drive].reserved == 0) {
         tty_printf("IDE ERROR: Drive not found\n");
@@ -493,14 +493,14 @@ int ide_read_sectors(uint8_t drive, uint8_t num_sectors, uint32_t lba, uint32_t 
         uint8_t err;
         if (g_ide_devices[drive].type == IDE_ATA)
             err = ide_ata_access(ATA_READ, drive, lba, num_sectors, buffer);
-        // print if any error in reading
+        // print32_t if any error in reading
         return ide_print_error(drive, err);
     }
     return 0;
 }
 
 // start from lba = 0
-int ide_write_sectors(uint8_t drive, uint8_t num_sectors, uint32_t lba, uint32_t buffer) {
+int32_t ide_write_sectors(uint8_t drive, uint8_t num_sectors, uint32_t lba, uint32_t buffer) {
     // 1: Check if the drive presents:
     if (drive > MAXIMUM_IDE_DEVICES || g_ide_devices[drive].reserved == 0) {
         tty_printf("IDE ERROR: Drive not found\n");
@@ -514,7 +514,7 @@ int ide_write_sectors(uint8_t drive, uint8_t num_sectors, uint32_t lba, uint32_t
         uint8_t err;
         if (g_ide_devices[drive].type == IDE_ATA)
             err = ide_ata_access(ATA_WRITE, drive, lba, num_sectors, buffer);
-        // print if any error in writing
+        // print32_t if any error in writing
         return ide_print_error(drive, err);
     }
     return 0;
@@ -523,14 +523,14 @@ int ide_write_sectors(uint8_t drive, uint8_t num_sectors, uint32_t lba, uint32_t
 void ata_init() {
     ide_init(0x1F0, 0x3F6, 0x170, 0x376, 0x000);
 
-    for(int i = 0; i < MAXIMUM_IDE_DEVICES; i++) {
+    for(int32_t i = 0; i < MAXIMUM_IDE_DEVICES; i++) {
         tty_printf("%d ide_device: [%s]\n", i, g_ide_devices[i].model);
     }
     
 }
 
-int ata_get_drive_by_model(const char *model) {
-    int i;
+int32_t ata_get_drive_by_model(const char *model) {
+    int32_t i;
     for(i = 0; i < MAXIMUM_IDE_DEVICES; i++) {
         if(strcmp((const char*)g_ide_devices[i].model, (char *)model) == 0)
             return i;

@@ -1999,7 +1999,7 @@ int M_GetIntVariable(char *name)
     variable = GetDefaultForName(name);
 
     if (variable == NULL || !variable->bound
-     || (variable->type != DEFAULT_INT && variable->type != DEFAULT_INT_HEX))
+     || (variable->type != DEFAULT_int && variable->type != DEFAULT_INT_HEX))
     {
         return 0;
     }

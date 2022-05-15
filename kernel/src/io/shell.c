@@ -38,8 +38,8 @@ void shell() {
                         "->cd    <folder>      |open folder\n" \
                         "->./<file>            |run .elf programm in current folder\n" \
                         "->sbf   <code>        |run sbf programm\n" \
-                        "->ls                  |print list of files\n" \
-                        "->sysinfo             |print information about system\n" \
+                        "->ls                  |print32_t list of files\n" \
+                        "->sysinfo             |print32_t information about system\n" \
                         "->pcilist             |list of pci devices\n" \
                         "->ssfs                |open SSFS command line\n" 
                         );
@@ -168,7 +168,7 @@ void cat(char *fname) {
         tty_printf("cat: error file not found\n");
     } else {
         uint32_t fsize = vfs_get_size(fname);
-        int res = vfs_read(fname, 0, fsize, buf);
+        int32_t res = vfs_read(fname, 0, fsize, buf);
         (void)res;
 
         buf[fsize] = '\0';
@@ -212,9 +212,9 @@ void sysinfo(){
 
 void sbf(char *src){
     char buffer[30000] = {0};
-    int cursor = 0, loop = 0, current_char = 0;
+    int32_t cursor = 0, loop = 0, current_char = 0;
 
-    for (int i = 0; src[i] != 0; i++) {
+    for (int32_t i = 0; src[i] != 0; i++) {
         switch (src[i]) {
             case '+':
                 buffer[cursor]++;

@@ -63,7 +63,7 @@ typedef struct idt_entry idt_entry_t;
 // Таким образом, обработчик прерывания должен получать состояние регистров процессора.
 typedef void (*interrupt_handler_t)(struct regs *r);
 
-int register_interrupt_handler(uint32_t idt_index, interrupt_handler_t handler);
+int32_t register_interrupt_handler(uint32_t idt_index, interrupt_handler_t handler);
 
 // Настройка idt
 void idt_init();

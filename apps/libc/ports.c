@@ -50,8 +50,8 @@ void sleep(int i) {
 
 
 //Play sound using built in speaker 
-void play_sound(uint32_t nFrequence) {	
-    uint32_t Div;	
+void play_sound(unsigned int nFrequence) {	
+    unsigned int Div;	
     uint8_t tmp;   
     //Set the PIT to the desired frequency	
     Div = 1193180 / nFrequence;	

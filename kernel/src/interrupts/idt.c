@@ -111,7 +111,7 @@ void IRQ_clear_mask(unsigned char IRQline) {
 }
 
 
-void init_pics(int pic1, int pic2) {
+void init_pics(int32_t pic1, int32_t pic2) {
     outb(PIC1, ICW1);
     outb(PIC2, ICW1);
     outb(PIC1 + 1, pic1);
@@ -141,7 +141,7 @@ void idt_init() {
 
     idt_load(&idtp);
 
-    int i;
+    int32_t i;
     for (i = 0; i < IDT_NUM_ENTRIES; i++) {
         idt[i].handler_lo = 0;
         idt[i].handler_hi = 0;
@@ -204,9 +204,9 @@ void idt_init() {
     SET_IDT_ENTRY(47);
 
 
-    SET_IDT_ENTRY(128); // Need for system calls - int 0x80 , 0x80 = 128 inв виде числа
+    SET_IDT_ENTRY(128); // Need for system calls - int32_t 0x80 , 0x80 = 128 inв виде числа
 
-    for (int i = 0; i < 16; ++i) {
+    for (int32_t i = 0; i < 16; ++i) {
         IRQ_clear_mask(i);
     }
 
@@ -218,7 +218,7 @@ void idt_init() {
 
 static interrupt_handler_t interrupt_handlers[IDT_NUM_ENTRIES];
 
-int register_interrupt_handler(uint32_t idt_index, interrupt_handler_t handler) {
+int32_t register_interrupt_handler(uint32_t idt_index, interrupt_handler_t handler) {
     if (idt_index >= IDT_NUM_ENTRIES) {
         return 0;
     }
