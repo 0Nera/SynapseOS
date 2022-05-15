@@ -1,5 +1,5 @@
-
 #include <kernel.h>
+
 
 // Returns 0 if header is valid, 1 if magic number invalid, 2 and more if file isn't compatible
 uint8_t elf_check_header(struct elf_hdr *hdr) {
@@ -27,6 +27,7 @@ uint8_t elf_check_header(struct elf_hdr *hdr) {
     return 0;
 }
 
+
 void *elf_open(const char *fname) { // Returns pointer to ELF file.
     if (!vfs_exists(fname)) {
         tty_printf("elf_open: elf [%s] does not exist\n", fname);
@@ -46,15 +47,18 @@ void *elf_open(const char *fname) { // Returns pointer to ELF file.
     return hdr;
 }
 
-struct elf_section_header *elf_get_section_header(void *elf_file, int32_t num) {
+
+elf_section_header_t *elf_get_section_header(void *elf_file, int32_t num) {
     struct elf_hdr *hdr = (struct elf_hdr*) elf_file;
-    return (struct elf_section_header *) (elf_file + hdr->shoff + hdr->sh_ent_size*num);
+    return (elf_section_header_t *) (elf_file + hdr->shoff + hdr->sh_ent_size*num);
 }
 
-struct elf_program_header *elf_get_program_header(void *elf_file, int32_t num) {
+
+elf_program_header_t *elf_get_program_header(void *elf_file, int32_t num) {
     struct elf_hdr *hdr = (struct elf_hdr*) elf_file;
-    return (struct elf_program_header*) (elf_file + hdr->phoff + hdr->ph_ent_size*num);
+    return (elf_program_header_t*) (elf_file + hdr->phoff + hdr->ph_ent_size*num);
 }
+
 
 const char *elf_get_section_name(void *elf_file, int32_t num) {
     struct elf_hdr *hdr = (struct elf_hdr*) elf_file;
@@ -109,7 +113,7 @@ void elf_info_short(const char *name) {
 
     int32_t i;
     for(i = 1; i<hdr->sh_ent_cnt; i++) {
-        struct elf_section_header *shdr = (struct elf_section_header*) (elf_file + hdr->shoff + hdr->sh_ent_size * i);
+        elf_section_header_t *shdr = (elf_section_header_t*) (elf_file + hdr->shoff + hdr->sh_ent_size * i);
         tty_printf("\t\t\tSection %d: name: %s, data offset: %u.\n", i, elf_get_section_name(elf_file, i), shdr->offset, shdr->name, i);
     }
 }
@@ -133,7 +137,7 @@ void elf_info(const char *name) {
 
     int32_t i;
     for (i = 0; i < hdr->sh_ent_cnt; i++) {
-        struct elf_section_header *shdr = (struct elf_section_header*) (elf_file + hdr->shoff + hdr->sh_ent_size * i);
+        elf_section_header_t *shdr = (elf_section_header_t*) (elf_file + hdr->shoff + hdr->sh_ent_size * i);
         tty_printf("\t\t\tSection %d:\n", i);
         tty_printf("\t\t\t\tActual section offset: %u\n\t\t\t\tSection name offset in string table: %d\n", shdr->offset, shdr->name);
         tty_printf("\t\t\t\tSection name: %s\n", elf_get_section_name(elf_file, i));
@@ -161,7 +165,7 @@ int32_t run_elf_file(const char *name/*, char **argv, char **env __attribute__((
 
     for (int32_t i = 0; i < hdr->ph_ent_cnt; i++) {
         //printf("Segment [%i/%i]: ", i, hdr->ph_ent_cnt);
-        struct elf_program_header *phdr = elf_get_program_header(elf_file, i);
+        elf_program_header_t *phdr = elf_get_program_header(elf_file, i);
         if (phdr->type != SEGTYPE_LOAD) {
             continue; // We only can load segments to the memory, so just skip it.
         }

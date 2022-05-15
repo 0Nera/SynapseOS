@@ -52,8 +52,7 @@ struct elf_section_header {
 	uint32_t	entsize;
 };
 
-struct elf_program_header
-{
+struct elf_program_header {
 	uint32_t type; //Segment type: 0 - null, 1 - load to load_to address, 2 - requires dynamic linking, 3 - use interpreter, 4 - note.
 	uint32_t data_offset; //Segment data offset in the file.
 	uint32_t load_to; //Address in (virtual) memory on which segment data should be loaded to.
@@ -64,10 +63,13 @@ struct elf_program_header
 	uint32_t align; //Alignment, must be power of 2.
 };
 
+typedef struct elf_program_header elf_program_header_t;
+typedef struct elf_section_header elf_section_header_t;
+
 
 uint8_t elf_check_header(struct elf_hdr *hdr);
-struct elf_section_header *elf_get_section_header(void *elf_file, int32_t num);
-struct elf_program_header *elf_get_program_header(void *elf_file, int32_t num);
+elf_section_header_t *elf_get_section_header(void *elf_file, int32_t num);
+elf_program_header_t *elf_get_program_header(void *elf_file, int32_t num);
 const char *elf_get_section_name(void *elf_file, int32_t num);
 void elf_hdr_info(struct elf_hdr *hdr);
 
