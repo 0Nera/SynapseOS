@@ -10,7 +10,7 @@ int32_t kheap_alloc_number; // Число выделений
 
 void kheap_init() {
     kheap_begin = KHEAP_START_VADDR;
-    kheap_end = NULL;
+    kheap_end = (virtual_addr)NULL;
 
     kheap_alloc_number = 0;
     kheap_memory_used = 0;
@@ -19,16 +19,16 @@ void kheap_init() {
 
 // Увеличение кучи ядра на некоторый размер, он будет округлен до размера страницы
 void *kheap_morecore(uint32_t size) {
-    if (kheap_end == NULL) {    // Когда kheap_end == NULL мы должны создать начальную кучу
+    if (kheap_end == (virtual_addr)NULL) {    // Когда kheap_end == NULL мы должны создать начальную кучу
         kheap_end = kheap_begin;
     }
 
-    void *first_kheap_end = kheap_end; // Установка адреса возврата
+    void *first_kheap_end = (void*)kheap_end; // Установка адреса возврата
     
     // Создание страниц
     for (int32_t pages = (size / PAGE_SIZE) + 1; pages-- > 0; kheap_end += PAGE_SIZE) {
         vmm_alloc_page(kheap_end);
-        memset(kheap_end, 0x00, PAGE_SIZE);
+        memset((void*)kheap_end, 0x00, PAGE_SIZE);
     }
 
     return first_kheap_end; // Мы должны вернуть начальный адрес памяти, которую мы выделили в кучу
@@ -39,14 +39,14 @@ int32_t kheap_free(void *address) {
     kheap_item *temp_item, *item;
 
     if (address == NULL) {
-        return;
+        return -1;
     }
 
     
     item = (kheap_item*) ((uint32_t) address - (uint32_t) sizeof(kheap_item)); // Элемент который нужно освободить
 
     // Поиск
-    for (temp_item = kheap_begin; temp_item != NULL; temp_item = temp_item->next) {
+    for (temp_item = (kheap_item*)kheap_begin; temp_item != NULL; temp_item = temp_item->next) {
         if (temp_item == item) {
             // Освобождение
             temp_item->used = 0;
@@ -54,7 +54,7 @@ int32_t kheap_free(void *address) {
             kheap_alloc_number--;
 
             // Объединение смежных свободных элементов
-            for (temp_item = kheap_begin; temp_item != NULL; temp_item = temp_item->next) {
+            for (temp_item = (kheap_item*)kheap_begin; temp_item != NULL; temp_item = temp_item->next) {
                 while (!temp_item->used && temp_item->next != NULL && !temp_item->next->used) {
                     temp_item->size += sizeof(kheap_item) + temp_item->next->size;
                     temp_item->next = temp_item->next->next;
@@ -81,9 +81,9 @@ void *kheap_malloc(uint32_t size) {
 
     kheap_item *last_item;
     // Если куча уже есть
-    if (kheap_end != NULL) {
+    if (kheap_end != (virtual_addr)NULL) {
         // Поиск первого элемента
-        for (new_item = kheap_begin; new_item != NULL; new_item = new_item->next) {
+        for (new_item = (kheap_item*)kheap_begin; new_item != NULL; new_item = new_item->next) {
             if (new_item->next == NULL) {
                 last_item = new_item;
             }
