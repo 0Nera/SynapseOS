@@ -136,6 +136,14 @@ void checkAllBuses(void) {
 							tty_printf("NM10/ICH7 Family SMBus Controller ");
 							qemu_printf("NM10/ICH7 Family SMBus Controller ");
 							break;
+						case 0x1360:
+							tty_printf("RTL8139 Ethernet ");
+							qemu_printf("RTL8139 Ethernet ");
+							break;
+						case 0x1300:
+							tty_printf("RTL8139 Ethernet ");
+							qemu_printf("RTL8139 Ethernet ");
+							break;
 						default:
 							tty_printf("device %x ", getDeviceID(bus, device, function));
 							qemu_printf("device %x ", getDeviceID(bus, device, function));
