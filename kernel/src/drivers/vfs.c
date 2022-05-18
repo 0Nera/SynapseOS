@@ -1,3 +1,9 @@
+/*
+    Взято из https://github.com/rgimad/EOS/tree/d3e2062fc909d8b15d8637950050281f051270d2
+    Под лицензией MIT license
+*/
+
+
 #include <kernel.h>
 
 #define MOUNTPOINTS_SIZE 100

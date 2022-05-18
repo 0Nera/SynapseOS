@@ -34,6 +34,7 @@ void *kheap_morecore(uint32_t size) {
     return first_kheap_end; // Мы должны вернуть начальный адрес памяти, которую мы выделили в кучу
 }
 
+
 // Освобождение ранее выделенного элемента из кучи ядра
 int32_t kheap_free(void *address) {
     kheap_item *temp_item, *item;
@@ -67,6 +68,7 @@ int32_t kheap_free(void *address) {
     }
     return -1;
 }
+
 
 // Выделение произвольного размера памяти из кучи ядра
 void *kheap_malloc(uint32_t size) {
@@ -128,10 +130,4 @@ void *kheap_malloc(uint32_t size) {
     kheap_memory_used += total_size;
 
     return (void*) ((uint32_t) new_item + (uint32_t) sizeof(kheap_item)); // Возвращаем вновь выделенную ячейку памяти
-}
-
-
-void kheap_print_stat() {
-    tty_printf("\nallocs number = %d", kheap_alloc_number);
-    tty_printf("\nmemory used = %d bytes\n", kheap_memory_used);
 }

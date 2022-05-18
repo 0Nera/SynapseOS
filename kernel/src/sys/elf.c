@@ -1,3 +1,9 @@
+/*
+    Взято из https://github.com/rgimad/EOS/tree/d3e2062fc909d8b15d8637950050281f051270d2
+    Под лицензией MIT license
+*/
+
+
 #include <kernel.h>
 
 
@@ -69,6 +75,7 @@ const char *elf_get_section_name(void *elf_file, int32_t num) {
              + elf_get_section_header(elf_file, num)->name;
 }
 
+
 void elf_hdr_info(struct elf_hdr *hdr) {
     tty_printf("\tHeader information:\n");
     tty_printf("\t\tArchitecture: %s\n", (hdr->arch==ELF_ARCH_32BIT) 
@@ -99,24 +106,7 @@ void elf_hdr_info(struct elf_hdr *hdr) {
     tty_printf("\t\tProgram header count: %d\n", hdr->ph_ent_cnt);
 }
 
-void elf_info_short(const char *name) {
-    void *elf_file = elf_open(name);
-    if (elf_file == NULL) {
-        return;
-    }
 
-    struct elf_hdr *hdr = (struct elf_hdr*) elf_file;
-    tty_printf("\tName: %s\n", name);
-    tty_printf("\tFile size: %u\n\tELF file info:\n", vfs_get_size(name));
-    elf_hdr_info(hdr);
-    tty_printf("\t\tSection list:\n");
-
-    int32_t i;
-    for(i = 1; i<hdr->sh_ent_cnt; i++) {
-        elf_section_header_t *shdr = (elf_section_header_t*) (elf_file + hdr->shoff + hdr->sh_ent_size * i);
-        tty_printf("\t\t\tSection %d: name: %s, data offset: %u.\n", i, elf_get_section_name(elf_file, i), shdr->offset, shdr->name, i);
-    }
-}
 
 void elf_info(const char *name) {
     if (!vfs_exists(name)) {

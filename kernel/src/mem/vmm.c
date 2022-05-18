@@ -1,10 +1,19 @@
+/*
+    Взято из https://github.com/rgimad/EOS/tree/d3e2062fc909d8b15d8637950050281f051270d2
+    Под лицензией MIT license
+*/
+
+
 #include <kernel.h>
 
+
 page_directory *kernel_page_dir; // Pointer (physical) to kernel page dircetory structure
+
 
 uint32_t kv2p(void *a) {
     return (uint32_t)a - 0xC0000000;
 }
+
 
 bool vmm_alloc_page(virtual_addr vaddr) {
     physical_addres paddr = pmm_alloc_block();
@@ -16,8 +25,10 @@ bool vmm_alloc_page(virtual_addr vaddr) {
     return true;
 }
 
+
 bool vmm_alloc_page_with_userbit(virtual_addr vaddr) {
     physical_addres paddr = pmm_alloc_block();
+
     if (!paddr) {
         return false;
     }
@@ -28,8 +39,10 @@ bool vmm_alloc_page_with_userbit(virtual_addr vaddr) {
     return true;
 }
 
+
 void vmm_free_page(virtual_addr vaddr) {
     page_table_entry *pte = GET_PTE(vaddr);
+
     if (!page_table_entry_is_present(*pte)) {
         tty_printf("oh, you try to delete not present page\n");
         return;
@@ -42,8 +55,10 @@ void vmm_free_page(virtual_addr vaddr) {
     page_table_entry_del_attrib(pte, I86_PTE_PRESENT);
 }
 
+
 void vmm_create_kernel_page_dir() {
     kernel_page_dir = (page_directory*) pmm_alloc_block();
+
     if (kernel_page_dir == (page_directory*)0xFFFFFFFF) {
         tty_printf("Failed to allocate phys memory for kernel page dir\n");
         return;
@@ -68,6 +83,7 @@ void vmm_create_kernel_page_dir() {
 
 void vmm_map_page(physical_addres paddr, virtual_addr vaddr) {
     page_dir_entry *pde = GET_PDE(vaddr);
+
     if (!page_dir_entry_is_present(*pde)) {                         // Если таблицы страниц нет, создайте ее
         physical_addres pt_p = pmm_alloc_block();                   // Это ФИЗИЧЕСКИЙ адрес
         if (pt_p == 0xFFFFFFFF) {
@@ -92,6 +108,7 @@ void vmm_map_page(physical_addres paddr, virtual_addr vaddr) {
 
 virtual_addr vmm_temp_map_page(physical_addres paddr) {
     page_table_entry *pte = GET_PTE(TEMP_PAGE_ADDR);
+
     page_table_entry_set_frame(pte, PAGE_ALIGN_DOWN(paddr));
     page_table_entry_add_attrib(pte, I86_PTE_PRESENT);
     page_table_entry_add_attrib(pte, I86_PTE_WRITABLE);
@@ -109,7 +126,6 @@ void vmm_switch_page_directory(page_directory *page_dir_phys_addr) {
 
 
 void vmm_init() {
-
     vmm_create_kernel_page_dir();
 
     page_table *table1 = (page_table*) pmm_alloc_block();
@@ -160,15 +176,18 @@ void page_table_entry_add_attrib(page_table_entry *entry, uint32_t attrib) {
     *entry |= attrib;
 }
 
+
 // Delete attribute to pte
 void page_table_entry_del_attrib(page_table_entry *entry, uint32_t attrib) {
     *entry &= ~attrib;
 }
 
+
 // Map pte to physical frame
 void page_table_entry_set_frame(page_table_entry *entry, physical_addres addr) {
     *entry = (*entry & ~I86_PTE_FRAME) | addr;
 }
+
 
 bool page_table_entry_is_present(page_table_entry entry) {
     return entry & I86_PTE_PRESENT;
