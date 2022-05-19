@@ -51,10 +51,18 @@ void kernel(int32_t magic_number, struct multiboot_info *mboot_info) {
 
     keyboard_install();                     // Установка драйвера клавиатуры
 
-    //run_elf_file("/initrd/apps/test.elf");
 
     pci_init();                             // Установка драйвера PCI
 
     ata_init();                             // Установка драйвера ATA
+
+    RTL8139_init();
     shell();                                // Активация терминала
+
+
+    // Работает, но надо доделать 
+    //run_driver_thread("/initrd/sys/shell.sea");
+    //run_driver_thread("/initrd/sys/user.sea");
+    //run_driver_thread("/initrd/sys/interface.sea");
+    //run_driver_thread("/initrd/sys/kernel.elf");
 }
