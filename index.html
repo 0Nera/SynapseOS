@@ -8,7 +8,7 @@
     <meta name="author" content="Арен Елчинян" />
     <title>SynapseOS</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="https://0nera.github.io/SynapseOS/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="favicon.png" />
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
@@ -33,6 +33,24 @@
             accurateTrackBounce: true,
             webvisor: true
         });
+
+        window.onload = function() {
+            let download = document.getElementById('download');
+            download.innerText = "Загрузка";
+
+            fetch(`https://api.github.com/repos/0Nera/SynapseOS/releases`).then(data => {
+                data.json().then(json => {
+                    fetch(json[0].assets_url).then(adata => {
+                        adata.json().then(ajson => {
+                            let downloadHref = ajson[0].browser_download_url;
+                            console.log(downloadHref);
+                            download.href = downloadHref;
+                            download.innerText = "Скачать";
+                        });
+                    });
+                });
+            });
+        }
     </script>
     <noscript><div><img src="https://mc.yandex.ru/watch/67897255" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <!-- /Yandex.Metrika counter -->
@@ -65,7 +83,7 @@
                         <p class="lead text-white-50 mb-4">Операционная система с документацией на русском языке и открытым исходным кодом</p>
                         <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
                             <a class="btn btn-primary btn-lg px-4 me-sm-3" href="#portfolio">О проекте</a>
-                            <a class="btn btn-outline-light btn-lg px-4" href="#download">Скачать</a>
+                            <a id="download" class="btn btn-outline-light btn-lg px-4" href="#download">Скачать</a>
                         </div>
                     </div>
                 </div>
