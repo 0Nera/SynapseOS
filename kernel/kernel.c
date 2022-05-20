@@ -57,6 +57,7 @@ void kernel(int32_t magic_number, struct multiboot_info *mboot_info) {
     ata_init();                             // Установка драйвера ATA
 
     RTL8139_init();
+    
     shell();                                // Активация терминала
 
 

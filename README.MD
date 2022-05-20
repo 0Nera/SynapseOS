@@ -42,13 +42,15 @@ SynapseOS- простая x86 операционная система на яз�
 
 ## Благодарности
 
+- <https://vk.com/id_doczom>
 - <https://github.com/rgimad>
-
-## Ссылки
-
-- Группа ВКонтакте <https://vk.com/synapseos>
 
 ## Используемые ресурсы
 
-- <https://wiki.osdev.org/>
+- <https://wiki.osdev.org/Main_Page>
+- <http://www.jamesmolloy.co.uk/tutorial_html/>
+- <http://www.osdever.net/bkerndev/Docs/title.htm>
+- <https://littleosbook.github.io>
+- <http://www.brokenthorn.com/Resources/>
+- <http://www.osdever.net/tutorials/>
 - <https://github.com/rgimad/EOS>

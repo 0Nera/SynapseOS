@@ -230,6 +230,26 @@ void tty_puthex(uint32_t i) {
 
 
 /*
+    tty_puthex - вывод hex чисел
+*/
+void tty_puthex_v(uint32_t i) {
+    const unsigned char hex[16]  =  { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+    uint32_t n, d = 0x10000000;
+
+    while((i / d == 0) && (d >= 0x10)) d /= 0x10;
+
+    n = i;
+
+    while( d >= 0xF ) {
+        tty_putchar(hex[n/d]);
+        n = n % d;
+        d /= 0x10;
+    }
+
+    tty_putchar(hex[n]);
+}
+
+/*
     tty_print32_t - строгий, форматированный вывод
 */
 void tty_print(char *format, va_list args) {
@@ -256,6 +276,9 @@ void tty_print(char *format, va_list args) {
                     break;
                 case 'x':
                     tty_puthex(va_arg(args, uint32_t));
+                    break;
+                case 'v':
+                    tty_puthex_v(va_arg(args, uint32_t));
                     break;
                 default:
                     tty_putchar(format[i]);

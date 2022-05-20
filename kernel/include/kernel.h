@@ -25,6 +25,7 @@
 #include <drivers/pci.h>
 #include <drivers/ata.h>
 #include <drivers/time.h>
+#include <drivers/net.h>
 
 #include <io/tty.h>
 #include <io/vgafnt.h>

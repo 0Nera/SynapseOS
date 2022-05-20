@@ -1,7 +1,9 @@
 #pragma once
 
+
 #include <stdint.h>
 #include <stdbool.h>
+
 
 #define ELF_ARCH_32BIT (1)
 #define ELF_ARCH_64BIT (2)

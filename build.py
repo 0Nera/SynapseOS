@@ -5,7 +5,8 @@ SYS_OBJ = "bin/kernel/kernel.o bin/kernel/elf.o bin/kernel/tss.o bin/kernel/sysc
 FS_OBJ = "bin/kernel/SSFS.o"
 ARCH_OBJ = "bin/kernel/starter.o bin/kernel/interrupts.o bin/kernel/paging.o"
 MEM_OBJ = "bin/kernel/pmm.o bin/kernel/vmm.o bin/kernel/kheap.o bin/kernel/paging_c.o"
-DRIVERS_OBJ = "bin/kernel/vfs.o bin/kernel/ramdisk.o bin/kernel/keyboard.o bin/kernel/pci.o bin/kernel/ata.o bin/kernel/time.o bin/kernel/RTL8139.o"
+DRIVERS_OBJ = "bin/kernel/vfs.o bin/kernel/ramdisk.o bin/kernel/keyboard.o bin/kernel/pci.o bin/kernel/ata.o bin/kernel/time.o" \
+    " bin/kernel/RTL8139.o bin/kernel/dhcp.o bin/kernel/udp.o bin/kernel/net_utils.o bin/kernel/ethernet.o bin/kernel/arp.o bin/kernel/ip.o"
 IO_OBJ = "bin/kernel/tty.o bin/kernel/vgafnt.o bin/kernel/ports.o bin/kernel/shell.o"
 INTERRUPTS_OBJ = "bin/kernel/gdt.o bin/kernel/idt.o"
 LIBK_OBJ = "bin/kernel/stdlib.o bin/kernel/string.o bin/kernel/list.o"
@@ -34,7 +35,13 @@ def build_all():
     os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/drivers/pci.c -o bin/kernel/pci.o")
     os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/drivers/ata.c -o bin/kernel/ata.o")
     os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/drivers/time.c -o bin/kernel/time.o")
-    os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/drivers/RTL8139.c -o bin/kernel/RTL8139.o")
+    os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/drivers/network/RTL8139.c -o bin/kernel/RTL8139.o")
+    os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/drivers/network/ethernet.c -o bin/kernel/ethernet.o")
+    os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/drivers/network/net_utils.c -o bin/kernel/net_utils.o")
+    os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/drivers/network/arp.c -o bin/kernel/arp.o")
+    os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/drivers/network/ip.c -o bin/kernel/ip.o")
+    os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/drivers/network/dhcp.c -o bin/kernel/dhcp.o")
+    os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/drivers/network/udp.c -o bin/kernel/udp.o")
 
     os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/io/tty.c -o bin/kernel/tty.o")
     os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/io/vgafnt.c -o bin/kernel/vgafnt.o")
@@ -59,6 +66,7 @@ def build_all():
 if __name__ == "__main__":
     try:
         build_all()
+        """
 
         if os.path.exists("ata.vhd"):
             pass
@@ -82,13 +90,20 @@ if __name__ == "__main__":
                 tar.add(i)
         
         os.chdir("../")
-
-        
+        """
+        print("Creating ISO")
         if sys.platform == "linux" or sys.platform == "linux2":
-            os.system("""grub-mkrescue -o "SynapseOS.iso" isodir/ -V SynapseOS""")
+            os.system("grub-mkrescue -o \"SynapseOS.iso\" isodir/ -V SynapseOS")
         else:
-            os.system("""ubuntu run grub-mkrescue -o "SynapseOS.iso" isodir/ -V SynapseOS """)
+            os.system("ubuntu run grub-mkrescue -o \"SynapseOS.iso\" isodir/ -V SynapseOS ")
 
-        os.system("qemu-system-i386 -name SynapseOS -net nic,model=ne2k_pci -net user -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log")
+            #"-netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
+        qemu_command = "qemu-system-i386 -name SynapseOS " \
+            "-netdev user,id=simpleos_net -device rtl8139,netdev=simpleos_net" \
+            " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log"
+
+        os.system(
+            qemu_command
+            )
     except Exception as E:
         print(E)

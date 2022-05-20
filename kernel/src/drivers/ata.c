@@ -1,7 +1,5 @@
 #include <kernel.h>
 
-
-
 // https://wiki.osdev.org/PCI_IDE_Controller
 // https://datacadamia.com/io/drive/lba
 
@@ -63,35 +61,25 @@ static void ide_write_register(uint8_t channel, uint8_t reg, uint8_t data) {
         ide_write_register(channel, ATA_REG_CONTROL, 0x80 | g_ide_channels[channel].no_intr);
 
     // write data to register ports
-    if (reg < 0x08)
+    if (reg < 0x08) {
+        if(is_com_port(g_ide_channels[channel].base + reg - 0x00)){ return; }
         outb(g_ide_channels[channel].base + reg - 0x00, data);
-    else if (reg < 0x0C)
+    } else if (reg < 0x0C) {
+        if(is_com_port(g_ide_channels[channel].base + reg - 0x06)){ return; }
         outb(g_ide_channels[channel].base + reg - 0x06, data);
-    else if (reg < 0x0E)
+    } else if (reg < 0x0E) {
+        if(is_com_port(g_ide_channels[channel].control + reg - 0x0A)){ return; }
         outb(g_ide_channels[channel].control + reg - 0x0A, data);
-    else if (reg < 0x16)
+    } else if (reg < 0x16) {
+        if(is_com_port(g_ide_channels[channel].bm_ide + reg - 0x0E)){ return; }
         outb(g_ide_channels[channel].bm_ide + reg - 0x0E, data);
-
+    }
     // write value to tell reading is done
     if (reg > 0x07 && reg < 0x0C)
         ide_write_register(channel, ATA_REG_CONTROL, g_ide_channels[channel].no_intr);
 }
 
-// read long word from reg port for quads times
-void insl(uint16_t reg, uint32_t *buffer, int32_t quads) {
-    int32_t index;
-    for (index = 0; index < quads; index++) {
-        buffer[index] = inl(reg);
-    }
-}
 
-// write long word to reg port for quads times
-void outsl(uint16_t reg, uint32_t *buffer, int32_t quads) {
-    int32_t index;
-    for (index = 0; index < quads; index++) {
-        outl(reg, buffer[index]);
-    }
-}
 
 // read collection of value from a channel into given buffer
 void ide_read_buffer(uint8_t channel, uint8_t reg, uint32_t *buffer, uint32_t quads) {
@@ -537,10 +525,11 @@ int32_t ide_write_sectors(uint8_t drive, uint8_t num_sectors, uint32_t lba, uint
 void ata_init() {
     ide_init(0x1F0, 0x3F6, 0x170, 0x376, 0x000);
 
-    for(int32_t i = 0; i < MAXIMUM_IDE_DEVICES; i++) {
+    /*for(int32_t i = 0; i < MAXIMUM_IDE_DEVICES; i++) {
         tty_printf("%d ide_device: [%s]\n", i, g_ide_devices[i].model);
-    }
-    
+    }*/
+    tty_printf("ATA installed\n");
+    qemu_printf("ATA installed\n");
 }
 
 int32_t ata_get_drive_by_model(const char *model) {

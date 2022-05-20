@@ -14,6 +14,9 @@ uint32_t kv2p(void *a) {
     return (uint32_t)a - 0xC0000000;
 }
 
+void * virtual2phys(void * virtual_addr) {
+    return (void*)(virtual_addr - 0xC0000000);
+}
 
 bool vmm_alloc_page(virtual_addr vaddr) {
     physical_addres paddr = pmm_alloc_block();

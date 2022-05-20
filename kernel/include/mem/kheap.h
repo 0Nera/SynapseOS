@@ -13,5 +13,3 @@ void kheap_init();
 void *kheap_morecore(uint32_t size);
 int32_t kheap_free(void *address);
 void *kheap_malloc(uint32_t size);
-
-void kheap_print_stat();
