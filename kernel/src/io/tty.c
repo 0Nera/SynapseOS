@@ -118,6 +118,15 @@ void set_pixel(int32_t x, int32_t y, uint32_t color) {
 
 }
 
+
+void clean_screen(){
+    memset(framebuffer_addr, VESA_BLACK, framebuffer_addr/sizeof(uint8_t*));
+    memset(back_framebuffer_addr, VESA_BLACK, framebuffer_addr/sizeof(uint8_t*));
+    tty_pos_x = 0;
+    tty_pos_y = 0;
+}
+
+
 void set_line(int32_t x, int32_t y, int32_t xe, int32_t ye, uint32_t color){
     for (int32_t i = x; i < xe; i++) {
         for (int32_t j = y; j < ye; j++) {
@@ -151,6 +160,7 @@ void tty_putchar(char c) {
         tty_pos_x += 8;
     }
 }
+
 
 void draw_vga_character(uint8_t c, int32_t x, int32_t y, int32_t fg, int32_t bg, bool bgon) {
 
