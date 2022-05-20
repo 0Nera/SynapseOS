@@ -1,11 +1,22 @@
-import socket, time
-
-n = 0
-while True:
-    print(n)
-    sock = socket.socket()
-    sock.connect(('localhost', 2030))
-    sock.send(b"Hello!\n")
-    sock.close()
-    time.sleep(1)
-    n += 1
+import socket, time                        # Импорт библиотек для работы с сокетами, а также для работы со временем
+n = 0                                      # Определение счетчика
+while True:                                # Бесконечный цикл
+    print(n)                               # Вывод удачных попыток
+    try:                                   # Создание условий для защищенной отправки/принятия запросов
+        sock = socket.socket()             # Создание сокета
+        sock.connect(('localhost', 2030))  # Подсоединение по 127.0.0.1:2030
+        sock.send(b"Hello!\n")             # Отправка данных
+        sock.setblocking(0)                # Отключаем блокировку
+        data = b""                         # Заготовка для входных данных
+        try:                               # Создание условий для защищенной обработки данных
+            data = sock.recv(1024)         # Получение данных
+        except socket.error:               # Данных нет
+            pass                           # Пропускаем
+        else:                              # Данные есть
+            print(data.decode("utf-8") )   # Вывод данных в UTF-8
+            n += 1                         # Инкремент удачных попыток
+        sock.close()                       # Закрытие соединения
+        time.sleep(1)                      # Небольшая задержка (1 секунда)
+    except Exception as E:                 # перехват фатальных ошибок
+        print(E)                           # Вывод ошибки
+        time.sleep(2)                      # Небольшая задержка (2 секунды), далее повтор цикла

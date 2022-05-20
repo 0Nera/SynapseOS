@@ -66,12 +66,11 @@ def build_all():
 if __name__ == "__main__":
     try:
         build_all()
-        """
 
         if os.path.exists("ata.vhd"):
             pass
         else:
-            os.system("qemu-img create -f raw ata.vhd 512M")
+            os.system("qemu-img create -f raw ata.vhd 32M")
         
        # os.system("qemu-img create -f raw ata.vhd 2K")
         
@@ -90,16 +89,15 @@ if __name__ == "__main__":
                 tar.add(i)
         
         os.chdir("../")
-        """
         print("Creating ISO")
+
         if sys.platform == "linux" or sys.platform == "linux2":
             os.system("grub-mkrescue -o \"SynapseOS.iso\" isodir/ -V SynapseOS")
         else:
             os.system("ubuntu run grub-mkrescue -o \"SynapseOS.iso\" isodir/ -V SynapseOS ")
 
-            #"-netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
         qemu_command = "qemu-system-i386 -name SynapseOS " \
-            "-netdev user,id=simpleos_net -device rtl8139,netdev=simpleos_net" \
+            "-netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
             " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log"
 
         os.system(
