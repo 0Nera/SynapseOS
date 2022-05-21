@@ -76,7 +76,7 @@ if __name__ == "__main__":
         
 
         os.chdir("apps/")
-        #os.system("python build.py")
+        os.system("python build.py")
 
         shutil.rmtree("../initrd/apps", ignore_errors=True)
         shutil.copytree("../bin/apps", "../initrd/apps")
