@@ -19,7 +19,7 @@
     while(1);                                             \
 } 
 
-#define unit_test(condition) if (condition){                                     \
+#define unit_test(condition) if ((condition) > 0){                                     \
     qemu_printf("[TEST PASSED] (%s:%s:%d)\n", __FILE__, __FUNCTION__, __LINE__); \
 } else {                                                                         \
     qemu_printf("[TEST FAILED] (%s:%s:%d)\n", __FILE__, __FUNCTION__, __LINE__); \
