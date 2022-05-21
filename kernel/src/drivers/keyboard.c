@@ -197,8 +197,11 @@ void keyboard_handler_main(void) {
             return;
         }
 
+        if (keycode == 1) {
+            shutdown();
+            return;
+        }
         if (keycode == 71) {
-            log("EXIT");
             reboot();
             return;
         }
