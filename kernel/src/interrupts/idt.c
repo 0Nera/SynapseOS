@@ -235,11 +235,11 @@ void fault_handler(struct regs *r) {
     uint32_t adr;
     asm volatile("movl %%cr2, %0" : "=r" (adr));
 
-    qemu_printf("\nSystem Exception. System Halted! cr2 = %x  r->idt_index = %x eax = %x  ebx = %x" \
+    log("\nSystem Exception. System Halted! cr2 = %x  r->idt_index = %x eax = %x  ebx = %x" \
                 "  ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x\n", 
         adr, r->idt_index, r->eax, r->ebx, 
         r->ecx, r->edx, r->esp, r->ebp, r->eip);
-    qemu_printf("\nSystem Exception. System Halted! cr2 = %d  r->idt_index = %d eax = %d  ebx = %d" \
+    log("\nSystem Exception. System Halted! cr2 = %d  r->idt_index = %d eax = %d  ebx = %d" \
         "  ecx = %d  edx = %d  esp = %d  ebp = %d  eip = %d\n", 
         adr, r->idt_index, r->eax, r->ebx, 
         r->ecx, r->edx, r->esp, r->ebp, r->eip);

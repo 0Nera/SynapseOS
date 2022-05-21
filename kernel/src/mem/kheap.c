@@ -14,6 +14,7 @@ void kheap_init() {
 
     kheap_alloc_number = 0;
     kheap_memory_used = 0;
+    log("KHEAP installed");
 }
 
 

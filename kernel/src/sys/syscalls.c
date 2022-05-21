@@ -9,7 +9,7 @@
 
 void syscall_init() {
     register_interrupt_handler(SYSCALL_IDT_INDEX, &syscall_handler);
-    qemu_printf("SYSCALL INIT\n");
+    log("Syscalls enabled");
 }
 
 
@@ -55,7 +55,7 @@ void syscall_handler(struct regs *r) {
             r->edx = (uint32_t)(VERSION_MAJOR * 100 + VERSION_MINOR);
             break;
         default: 
-            qemu_printf("Invalid syscall #%x\n", r->eax);
-            tty_printf("Invalid syscall #%x\n", r->eax);
+            log("Invalid syscall #%x", r->eax);
+            tty_printf("Invalid syscall #%x", r->eax);
     }
 }

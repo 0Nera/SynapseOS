@@ -33,7 +33,7 @@ void kernel(int32_t magic_number, struct multiboot_info *mboot_info) {
 
     uint32_t initrd_beg = *(uint32_t*) (mboot_info->mods_addr);     // Адрес начала ramdisk
     uint32_t initrd_end = *(uint32_t*) (mboot_info->mods_addr + 4); // Адрес конца ramdisk
-    qemu_printf("initrd_beg = %x initrd_end = %x\n", 
+    log("initrd_beg = %x initrd_end = %x", 
         initrd_beg, initrd_end              // Вывод информации о адресах ramdisk в отладчик
         );
 
@@ -57,7 +57,7 @@ void kernel(int32_t magic_number, struct multiboot_info *mboot_info) {
     ata_init();                             // Установка драйвера ATA
 
     RTL8139_init();
-    
+    clean_screen();
     shell();                                // Активация терминала
 
 

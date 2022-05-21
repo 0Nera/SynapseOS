@@ -117,6 +117,7 @@ void RTL8139_init() {
     // Регистрация прерываний
     uint32_t irq_num = pci_read(pci_RTL8139_device, PCI_INTERRUPT_LINE);
     register_interrupt_handler(32 + irq_num, RTL8139_handler);
+    log("RTL8139 installed");
 }
 
 

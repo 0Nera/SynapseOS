@@ -69,106 +69,106 @@ void checkAllBuses(void) {
             for (uint8_t function = 1; function < 8; function++) {
                 if (getDeviceID(bus, device, function) != 0 & getDeviceID(bus, device, function) != 65535 ){    
                     tty_printf("\t%d->", bus);
-                    qemu_printf("\t%d->", bus);
+                    log("%d->", bus);
 
 					switch (getDeviceID(bus, device, function)) {
 						case 0x7010:
 							tty_printf("82371SB PIIX3 IDE [Natoma/Triton II] ");
-							qemu_printf("82371SB PIIX3 IDE [Natoma/Triton II] ");
+							log("82371SB PIIX3 IDE [Natoma/Triton II] ");
 							break;
 						case 0x7111:
 							tty_printf("82371AB/EB/MB PIIX4 IDE ");
-							qemu_printf("82371AB/EB/MB PIIX4 IDE ");
+							log("82371AB/EB/MB PIIX4 IDE ");
 							break;
 						case 0x7113:
 							tty_printf("82371AB/EB/MB PIIX4 ACPI ");
-							qemu_printf("82371AB/EB/MB PIIX4 ACPI ");
+							log("82371AB/EB/MB PIIX4 ACPI ");
 							break;
 						case 0x5513:
 							tty_printf("5513 IDE Controller ");
-							qemu_printf("5513 IDE Controller ");
+							log("5513 IDE Controller ");
 							break;
 						case 0x7001:
 							tty_printf("USB 1.1 Controller ");
-							qemu_printf("USB 1.1 Controller ");
+							log("USB 1.1 Controller ");
 							break;
 						case 0x7002:
 							tty_printf("USB 2.0 Controller ");
-							qemu_printf("USB 2.0 Controller ");
+							log("USB 2.0 Controller ");
 							break;
 						case 0xAA28:
 							tty_printf("RV620 HDMI Audio [Radeon HD 3450/3470/3550/3570] ");
-							qemu_printf("RV620 HDMI Audio [Radeon HD 3450/3470/3550/3570] ");
+							log("RV620 HDMI Audio [Radeon HD 3450/3470/3550/3570] ");
 							break;
 						case 0xA012:
 							tty_printf("Atom Processor D4xx/D5xx/N4xx/N5xx Integrated Graphics Controller ");
-							qemu_printf("Atom Processor D4xx/D5xx/N4xx/N5xx Integrated Graphics Controller ");
+							log("Atom Processor D4xx/D5xx/N4xx/N5xx Integrated Graphics Controller ");
 							break;
 						case 0x27D2:
 							tty_printf("NM10/ICH7 Family PCI Express Port 2 ");
-							qemu_printf("NM10/ICH7 Family PCI Express Port 2 ");
+							log("NM10/ICH7 Family PCI Express Port 2 ");
 							break;
 						case 0x27D6:
 							tty_printf("NM10/ICH7 Family PCI Express Port 4 ");
-							qemu_printf("NM10/ICH7 Family PCI Express Port 4 ");
+							log("NM10/ICH7 Family PCI Express Port 4 ");
 							break;
 						case 0x27C9:
 							tty_printf("NM10/ICH7 Family USB UHCI Controller #2 ");
-							qemu_printf("NM10/ICH7 Family USB UHCI Controller #2 ");
+							log("NM10/ICH7 Family USB UHCI Controller #2 ");
 							break;
 						case 0x27CA:
 							tty_printf("NM10/ICH7 Family USB UHCI Controller #3 ");
-							qemu_printf("NM10/ICH7 Family USB UHCI Controller #3 ");
+							log("NM10/ICH7 Family USB UHCI Controller #3 ");
 							break;
 						case 0x27CB:
 							tty_printf("NM10/ICH7 Family USB UHCI Controller #4 ");
-							qemu_printf("NM10/ICH7 Family USB UHCI Controller #4 ");
+							log("NM10/ICH7 Family USB UHCI Controller #4 ");
 							break;
 						case 0x27CC:
 							tty_printf("NM10/ICH7 Family USB2 EHCI Controller ");
-							qemu_printf("NM10/ICH7 Family USB2 EHCI Controller ");
+							log("NM10/ICH7 Family USB2 EHCI Controller ");
 							break;
 						case 0x27C1:
 							tty_printf("NM10/ICH7 Family SATA Controller [AHCI mode] ");
-							qemu_printf("NM10/ICH7 Family SATA Controller [AHCI mode] ");
+							log("NM10/ICH7 Family SATA Controller [AHCI mode] ");
 							break;
 						case 0x27DA:
 							tty_printf("NM10/ICH7 Family SMBus Controller ");
-							qemu_printf("NM10/ICH7 Family SMBus Controller ");
+							log("NM10/ICH7 Family SMBus Controller ");
 							break;
 						case 0x1360:
 							tty_printf("RTL8139 Ethernet ");
-							qemu_printf("RTL8139 Ethernet ");
+							log("RTL8139 Ethernet ");
 							break;
 						case 0x1300:
 							tty_printf("RTL8139 Ethernet ");
-							qemu_printf("RTL8139 Ethernet ");
+							log("RTL8139 Ethernet ");
 							break;
 						default:
 							tty_printf("device %x ", getDeviceID(bus, device, function));
-							qemu_printf("device %x ", getDeviceID(bus, device, function));
+							log("device %x ", getDeviceID(bus, device, function));
 							break;
 					}
 					switch (getVendorID(bus, device, function)) {
 						case 0x8086:
-							tty_printf("Intel Corporation\n");
-							qemu_printf("Intel Corporation\n");
+							tty_printf("Intel Corporation");
+							log("Intel Corporation");
 							break;
 						case 0x1002:
 							tty_printf("Advanced Micro Devices, Inc. [AMD/ATI]\n");
-							qemu_printf("Advanced Micro Devices, Inc. [AMD/ATI]\n");
+							log("Advanced Micro Devices, Inc. [AMD/ATI]");
 							break;
 						case 0x1039:
-							tty_printf("Silicon Integrated Systems [SiS]\n");
-							qemu_printf("Silicon Integrated Systems [SiS]\n");
+							tty_printf("Silicon Integrated Systems [SiS]");
+							log("Silicon Integrated Systems [SiS]");
 							break;
 						case 0x0B05:
-							tty_printf("ASUSTek Computer, Inc.\n");
-							qemu_printf("ASUSTek Computer, Inc.\n");
+							tty_printf("ASUSTek Computer, Inc.");
+							log("ASUSTek Computer, Inc.");
 							break;
 						default:
-							tty_printf("vendor %x\n", getVendorID(bus, device, function));
-							qemu_printf("vendor %x\n", getVendorID(bus, device, function));
+							tty_printf("vendor %x", getVendorID(bus, device, function));
+							log("vendor %x", getVendorID(bus, device, function));
 							break;
 					}
                 }
@@ -256,7 +256,7 @@ pci_dev_t pci_get_device(uint16_t vendor_id, uint16_t device_id, int32_t device_
 	// Handle multiple pci host controllers
 
 	if(pci_reach_end(dev_zero)) {
-		qemu_printf("PCI Get device failed...\n");
+		log("PCI Get device failed");
 	}
 
 	for(int32_t function = 1; function < FUNCTION_PER_DEVICE; function++) {
@@ -272,7 +272,7 @@ pci_dev_t pci_get_device(uint16_t vendor_id, uint16_t device_id, int32_t device_
 			return t;
 		}
 	}
-	qemu_printf("dev zero!");
+	log("dev zero!");
 	return dev_zero;
 }
 
@@ -306,5 +306,5 @@ void pci_init() {
 	pci_size_map[PCI_INTERRUPT_LINE]	= 1;
 	pci_size_map[PCI_SECONDARY_BUS]		= 1;
 	
-	qemu_printf("PCI installed\n");
+	log("PCI installed");
 }

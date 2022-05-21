@@ -118,7 +118,7 @@ void keyboard_handler_main(void) {
     // Проверяем статус используя нижний бит
     if (status & 0x01) {
         keycode = inb(KEYBOARD_DATA_PORT);
-        //qemu_printf("KEY %d\n", keycode);
+        //log("KEY %d", keycode);
 
         if (input_type == 0) {
             return;
@@ -183,7 +183,7 @@ void keyboard_handler_main(void) {
             return;
         }
         if (input_type == 3) {
-            qemu_printf("getch: %d ", keycode);
+            //log("getch: %d ", keycode);
             input_type = -2;
             return;
         }
@@ -198,13 +198,13 @@ void keyboard_handler_main(void) {
         }
 
         if (keycode == 71) {
-            qemu_printf("\n\nEXIT");
+            log("EXIT");
             reboot();
             return;
         }
 
         if (string_mem_counter >= 256) {
-            tty_printf("Buffer string_mem is full!!");
+            tty_printf("\nBuffer string_mem is full!!");
             return;
         }
 
@@ -216,7 +216,7 @@ void keyboard_handler_main(void) {
         }
         tty_putchar(last_char);
 
-        qemu_printf("key = %c (index %d)\n", keyboard_map[(unsigned char) keycode], (unsigned char) keycode);
+        log("key = %c (index %d)", keyboard_map[(unsigned char) keycode], (unsigned char) keycode);
     }
 }
 

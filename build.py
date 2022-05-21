@@ -43,10 +43,10 @@ def build_all():
     os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/drivers/network/dhcp.c -o bin/kernel/dhcp.o")
     os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/drivers/network/udp.c -o bin/kernel/udp.o")
 
-    os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/io/tty.c -o bin/kernel/tty.o")
-    os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/io/vgafnt.c -o bin/kernel/vgafnt.o")
-    os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/io/ports.c -o bin/kernel/ports.o")
-    os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/io/shell.c -o bin/kernel/shell.o")
+    os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/  -Wno-implicit-function-declaration -c kernel/src/io/tty.c -o bin/kernel/tty.o")
+    os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/  -Wno-implicit-function-declaration -c kernel/src/io/vgafnt.c -o bin/kernel/vgafnt.o")
+    os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/  -Wno-implicit-function-declaration -c kernel/src/io/ports.c -o bin/kernel/ports.o")
+    os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/  -Wno-implicit-function-declaration -c kernel/src/io/shell.c -o bin/kernel/shell.o")
 
     os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/interrupts/gdt.c -o bin/kernel/gdt.o")
     os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/interrupts/idt.c -o bin/kernel/idt.o")
@@ -56,7 +56,7 @@ def build_all():
     os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/libk/string.c -o bin/kernel/string.o")
     os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/libk/list.c   -o bin/kernel/list.o")
 
-    os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/sys/elf.c -o bin/kernel/elf.o")
+    os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -Wno-implicit-function-declaration -c kernel/src/sys/elf.c -o bin/kernel/elf.o")
     os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/sys/tss.c -o bin/kernel/tss.o")
     os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/src/sys/syscalls.c -o bin/kernel/syscalls.o")
 
@@ -76,7 +76,7 @@ if __name__ == "__main__":
         
 
         os.chdir("apps/")
-        os.system("python build.py")
+        #os.system("python build.py")
 
         shutil.rmtree("../initrd/apps", ignore_errors=True)
         shutil.copytree("../bin/apps", "../initrd/apps")

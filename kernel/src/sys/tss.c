@@ -41,9 +41,9 @@ void tss_init(uint32_t idx, uint32_t kss, uint32_t kesp) {
     kernel_tss.gs = 0x13;
     kernel_tss.ss = 0x13;
 
-    //qemu_printf("tss now will flush\n");
+    //log("tss now will flush\n");
     //tss_flush();
-    //qemu_printf("tss flushed\n");
+    //log("tss flushed\n");
 }
 
 // This function is used to set the tss's esp, so that CPU knows what esp the kernel should be using

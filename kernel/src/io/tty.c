@@ -46,16 +46,14 @@ void init_vbe(multiboot_info *mboot) {
         frame += PAGE_SIZE, virt += PAGE_SIZE) {
         vmm_map_page(frame, virt);
     }
-    qemu_printf("VBE create_back_framebuffer\n");
+    log("VBE create_back_framebuffer");
 
     create_back_framebuffer();
 }
 
 void create_back_framebuffer() {
-    //flush_tlb_entry(back_framebuffer_addr);
     back_framebuffer_addr = kheap_malloc(framebuffer_size);
-    qemu_printf("back_framebuffer_addr = %x\n", back_framebuffer_addr);
-    //tty_printf("init_vbe: [c0800000]->%x\n", page_table_entry_is_writable(GET_PTE(0xC0800000)));
+    log("back_framebuffer_addr = %x", back_framebuffer_addr);
     memset(back_framebuffer_addr, 0, framebuffer_size); //causes page fault at c0800000 when this line is placed in the end of init_vbe
 }
 
@@ -119,11 +117,11 @@ void set_pixel(int32_t x, int32_t y, uint32_t color) {
 }
 
 
+/*
+    clean_screen - Заливка экрана консоли черным цветом
+*/
 void clean_screen(){
-    memset(framebuffer_addr, VESA_BLACK, framebuffer_addr/sizeof(uint8_t*));
-    memset(back_framebuffer_addr, VESA_BLACK, framebuffer_addr/sizeof(uint8_t*));
-    tty_pos_x = 0;
-    tty_pos_y = 0;
+    log("Screan cleaned!");
 }
 
 
@@ -134,8 +132,8 @@ void set_line(int32_t x, int32_t y, int32_t xe, int32_t ye, uint32_t color){
         }
         
     }
-    
 }
+
 
 /*
     tty_putchar - вывод одного символа

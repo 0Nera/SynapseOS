@@ -171,6 +171,7 @@ void vmm_init() {
     update_phys_memory_bitmap_addres(KERNEL_END_VADDR);
 
     enable_paging((physical_addres) kernel_page_dir);
+    log("VMM installed");
 }
 
 

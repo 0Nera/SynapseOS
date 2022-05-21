@@ -80,7 +80,7 @@ void sleep(int32_t i) {
 }
 
 void qemu_breakpoint()  {
-    qemu_printf("\nBREAKPOINT!\n");
+    log("BREAKPOINT!");
 }
 
 
@@ -205,19 +205,6 @@ int isprint(char c) {
     return ((c >= ' ' && c <= '~') ? 1 : 0);
 }
 
-void xxd(void * data, unsigned int len)
-{
-    unsigned int i;
-
-    for(i = 0; i < len; i++) {
-        if (isprint(((char*)data)[i])){
-            com1_write_char(((char*)data)[i]);
-        } else {
-            qemu_printf("%x ",((char*)data)[i]);
-        }
-    }
-    qemu_printf("\n");
-}
 
 void reboot() {
     uint8_t good = 0x02;

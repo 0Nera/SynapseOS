@@ -528,8 +528,7 @@ void ata_init() {
     /*for(int32_t i = 0; i < MAXIMUM_IDE_DEVICES; i++) {
         tty_printf("%d ide_device: [%s]\n", i, g_ide_devices[i].model);
     }*/
-    tty_printf("ATA installed\n");
-    qemu_printf("ATA installed\n");
+    log("ATA installed");
 }
 
 int32_t ata_get_drive_by_model(const char *model) {
