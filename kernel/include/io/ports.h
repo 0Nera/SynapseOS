@@ -25,6 +25,8 @@
     qemu_printf("[TEST FAILED] (%s:%s:%d)\n", __FILE__, __FUNCTION__, __LINE__); \
 }
 
+#define outw(port, val) outs(port, val)
+
 
 uint8_t inb(uint16_t port); // Чтение байта из порта
 uint16_t ins(uint16_t _port);
