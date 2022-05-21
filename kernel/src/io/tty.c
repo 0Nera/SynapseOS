@@ -121,6 +121,15 @@ void set_pixel(int32_t x, int32_t y, uint32_t color) {
     clean_screen - Заливка экрана консоли черным цветом
 */
 void clean_screen(){
+    for (int32_t x = 0; x < VESA_WIDTH; x++){
+        for (int32_t y = 0; y < VESA_HEIGHT; y++){
+            set_pixel(x, y, VESA_BLACK);
+        }
+    }
+
+    tty_pos_x = 0;
+    tty_pos_y = -17;
+
     log("Screan cleaned!");
 }
 
@@ -130,7 +139,6 @@ void set_line(int32_t x, int32_t y, int32_t xe, int32_t ye, uint32_t color){
         for (int32_t j = y; j < ye; j++) {
             set_pixel(i, j, color);
         }
-        
     }
 }
 
