@@ -51,13 +51,14 @@ void kernel(int32_t magic_number, struct multiboot_info *mboot_info) {
 
     keyboard_install();                     // Установка драйвера клавиатуры
 
-
     pci_init();                             // Установка драйвера PCI
 
     ata_init();                             // Установка драйвера ATA
 
     RTL8139_init();
+
     clean_screen();
+
     shell();                                // Активация терминала
 
 

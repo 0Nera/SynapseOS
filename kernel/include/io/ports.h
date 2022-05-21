@@ -12,9 +12,20 @@
 #define PORT_COM8 0x4E8
 
 
-#define log(M, ...) qemu_printf("[LOG] (%s:%s:%d) " M "\n",\
-        __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
+#define log(M, ...) qemu_printf("[LOG] (%s:%s:%d) " M "\n", __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
     
+#define assert(condition) if (condition){                 \
+    log("ASSERT FAIL");                                   \
+    while(1);                                             \
+} 
+
+#define unit_test(condition) if (condition){                                     \
+    qemu_printf("[TEST PASSED] (%s:%s:%d)\n", __FILE__, __FUNCTION__, __LINE__); \
+} else {                                                                         \
+    qemu_printf("[TEST FAILED] (%s:%s:%d)\n", __FILE__, __FUNCTION__, __LINE__); \
+}
+
+
 uint8_t inb(uint16_t port); // Чтение байта из порта
 uint16_t ins(uint16_t _port);
 int32_t com1_is_transmit_empty();

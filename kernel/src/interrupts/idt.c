@@ -235,21 +235,21 @@ void fault_handler(struct regs *r) {
     uint32_t adr;
     asm volatile("movl %%cr2, %0" : "=r" (adr));
 
-    log("\nSystem Exception. System Halted! cr2 = %x  r->idt_index = %x eax = %x  ebx = %x" \
-                "  ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x\n", 
+    log("System Exception. System Halted! cr2 = %x  r->idt_index = %x eax = %x  ebx = %x" \
+                "  ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x", 
         adr, r->idt_index, r->eax, r->ebx, 
         r->ecx, r->edx, r->esp, r->ebp, r->eip);
-    log("\nSystem Exception. System Halted! cr2 = %d  r->idt_index = %d eax = %d  ebx = %d" \
-        "  ecx = %d  edx = %d  esp = %d  ebp = %d  eip = %d\n", 
+    log("System Exception. System Halted! cr2 = %d  r->idt_index = %d eax = %d  ebx = %d" \
+        "  ecx = %d  edx = %d  esp = %d  ebp = %d  eip = %d", 
         adr, r->idt_index, r->eax, r->ebx, 
         r->ecx, r->edx, r->esp, r->ebp, r->eip);
     
     tty_printf("\nSystem Exception. System Halted! cr2 = %x  r->idt_index = %x eax = %x  ebx = %x" \
-        "  ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x\n", 
+        "  ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x", 
         adr, r->idt_index, r->eax, r->ebx, 
         r->ecx, r->edx, r->esp, r->ebp, r->eip);
-    tty_printf("\nSystem Exception. System Halted! cr2 = %d  r->idt_index = %d eax = %d  ebx = %d" \
-        "  ecx = %d  edx = %d  esp = %d  ebp = %d  eip = %d\n", 
+    tty_printf("System Exception. System Halted! cr2 = %d  r->idt_index = %d eax = %d  ebx = %d" \
+        "  ecx = %d  edx = %d  esp = %d  ebp = %d  eip = %d", 
         adr, r->idt_index, r->eax, r->ebx, 
         r->ecx, r->edx, r->esp, r->ebp, r->eip);
     while(1){

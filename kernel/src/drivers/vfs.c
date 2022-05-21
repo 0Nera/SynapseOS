@@ -50,7 +50,7 @@ int32_t vfs_mount(vfs_storage_dev_t *dev, vfs_filesystem_handles_t *fs_handles, 
 
     vfs_mount_points[vfs_lastmnt] = mnt;
     vfs_lastmnt++;
-    log("VFS: Mounted new device at %s\n", location);
+    log("VFS: Mounted new device at %s", location);
 
     return 1;
 }
@@ -236,8 +236,7 @@ void vfs_get_file_name_from_path(char *fpath, char *buf) {
     buf[len - p1] = '\0';
 }
 
-void vfs_init() {
-    //log("\nVFS: Allocating memory for structures.");    
+void vfs_init() {   
     vfs_mount_points = (vfs_mount_info_t**) kheap_malloc(sizeof(vfs_mount_info_t) * MOUNTPOINTS_SIZE);
     __vfs_init = 1;
     log("VFS installed");
