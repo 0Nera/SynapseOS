@@ -72,14 +72,21 @@ void RTL8139_handler(struct regs *r){
 
 
 // Настраивает RTL8139
-void RTL8139_init() {
+int RTL8139_init() {
     outb(RTL8139_io_addres + 0x52, 0x0);                // Включаем RTL
-    pci_RTL8139_device = pci_get_device(RTL8139_VENDOR_ID, RTL8139_ret_ID, -1);
 
     RTL8139_ret = pci_read(                           // Ищем среди устройств
             pci_get_device(RTL8139_VENDOR_ID, RTL8139_ret_ID, -1), 
             PCI_BAR0
             );
+
+    if(RTL8139_ret == 0) {
+        log("RTL8139 can't install");
+        return -1;
+    }
+
+    pci_RTL8139_device = pci_get_device(RTL8139_VENDOR_ID, RTL8139_ret_ID, -1);
+
     RTL8139_device.bar_type = RTL8139_ret & 0x1;
     
     RTL8139_device.io_base = RTL8139_ret & (~0x3);    // Получаем базу ввода-вывода или базу памяти, извлекая старшие 28/30 бит
@@ -117,7 +124,9 @@ void RTL8139_init() {
     // Регистрация прерываний
     uint32_t irq_num = pci_read(pci_RTL8139_device, PCI_INTERRUPT_LINE);
     register_interrupt_handler(32 + irq_num, RTL8139_handler);
+    
     log("RTL8139 installed");
+    return 1;
 }
 
 
