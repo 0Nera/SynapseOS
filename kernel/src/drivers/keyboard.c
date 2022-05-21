@@ -201,6 +201,11 @@ void keyboard_handler_main(void) {
             shutdown();
             return;
         }
+
+        if (keycode == 59) {
+            clean_screen();
+        }
+
         if (keycode == 71) {
             reboot();
             return;
