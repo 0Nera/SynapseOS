@@ -26,6 +26,7 @@ def build_all():
     os.system("i686-elf-gcc -nostdlib -w -lgcc -ffreestanding -I include/ -c examples/C/char.c -o ./bin/char.o")
     os.system("i686-elf-gcc -nostdlib -w -lgcc -ffreestanding -I include/ -c examples/C/keys.c -o ./bin/keys.o")
     os.system("i686-elf-gcc -nostdlib -w -lgcc -ffreestanding -I include/ -c apps/0Nera/NeraMath/main.c -o ./bin/NeraMath.o")
+    os.system("i686-elf-gcc -nostdlib -w -lgcc -ffreestanding -I include/ -c apps/Clementine5595/Window/main.c -o ./bin/Window.o")
 
     os.system("i686-elf-gcc -nostdlib -w -lgcc -ffreestanding -I include/ -c examples/C/test.c -o ./bin/test.o")
 
@@ -45,6 +46,7 @@ def build_all():
     os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/char.elf ./bin/char.o" + O_LIBC)
     os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/keys.elf ./bin/keys.o" + O_LIBC)
     os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/NeraMath.elf ./bin/NeraMath.o" + O_LIBC)
+    os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/window.elf ./bin/Window.o" + O_LIBC)
     os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/test.elf ./bin/test.o")
 
 if __name__ == "__main__":
