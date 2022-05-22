@@ -118,20 +118,22 @@ void shell() {
     }
 }
 
-void init_tui(uint8_t *text) {
+void init_tui(char *text) {
     for (int32_t i = 0; i < VESA_WIDTH; i += 8) {
-        for (int c = 0; c <= strlen(text); c++) {
-            char txt = text[c];
-            draw_vga_character(txt, i, 0, 0xFF5555, 0x0000AA, true);
-            txt = ' ';
-        }
+        int a = 0;
+        char txt = text[a];
+        //for (int c = 0; c <= strlen(text); c++) {
+            //tty_putchar(txt);
+        draw_vga_character(txt, i, 0, 0xFF5555, 0x0000AA, true);
+        a++;
+        //}
     }
     for (int32_t i = 0; i < VESA_WIDTH; i += 8) {
         for (int32_t j = 16; j < VESA_HEIGHT; j += 16) {
-            draw_vga_character(" ", i, j, 0x0000AA, 0x0000AA, true);
+            //draw_vga_character(" ", i, j, 0x0000AA, 0x0000AA, true);
         }
     }
-    tui();
+    //tui();
 }
 
 void tui() {
