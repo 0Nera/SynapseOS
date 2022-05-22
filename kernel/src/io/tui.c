@@ -1,10 +1,9 @@
 #include <kernel.h>
 #include <libk/string.h>
 
-
 char current_dir[256] = "/initrd/apps/";
 
-void init_tui (uint8_t* text) {
+void init_tui(uint8_t *text) {
     for (int32_t i = 0; i < VESA_WIDTH; i += 8) {
         for (int c = 0; c <= strlen(text); c++) draw_vga_character(text[c], i, 0, 0xFF5555, 0x0000AA, true);
     }
@@ -15,7 +14,7 @@ void init_tui (uint8_t* text) {
     }
 }
 
-void tui () {
+void tui() {
     while (1) {
 
     }
