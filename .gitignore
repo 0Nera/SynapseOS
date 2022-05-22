@@ -13,3 +13,5 @@
 *.tmp
 docs/files/ru/~$ководство пользователя.docx
 test/
+bochsout.txt
+serial.txt
