@@ -119,7 +119,6 @@ void keyboard_handler_main(void) {
     if (status & 0x01) {
         keycode = inb(KEYBOARD_DATA_PORT);
         //qemu_printf("KEY %d\n", keycode);
-
         if (input_type == 0) {
             return;
         }
@@ -244,6 +243,7 @@ int32_t keyboard_getscancode() {
 }
 
 char *keyboard_gets() {
+
     input_type = 3;
 
     while (input_type != -3) {

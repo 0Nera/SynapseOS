@@ -108,6 +108,8 @@ void shell() {
                 tty_setcolor(COLOR_ERROR);
                 tty_printf("run: incorrect argument\n");
             }
+        } else if (strcmp(cmd, "tui") == 0) {
+            test_tui("Header of TUI");
         } else {
             tty_setcolor(COLOR_ERROR);
             tty_printf("Unknown: [%s]\n", cmd);
