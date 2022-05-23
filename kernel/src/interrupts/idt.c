@@ -239,11 +239,10 @@ void idt_init() {
     
     SET_IDT_ENTRY(32);
     // Install scheduler by timer interrupt
-    set_idt_entry(TIMER_IDT_INDEX, (uint32_t) &task_switch, 0x08, 0x8E);
-    timer_set_frequency(TICKS_PER_SECOND);
+    //set_idt_entry(TIMER_IDT_INDEX, (uint32_t) &task_switch, 0x08, 0x8E);
+    //timer_set_frequency(TICKS_PER_SECOND);
 
     SET_IDT_ENTRY(33);
-    set_idt_entry(33, (uint32_t) &keyboard_handler_main, 0x08, 0x8E);
     SET_IDT_ENTRY(44);
     SET_IDT_ENTRY(47);
 
@@ -254,6 +253,7 @@ void idt_init() {
         IRQ_clear_mask(i);
     }
 
+    asm volatile("sti");
 }
 
 

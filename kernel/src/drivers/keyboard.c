@@ -104,9 +104,11 @@ void keyboard_install(void) {
     input_type = 1;
     // 0xFD это 11111101 - включает IRQ1 (клавиатура)
     outb(0x21, 0xFD);
+    register_interrupt_handler(33, &keyboard_handler_main);
+    log("Keyboard installed");
 }
 
-void keyboard_handler_main(void) {
+void keyboard_handler_main(struct regs *r) {
 
     unsigned char status;
 
@@ -232,7 +234,7 @@ int32_t keyboard_getchar() {
     input_type = 2;
 
     while (input_type != -2) {
-        keyboard_handler_main();
+        //keyboard_handler_main();
     }
 
     input_type = 1;
@@ -244,7 +246,7 @@ int32_t keyboard_getchar() {
 int32_t keyboard_getscancode() {
     input_type = 2;
 
-    keyboard_handler_main();
+    //keyboard_handler_main();
 
     input_type = 1;
     
@@ -255,7 +257,7 @@ char *keyboard_gets() {
     input_type = 3;
 
     while (input_type != -3) {
-        keyboard_handler_main();
+        //keyboard_handler_main();
     }
     //tty_printf("\nstring [%s]", string_mem);
     

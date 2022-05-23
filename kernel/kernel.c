@@ -57,6 +57,11 @@ void kernel(int32_t magic_number, struct multiboot_info *mboot_info) {
 
     unit_test(RTL8139_init());
 
+
+    while(1){
+        asm volatile("hlt");
+    }
+    
     shell();                                // Активация терминала
 
 
