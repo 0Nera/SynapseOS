@@ -79,3 +79,5 @@ void set_pixel(int32_t x, int32_t y, uint32_t color);
 void tty_setcolor(int32_t color);
 void draw_vga_character(uint8_t c, int32_t x, int32_t y, int32_t fg, int32_t bg, bool bgon);
 void create_back_framebuffer();
+void move_csr(void);
+void cls();

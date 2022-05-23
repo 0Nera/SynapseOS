@@ -42,7 +42,7 @@ void shell() {
                         "->sysinfo             |print32_t information about system\n" \
                         "->pcilist             |list of pci devices\n" \
                         "->ssfs                |open SSFS command line\n" \
-                        "->starttui            |start the graphic interface"
+                        "->tui                 |start the graphic interface"
                         );
         } else if (strlen(cmd) > 4 && strncmp(cmd, "cat ", 4) == 0) {
             char fname[256];
@@ -109,8 +109,8 @@ void shell() {
                 tty_setcolor(COLOR_ERROR);
                 tty_printf("run: incorrect argument\n");
             }
-        } else if (strcmp(cmd, "starttui") == 0) {
-            init_tui(" Menu  Apps  Settings ");
+        } else if (strcmp(cmd, "tui") == 0) {
+            init_tui();
         } else {
             tty_setcolor(COLOR_ERROR);
             tty_printf("Unknown: [%s]\n", cmd);
@@ -118,32 +118,38 @@ void shell() {
     }
 }
 
-void init_tui(char *text) {
+const char* text = " Menu  Apps  Settings ";
+int outp = 0;
+
+void init_tui() {
     for (int32_t i = 0; i < VESA_WIDTH; i += 8) {
-        int a = 0;
-        char txt = text[a];
-        //for (int c = 0; c <= strlen(text); c++) {
-            //tty_putchar(txt);
-        draw_vga_character(txt, a, 0, 0xFF5555, 0x0000AA, true);
-        a++;
-        //}
-    }
-    for (int32_t i = 0; i < VESA_WIDTH; i += 8) {
-        for (int32_t j = 16; j < VESA_HEIGHT; j += 16) {
-            //draw_vga_character(" ", i, j, 0x0000AA, 0x0000AA, true);
+        for (int32_t j = 0; j < VESA_HEIGHT; j += 16) {
+            draw_vga_character(" ", i, j, VESA_BLUE, VESA_BLUE, true);
         }
     }
-    //tui();
+    cls();                      // <- понадобилось
+    tty_setcolor(VESA_WHITE);
+    tty_printf(text);           // <- временно
+    tui();
 }
 
 void tui() {
     int menu_entry = 1;
+    //tty_printf("TUI started");
     while (1) {
-        if (menu_entry == 1)
-        {
-            
+        if (menu_entry == 1) {
+            for (int32_t i = 0; i < 41; i += 8) {
+                for (int32_t j = 0; j < 9; j += 8) {
+                    draw_vga_character(" ", i, j, VESA_YELLOW, VESA_YELLOW, true);
+                    cls();
+                }
+            }
         }
-        
+        if (outp == 0)
+        {
+            tty_printf(text);
+            outp++;
+        }
     }
 }
 

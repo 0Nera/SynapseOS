@@ -6,6 +6,8 @@
 
 #include <kernel.h>
 
+unsigned short *textmemptr;
+int attrib = 0x0F;
 
 volatile uint8_t tty_feedback = 1;
 
@@ -286,4 +288,48 @@ void tty_printf(char *text, ...) {
     va_list args;
     va_start(args, text);
     tty_print(text, args);
+}
+
+void move_csr(void)
+{
+    unsigned temp;
+
+    /* The equation for finding the index in a linear
+    *  chunk of memory can be represented by:
+    *  Index = [(y * width) + x] */
+    temp = tty_pos_y * 80 + tty_pos_x;
+
+    /* This sends a command to indicies 14 and 15 in the
+    *  CRT Control Register of the VGA controller. These
+    *  are the high and low bytes of the index that show
+    *  where the hardware cursor is to be 'blinking'. To
+    *  learn more, you should look up some VGA specific
+    *  programming documents. A great start to graphics:
+    *  http://www.brackeen.com/home/vga */
+    outb(0x3D4, 14);
+    outb(0x3D5, temp >> 8);
+    outb(0x3D4, 15);
+    outb(0x3D5, temp);
+}
+
+/* Clears the screen */
+void cls()
+{
+    unsigned blank;
+    int i;
+
+    /* Again, we need the 'short' that will be used to
+    *  represent a space with color */
+    blank = 0x20 | (attrib << 8);
+
+    /* Sets the entire screen to spaces in our current
+    *  color */
+    for(i = 0; i < 25; i++)
+        memset(textmemptr + i * 80, blank, 80);
+
+    /* Update out virtual cursor, and then move the
+    *  hardware cursor */
+    tty_pos_x = 0;
+    tty_pos_y = 0;
+    move_csr();
 }
