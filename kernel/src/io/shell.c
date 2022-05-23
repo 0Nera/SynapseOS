@@ -137,16 +137,15 @@ void tui() {
     int menu_entry = 1;
     //tty_printf("TUI started");
     while (1) {
-        if (menu_entry == 1) {
-            for (int32_t i = 0; i < 41; i += 8) {
-                for (int32_t j = 0; j < 9; j += 8) {
-                    draw_vga_character(" ", i, j, VESA_YELLOW, VESA_YELLOW, true);
-                    cls();
+        if (outp == 0) {
+            if (menu_entry == 1) {
+                for (int32_t i = 0; i < 41; i += 8) {
+                    for (int32_t j = 0; j < 9; j += 8) {
+                        draw_vga_character(" ", i, j, VESA_YELLOW, VESA_YELLOW, true);       
+                    }
                 }
             }
-        }
-        if (outp == 0)
-        {
+            cls();
             tty_printf(text);
             outp++;
         }
