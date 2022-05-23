@@ -4,7 +4,7 @@
 tss_entry_t kernel_tss;
 
 void task_switch(){
-    
+    log("123");
 }
 
 // We don't need tss to assist all the task switching, but it's required to have one tss for switching back to kernel mode(system call for example)

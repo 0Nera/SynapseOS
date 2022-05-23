@@ -110,6 +110,47 @@ void IRQ_clear_mask(unsigned char IRQline) {
     outb(port, value);
 }
 
+#define PIC1            0x20        /* IO base address for Active PIC */
+#define PIC2            0xA0        /* IO base address for Passive PIC */
+#define PIC1_COMMAND    PIC1
+#define PIC1_DATA       PIC1 + 1
+#define PIC2_COMMAND    PIC2
+#define PIC2_DATA       PIC2 + 1
+#define PIC_EOI         0x20        /* End-of-interrupt command code */
+#define PIC_READ_IRR    0x0a        /* OCW3 irq ready next CMD read */
+#define PIC_READ_ISR    0x0b        /* OCW3 irq service next CMD read */
+
+#define ICW1_INIT               (0 << 8) | (1 << 4)
+#define ICW1_ICW4_NEEDED        1
+#define ICW1_CALLADDR_4         1 << 2
+
+void pic_disable_all_irq(void) {
+    outb(PIC1_DATA, 0xff);
+    outb(PIC2_DATA, 0xff);
+}
+
+void pic_init(void) {
+    /* Send ICW1 to both PIC chips */
+    outb(PIC1_COMMAND, ICW1_INIT | ICW1_CALLADDR_4 | ICW1_ICW4_NEEDED);
+    outb(PIC2_COMMAND, ICW1_INIT | ICW1_CALLADDR_4 | ICW1_ICW4_NEEDED);
+
+    /* Determine the offset */
+    outb(PIC1_DATA, 32);
+    outb(PIC2_DATA, 40);
+
+    /* Configure active/passive device cascade */
+    outb(PIC1_DATA, 4);
+    outb(PIC2_DATA, 2);
+
+    /* Set operation mode - 8086 mode on*/
+    outb(PIC1_DATA, 1);
+    outb(PIC2_DATA, 1);
+
+    /* mask (disable) all PIC interrupts */
+    pic_disable_all_irq();
+
+    log("PIC installed");
+}
 
 void init_pics(int32_t pic1, int32_t pic2) {
     outb(PIC1, ICW1);
@@ -128,7 +169,7 @@ void init_pics(int32_t pic1, int32_t pic2) {
 void idt_init() {
     outb(0x21,0xfd);
     outb(0xa1,0xff);
-    init_pics(0x20,0x28);
+    pic_init();
 
     // Sets the special IDT pointer up
     idtp.limit = (sizeof(struct idt_entry) * IDT_NUM_ENTRIES) - 1;
@@ -149,6 +190,18 @@ void idt_init() {
         idt[i].flags = 0;
         idt[i].sel = 0;
     }
+
+    // Remap the irq table.
+    outb(0x20, 0x11);
+    outb(0xA0, 0x11);
+    outb(0x21, 0x20);
+    outb(0xA1, 0x28);
+    outb(0x21, 0x04);
+    outb(0xA1, 0x02);
+    outb(0x21, 0x01);
+    outb(0xA1, 0x01);
+    outb(0x21, 0x0);
+    outb(0xA1, 0x0);
 
     SET_IDT_ENTRY(0);
     SET_IDT_ENTRY(1);
@@ -183,23 +236,14 @@ void idt_init() {
     SET_IDT_ENTRY(30);
     SET_IDT_ENTRY(31);
 
-    outb(0x20, 0x11);
-    outb(0xA0, 0x11);
-    outb(0x21, 0x20);
-    outb(0xA1, 0x28);
-    outb(0x21, 0x04);
-    outb(0xA1, 0x02);
-    outb(0x21, 0x01);
-    outb(0xA1, 0x01);
-    outb(0x21, 0x0);
-    outb(0xA1, 0x0);
-
+    
     SET_IDT_ENTRY(32);
     // Install scheduler by timer interrupt
     set_idt_entry(TIMER_IDT_INDEX, (uint32_t) &task_switch, 0x08, 0x8E);
     timer_set_frequency(TICKS_PER_SECOND);
 
     SET_IDT_ENTRY(33);
+    set_idt_entry(33, (uint32_t) &keyboard_handler_main, 0x08, 0x8E);
     SET_IDT_ENTRY(44);
     SET_IDT_ENTRY(47);
 
