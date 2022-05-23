@@ -124,7 +124,7 @@ void init_tui(char *text) {
         char txt = text[a];
         //for (int c = 0; c <= strlen(text); c++) {
             //tty_putchar(txt);
-        draw_vga_character(txt, i, 0, 0xFF5555, 0x0000AA, true);
+        draw_vga_character(txt, a, 0, 0xFF5555, 0x0000AA, true);
         a++;
         //}
     }
