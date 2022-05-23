@@ -25,6 +25,7 @@ def build_all():
     os.system("i686-elf-gcc -nostdlib -w -lgcc -ffreestanding -I include/ -c examples/C/vesa_Russia.c -o ./bin/vesa_Russia.o")
     os.system("i686-elf-gcc -nostdlib -w -lgcc -ffreestanding -I include/ -c examples/C/char.c -o ./bin/char.o")
     os.system("i686-elf-gcc -nostdlib -w -lgcc -ffreestanding -I include/ -c apps/0Nera/NeraMath/main.c -o ./bin/NeraMath.o")
+    os.system("i686-elf-gcc -nostdlib -w -lgcc -ffreestanding -I include/ -c games/kernelmode_power/snake/snake.c -o ./bin/snake.o")
     os.system("i686-elf-gcc -nostdlib -w -lgcc -ffreestanding -I include/ -c examples/C/test.c -o ./bin/test.o")
 
     print("Building libc")
@@ -35,7 +36,6 @@ def build_all():
     os.system("i686-elf-gcc -nostdlib -w -lgcc -ffreestanding -I include/ -c libc/learntask.c -o ./bin/libc/learntask.o")
     os.system("i686-elf-gcc -nostdlib -w -lgcc -ffreestanding -I include/ -c libc/vesa.c -o ./bin/libc/vesa.o")
     os.system("i686-elf-gcc -nostdlib -w -lgcc -ffreestanding -I include/ -c libc/scancodes.c -o ./bin/libc/scancodes.o")
-
     
     print("Linking apps")
     os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/hi.elf ./bin/HelloWorld.o" + O_LIBC)
@@ -44,6 +44,7 @@ def build_all():
     os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/beep.elf ./bin/beep.o" + O_LIBC)
     os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/char.elf ./bin/char.o" + O_LIBC)
     os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/NeraMath.elf ./bin/NeraMath.o" + O_LIBC)
+    os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/snake.elf ./bin/snake.o" + O_LIBC)
     os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/test.elf ./bin/test.o")
 
 if __name__ == "__main__":
