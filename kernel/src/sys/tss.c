@@ -1,14 +1,23 @@
 #include <kernel.h>
 
-
+task_t tasks[256];
 tss_entry_t kernel_tss;
+uint8_t tasks_num = 1;
 
-void task_switch(){
-    log("123");
+uint8_t current = 0;
+
+void task_switch(struct regs *r){
+    //log("task: %d, total tasks: %d, ticks: %d", tasks[current].id, tasks_num, timer_get_ticks());
+    tasks_num++;
+    // Read esp, ebp now for saving later on.
+    uint32_t esp, ebp, eip;
+    asm volatile("mov %%esp, %0" : "=r"(esp));
+    asm volatile("mov %%ebp, %0" : "=r"(ebp));
 }
 
 // We don't need tss to assist all the task switching, but it's required to have one tss for switching back to kernel mode(system call for example)
 void tss_init(uint32_t idx, uint32_t kss, uint32_t kesp) {
+    tasks[0].id = 0;
     uint32_t base = (uint32_t) &kernel_tss;
     gdt_set_gate(idx, base, base + sizeof(tss_entry_t), /*or 0x89??*/0xE9, 0);
 

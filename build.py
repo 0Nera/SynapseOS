@@ -72,8 +72,6 @@ if __name__ == "__main__":
         else:
             os.system("qemu-img create -f raw ata.vhd 32M")
         
-       # os.system("qemu-img create -f raw ata.vhd 2K")
-        
 
         os.chdir("apps/")
         os.system("python build.py")
@@ -89,6 +87,7 @@ if __name__ == "__main__":
                 tar.add(i)
         
         os.chdir("../")
+        
         print("Creating ISO")
 
         if sys.platform == "linux" or sys.platform == "linux2":

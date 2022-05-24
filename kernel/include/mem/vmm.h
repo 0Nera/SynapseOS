@@ -6,13 +6,18 @@
 typedef uint32_t page_table_entry;
 typedef uint32_t page_dir_entry;
 
-typedef struct __attribute__((aligned(4096))) page_directory {
-    page_dir_entry entries[PAGES_PER_DIR];
-} page_directory;
 
 typedef struct __attribute__((aligned(4096))) page_table {
     page_table_entry entries[PAGES_PER_TABLE];
 } page_table;
+
+typedef struct __attribute__((aligned(4096))) page_directory {
+    page_dir_entry entries[PAGES_PER_DIR];
+    // We need a table that contains virtual address, so that we can actually get to the tables
+    page_table * ref_tables[1024];
+} page_directory;
+
+
 
 enum PAGE_PTE_FLAGS {
     I86_PTE_PRESENT       = 1,

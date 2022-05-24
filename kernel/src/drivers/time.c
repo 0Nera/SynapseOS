@@ -24,6 +24,7 @@ void timer_set_frequency(int32_t hz) {
 
 void timer_handler(struct regs *r) {
     timer_ticks++;
+    task_switch(r);
     // tty_printf("\ntimer_handler idt: %d", r->idt_index);
     //log("timer_handler idt: %d", r->idt_index);
 }

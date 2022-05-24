@@ -6,6 +6,10 @@
 
 #include <kernel.h>
 
+// Defone some address calculation macro
+#define PAGEDIR_INDEX(vaddr) (((uint32_t)vaddr) >> 22)
+#define PAGETBL_INDEX(vaddr) ((((uint32_t)vaddr) >>12) & 0x3ff)
+#define PAGEFRAME_INDEX(vaddr) (((uint32_t)vaddr) & 0xfff)
 
 page_directory *kernel_page_dir; // Pointer (physical) to kernel page dircetory structure
 
@@ -14,8 +18,20 @@ uint32_t kv2p(void *a) {
     return (uint32_t)a - 0xC0000000;
 }
 
-void * virtual2phys(void * virtual_addr) {
-    return (void*)(virtual_addr - 0xC0000000);
+void * virtual2phys(page_directory * dir, void * virtual_addr) {
+    uint32_t page_dir_idx = PAGEDIR_INDEX(virtual_addr), page_tbl_idx = PAGETBL_INDEX(virtual_addr), page_frame_offset = PAGEFRAME_INDEX(virtual_addr);
+    if(!dir->ref_tables[page_dir_idx]) {
+        log("virtual2phys: page dir entry %d does not exist\n", page_tbl_idx);
+        return NULL;
+    }
+    page_table * table = dir->ref_tables[page_dir_idx];
+    if(!table->entries[page_tbl_idx]) {
+        log("virtual2phys: page table entry %d does not exist\n", page_tbl_idx);
+        return NULL;
+    }
+    uint32_t t = table->entries[page_tbl_idx];
+    t = (t << 12) + page_frame_offset;
+    return (void*)t;
 }
 
 bool vmm_alloc_page(virtual_addr vaddr) {

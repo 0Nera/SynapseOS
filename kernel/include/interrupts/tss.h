@@ -41,6 +41,17 @@ typedef struct tss_entry {
     uint16_t iomap_base;
 } tss_entry_t;
 
+
+// Задача
+typedef struct task {
+    int32_t id;                         // Process ID.
+    uint32_t esp, ebp;                  // Stack and base pointers.
+    uint32_t eip;                       // Instruction pointer.
+    page_directory *page_directory;   // Page directory.
+    //struct task *next;                  // The next task in a linked list.
+} task_t;
+
+
 extern void tss_flush();
 void task_switch();
 void tss_init(uint32_t idx, uint32_t kss, uint32_t kesp);

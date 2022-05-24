@@ -44,6 +44,7 @@ typedef struct vfs_filesystem_handles_t {
     uint32_t (*mkdir) (char *fn, char*, vfs_filesystem_t*, uint16_t*);
 
     uint32_t (*rm) (char *fn, vfs_filesystem_t*);
+    uint32_t (*ls) (char *fn, vfs_filesystem_t*);
 
     uint32_t (*get_size) (char *fn, vfs_filesystem_t*);
     uint32_t (*exists) (char *fn, vfs_filesystem_t*);

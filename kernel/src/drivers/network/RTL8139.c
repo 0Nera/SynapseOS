@@ -7,6 +7,7 @@ int32_t RTL8139_io_addres = 0;
 uint32_t RTL8139_ret;
 uint32_t RTL8139_raw_mac[2];
 
+
 // Четыре регистра TXAD, вы должны каждый раз использовать другой для отправки пакета (например, использовать первый, второй... четвертый и обратно к первому)
 uint8_t TSAD_array[4] = {0x20, 0x24, 0x28, 0x2C};
 uint8_t TSD_array[4] = {0x10, 0x14, 0x18, 0x1C};
@@ -42,7 +43,7 @@ void RTL8139_get_mac_addr(uint8_t src_mac_addr[6]){
 void RTL8139_send_packet(void *data, uint32_t len) {
     // Копируем данные
     void * transfer_data = kheap_malloc(len);
-    void * phys_addr = virtual2phys(transfer_data);
+    void * phys_addr = kv2p(transfer_data);
     memcpy(transfer_data, data, len);
 
     // Отправка
@@ -109,7 +110,7 @@ int RTL8139_init() {
     // Выделяем буффер
     RTL8139_device.rx_buffer = kheap_malloc(8192 + 16 + 1500);
     memset(RTL8139_device.rx_buffer, 0x0, 8192 + 16 + 1500);
-    outl(RTL8139_device.io_base + 0x30, (uint32_t)virtual2phys(RTL8139_device.rx_buffer));
+    outl(RTL8139_device.io_base + 0x30, (uint32_t)kv2p(RTL8139_device.rx_buffer));
 
     // Устанавливает биты TOK и ROK в высокий уровень
     outs(RTL8139_device.io_base + 0x3C, 0x0005);
@@ -123,9 +124,11 @@ int RTL8139_init() {
 
     // Регистрация прерываний
     uint32_t irq_num = pci_read(pci_RTL8139_device, PCI_INTERRUPT_LINE);
-    register_interrupt_handler(32 + irq_num, RTL8139_handler);
+    register_interrupt_handler(32 + irq_num, &RTL8139_handler);
+    IRQ_clear_mask(irq_num);
+    log("RTL8139 installed, idt: %d, irq: %d", 32 + irq_num, irq_num);
     
-    log("RTL8139 installed");
+    RTL8139_send_packet("123", 4);
     return 1;
 }
 
