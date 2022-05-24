@@ -107,6 +107,7 @@ void IRQ_clear_mask(unsigned char IRQline) {
     }
 
     value = inb(port) & ~(1 << IRQline);
+    // tty_printf("value = %x\n", value);
     outb(port, value);
 }
 
@@ -152,18 +153,6 @@ void pic_init(void) {
     log("PIC installed");
 }
 
-void init_pics(int32_t pic1, int32_t pic2) {
-    outb(PIC1, ICW1);
-    outb(PIC2, ICW1);
-    outb(PIC1 + 1, pic1);
-    outb(PIC2 + 1, pic2);
-    outb(PIC1 + 1, 4);
-    outb(PIC2 + 1, 2);
-    outb(PIC1 + 1, ICW4);
-    outb(PIC2 + 1, ICW4);
-    outb(PIC1 + 1, 0xFF);
-}
-
 
 // Installs the IDT
 void idt_init() {
@@ -190,18 +179,6 @@ void idt_init() {
         idt[i].flags = 0;
         idt[i].sel = 0;
     }
-
-    // Remap the irq table.
-    outb(0x20, 0x11);
-    outb(0xA0, 0x11);
-    outb(0x21, 0x20);
-    outb(0xA1, 0x28);
-    outb(0x21, 0x04);
-    outb(0xA1, 0x02);
-    outb(0x21, 0x01);
-    outb(0xA1, 0x01);
-    outb(0x21, 0x0);
-    outb(0xA1, 0x0);
 
     SET_IDT_ENTRY(0);
     SET_IDT_ENTRY(1);
@@ -236,22 +213,14 @@ void idt_init() {
     SET_IDT_ENTRY(30);
     SET_IDT_ENTRY(31);
 
-    
     SET_IDT_ENTRY(32);
-    // Install scheduler by timer interrupt
-    //set_idt_entry(TIMER_IDT_INDEX, (uint32_t) &task_switch, 0x08, 0x8E);
-    //timer_set_frequency(TICKS_PER_SECOND);
 
     SET_IDT_ENTRY(33);
     SET_IDT_ENTRY(44);
     SET_IDT_ENTRY(47);
 
 
-    SET_IDT_ENTRY(128); // Need for system calls - int32_t 0x80 , 0x80 = 128 inв виде числа
-
-    for (int32_t i = 0; i < 16; ++i) {
-        IRQ_clear_mask(i);
-    }
+    SET_IDT_ENTRY(128); // Need for system calls - int32_t 0x80 , 0x80 = 128 inРІ РІРёРґРµ С‡РёСЃР»Р°
 
     asm volatile("sti");
 }

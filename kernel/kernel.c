@@ -51,6 +51,8 @@ void kernel(int32_t magic_number, struct multiboot_info *mboot_info) {
 
     keyboard_install();                     // Установка драйвера клавиатуры
 
+    timer_install();
+
     pci_init();                             // Установка драйвера PCI
 
     ata_init();                             // Установка драйвера ATA
@@ -58,9 +60,9 @@ void kernel(int32_t magic_number, struct multiboot_info *mboot_info) {
     unit_test(RTL8139_init());
 
 
-    while(1){
-        asm volatile("hlt");
-    }
+    // while(1){
+    //     asm volatile("hlt");
+    // }
     
     shell();                                // Активация терминала
 

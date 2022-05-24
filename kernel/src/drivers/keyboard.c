@@ -102,9 +102,8 @@ unsigned  char keyboard_map_shifted[] = {
 
 void keyboard_install(void) {
     input_type = 1;
-    // 0xFD это 11111101 - включает IRQ1 (клавиатура)
-    outb(0x21, 0xFD);
     register_interrupt_handler(33, &keyboard_handler_main);
+    IRQ_clear_mask(33 - 32); // - 32 потому что после ремаппинга номера смещаются на 32
     log("Keyboard installed");
 }
 
@@ -234,6 +233,7 @@ int32_t keyboard_getchar() {
     input_type = 2;
 
     while (input_type != -2) {
+        asm volatile("hlt");
         //keyboard_handler_main();
     }
 
@@ -246,6 +246,9 @@ int32_t keyboard_getchar() {
 int32_t keyboard_getscancode() {
     input_type = 2;
 
+    while(input_type){
+        asm volatile("hlt");
+    }
     //keyboard_handler_main();
 
     input_type = 1;
@@ -257,6 +260,7 @@ char *keyboard_gets() {
     input_type = 3;
 
     while (input_type != -3) {
+        asm volatile("hlt");
         //keyboard_handler_main();
     }
     //tty_printf("\nstring [%s]", string_mem);

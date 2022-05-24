@@ -1,5 +1,6 @@
 #include <kernel.h>
 
+
 #define INPUT_CLOCK_FREQUENCY 1193180
 
 #define TIMER_COMMAND 0x43
@@ -10,6 +11,7 @@
 
 
 int32_t timer_ticks = 0;
+
 
 void timer_set_frequency(int32_t hz) {
     int divisor = INPUT_CLOCK_FREQUENCY / hz;
@@ -22,17 +24,20 @@ void timer_set_frequency(int32_t hz) {
 
 void timer_handler(struct regs *r) {
     timer_ticks++;
-    tty_printf("\ntimer_handler idt: %d", r->idt_index);
-    log("timer_handler idt: %d", r->idt_index);
+    // tty_printf("\ntimer_handler idt: %d", r->idt_index);
+    //log("timer_handler idt: %d", r->idt_index);
 }
+
 
 int32_t timer_get_ticks() {
     return timer_ticks;
 }
 
+
 // Timer init
 void timer_install() {
     register_interrupt_handler(32, &timer_handler);
-    timer_set_frequency(50);
+    IRQ_clear_mask(32 - 32); // - 32 потому что после ремаппинга номера смещаются на 32
+    timer_set_frequency(50); // 50 герц
     log("Timer installed");
 }
