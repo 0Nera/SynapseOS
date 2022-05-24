@@ -186,7 +186,6 @@ void keyboard_handler_main(struct regs *r) {
         if (input_type == 3) {
             //log("getch: %d ", keycode);
             input_type = -2;
-            return;
         }
 
         if (keycode == ENTER_KEY_CODE) {
