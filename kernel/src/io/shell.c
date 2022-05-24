@@ -129,7 +129,6 @@ void init_tui() {
     }
     cls();                      // <- понадобилось
     tty_setcolor(VESA_WHITE);
-    tty_printf(text);           // <- временно
     tui();
 }
 
@@ -137,18 +136,27 @@ void tui() {
     int menu_entry = 1;
     //tty_printf("TUI started");
     while (1) {
-        if (outp == 0) {
-            if (menu_entry == 1) {
-                for (int32_t i = 0; i < 41; i += 8) {
-                    for (int32_t j = 0; j < 9; j += 8) {
-                        draw_vga_character(" ", i, j, VESA_YELLOW, VESA_YELLOW, true);       
-                    }
+        if (menu_entry == 1) {
+            for (int32_t i = 0; i < 41; i += 8) {
+                for (int32_t j = 0; j < 9; j += 8) {
+                    draw_vga_character(" ", i, j, VESA_YELLOW, VESA_YELLOW, true);       
                 }
             }
-            cls();
-            tty_printf(text);
-            outp++;
+        } else if (menu_entry == 2) {
+            for (int32_t i = 40; i < 81; i += 8) {
+                for (int32_t j = 0; j < 9; j += 8) {
+                    draw_vga_character(" ", i, j, VESA_YELLOW, VESA_YELLOW, true);       
+                }
+            }
         }
+        tty_printf(text);
+        uint32_t key = keyboard_getscancode();
+        cls();
+        if (key == 77)
+        {
+            menu_entry++;
+        }
+        
     }
 }
 

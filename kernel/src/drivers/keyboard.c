@@ -80,7 +80,7 @@ unsigned  char keyboard_map_shifted[] = {
     0,	/*  69 - Num lock*/
     0,	/*  Scroll Lock  */
     0,	/*  Home key */
-    0,	/*  Up Arrow */
+    0,	/*  72 - Up Arrow */
     0,	/*  Page Up  */
     '-',
     0,	/*  Left Arrow */
@@ -88,7 +88,7 @@ unsigned  char keyboard_map_shifted[] = {
     0,	/*  Right  Arrow  */
     '+',
     0,	/*  79 - End key*/
-    0,	/*  Down Arrow */
+    0,	/*  80 - Down Arrow */
     0,	/*  Page Down  */
     0,	/*  Insert Key */
     0,	/*  Delete Key */
@@ -184,7 +184,7 @@ void keyboard_handler_main(void) {
         if (input_type == 3) {
             qemu_printf("getch: %d ", keycode);
             input_type = -2;
-            return;
+            //return;
         }
 
         if (keycode == ENTER_KEY_CODE) {
