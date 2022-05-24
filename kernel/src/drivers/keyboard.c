@@ -4,6 +4,7 @@
   1 - shell
   2 - getchar
   3 - gets
+  4 - getcode
 */
 int32_t input_type = 1, SHIFT = 0, string_mem_counter = 0;
 char keycode, last_char; 
@@ -172,6 +173,11 @@ void keyboard_handler_main(struct regs *r) {
             
             return;
         }
+        if (input_type == 4) {
+            input_type = 0;
+            
+            return;
+        }
         // Кейкод 14 это бекспейс
         if (keycode == 14) {
 
@@ -242,18 +248,27 @@ int32_t keyboard_getchar() {
     return last_char;
 }
 
+
 int32_t keyboard_getscancode() {
-    input_type = 2;
+    struct regs *r;
 
-    while(input_type){
-        asm volatile("hlt");
+    input_type = 4;
+
+    keyboard_handler_main(r);
+
+    for (int32_t i = 512; i != 0; i--){
+        if (keycode == -100){
+            keyboard_handler_main(r);
+        } else {
+            log("keyboard_getscancode %d, after^ %d ", keycode, i);
+            return keycode;
+        }
     }
-    //keyboard_handler_main();
-
-    input_type = 1;
     
+    log("keyboard_getscancode %d ", keycode);
     return keycode;
 }
+
 
 char *keyboard_gets() {
     input_type = 3;
