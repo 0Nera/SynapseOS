@@ -169,6 +169,7 @@ int32_t run_elf_file(const char *name/*, char **argv, char **env __attribute__((
             alloc_addr += PAGE_SIZE) {
             vmm_alloced[ptr_vmm_alloced] = alloc_addr;
             ptr_vmm_alloced++;
+            log("Alloc %d: %x", ptr_vmm_alloced, alloc_addr);
             vmm_alloc_page(alloc_addr);
         }
 
@@ -176,9 +177,6 @@ int32_t run_elf_file(const char *name/*, char **argv, char **env __attribute__((
         memcpy((void*) phdr->load_to, elf_file + phdr->data_offset, phdr->size_in_file);
         log("Loaded");
     }
-
-    log("");
-
 
     int(*entry_point)() = (void*) (hdr->entry);
     log("ELF entry point: %x", hdr->entry);

@@ -183,7 +183,7 @@ void cat(char *fname) {
 void sysinfo(){
     tty_printf("                       ........--........        SynapseOS by Aren Elchinyan\n");
     tty_printf("                       ....+***:**+*....         Arch %s\n", ARCH_TYPE);
-    tty_printf("                         .**.......**....                       \n");
+    tty_printf("                         .**.......**....        Ticks: %d\n", timer_get_ticks());
     tty_printf("                       ...**.......**...                        \n");
     tty_printf("                        ..:**.....-**....                       \n");
     tty_printf("                       . ...+******.....                        \n");

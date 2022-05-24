@@ -206,6 +206,8 @@ void tty_puts(const char c[]) {
 }
 
 
+
+
 /*
     tty_putint32_t - вывод числа
 */
