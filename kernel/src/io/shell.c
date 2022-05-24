@@ -133,30 +133,51 @@ void init_tui() {
 }
 
 void tui() {
-    int menu_entry = 1;
+    int menuentry = 1;
     //tty_printf("TUI started");
     while (1) {
-        if (menu_entry == 1) {
-            for (int32_t i = 0; i < 41; i += 8) {
-                for (int32_t j = 0; j < 9; j += 8) {
+        uint32_t key = keyboard_getscancode();
+        if (key == 77) {
+            for (int32_t j = 0; j < VESA_WIDTH; j += 8) {
+                draw_vga_character(" ", j, 0, VESA_BLUE, VESA_BLUE, true);
+            }
+            menuentry++;
+            key = 0;
+        } else if (key == 75) {
+            for (int32_t j = 0; j < VESA_WIDTH; j += 8) {
+                draw_vga_character(" ", j, 0, VESA_BLUE, VESA_BLUE, true);
+            }
+            menuentry--;
+            key = 0;
+        }
+        if (menuentry == 1) {
+            for (int32_t i = 0; i < 48; i += 8) {
+                for (int32_t j = 0; j < 8; j += 8) {
                     draw_vga_character(" ", i, j, VESA_YELLOW, VESA_YELLOW, true);       
                 }
             }
-        } else if (menu_entry == 2) {
-            for (int32_t i = 40; i < 81; i += 8) {
-                for (int32_t j = 0; j < 9; j += 8) {
+        } else if (menuentry == 2) {
+            for (int32_t i = 48; i < 96; i += 8) {
+                for (int32_t j = 0; j < 8; j += 8) {
                     draw_vga_character(" ", i, j, VESA_YELLOW, VESA_YELLOW, true);       
                 }
             }
+        } else if (menuentry == 3) {
+            for (int32_t i = 96; i < 176; i += 8) {
+                for (int32_t j = 0; j < 8; j += 8) {
+                    draw_vga_character(" ", i, j, VESA_YELLOW, VESA_YELLOW, true);       
+                }
+            }
+        }
+        if (menuentry > 3) {
+            menuentry = 3;
+        } 
+        if (menuentry < 1) {
+            menuentry = 1;
         }
         tty_printf(text);
-        uint32_t key = keyboard_getscancode();
-        cls();
-        if (key == 77)
-        {
-            menu_entry++;
-        }
-        
+        tty_putint(menuentry);
+        cls();  
     }
 }
 

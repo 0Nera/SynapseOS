@@ -81,3 +81,4 @@ void draw_vga_character(uint8_t c, int32_t x, int32_t y, int32_t fg, int32_t bg,
 void create_back_framebuffer();
 void move_csr(void);
 void cls();
+void tty_putint(const int32_t i);
