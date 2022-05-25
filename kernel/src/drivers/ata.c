@@ -77,22 +77,6 @@ static void ide_write_register(uint8_t channel, uint8_t reg, uint8_t data) {
         ide_write_register(channel, ATA_REG_CONTROL, g_ide_channels[channel].no_intr);
 }
 
-// read long word from reg port for quads times
-void insl(uint16_t reg, uint32_t *buffer, int32_t quads) {
-    int32_t index;
-    for (index = 0; index < quads; index++) {
-        buffer[index] = inl(reg);
-    }
-}
-
-// write long word to reg port for quads times
-void outsl(uint16_t reg, uint32_t *buffer, int32_t quads) {
-    int32_t index;
-    for (index = 0; index < quads; index++) {
-        outl(reg, buffer[index]);
-    }
-}
-
 // read collection of value from a channel into given buffer
 void ide_read_buffer(uint8_t channel, uint8_t reg, uint32_t *buffer, uint32_t quads) {
     if (reg > 0x07 && reg < 0x0C)
