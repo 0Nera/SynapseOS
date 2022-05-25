@@ -133,51 +133,114 @@ void init_tui() {
 }
 
 void tui() {
-    int menuentry = 1;
-    //tty_printf("TUI started");
+    uint32_t menuentry = 1;
+    uint32_t podmenu = 1;
+    uint32_t option = 1;
     while (1) {
+        //////////////////////////////////// KEYS //////////////////////////////////////
         uint32_t key = keyboard_getscancode();
         if (key == 77) {
             for (int32_t j = 0; j < VESA_WIDTH; j += 8) {
-                draw_vga_character(" ", j, 0, VESA_BLUE, VESA_BLUE, true);
+                for (int32_t i = 0; i < 64; i += 8) {
+                    draw_vga_character(" ", j, i, VESA_BLUE, VESA_BLUE, true);
+                }
             }
             menuentry++;
-            key = 0;
         } else if (key == 75) {
             for (int32_t j = 0; j < VESA_WIDTH; j += 8) {
-                draw_vga_character(" ", j, 0, VESA_BLUE, VESA_BLUE, true);
+                for (int32_t i = 0; i < 64; i += 8) {
+                    draw_vga_character(" ", j, i, VESA_BLUE, VESA_BLUE, true);
+                }
             }
             menuentry--;
-            key = 0;
         }
+        if (key == 80) {
+            for (int32_t j = 0; j < VESA_WIDTH; j += 8) {
+                for (int32_t i = 0; i < 64; i += 8) {
+                    draw_vga_character(" ", j, i, VESA_BLUE, VESA_BLUE, true);
+                }
+            }
+            podmenu++;
+        } else if (key == 72) {
+            for (int32_t j = 0; j < VESA_WIDTH; j += 8) {
+                for (int32_t i = 0; i < 64; i += 8) {
+                    draw_vga_character(" ", j, i, VESA_BLUE, VESA_BLUE, true);
+                }
+            }
+            podmenu--;
+        }
+        //////////////////////////////////// FUNC //////////////////////////////////////
+        if (key == 28 && option == 1) {
+            reboot();
+        }
+        ////////////////////////////////// ENTRIES /////////////////////////////////////
         if (menuentry == 1) {
             for (int32_t i = 0; i < 48; i += 8) {
                 for (int32_t j = 0; j < 8; j += 8) {
                     draw_vga_character(" ", i, j, VESA_YELLOW, VESA_YELLOW, true);       
                 }
             }
-        } else if (menuentry == 2) {
+            tty_printf("\n Reboot \nShutdown\n--------");
+        } 
+        if (menuentry == 2) {
             for (int32_t i = 48; i < 96; i += 8) {
                 for (int32_t j = 0; j < 8; j += 8) {
                     draw_vga_character(" ", i, j, VESA_YELLOW, VESA_YELLOW, true);       
                 }
             }
-        } else if (menuentry == 3) {
+            tty_printf("\n Nera Math \n   Snake   \n    Dog    ");
+        } 
+        if (menuentry == 3) {
             for (int32_t i = 96; i < 176; i += 8) {
                 for (int32_t j = 0; j < 8; j += 8) {
                     draw_vga_character(" ", i, j, VESA_YELLOW, VESA_YELLOW, true);       
                 }
             }
+            tty_printf("\n Back Color \n Text Color \n------------");
         }
+        ////////////////////////////////////////////////////////////////////////////////
+        if (podmenu == 1 && menuentry == 1) {
+            for (int32_t i = 0; i < 64; i += 8) {
+                for (int32_t j = 16; j < 24; j += 8) {
+                    draw_vga_character(" ", i, j, VESA_GREEN, VESA_GREEN, true);       
+                }
+            }
+            cls();
+            tty_printf("\n Reboot \nShutdown\n--------");
+        } else if (podmenu == 2 && menuentry == 1) {
+            for (int32_t i = 0; i < 64; i += 8) {
+                for (int32_t j = 32; j < 40; j += 8) {
+                    draw_vga_character(" ", i, j, VESA_GREEN, VESA_GREEN, true);       
+                }
+            }
+            cls();
+            tty_printf("\n Reboot \nShutdown\n--------");
+        } else if (podmenu == 3 && menuentry == 1) {
+            for (int32_t i = 0; i < 64; i += 8) {
+                for (int32_t j = 48; j < 56; j += 8) {
+                    draw_vga_character(" ", i, j, VESA_GREEN, VESA_GREEN, true);       
+                }
+            }
+            cls();
+            tty_printf("\n Reboot \nShutdown\n--------");
+        }
+        ////////////////////////////////////////////////////////////////////////////////
         if (menuentry > 3) {
             menuentry = 3;
         } 
         if (menuentry < 1) {
             menuentry = 1;
         }
-        tty_printf(text);
-        tty_putint(menuentry);
-        cls();  
+        if (podmenu > 3) {
+            podmenu = 3;
+        } 
+        if (podmenu < 1) {
+            podmenu = 1;
+        }
+        ////////////////////////////////////////////////////////////////////////////////
+        cls();
+        tty_printf(text); 
+        sleep(5);
     }
 }
 
