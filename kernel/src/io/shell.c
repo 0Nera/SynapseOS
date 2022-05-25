@@ -169,9 +169,14 @@ void tui() {
             }
             podmenu--;
         }
-        //////////////////////////////////// FUNC //////////////////////////////////////
-        if (key == 28 && option == 1) {
-            reboot();
+        //////////////////////////////////// FUNC  //////////////////////////////////////
+        if (key == 28) {
+            if (option == 1) {
+                reboot();
+            }
+            if (option == 2) {
+                shutdown();
+            }
         }
         ////////////////////////////////// ENTRIES /////////////////////////////////////
         if (menuentry == 1) {
@@ -205,7 +210,7 @@ void tui() {
                     draw_vga_character(" ", i, j, VESA_GREEN, VESA_GREEN, true);       
                 }
             }
-            cls();
+            reset_pos();
             tty_printf("\n Reboot \nShutdown\n--------");
         } else if (podmenu == 2 && menuentry == 1) {
             for (int32_t i = 0; i < 64; i += 8) {
@@ -213,7 +218,7 @@ void tui() {
                     draw_vga_character(" ", i, j, VESA_GREEN, VESA_GREEN, true);       
                 }
             }
-            cls();
+            reset_pos();
             tty_printf("\n Reboot \nShutdown\n--------");
         } else if (podmenu == 3 && menuentry == 1) {
             for (int32_t i = 0; i < 64; i += 8) {
@@ -221,7 +226,7 @@ void tui() {
                     draw_vga_character(" ", i, j, VESA_GREEN, VESA_GREEN, true);       
                 }
             }
-            cls();
+            reset_pos();
             tty_printf("\n Reboot \nShutdown\n--------");
         }
         ////////////////////////////////////////////////////////////////////////////////
@@ -238,7 +243,7 @@ void tui() {
             podmenu = 1;
         }
         ////////////////////////////////////////////////////////////////////////////////
-        cls();
+        reset_pos();
         tty_printf(text); 
         sleep(5);
     }

@@ -6,8 +6,6 @@
 
 #include <kernel.h>
 
-unsigned short *textmemptr;
-int attrib = 0x0F;
 
 volatile uint8_t tty_feedback = 1;
 
@@ -48,16 +46,12 @@ void init_vbe(multiboot_info *mboot) {
         frame += PAGE_SIZE, virt += PAGE_SIZE) {
         vmm_map_page(frame, virt);
     }
-    qemu_printf("VBE create_back_framebuffer\n");
-
     create_back_framebuffer();
 }
 
 void create_back_framebuffer() {
-    //flush_tlb_entry(back_framebuffer_addr);
     back_framebuffer_addr = kheap_malloc(framebuffer_size);
-    qemu_printf("back_framebuffer_addr = %x\n", back_framebuffer_addr);
-    //tty_printf("init_vbe: [c0800000]->%x\n", page_table_entry_is_writable(GET_PTE(0xC0800000)));
+    log("back_framebuffer_addr = %x", back_framebuffer_addr);
     memset(back_framebuffer_addr, 0, framebuffer_size); //causes page fault at c0800000 when this line is placed in the end of init_vbe
 }
 
@@ -120,16 +114,29 @@ void set_pixel(int32_t x, int32_t y, uint32_t color) {
 
 }
 
+
+/*
+    clean_screen - Заливка экрана консоли черным цветом
+*/
+void clean_screen(){
+    for (int32_t x = 0; x < VESA_WIDTH; x++){
+        for (int32_t y = 0; y < VESA_HEIGHT; y++){
+            set_pixel(x, y, VESA_BLACK);
+        }
+    }
+
+    tty_pos_x = 0;
+    tty_pos_y = -17;
+}
+
+
 void set_line(int32_t x, int32_t y, int32_t xe, int32_t ye, uint32_t color){
     for (int32_t i = x; i < xe; i++) {
         for (int32_t j = y; j < ye; j++) {
             set_pixel(i, j, color);
         }
-        
     }
-    
 }
-
 /*
     tty_putchar - вывод одного символа
 */
@@ -153,6 +160,7 @@ void tty_putchar(char c) {
         tty_pos_x += 8;
     }
 }
+
 
 void draw_vga_character(uint8_t c, int32_t x, int32_t y, int32_t fg, int32_t bg, bool bgon) {
 
@@ -192,7 +200,6 @@ void tty_puts(const char c[]) {
     }
 }
 
-
 /*
     tty_putint32_t - вывод числа
 */
@@ -217,6 +224,27 @@ void tty_puthex(uint32_t i) {
     uint32_t n, d = 0x10000000;
 
     tty_puts("0x");
+
+    while((i / d == 0) && (d >= 0x10)) d /= 0x10;
+
+    n = i;
+
+    while( d >= 0xF ) {
+        tty_putchar(hex[n/d]);
+        n = n % d;
+        d /= 0x10;
+    }
+
+    tty_putchar(hex[n]);
+}
+
+
+/*
+    tty_puthex - вывод hex чисел
+*/
+void tty_puthex_v(uint32_t i) {
+    const unsigned char hex[16]  =  { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+    uint32_t n, d = 0x10000000;
 
     while((i / d == 0) && (d >= 0x10)) d /= 0x10;
 
@@ -259,6 +287,9 @@ void tty_print(char *format, va_list args) {
                 case 'x':
                     tty_puthex(va_arg(args, uint32_t));
                     break;
+                case 'v':
+                    tty_puthex_v(va_arg(args, uint32_t));
+                    break;
                 default:
                     tty_putchar(format[i]);
             }
@@ -290,46 +321,7 @@ void tty_printf(char *text, ...) {
     tty_print(text, args);
 }
 
-void move_csr(void)
-{
-    unsigned temp;
-
-    /* The equation for finding the index in a linear
-    *  chunk of memory can be represented by:
-    *  Index = [(y * width) + x] */
-    temp = tty_pos_y * 80 + tty_pos_x;
-
-    /* This sends a command to indicies 14 and 15 in the
-    *  CRT Control Register of the VGA controller. These
-    *  are the high and low bytes of the index that show
-    *  where the hardware cursor is to be 'blinking'. To
-    *  learn more, you should look up some VGA specific
-    *  programming documents. A great start to graphics:
-    *  http://www.brackeen.com/home/vga */
-    outb(0x3D4, 14);
-    outb(0x3D5, temp >> 8);
-    outb(0x3D4, 15);
-    outb(0x3D5, temp);
-}
-
-/* Clears the screen */
-void cls()
-{
-    unsigned blank;
-    int i;
-
-    /* Again, we need the 'short' that will be used to
-    *  represent a space with color */
-    blank = 0x20 | (attrib << 8);
-
-    /* Sets the entire screen to spaces in our current
-    *  color */
-    for(i = 0; i < 25; i++)
-        memset(textmemptr + i * 80, blank, 80);
-
-    /* Update out virtual cursor, and then move the
-    *  hardware cursor */
+void reset_pos() {
     tty_pos_x = 0;
     tty_pos_y = 0;
-    move_csr();
 }
