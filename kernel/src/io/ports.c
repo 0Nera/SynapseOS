@@ -80,7 +80,7 @@ void sleep(int32_t i) {
 }
 
 void qemu_breakpoint()  {
-    log("BREAKPOINT!");
+    //log("BREAKPOINT!");
 }
 
 
@@ -207,7 +207,7 @@ int isprint(char c) {
 
 
 void reboot() {
-    log("REBOOT");
+    //log("REBOOT");
 
     uint8_t good = 0x02;
 
@@ -219,7 +219,7 @@ void reboot() {
 
 
 void shutdown(){
-    log("SHUTDOWN");
+    //log("SHUTDOWN");
     outw(0xB004, 0x2000);
     outw(0x604, 0x2000);
     outw(0x4004, 0x3400);

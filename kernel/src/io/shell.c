@@ -127,7 +127,7 @@ void init_tui() {
             draw_vga_character(" ", i, j, VESA_BLUE, VESA_BLUE, true);
         }
     }
-    cls();                      // <- понадобилось
+    reset_pos();
     tty_setcolor(VESA_WHITE);
     tui();
 }
