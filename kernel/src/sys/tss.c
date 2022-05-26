@@ -10,9 +10,15 @@ void task_switch(struct regs *r){
     //log("task: %d, total tasks: %d, ticks: %d", tasks[current].id, tasks_num, timer_get_ticks());
     tasks_num++;
     // Read esp, ebp now for saving later on.
-    uint32_t esp, ebp, eip;
-    asm volatile("mov %%esp, %0" : "=r"(esp));
-    asm volatile("mov %%ebp, %0" : "=r"(ebp));
+    uint32_t esp = 0, ebp = 0, eip = 0;
+    //asm volatile("mov %%esp, %0" : "=r"(esp));
+    //asm volatile("mov %%ebp, %0" : "=r"(ebp));
+    asm volatile("cli");
+    asm volatile("mov %0, %%esp" : "=r"(esp));
+    asm volatile("mov %0, %%ebp" : "=r"(ebp));
+    asm volatile("sti");
+    log("task: %d, total tasks: %d, ticks: %d, esp: %d, ebp: %d, eip: %d", tasks[current].id, tasks_num, timer_get_ticks(), esp, ebp, 0);
+
 }
 
 // We don't need tss to assist all the task switching, but it's required to have one tss for switching back to kernel mode(system call for example)
