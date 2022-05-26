@@ -1,8 +1,14 @@
-#include <stdio.h>
+/*
+    Автор: Арен Елчинян. Распространяется по лицензии GNU GPL 3.0
+    Имя файла:  HelloWorld.c
+    Описание:   Программа для теста вывода
+*/
+
+#include <stdio.h>                  // Импорт билиотеки ввода-вывода
 
 
-int main(){
-    printf("\nHello World!");
+int main(){                         // Точка входа
+    printf("Hello World!");         // Вывод фразы Hello World
 
-    return 0;
+    return 0;                       // Программа завершена, надо вернуть 0 - все хорошо выполнено
 }

@@ -1,6 +1,11 @@
 #include <learntask.h>
 
 
+int intlen(void *var){
+    
+}
+
+
 int fibonacci(int N) {
     if (N == 1 || N == 2)
         return 1; // первые 2 числа равны 1
