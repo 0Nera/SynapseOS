@@ -186,10 +186,10 @@ void tui() {
                 run_elf_file("/initrd/apps/NeraMath.elf");
             }
             if (option == 5) {
-                run_elf_file("/initrd/apps/snake.elf");
+                //run_elf_file("/initrd/apps/snake.elf");
             }
             if (option == 6) {
-                run_elf_file("/initrd/apps/dog.elf");
+                //run_elf_file("/initrd/apps/dog.elf");
             }
         }
         ////////////////////////////////// ENTRIES /////////////////////////////////////
