@@ -83,7 +83,16 @@ void qemu_breakpoint()  {
     //log("BREAKPOINT!");
 }
 
+void io_wait(void) {
+    outb(0x80, 0);
+}
 
+
+void sleep(int i) {
+    for (int j = i * 1000; j != 0; j--){
+        io_wait();
+    }
+}
 
 void qemu_putuint(int32_t i) {
     uint32_t n, d = 1000000000;
