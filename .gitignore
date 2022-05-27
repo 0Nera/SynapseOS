@@ -1,7 +1,6 @@
 *.o
 *.elf
 *.log
-*.iso
 *.img
 /.vscode
 *.uibak
