@@ -41,7 +41,6 @@ void io_wait(void) {
     outb(0x80, 0);
 }
 
-
 void sleep(int i) {
     for (int j = i * 1000; j != 0; j--){
         io_wait();

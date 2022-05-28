@@ -4,7 +4,6 @@
   1 - shell
   2 - getchar
   3 - gets
-  4 - getcode
 */
 int32_t input_type = 1, SHIFT = 0, string_mem_counter = 0;
 char keycode, last_char; 
@@ -81,7 +80,7 @@ unsigned  char keyboard_map_shifted[] = {
     0,	/*  69 - Num lock*/
     0,	/*  Scroll Lock  */
     0,	/*  Home key */
-    0,	/*  Up Arrow */
+    0,	/*  72 - Up Arrow */
     0,	/*  Page Up  */
     '-',
     0,	/*  Left Arrow */
@@ -89,7 +88,7 @@ unsigned  char keyboard_map_shifted[] = {
     0,	/*  Right  Arrow  */
     '+',
     0,	/*  79 - End key*/
-    0,	/*  Down Arrow */
+    0,	/*  80 - Down Arrow */
     0,	/*  Page Down  */
     0,	/*  Insert Key */
     0,	/*  Delete Key */
@@ -103,12 +102,11 @@ unsigned  char keyboard_map_shifted[] = {
 
 void keyboard_install(void) {
     input_type = 1;
-    register_interrupt_handler(33, &keyboard_handler_main);
-    IRQ_clear_mask(33 - 32); // - 32 потому что после ремаппинга номера смещаются на 32
-    log("Keyboard installed");
+    // 0xFD это 11111101 - включает IRQ1 (клавиатура)
+    outb(0x21, 0xFD);
 }
 
-void keyboard_handler_main(struct regs *r) {
+void keyboard_handler_main(void) {
 
     unsigned char status;
 
@@ -120,8 +118,7 @@ void keyboard_handler_main(struct regs *r) {
     // Проверяем статус используя нижний бит
     if (status & 0x01) {
         keycode = inb(KEYBOARD_DATA_PORT);
-        //log("KEY %d", keycode);
-
+        //qemu_printf("KEY %d\n", keycode);
         if (input_type == 0) {
             return;
         }
@@ -173,11 +170,6 @@ void keyboard_handler_main(struct regs *r) {
             
             return;
         }
-        if (input_type == 4) {
-            input_type = 0;
-            
-            return;
-        }
         // Кейкод 14 это бекспейс
         if (keycode == 14) {
 
@@ -190,8 +182,9 @@ void keyboard_handler_main(struct regs *r) {
             return;
         }
         if (input_type == 3) {
-            //log("getch: %d ", keycode);
+            qemu_printf("getch: %d ", keycode);
             input_type = -2;
+            //return;
         }
 
         if (keycode == ENTER_KEY_CODE) {
@@ -203,22 +196,14 @@ void keyboard_handler_main(struct regs *r) {
             return;
         }
 
-        if (keycode == 1) {
-            shutdown();
-            return;
-        }
-
-        if (keycode == 59) {
-            clean_screen();
-        }
-
         if (keycode == 71) {
+            qemu_printf("\n\nEXIT");
             reboot();
             return;
         }
 
         if (string_mem_counter >= 256) {
-            tty_printf("\nBuffer string_mem is full!!");
+            tty_printf("Buffer string_mem is full!!");
             return;
         }
 
@@ -230,7 +215,7 @@ void keyboard_handler_main(struct regs *r) {
         }
         tty_putchar(last_char);
 
-        log("key = %c (index %d)", keyboard_map[(unsigned char) keycode], (unsigned char) keycode);
+        qemu_printf("key = %c (index %d)\n", keyboard_map[(unsigned char) keycode], (unsigned char) keycode);
     }
 }
 
@@ -238,8 +223,7 @@ int32_t keyboard_getchar() {
     input_type = 2;
 
     while (input_type != -2) {
-        asm volatile("hlt");
-        //keyboard_handler_main();
+        keyboard_handler_main();
     }
 
     input_type = 1;
@@ -248,34 +232,22 @@ int32_t keyboard_getchar() {
     return last_char;
 }
 
-
 int32_t keyboard_getscancode() {
-    struct regs *r;
+    input_type = 2;
 
-    input_type = 4;
+    keyboard_handler_main();
 
-    keyboard_handler_main(r);
-
-    for (int32_t i = 512; i != 0; i--){
-        if (keycode == -100){
-            keyboard_handler_main(r);
-        } else {
-            log("keyboard_getscancode %d, after^ %d ", keycode, i);
-            return keycode;
-        }
-    }
+    input_type = 1;
     
-    log("keyboard_getscancode %d ", keycode);
     return keycode;
 }
 
-
 char *keyboard_gets() {
+
     input_type = 3;
 
     while (input_type != -3) {
-        asm volatile("hlt");
-        //keyboard_handler_main();
+        keyboard_handler_main();
     }
     //tty_printf("\nstring [%s]", string_mem);
     

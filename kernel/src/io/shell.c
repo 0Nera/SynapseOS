@@ -41,7 +41,8 @@ void shell() {
                         "->ls                  |print32_t list of files\n" \
                         "->sysinfo             |print32_t information about system\n" \
                         "->pcilist             |list of pci devices\n" \
-                        "->ssfs                |open SSFS command line\n" 
+                        "->ssfs                |open SSFS command line\n" \
+                        "->tui                 |start the graphic interface"
                         );
         } else if (strlen(cmd) > 4 && strncmp(cmd, "cat ", 4) == 0) {
             char fname[256];
@@ -108,6 +109,8 @@ void shell() {
                 tty_setcolor(COLOR_ERROR);
                 tty_printf("run: incorrect argument\n");
             }
+        } else if (strcmp(cmd, "tui") == 0) {
+            init_tui();
         } else {
             tty_setcolor(COLOR_ERROR);
             tty_printf("Unknown: [%s]\n", cmd);
@@ -115,6 +118,185 @@ void shell() {
     }
 }
 
+const char* text = " Menu  Apps  Settings ";
+int outp = 0;
+
+void init_tui() {
+    for (int32_t i = 0; i < VESA_WIDTH; i += 8) {
+        for (int32_t j = 0; j < VESA_HEIGHT; j += 16) {
+            draw_vga_character(" ", i, j, VESA_BLUE, VESA_BLUE, true);
+        }
+    }
+    reset_pos();
+    tty_setcolor(VESA_WHITE);
+    tui();
+}
+
+void tui() {
+    uint32_t menuentry = 1;
+    uint32_t podmenu = 1;
+    uint32_t option = 1;
+    while (1) {
+        reset_pos();
+        tty_printf(text);
+        //////////////////////////////////// KEYS //////////////////////////////////////
+        uint32_t key = keyboard_getscancode();
+        if (key == 77) {
+            for (int32_t j = 0; j < VESA_WIDTH; j += 8) {
+                for (int32_t i = 0; i < 64; i += 8) {
+                    draw_vga_character(" ", j, i, VESA_BLUE, VESA_BLUE, true);
+                }
+            }
+            menuentry++;
+        } else if (key == 75) {
+            for (int32_t j = 0; j < VESA_WIDTH; j += 8) {
+                for (int32_t i = 0; i < 64; i += 8) {
+                    draw_vga_character(" ", j, i, VESA_BLUE, VESA_BLUE, true);
+                }
+            }
+            menuentry--;
+        }
+        if (key == 80) {
+            for (int32_t j = 0; j < VESA_WIDTH; j += 8) {
+                for (int32_t i = 0; i < 64; i += 8) {
+                    draw_vga_character(" ", j, i, VESA_BLUE, VESA_BLUE, true);
+                }
+            }
+            podmenu++;
+        } else if (key == 72) {
+            for (int32_t j = 0; j < VESA_WIDTH; j += 8) {
+                for (int32_t i = 0; i < 64; i += 8) {
+                    draw_vga_character(" ", j, i, VESA_BLUE, VESA_BLUE, true);
+                }
+            }
+            podmenu--;
+        }
+        //////////////////////////////////// FUNC  //////////////////////////////////////
+        if (key == 28) {
+            if (option == 1) {
+                reboot();
+            }
+            if (option == 2) {
+                shutdown();
+            }
+            if (option == 3) {
+                continue;
+            }
+            if (option == 4) {
+                run_elf_file("/initrd/apps/NeraMath.elf");
+            }
+            if (option == 5) {
+                //run_elf_file("/initrd/apps/snake.elf");
+            }
+            if (option == 6) {
+                //run_elf_file("/initrd/apps/dog.elf");
+            }
+        }
+        ////////////////////////////////// ENTRIES /////////////////////////////////////
+        if (menuentry == 1) {
+            for (int32_t i = 0; i < 48; i += 8) {
+                for (int32_t j = 0; j < 8; j += 8) {
+                    draw_vga_character(" ", i, j, VESA_YELLOW, VESA_YELLOW, true);       
+                }
+            }
+            tty_printf("\n Reboot \nShutdown\n--------");
+        } 
+        if (menuentry == 2) {
+            for (int32_t i = 48; i < 96; i += 8) {
+                for (int32_t j = 0; j < 8; j += 8) {
+                    draw_vga_character(" ", i, j, VESA_YELLOW, VESA_YELLOW, true);       
+                }
+            }
+            tty_printf("\n Nera Math \n   Snake   \n    Dog    ");
+        } 
+        if (menuentry == 3) {
+            for (int32_t i = 96; i < 176; i += 8) {
+                for (int32_t j = 0; j < 8; j += 8) {
+                    draw_vga_character(" ", i, j, VESA_YELLOW, VESA_YELLOW, true);       
+                }
+            }
+            tty_printf("\n Back Color \n Text Color \n------------");
+        }
+        ////////////////////////////////////////////////////////////////////////////////
+        if (menuentry == 1) {
+            if (podmenu == 1) {
+                for (int32_t i = 0; i < 64; i += 8) {
+                    for (int32_t j = 16; j < 24; j += 8) {
+                        draw_vga_character(" ", i, j, VESA_GREEN, VESA_GREEN, true);       
+                    }
+                }
+                reset_pos();
+                tty_printf("\n Reboot \nShutdown\n--------");
+                option = 1;
+            } else if (podmenu == 2) {
+                for (int32_t i = 0; i < 64; i += 8) {
+                    for (int32_t j = 32; j < 40; j += 8) {
+                        draw_vga_character(" ", i, j, VESA_GREEN, VESA_GREEN, true);       
+                    }
+                }
+                reset_pos();
+                tty_printf("\n Reboot \nShutdown\n--------");
+                option = 2;
+            } else if (podmenu == 3) {
+                for (int32_t i = 0; i < 64; i += 8) {
+                    for (int32_t j = 48; j < 56; j += 8) {
+                        draw_vga_character(" ", i, j, VESA_GREEN, VESA_GREEN, true);       
+                    }
+                }
+                reset_pos();
+                tty_printf("\n Reboot \nShutdown\n--------");
+                option = 3;
+            }
+        }
+        if (menuentry == 2) {
+            if (podmenu == 1) {
+                for (int32_t i = 0; i < 88; i += 8) {
+                    for (int32_t j = 16; j < 24; j += 8) {
+                        draw_vga_character(" ", i, j, VESA_GREEN, VESA_GREEN, true);       
+                    }
+                }
+                reset_pos();
+                tty_printf("\n Nera Math \n   Snake   \n    Dog    ");
+                option = 4;
+            } else if (podmenu == 2) {
+                for (int32_t i = 0; i < 88; i += 8) {
+                    for (int32_t j = 32; j < 40; j += 8) {
+                        draw_vga_character(" ", i, j, VESA_GREEN, VESA_GREEN, true);       
+                    }
+                }
+                reset_pos();
+                tty_printf("\n Nera Math \n   Snake   \n    Dog    ");
+                option = 5;
+            } else if (podmenu == 3) {
+                for (int32_t i = 0; i < 88; i += 8) {
+                    for (int32_t j = 48; j < 56; j += 8) {
+                        draw_vga_character(" ", i, j, VESA_GREEN, VESA_GREEN, true);       
+                    }
+                }
+                reset_pos();
+                tty_printf("\n Nera Math \n   Snake   \n    Dog    ");
+                option = 6;
+            }
+        }
+        ////////////////////////////////////////////////////////////////////////////////
+        if (menuentry > 3) {
+            menuentry = 3;
+        } 
+        if (menuentry < 1) {
+            menuentry = 1;
+        }
+        if (podmenu > 3) {
+            podmenu = 3;
+        } 
+        if (podmenu < 1) {
+            podmenu = 1;
+        }
+        ////////////////////////////////////////////////////////////////////////////////
+        reset_pos();
+        tty_printf(text); 
+        sleep(5);
+    }
+}
 
 
 void cd(char *dname) {
@@ -145,7 +327,6 @@ void cd(char *dname) {
         tty_printf("cd: no such directory\n");
     }
 }
-
 
 void cat(char *fname) {
     if (fname[0] != '/') {
@@ -180,7 +361,6 @@ void cat(char *fname) {
     }
 }
 
-
 void sysinfo(){
     tty_printf("                       ........--........        SynapseOS by Aren Elchinyan\n");
     tty_printf("                       ....+***:**+*....         Arch %s\n", ARCH_TYPE);
@@ -209,7 +389,6 @@ void sysinfo(){
     tty_printf("...+********+...                            ..  .  .   .        \n");
     tty_printf("................                                                  ");
 }
-
 
 void sbf(char *src){
     char buffer[30000] = {0};

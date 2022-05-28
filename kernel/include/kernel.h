@@ -39,7 +39,6 @@
 
 #include <sys/elf.h>
 
-
 #define VERSION_MAJOR   0       // Версия ядра
 #define VERSION_MINOR   2       // Пре-релиз 
 #define VERSION_PATCH   12       // Патч

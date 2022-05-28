@@ -1,7 +1,6 @@
 *.o
 *.elf
 *.log
-*.iso
 *.img
 /.vscode
 *.uibak
@@ -12,6 +11,4 @@
 *.vhd
 *.tmp
 docs/files/ru/~$ководство пользователя.docx
-test/
-bochsout.txt
-serial.txt
+*.lnk
