@@ -98,9 +98,10 @@ if __name__ == "__main__":
         qemu_command = "qemu-system-i386 -name SynapseOS " \
             "-netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
             " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log"
-
-        os.system(
-            qemu_command
-            )
+        a = input()
+        if a == 'qemu':
+            os.system(
+                qemu_command
+                )
     except Exception as E:
         print(E)

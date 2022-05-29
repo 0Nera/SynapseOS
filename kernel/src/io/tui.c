@@ -1,12 +1,12 @@
 #include <kernel.h>
+#include <io/tty.h>
 #include <libk/string.h>
 
 char current_dir[256] = "/initrd/apps/";
 
-const char* text = " Menu  Apps  Settings ";
 int outp = 0;
 
-void init_tui(uint32_t *txt) {
+void init_tui(const char *txt) {
     for (int32_t i = 0; i < VESA_WIDTH; i += 8) {
         for (int32_t j = 0; j < VESA_HEIGHT; j += 16) {
             draw_vga_character(" ", i, j, VESA_BLUE, VESA_BLUE, true);
@@ -17,7 +17,7 @@ void init_tui(uint32_t *txt) {
     tui(txt);
 }
 
-void tui(uint32_t *teext) {
+void tui(const char *teext) {
     uint32_t menuentry = 1;
     uint32_t podmenu = 1;
     uint32_t option = 1;
@@ -85,7 +85,7 @@ void tui(uint32_t *teext) {
                     draw_vga_character(" ", i, j, VESA_YELLOW, VESA_YELLOW, true);       
                 }
             }
-            tty_printf("\n Reboot \nShutdown\n--------");
+            tty_printf("\n Reboot \nShutdown\n Shell  ");
         } 
         if (menuentry == 2) {
             for (int32_t i = 48; i < 96; i += 8) {
