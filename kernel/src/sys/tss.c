@@ -6,6 +6,16 @@ uint8_t tasks_num = 1;
 
 uint8_t current = 0;
 
+
+
+
+/*
+Многозадачность. 
+Чтобы её реализовать нужно чтобы PIT(timer.c) каждые N единиц времени генерировал прерывание.
+При каждом прерывании от PIT вызывается функция task_switch.
+В task_switch TSS обязан сохранить все регистры текущего процесса и загрузить регмистры следующего процесса.
+Также надо не забывать про приоритет процесса.
+*/
 void task_switch(struct regs *r){
     //log("task: %d, total tasks: %d, ticks: %d", tasks[current].id, tasks_num, timer_get_ticks());
     tasks_num++;
@@ -42,12 +52,6 @@ void tss_init(uint32_t idx, uint32_t kss, uint32_t kesp) {
     // Note that we usually set tss's esp to 0 when booting our os, however, we need to set it to the real esp when we've switched to usermode because
     // the CPU needs to know what esp to use when usermode app is calling a kernel function(aka system call), that's why we have a function below called tss_set_stack
     kernel_tss.esp0 = kesp;
-    /*kernel_tss.cs = 0x08; // or 0x0b ???
-    kernel_tss.ds = 0x10; // or 0x13 ???
-    kernel_tss.es = 0x10; // or 0x13 ???
-    kernel_tss.fs = 0x10; // or 0x13 ???
-    kernel_tss.gs = 0x10; // or 0x13 ???
-    kernel_tss.ss = 0x10; // or 0x13 ???*/
 
     kernel_tss.cs = 0x0b;
     kernel_tss.ds = 0x13;
@@ -55,10 +59,6 @@ void tss_init(uint32_t idx, uint32_t kss, uint32_t kesp) {
     kernel_tss.fs = 0x13;
     kernel_tss.gs = 0x13;
     kernel_tss.ss = 0x13;
-
-    //log("tss now will flush\n");
-    //tss_flush();
-    //log("tss flushed\n");
 }
 
 // This function is used to set the tss's esp, so that CPU knows what esp the kernel should be using
