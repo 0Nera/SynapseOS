@@ -10,24 +10,25 @@ uint8_t current = 0;
 
 
 /*
-Многозадачность. 
-Чтобы её реализовать нужно чтобы PIT(timer.c) каждые N единиц времени генерировал прерывание.
-При каждом прерывании от PIT вызывается функция task_switch.
-В task_switch TSS обязан сохранить все регистры текущего процесса и загрузить регмистры следующего процесса.
-Также надо не забывать про приоритет процесса.
+    Многозадачность. 
+    Чтобы её реализовать нужно чтобы PIT(timer.c) каждые N единиц времени генерировал прерывание.
+    При каждом прерывании от PIT вызывается функция task_switch.
+    В task_switch TSS обязан сохранить все регистры текущего процесса и загрузить регмистры следующего процесса.
+    Также надо не забывать про приоритет процесса.
 */
 void task_switch(struct regs *r){
-    //log("task: %d, total tasks: %d, ticks: %d", tasks[current].id, tasks_num, timer_get_ticks());
-    tasks_num++;
-    // Read esp, ebp now for saving later on.
     uint32_t esp = 0, ebp = 0, eip = 0;
-    //asm volatile("mov %%esp, %0" : "=r"(esp));
-    //asm volatile("mov %%ebp, %0" : "=r"(ebp));
-    asm volatile("cli");
-    asm volatile("mov %0, %%esp" : "=r"(esp));
-    asm volatile("mov %0, %%ebp" : "=r"(ebp));
-    asm volatile("sti");
-    log("task: %d, total tasks: %d, ticks: %d, esp: %d, ebp: %d, eip: %d", tasks[current].id, tasks_num, timer_get_ticks(), esp, ebp, 0);
+    uint32_t adr;
+    asm volatile("movl %%cr2, %0" : "=r" (adr));
+    log("task: %d, total tasks: %d, ticks: %d", 
+        tasks[current].id, 
+        tasks_num, 
+        timer_get_ticks()
+        );
+    log("cr2 = %x  r->idt_index = %x eax = %x  ebx = %x  " \
+        "ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x", 
+        adr, r->idt_index, r->eax, r->ebx, 
+        r->ecx, r->edx, r->esp, r->ebp, r->eip);
 
 }
 
