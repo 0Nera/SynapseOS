@@ -44,11 +44,10 @@ typedef struct tss_entry {
 
 // Задача
 typedef struct task {
-    int32_t id;                         // Process ID.
-    uint32_t esp, ebp;                  // Stack and base pointers.
-    uint32_t eip;                       // Instruction pointer.
-    page_directory *page_directory;   // Page directory.
-    //struct task *next;                  // The next task in a linked list.
+    int32_t id;                         // ID процесса
+    struct regs *r;                     // Дамп регистров
+    //page_directory *page_directory;     // Директория страницы
+    struct task *next;                  // Следующий таск
 } task_t;
 
 

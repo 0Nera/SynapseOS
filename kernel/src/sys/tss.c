@@ -1,8 +1,8 @@
 #include <kernel.h>
 
-task_t tasks[256];
+task_t *tasks[256];
 tss_entry_t kernel_tss;
-uint8_t tasks_num = 1;
+uint8_t tasks_num = 0;
 
 uint8_t current = 0;
 
@@ -20,8 +20,9 @@ void task_switch(struct regs *r){
     uint32_t esp = 0, ebp = 0, eip = 0;
     uint32_t adr;
     asm volatile("movl %%cr2, %0" : "=r" (adr));
+
     log("task: %d, total tasks: %d, ticks: %d", 
-        tasks[current].id, 
+        tasks[current]->id, 
         tasks_num, 
         timer_get_ticks()
         );
@@ -29,12 +30,23 @@ void task_switch(struct regs *r){
         "ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x", 
         adr, r->idt_index, r->eax, r->ebx, 
         r->ecx, r->edx, r->esp, r->ebp, r->eip);
-
 }
+
+void add_task(){
+}
+
+void new_task(struct regs *r) {
+    uint32_t adr;
+    //asm volatile("movl %%cr2, %0" : "=r" (adr));
+    /*tty_printf("cr2 = %x  r->idt_index = %x eax = %x  ebx = %x  " \
+        "ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x", 
+        adr, r->idt_index, r->eax, r->ebx, 
+        r->ecx, r->edx, r->esp, r->ebp, r->eip);*/
+}   
+
 
 // We don't need tss to assist all the task switching, but it's required to have one tss for switching back to kernel mode(system call for example)
 void tss_init(uint32_t idx, uint32_t kss, uint32_t kesp) {
-    tasks[0].id = 0;
     uint32_t base = (uint32_t) &kernel_tss;
     gdt_set_gate(idx, base, base + sizeof(tss_entry_t), /*or 0x89??*/0xE9, 0);
 
@@ -60,6 +72,7 @@ void tss_init(uint32_t idx, uint32_t kss, uint32_t kesp) {
     kernel_tss.fs = 0x13;
     kernel_tss.gs = 0x13;
     kernel_tss.ss = 0x13;
+    register_interrupt_handler(129, &new_task);
 }
 
 // This function is used to set the tss's esp, so that CPU knows what esp the kernel should be using
