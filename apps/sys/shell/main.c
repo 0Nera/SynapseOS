@@ -41,6 +41,8 @@ void shell() {
                         "->sysinfo             |print32_t information about system\n" \
                         "->pcilist             |list of pci devices\n" \
                         "->ssfs                |open SSFS command line\n" 
+		   	"->rm <filename>       |remove SSFS file
+
                         );
         } else if (strlen(cmd) > 4 && strncmp(cmd, "cat ", 4) == 0) {
             char fname[256];
@@ -73,6 +75,17 @@ void shell() {
 	        checkAllBuses();
         } else if (strcmp(cmd, "ssfs") == 0) {
             SSFS_cmd();
+	} else if (strlen(cmd) > 3 && strncmp(cmd, "rm ", 3) == 0) {
+            char fname[256];
+	    char *tok = (char *)strtok(cmd, " ");
+
+            tok = (char *)strtok(0, " "); // tok - имя файла
+	    if (SSFS_delete(tok) == 1) {
+		printf("rm: successfully");
+	    } else { 
+		    printf("rm: file not found");
+		    }
+           
         } else if (strcmp(cmd, "sysinfo") == 0) {
             sysinfo();
         } else if (strcmp(cmd, "ls") == 0) {
