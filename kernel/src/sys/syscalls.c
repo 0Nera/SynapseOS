@@ -14,48 +14,68 @@ void syscall_init() {
 
 
 void syscall_handler(struct regs *r) {
-    uint32_t* argptr = (uint32_t*) (r->ebx);
+    /*
+        Регистры сисфункций
+        eax - номер
+        ebx - параметр 1
+        edx - параметр 2
+        ecx - параметр 3
+        esi - параметр 4
+        edi - параметр 5
+        ebp - параметр 6
+    */
+   
+    uint32_t* argptr1 = (uint32_t*) (r->ebx);
+    uint32_t* argptr2 = (uint32_t*) (r->edx);
+    uint32_t* argptr3 = (uint32_t*) (r->ecx);
+    uint32_t* argptr4 = (uint32_t*) (r->esi);
+    uint32_t* argptr5 = (uint32_t*) (r->edi);
+    uint32_t* argptr6 = (uint32_t*) (r->ebp);
+
     switch (r->eax) {
         case SC_CODE_puts:                  // I/O
-            tty_printf("%s", (char*) (argptr[0]));
-            r->edx = (uint32_t)1;
+            tty_printf("%s", (char*) (argptr1));
+            r->ebp = (uint32_t)1;
             break;
         case SC_CODE_getscancode:
-            r->edx = (uint32_t)keyboard_getscancode();
+            r->ebp = (uint32_t)keyboard_getscancode();
             break;
         case SC_CODE_getchar:
-            r->edx = (uint32_t)keyboard_getchar();
+            r->ebp = (uint32_t)keyboard_getchar();
             break;
         case SC_CODE_gets:
-            r->edx = (uint32_t)keyboard_gets();
+            r->ebp = (uint32_t)keyboard_gets();
             break;
         case SC_CODE_malloc:
-            r->edx = (uint32_t)kheap_malloc((int)argptr[0]);
+            r->ebp = (uint32_t)kheap_malloc((int)argptr1);
             break;
         case SC_CODE_free:
-            kheap_free((void*)argptr[0]);
-            r->edx = (uint32_t)1;
+            kheap_free((void*)argptr1);
+            r->ebp = (uint32_t)1;
             break;
         case SC_CODE_setdev:                // Хранилище
-            r->edx = (uint32_t)SSFS_set_device((int)argptr[0]);
+            r->ebp = (uint32_t)SSFS_set_device((int)argptr1);
             break;
         case SC_CODE_readfile:
-            SSFS_read((argptr[0]),(argptr[1]));
-            r->edx = (uint32_t)0;
+            r->ebp = (uint32_t)vfs_read((char *)argptr1, (int32_t)argptr2, (int32_t)argptr3, (void *)argptr4);
             break;
         case SC_CODE_putpixel:              // Графика
-            set_pixel((int) (argptr[0]), (int) (argptr[1]), (uint32_t)(argptr[2]));
-            r->edx = (uint32_t)1;
+            set_pixel((int) (argptr1), (int) (argptr2), (uint32_t)(argptr3));
+            r->ebp = (uint32_t)1;
             break;
         case SC_CODE_drawline:
-            set_line((int) (argptr[0]), (int) (argptr[1]),(int) (argptr[2]), (int) (argptr[3]), (uint32_t) (argptr[4]));
-            r->edx = (uint32_t)1;
+            set_line((int) (argptr1), (int) (argptr2),(int) (argptr3), (int) (argptr4), (uint32_t) (argptr5));
+            r->ebp = (uint32_t)1;
             break;
         case SC_CODE_version:               // Система
-            r->edx = (uint32_t)(VERSION_MAJOR * 100 + VERSION_MINOR);
+            r->ebp = (uint32_t)(VERSION_MAJOR * 100 + VERSION_MINOR);
             break;
         default: 
             log("Invalid syscall #%x", r->eax);
-            tty_printf("Invalid syscall #%x", r->eax);
+            log("r->idt_index = %x eax = %x  ebx = %x  " \
+            "ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x", 
+             r->idt_index, r->eax, r->ebx, 
+            r->ecx, r->edx, r->esp, r->ebp, r->eip);
+            tty_printf("Invalid syscall #%x\n", r->eax);
     }
 }
