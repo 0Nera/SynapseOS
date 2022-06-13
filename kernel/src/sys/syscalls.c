@@ -25,16 +25,16 @@ void syscall_handler(struct regs *r) {
         ebp - параметр-указатель 6
     */
    
-    uint32_t* argptr1 = (uint32_t*) (r->ebx);
-    uint32_t* argptr2 = (uint32_t*) (r->edx);
-    uint32_t* argptr3 = (uint32_t*) (r->ecx);
-    uint32_t* argptr4 = (uint32_t*) (r->esi);
-    uint32_t* argptr5 = (uint32_t*) (r->edi);
-    uint32_t* argptr6 = (uint32_t*) (r->ebp);
+    uint32_t* arg1 = (uint32_t*) (r->ebx);
+    uint32_t* arg2 = (uint32_t*) (r->edx);
+    uint32_t* arg3 = (uint32_t*) (r->ecx);
+    uint32_t* arg4 = (uint32_t*) (r->esi);
+    uint32_t* arg5 = (uint32_t*) (r->edi);
+    uint32_t* arg6 = (uint32_t*) (r->ebp);
 
     switch (r->eax) {
         case SC_CODE_puts:                  // I/O
-            tty_printf("%s", (char*) (argptr1));
+            tty_printf("%s", (char*) (arg1));
             r->ebp = (uint32_t)1;
             break;
         case SC_CODE_getscancode:
@@ -47,24 +47,24 @@ void syscall_handler(struct regs *r) {
             r->ebp = (uint32_t)keyboard_gets();
             break;
         case SC_CODE_malloc:
-            r->ebp = (uint32_t)kheap_malloc((int)argptr1);
+            r->ebp = (uint32_t)kheap_malloc((int)arg1);
             break;
         case SC_CODE_free:
-            kheap_free((void*)argptr1);
+            kheap_free((void*)arg1);
             r->ebp = (uint32_t)1;
             break;
         case SC_CODE_setdev:                // Хранилище
-            r->ebp = (uint32_t)SSFS_set_device((int)argptr1);
+            r->ebp = (uint32_t)SSFS_set_device((int)arg1);
             break;
         case SC_CODE_readfile:
-            r->ebp = (uint32_t)vfs_read((char *)argptr1, (int32_t)argptr2, (int32_t)argptr3, (void *)argptr4);
+            r->ebp = (uint32_t)vfs_read((char *)arg1, (int32_t)arg2, (int32_t)arg3, (void *)arg4);
             break;
         case SC_CODE_putpixel:              // Графика
-            set_pixel((int) (argptr1), (int) (argptr2), (uint32_t)(argptr3));
+            set_pixel((int) (arg1), (int) (arg2), (uint32_t)(arg3));
             r->ebp = (uint32_t)1;
             break;
         case SC_CODE_drawline:
-            set_line((int) (argptr1), (int) (argptr2),(int) (argptr3), (int) (argptr4), (uint32_t) (argptr5));
+            set_line((int) (arg1), (int) (arg2),(int) (arg3), (int) (arg4), (uint32_t) (arg5));
             r->ebp = (uint32_t)1;
             break;
         case SC_CODE_version:               // Система
