@@ -52,6 +52,7 @@ int getscancode(){
     return result;
 }
 
+
 char getchar(){
     char result = '\0';
 
