@@ -21,11 +21,11 @@ void syscall_handler(struct regs *r) {
         edi - параметр-указатель 5
     */
 
-    uint32_t arg1 = (uint32_t)(r->ebx);
-    uint32_t arg2 = (uint32_t)(r->edx);
-    uint32_t arg3 = (uint32_t)(r->ecx);
-    uint32_t arg4 = (uint32_t)(r->esi);
-    uint32_t arg5 = (uint32_t)(r->edi);
+    uint32_t arg1 = r->ebx;
+    uint32_t arg2 = r->edx;
+    uint32_t arg3 = r->ecx;
+    uint32_t arg4 = r->esi;
+    uint32_t arg5 = r->edi;
 
     switch (r->eax) {
     case SC_CODE_puts: // I/O
