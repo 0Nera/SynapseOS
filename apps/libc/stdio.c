@@ -16,7 +16,16 @@
     esi - параметр 4
     edi - параметр 5
     ebp - параметр 6
+
+    Символьный код | Регистры
+    a                eax, ax, al
+    b                ebx, bx, bl
+    c                ecx, cx, cl
+    d                edx, dx, dl
+    S                esi, si
+    D                edi, di
 */
+
 #define SC_CODE_puts            0
 #define SC_CODE_getscancode     1
 #define SC_CODE_getchar         2
@@ -30,7 +39,7 @@
 #define SC_CODE_drawline        33 
 #define SC_CODE_version         40
 
-void* temp = 0;
+
 
 int getscancode(){
     int result = 0;
