@@ -7,65 +7,88 @@
     stdio - модуль ввода-вывода
 */
 
+/*
+    Регистры сисфункций
+    eax - номер
+    ebx - параметр 1
+    edx - параметр 2
+    ecx - параметр 3
+    esi - параметр 4
+    edi - параметр 5
+    ebp - параметр 6
+*/
+#define SC_CODE_puts            0
+#define SC_CODE_getscancode     1
+#define SC_CODE_getchar         2
+#define SC_CODE_gets            3
+#define SC_CODE_malloc          4
+#define SC_CODE_free            5
+#define SC_CODE_setdev          10
+#define SC_CODE_readfile        11
+#define SC_CODE_writefile       12
+#define SC_CODE_putpixel        32
+#define SC_CODE_drawline        33 
+#define SC_CODE_version         40
+
+void* temp = 0;
 
 int getscancode(){
-    void* res = 0;
-    int result = -1;
+    int result = 0;
 
-    asm volatile("mov %%eax, %0" : "=a"(res) : "a"(SC_CODE_getscancode));
-    asm volatile("int $0x80");
-    asm volatile("mov %%edx, %0" : "=a"(result));
+    asm volatile("int $0x80" 
+                : "=a"(result)
+                : "a"(SC_CODE_getscancode)
+                );
 
-    //printf("[%d], [%c], [%s], [%x];\n", result, result, result, result);
     return result;
 }
 
 char getchar(){
-    void* res = 0;
-    int result = -1;
+    char result = '\0';
 
-    asm volatile("mov %%eax, %0" : "=a"(res) : "a"(SC_CODE_getchar));
-    asm volatile("int $0x80");
-    asm volatile("mov %%edx, %0" : "=a"(result));
+    asm volatile("int $0x80" 
+                : "=a"(result)
+                : "a"(SC_CODE_getchar)
+                );
 
-    //printf("[%d], [%c], [%s], [%x];\n", result, result, result, result);
     return result;
 } 
 
 char *gets() {
-    void* res = 0;
     char *result = "";
 
-    asm volatile("mov %%eax, %0" : "=a"(res) : "a"(SC_CODE_gets));
-    asm volatile("int $0x80");
-    asm volatile("mov %%edx, %0" : "=a"(result));
+    asm volatile("int $0x80" 
+                : "=a"(result)
+                : "a"(SC_CODE_gets)
+                );
 
     return result;
 } 
 
-int getversion(){
-    void* res = 0;
-    int result = -1;
-    
 
-    asm volatile("mov %%eax, %0" : "=a"(res) : "a"(SC_CODE_version));
-    asm volatile("int $0x80");
-    asm volatile("mov %%edx, %0" : "=a"(result));
+int getversion(){
+    uint32_t result = 0;
+ 
+    asm volatile("int $0x80" 
+                : "=a"(result)
+                : "a"(SC_CODE_version)
+                );
 
     return result;
 }
+
 
 int print_str(char *str) {
-    void* res = 0;
-    int result = -1;
-
-    asm volatile("mov %%eax, %0" : "=a"(res) : "a"(SC_CODE_puts), "b"(&str));
-    asm volatile("int $0x80");
-    asm volatile("mov %%edx, %0" : "=a"(result));
+    uint32_t result = 0;
+ 
+    asm volatile("int $0x80" 
+                : "=a"(result)                  // result = eax (после выполнения)
+                : "a"(SC_CODE_puts),            // eax = SC_CODE_puts(0)
+                  "b"(str)                      // ebx = str
+                );
 
     return result;
 }
-
 
 
 /*
