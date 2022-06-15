@@ -49,3 +49,7 @@ typedef unsigned long long uintmax_t;
 
 #define NULL             ((void *)0)
 typedef int              bool;
+
+typedef char* caddr_t;
+typedef int   timer_t;
+typedef int   pid_t;
