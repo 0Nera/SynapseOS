@@ -4,15 +4,6 @@
 #define VESA_WIDTH  framebuffer_width
 #define VESA_HEIGHT framebuffer_height
 
-uint8_t *framebuffer_addr;
-uint32_t framebuffer_pitch;
-uint32_t framebuffer_bpp;
-uint32_t framebuffer_width;
-uint32_t framebuffer_height;
-uint32_t framebuffer_size;
-
-uint8_t *back_framebuffer_addr;
-
 typedef struct rgba_struct {
     uint32_t r;
     uint32_t g;

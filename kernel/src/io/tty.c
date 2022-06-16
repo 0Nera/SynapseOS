@@ -6,6 +6,14 @@
 
 #include <kernel.h>
 
+uint8_t *framebuffer_addr;
+uint32_t framebuffer_pitch;
+uint32_t framebuffer_bpp;
+uint32_t framebuffer_width;
+uint32_t framebuffer_height;
+uint32_t framebuffer_size;
+
+uint8_t *back_framebuffer_addr;
 
 volatile uint8_t tty_feedback = 1;
 
