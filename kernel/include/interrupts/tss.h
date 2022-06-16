@@ -44,10 +44,11 @@ typedef struct tss_entry {
 
 // Задача
 typedef struct task {
-    int32_t id;                         // ID процесса
+    uint32_t pid;                         // ID процесса
     struct regs *r;                     // Дамп регистров
     //page_directory *page_directory;     // Директория страницы
-    struct task *next;                  // Следующий таск
+    uint32_t next;                  // Следующий таск
+    //struct task *next;                  // Следующий таск
 } task_t;
 
 

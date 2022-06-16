@@ -5,10 +5,12 @@
 
 #include <kernel.h>
 
+
 void syscall_init() {
     register_interrupt_handler(SYSCALL_IDT_INDEX, &syscall_handler);
     log("Syscalls enabled");
 }
+
 
 void syscall_handler(struct regs *r) {
     /*
@@ -64,6 +66,9 @@ void syscall_handler(struct regs *r) {
         break;
     case SC_CODE_version: // Система
         r->eax = (uint32_t)(VERSION_MAJOR * 100 + VERSION_MINOR);
+        break;
+    case SC_CODE_newtask: 
+        r->eax = add_task(&r);
         break;
     default:
         log("Invalid syscall #%x", r->eax);

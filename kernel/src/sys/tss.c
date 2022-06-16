@@ -2,11 +2,10 @@
 
 task_t *tasks[256];
 tss_entry_t kernel_tss;
-uint8_t tasks_num = 0;
-
-uint8_t current = 0;
-
-
+uint32_t tasks_count = 0;
+uint32_t tasks_num = 0;
+static uint8_t current = 0;
+uint32_t new_task_pid = 0;
 
 
 /*
@@ -16,11 +15,18 @@ uint8_t current = 0;
     В task_switch TSS обязан сохранить все регистры текущего процесса и загрузить регмистры следующего процесса.
     Также надо не забывать про приоритет процесса.
 */
-void task_switch(struct regs *r){
-    uint32_t esp = 0, ebp = 0, eip = 0;
-    uint32_t adr;
-    asm volatile("movl %%cr2, %0" : "=r" (adr));
 
+void task_switch(struct regs *r){
+    tasks[0]->r = &r;
+
+    /*
+    uint32_t eax = 0, ebx = 0, ecx = 0, edx = 0, esi = 0, edi = 0;
+    uint32_t adr;
+    asm volatile(
+        "cli"
+        : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx), "=S"(esi), "=D"(edi)
+        );
+    asm volatile("movl %%cr2, %0" : "=r" (adr));
     log("task: %d, total tasks: %d, ticks: %d", 
         tasks[current]->id, 
         tasks_num, 
@@ -30,19 +36,51 @@ void task_switch(struct regs *r){
         "ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x", 
         adr, r->idt_index, r->eax, r->ebx, 
         r->ecx, r->edx, r->esp, r->ebp, r->eip);
+    
+    asm volatile("movl %%cr2, %%edi"
+        : "=D"(edi)
+        );
+    log("%d(eax), %d(ebx), %d(ecx), %d(edx), %d(esi), %d(edi)", 
+        eax, ebx, ecx, edx, esi, edi);
+    asm volatile("sti");
+    */
 }
 
-void add_task(){
+int create_task(){
+    log("Creating task...");
+    int result = 0;
+
+    asm volatile("int $0x80" 
+                : "=a"(result)
+                : "a"(SC_CODE_newtask)
+                );
+
+    log("result %d", result);
+    return result;
 }
 
-void new_task(struct regs *r) {
+int add_task(struct regs *r){
     uint32_t adr;
-    //asm volatile("movl %%cr2, %0" : "=r" (adr));
-    /*tty_printf("cr2 = %x  r->idt_index = %x eax = %x  ebx = %x  " \
-        "ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x", 
-        adr, r->idt_index, r->eax, r->ebx, 
-        r->ecx, r->edx, r->esp, r->ebp, r->eip);*/
-}   
+
+    asm volatile("movl %%cr2, %0" : "=r" (adr));
+
+
+    new_task_pid = tasks_count;                 // pid новой задачи = количество задач
+    log("Task pid: %d", new_task_pid);
+
+    tasks[tasks_num]->r = &r;                   // Сохраняем регистры
+    tasks[tasks_num]->pid = new_task_pid;       // Сохраняем pid
+    tasks[tasks_num]->next = 0;                 // Следующая задача - ядро
+    if (tasks_num > 0){
+        tasks[tasks_num - 1]->next = new_task_pid;  // Прошлая задача->pid = pid текущей задачи
+    }
+    tasks_count++;                              // Количество задач увеличиваем
+    tasks_num++;
+
+    log("Task created");
+    return new_task_pid;
+}
+
 
 
 // We don't need tss to assist all the task switching, but it's required to have one tss for switching back to kernel mode(system call for example)
@@ -72,7 +110,6 @@ void tss_init(uint32_t idx, uint32_t kss, uint32_t kesp) {
     kernel_tss.fs = 0x13;
     kernel_tss.gs = 0x13;
     kernel_tss.ss = 0x13;
-    register_interrupt_handler(129, &new_task);
 }
 
 // This function is used to set the tss's esp, so that CPU knows what esp the kernel should be using

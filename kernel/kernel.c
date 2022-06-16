@@ -68,6 +68,8 @@ void kernel(int32_t magic_number, struct multiboot_info *mboot_info) {
     // while(1){
     //     asm volatile("hlt");
     // }
+    int task = create_task();
+    log("task: %d", task);
     shell();                                // Активация терминала
 
 
