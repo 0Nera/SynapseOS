@@ -9,6 +9,31 @@
 
 int32_t os_mode = 1; // 0 - мало ОЗУ, 1 - обычный режим, 2 - режим повышенной производительности, 3 - сервер
 
+void test_task(){
+    uint32_t uid = create_task();
+    tty_printf("1");
+    log("task: %d", uid);
+    tty_printf("2");
+    uid = uid + 300;
+    for(int i = 300; i > 0; i--){
+        uid--;
+        asm volatile("nop");
+        asm volatile("nop");
+        asm volatile("nop");
+        asm volatile("nop");
+        asm volatile("nop");
+        asm volatile("nop");
+        asm volatile("nop");
+        asm volatile("nop");
+        asm volatile("nop");
+        asm volatile("nop");
+        asm volatile("nop");
+        asm volatile("nop");
+        log("%d", uid);
+    }
+    kill_task(uid);
+    tty_printf("3");
+}
 
 /*!
 	\brief Входная точка ядра SynapseOS
@@ -68,8 +93,8 @@ void kernel(int32_t magic_number, struct multiboot_info *mboot_info) {
     // while(1){
     //     asm volatile("hlt");
     // }
-    int task = create_task();
-    log("task: %d", task);
+    //log("task: %d", create_task());
+    test_task();
     shell();                                // Активация терминала
 
 

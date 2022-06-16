@@ -1,9 +1,9 @@
 #include <kernel.h>
 
-task_t *tasks[256];
+task_t tasks[256];
 tss_entry_t kernel_tss;
-uint32_t tasks_count = 0;
-uint32_t tasks_num = 0;
+uint32_t tasks_count = 1;
+uint32_t tasks_num = 1;
 static uint8_t current = 0;
 uint32_t new_task_pid = 0;
 
@@ -17,34 +17,18 @@ uint32_t new_task_pid = 0;
 */
 
 void task_switch(struct regs *r){
-    tasks[0]->r = &r;
+    int old = current;      // Старый таск = новый
 
-    /*
-    uint32_t eax = 0, ebx = 0, ecx = 0, edx = 0, esi = 0, edi = 0;
-    uint32_t adr;
-    asm volatile(
-        "cli"
-        : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx), "=S"(esi), "=D"(edi)
-        );
-    asm volatile("movl %%cr2, %0" : "=r" (adr));
-    log("task: %d, total tasks: %d, ticks: %d", 
-        tasks[current]->id, 
-        tasks_num, 
-        timer_get_ticks()
-        );
-    log("cr2 = %x  r->idt_index = %x eax = %x  ebx = %x  " \
-        "ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x", 
-        adr, r->idt_index, r->eax, r->ebx, 
-        r->ecx, r->edx, r->esp, r->ebp, r->eip);
+    log("1 current task: %d, next: %d, tasks_count: %d, pid: %d", current, tasks[current].next, tasks_count, tasks[current].pid);
+    tasks[old].r = &r;
+
+    current = tasks[old].next;
+
+    r = &tasks[current].r;
     
-    asm volatile("movl %%cr2, %%edi"
-        : "=D"(edi)
-        );
-    log("%d(eax), %d(ebx), %d(ecx), %d(edx), %d(esi), %d(edi)", 
-        eax, ebx, ecx, edx, esi, edi);
-    asm volatile("sti");
-    */
+    log("2 current task: %d, next: %d, tasks_count: %d, pid: %d", current, tasks[current].next, tasks_count, tasks[current].pid);
 }
+
 
 int create_task(){
     log("Creating task...");
@@ -59,21 +43,53 @@ int create_task(){
     return result;
 }
 
+_Noreturn kill_task(uint32_t pid){
+    asm volatile("cli");
+    int cur = -1;
+    for (int i = 0; i < 255; i++){
+        if(tasks[i].pid == pid & cur == -1){
+            cur = i;
+            log("Find! %d", i);
+            i = 0;
+        }
+
+        if(cur > 0 & tasks[i].next == pid){
+            tasks[i].next = tasks[cur].next;
+            log("tasks[%d].pid = %d", i, tasks[i].pid);
+            break;
+        }
+    }
+    asm volatile("sti");
+    for(;;){
+        asm volatile("nop");
+    }
+}
+
+
 int add_task(struct regs *r){
     uint32_t adr;
-
     asm volatile("movl %%cr2, %0" : "=r" (adr));
 
+    new_task_pid = tasks_count * 2;                 // pid новой задачи = количество задач
 
-    new_task_pid = tasks_count;                 // pid новой задачи = количество задач
-    log("Task pid: %d", new_task_pid);
+    log("Task pid: %d, tasks_num - 1: %d", new_task_pid, tasks_num - 1);
 
-    tasks[tasks_num]->r = &r;                   // Сохраняем регистры
-    tasks[tasks_num]->pid = new_task_pid;       // Сохраняем pid
-    tasks[tasks_num]->next = 0;                 // Следующая задача - ядро
+    tasks[tasks_num].r = &r;                   // Сохраняем регистры
+    tasks[tasks_num].pid = new_task_pid;       // Сохраняем pid
+    tasks[tasks_num].next = 0;                 // Следующая задача - ядро
+
     if (tasks_num > 0){
-        tasks[tasks_num - 1]->next = new_task_pid;  // Прошлая задача->pid = pid текущей задачи
+        log("last task data:\n"\
+            "pid: %d\n" \
+            "next: %d", tasks[tasks_num - 1].pid, tasks[tasks_num - 1].next
+            );
+        
+        tasks[tasks_num - 1].next = new_task_pid;  // Прошлая задача.pid = pid текущей задачи
     }
+    log("task data:\n"\
+        "pid: %d\n" \
+        "next: %d", tasks[tasks_num].pid, tasks[tasks_num].next
+        );
     tasks_count++;                              // Количество задач увеличиваем
     tasks_num++;
 
@@ -82,9 +98,11 @@ int add_task(struct regs *r){
 }
 
 
-
 // We don't need tss to assist all the task switching, but it's required to have one tss for switching back to kernel mode(system call for example)
 void tss_init(uint32_t idx, uint32_t kss, uint32_t kesp) {
+    //tasks[tasks_num].r = &r;                   // Сохраняем регистры
+    tasks[0].pid = 0;       // Сохраняем pid
+    tasks[0].next = 0;                 // Следующая задача - ядро
     uint32_t base = (uint32_t) &kernel_tss;
     gdt_set_gate(idx, base, base + sizeof(tss_entry_t), /*or 0x89??*/0xE9, 0);
 
