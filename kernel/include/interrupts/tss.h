@@ -41,14 +41,15 @@ typedef struct tss_entry {
     uint16_t iomap_base;
 } tss_entry_t;
 
+typedef uint32_t pid_t;
 
 // Задача
-typedef struct task {
-    uint32_t pid;                         // ID процесса
-    struct regs *r;                     // Дамп регистров
+typedef struct __attribute__((packed)) task {
+    uint8_t priority;
+    pid_t pid;                         // ID процесса
+    struct regs *r;                    // Дамп регистров
     //page_directory *page_directory;     // Директория страницы
-    uint32_t next;                  // Следующий таск
-    //struct task *next;                  // Следующий таск
+    struct task *next;                 // Следующий таск
 } task_t;
 
 
