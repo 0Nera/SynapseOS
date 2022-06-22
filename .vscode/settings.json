@@ -3,6 +3,7 @@
     "C_Cpp.errorSquiggles": "Disabled",
     "files.associations": {
         "stdint.h": "c",
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "kernel.h": "c"
     }
 }

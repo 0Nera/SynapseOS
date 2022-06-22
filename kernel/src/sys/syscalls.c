@@ -6,6 +6,19 @@
 #include <kernel.h>
 
 
+static unsigned long int next_rnd = 1;
+
+int rand(void) {
+    next_rnd = next_rnd * 1103515245 + 12345;
+    return (uint32_t)(next_rnd/65536) % 32768;
+}
+
+
+void srand(uint32_t seed) {
+    next_rnd = seed;
+}
+
+
 void syscall_init() {
     register_interrupt_handler(SYSCALL_IDT_INDEX, &syscall_handler);
     log("Syscalls enabled");
@@ -44,24 +57,31 @@ void syscall_handler(struct regs *r) {
         r->eax = (uint32_t)keyboard_gets();
         break;
     case SC_CODE_malloc:
-        r->eax = (uint32_t)kheap_malloc((int)arg1);
+        r->eax = (uint32_t)kheap_malloc((int32_t)arg1);
         break;
     case SC_CODE_free:
         kheap_free((void *)arg1);
         r->eax = (uint32_t)1;
         break;
     case SC_CODE_setdev: // Хранилище
-        r->eax = (uint32_t)SSFS_set_device((int)arg1);
+        r->eax = (uint32_t)SSFS_set_device((int32_t)arg1);
         break;
     case SC_CODE_readfile:
         r->eax = (uint32_t)vfs_read((char *)arg1, (int32_t)arg2, (int32_t)arg3, (void *)arg4);
         break;
+    case SC_CODE_rand:
+        r->eax = (uint32_t)rand();
+        break;
+    case SC_CODE_srand:
+        srand((uint32_t)(arg1));
+        r->eax = (uint32_t)rand();
+        break;
     case SC_CODE_putpixel: // Графика
-        set_pixel((int)(arg1), (int)(arg2), (uint32_t)(arg3));
+        set_pixel((int32_t)(arg1), (int32_t)(arg2), (uint32_t)(arg3));
         r->eax = (uint32_t)1;
         break;
     case SC_CODE_drawline:
-        set_line((int)(arg1), (int)(arg2), (int)(arg3), (int)(arg4), (uint32_t)(arg5));
+        set_line((int32_t)(arg1), (int32_t)(arg2), (int32_t)(arg3), (int32_t)(arg4), (uint32_t)(arg5));
         r->eax = (uint32_t)1;
         break;
     case SC_CODE_version: // Система

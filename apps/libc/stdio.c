@@ -35,6 +35,8 @@
 #define SC_CODE_setdev          10
 #define SC_CODE_readfile        11
 #define SC_CODE_writefile       12
+#define SC_CODE_rand            20
+#define SC_CODE_srand           21
 #define SC_CODE_putpixel        32
 #define SC_CODE_drawline        33 
 #define SC_CODE_version         40
@@ -95,6 +97,31 @@ int print_str(char *str) {
                 : "=a"(result)                  // result = eax (после выполнения)
                 : "a"(SC_CODE_puts),            // eax = SC_CODE_puts(0)
                   "b"(str)                      // ebx = str
+                );
+
+    return result;
+}
+
+
+int rand(){
+    uint32_t result = 0;
+ 
+    asm volatile("int $0x80" 
+                : "=a"(result)
+                : "a"(SC_CODE_rand)
+                );
+
+    return result;
+}
+
+
+int srand(uint32_t seed) {
+    uint32_t result = 0;
+ 
+    asm volatile("int $0x80" 
+                : "=a"(result)                   // result = eax (после выполнения)
+                : "a"(SC_CODE_srand),            // eax = SC_CODE_puts(0)
+                  "b"(seed)                      // ebx = str
                 );
 
     return result;

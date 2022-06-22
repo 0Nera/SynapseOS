@@ -30,7 +30,7 @@ typedef struct {
     int length;
 } snake_t;
 
-
+/*
 static unsigned long int next_rnd = 1;
 
 int rand(void) {
@@ -40,7 +40,7 @@ int rand(void) {
 
 void srand(unsigned int seed) {
     next_rnd = seed;
-}
+}*/
 
 void draw_square(int x, int y, int w, int h, int color) {
     for (int j = x; j < x + w; j++) {

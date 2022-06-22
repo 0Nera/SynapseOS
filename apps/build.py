@@ -25,6 +25,7 @@ def build_all():
     os.system("i686-elf-gcc -nostdlib -w -lgcc -ffreestanding -I include/ -c examples/C/vesa_Russia.c -o ./bin/vesa_Russia.o")
     os.system("i686-elf-gcc -nostdlib -w -lgcc -ffreestanding -I include/ -c examples/C/char.c -o ./bin/char.o")
     os.system("i686-elf-gcc -nostdlib -w -lgcc -ffreestanding -I include/ -c apps/0Nera/NeraMath/main.c -o ./bin/NeraMath.o")
+    os.system("i686-elf-gcc -nostdlib -w -lgcc -ffreestanding -I include/ -c apps/0Nera/VGGI/main.c -o ./bin/VGGI.o")
     os.system("i686-elf-gcc -nostdlib -w -lgcc -ffreestanding -I include/ -c games/kernelmode_power/snake/snake.c -o ./bin/snake.o")
     os.system("i686-elf-gcc -nostdlib -w -lgcc -ffreestanding -I include/ -c examples/C/test.c -o ./bin/test.o")
 
@@ -44,6 +45,7 @@ def build_all():
     os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/beep.elf ./bin/beep.o" + O_LIBC)
     os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/char.elf ./bin/char.o" + O_LIBC)
     os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/NeraMath.elf ./bin/NeraMath.o" + O_LIBC)
+    os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/VGGI.elf ./bin/VGGI.o" + O_LIBC)
     os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/snake.elf ./bin/snake.o" + O_LIBC)
     os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/test.elf ./bin/test.o")
 
