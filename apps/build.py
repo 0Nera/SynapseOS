@@ -39,15 +39,15 @@ def build_all():
     os.system("i686-elf-gcc -nostdlib -w -lgcc -ffreestanding -I include/ -c libc/scancodes.c -o ./bin/libc/scancodes.o")
     
     print("Linking apps")
-    os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/hi.elf ./bin/HelloWorld.o" + O_LIBC)
-    os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/sort.elf ./bin/popsort_int_test.o" + O_LIBC)
-    os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/Russia.elf ./bin/vesa_Russia.o" + O_LIBC)
-    os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/beep.elf ./bin/beep.o" + O_LIBC)
-    os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/char.elf ./bin/char.o" + O_LIBC)
-    os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/NeraMath.elf ./bin/NeraMath.o" + O_LIBC)
-    os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/VGGI.elf ./bin/VGGI.o" + O_LIBC)
-    os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/snake.elf ./bin/snake.o" + O_LIBC)
-    os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/test.elf ./bin/test.o")
+    os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/hi ./bin/HelloWorld.o" + O_LIBC)
+    os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/sort ./bin/popsort_int_test.o" + O_LIBC)
+    os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/Russia ./bin/vesa_Russia.o" + O_LIBC)
+    os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/beep ./bin/beep.o" + O_LIBC)
+    os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/char ./bin/char.o" + O_LIBC)
+    os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/NeraMath ./bin/NeraMath.o" + O_LIBC)
+    os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/vggi ./bin/VGGI.o" + O_LIBC)
+    os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/snake ./bin/snake.o" + O_LIBC)
+    os.system("i686-elf-gcc -nostdlib -lgcc -T link.ld -o ../bin/apps/test ./bin/test.o")
 
 if __name__ == "__main__":
     try:

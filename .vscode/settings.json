@@ -4,6 +4,7 @@
     "files.associations": {
         "stdint.h": "c",
         "stdbool.h": "c",
-        "kernel.h": "c"
+        "kernel.h": "c",
+        "vesa.h": "c"
     }
 }

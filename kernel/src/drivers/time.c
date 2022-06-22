@@ -10,7 +10,7 @@
 #define TICKS_PER_SECOND 20
 
 
-int32_t timer_ticks = 0;
+uint64_t timer_ticks = 0;
 
 
 void timer_set_frequency(int32_t hz) {
@@ -23,7 +23,7 @@ void timer_set_frequency(int32_t hz) {
 
 
 void timer_handler(struct regs *r) {
-    srand(++timer_ticks);
+    trand(++timer_ticks);
     task_switch(&r);
     // tty_printf("\ntimer_handler idt: %d", r->idt_index);
     //log("timer_handler idt: %d", r->idt_index);

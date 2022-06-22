@@ -15,3 +15,5 @@ test/
 bochsout.txt
 serial.txt
 kernel/subsystems/*
+bin/apps/
+initrd/apps/

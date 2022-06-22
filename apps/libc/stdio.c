@@ -103,7 +103,7 @@ int print_str(char *str) {
 }
 
 
-int rand(){
+uint64_t rand(){
     uint32_t result = 0;
  
     asm volatile("int $0x80" 
@@ -115,7 +115,7 @@ int rand(){
 }
 
 
-int srand(uint32_t seed) {
+uint64_t srand(uint32_t seed) {
     uint32_t result = 0;
  
     asm volatile("int $0x80" 

@@ -6,11 +6,17 @@
 #include <kernel.h>
 
 
-static unsigned long int next_rnd = 1;
+static uint64_t next_rnd = 1;
 
-int rand(void) {
+
+void trand(uint32_t time) {
+    next_rnd = next_rnd * 1103515245 + 12345 + time;
+}
+
+
+uint64_t rand(void) {
     next_rnd = next_rnd * 1103515245 + 12345;
-    return (uint32_t)(next_rnd/65536) % 32768;
+    return (uint64_t)(next_rnd/65536) % 32768;
 }
 
 
@@ -70,11 +76,11 @@ void syscall_handler(struct regs *r) {
         r->eax = (uint32_t)vfs_read((char *)arg1, (int32_t)arg2, (int32_t)arg3, (void *)arg4);
         break;
     case SC_CODE_rand:
-        r->eax = (uint32_t)rand();
+        r->eax = (uint64_t)rand();
         break;
     case SC_CODE_srand:
-        srand((uint32_t)(arg1));
-        r->eax = (uint32_t)rand();
+        srand((uint64_t)(arg1));
+        r->eax = (uint64_t)rand();
         break;
     case SC_CODE_putpixel: // Графика
         set_pixel((int32_t)(arg1), (int32_t)(arg2), (uint32_t)(arg3));
