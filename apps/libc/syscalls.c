@@ -1,3 +1,5 @@
+#include <syscalls.h>
+
 extern uint32_t __get_MSP(void);
 
 #define STDOUT_USART void
@@ -10,13 +12,13 @@ extern int errno;
 
 /*
  Переменные среды - пустой список.
- */
+*/
 char *__env[1] = { 0 };
 char **environ = __env;
 
 
 // Выход из программы
-void exit(){
+_Noreturn void exit(){
 
 }
 

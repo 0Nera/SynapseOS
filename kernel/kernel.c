@@ -10,7 +10,7 @@
 int32_t os_mode = 1; // 0 - мало ОЗУ, 1 - обычный режим, 2 - режим повышенной производительности, 3 - сервер
 
 void test_task(){
-    uint32_t uid = create_task();
+    uint32_t uid = add_task();
     tty_printf("1");
     log("task: %d", uid);
     tty_printf("2");

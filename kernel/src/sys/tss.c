@@ -4,16 +4,16 @@
 tss_entry_t kernel_tss;
 
 static task_t *task_list;   // Список задач
+task_t current_task;
 pid_t task_counter = 0;     // Счетчик задач (сколько всего было)
 
 /*
     Многозадачность. 
     Чтобы её реализовать нужно чтобы PIT(timer.c) каждые N единиц времени генерировал прерывание.
     При каждом прерывании от PIT вызывается функция task_switch.
-    В task_switch TSS обязан сохранить все регистры текущего процесса и загрузить регмистры следующего процесса.
+    В task_switch TSS обязан сохранить все регистры текущего процесса и загрузить регмстры следующего процесса.
     Также надо не забывать про приоритет процесса.
 */
-
 
 
 /*
@@ -28,8 +28,7 @@ static pid_t take_pid() {
     Выделяет новый процесс
 */
 pid_t add_task() {
-    
-    return new_task_pid;
+    return take_pid();
 }
 
 
@@ -89,3 +88,42 @@ void tss_set_stack(uint32_t kss, uint32_t kesp) {
 0xE9 = 11101001
 0x89 = 10001001
 */
+
+
+/*
+struct regs *dupm_regs(){
+    asm volatile(
+        "pushal \n"\
+        "push %ds \n"\
+        "push %es \n"\
+        "push %fs \n"\
+        "push %gs \n"\
+
+        "mov $0x10, %ax \n"\
+        "mov %ax, %ds \n"\
+        "mov %ax, %es \n"\
+        "mov %ax, %fs \n"\
+        "mov %ax, %gs \n"\
+
+        "mov %esp, %eax  \n"\
+        "push %eax");
+        
+    asm volatile(
+        "pop %eax \n"\
+        "pop %gs \n"\
+        "pop %fs \n"\
+        "pop %es \n"\
+        "pop %ds \n"\
+
+        "popal \n"\
+        "add $8, %esp  \n"\
+
+        "sti \n"\
+
+        "iret"
+        );
+}
+
+struct regs *dupm_regs_c(struct regs *){
+
+}*/
