@@ -9,6 +9,7 @@
 int32_t input_type = 1, SHIFT = 0, string_mem_counter = 0;
 char keycode, last_char; 
 char string_mem[256];
+char last_string[256];
 
 
 unsigned  char keyboard_map[] = {
@@ -125,6 +126,23 @@ void keyboard_handler_main(struct regs *r) {
         if (input_type == 0) {
             return;
         }
+        if (keycode == 72) {
+            tty_printf("72!");
+            // Очистка строковой памяти
+            
+            while (string_mem_counter != 0) {
+                string_mem_counter--;
+                string_mem[string_mem_counter] = 0;
+                tty_backspace();
+            }
+
+            tty_printf("string_mem_counter = %d\n", string_mem_counter);
+            string_mem_counter = strlen(last_string);  
+            strcpy(string_mem, last_string); 
+            tty_printf("last_string = [%s]\n", last_string);
+            tty_printf(last_string);
+            return;
+        }  
         if (input_type == 2) {
             if (keycode < 0){
                 return;
@@ -144,6 +162,7 @@ void keyboard_handler_main(struct regs *r) {
             
             return;
         }
+        
         if (keycode == 28) {
             input_type = -3;
             return;
@@ -195,6 +214,9 @@ void keyboard_handler_main(struct regs *r) {
         }
 
         if (keycode == ENTER_KEY_CODE) {
+            tty_printf("\nlast_string[%s]string_mem[%s]", last_string, string_mem);
+            strcpy(last_string, string_mem);
+            tty_printf("\nlast_string[%s]string_mem[%s]\n", last_string, string_mem);
 
             if (input_type == 1) {
                 string_mem_counter = 0;
@@ -229,7 +251,6 @@ void keyboard_handler_main(struct regs *r) {
             return;
         }
         tty_putchar(last_char);
-
         log("key = %c (index %d)", keyboard_map[(unsigned char) keycode], (unsigned char) keycode);
     }
 }

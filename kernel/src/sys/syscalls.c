@@ -70,7 +70,7 @@ void syscall_handler(struct regs *r) {
         r->eax = (uint32_t)1;
         break;
     case SC_CODE_setdev: // Хранилище
-        r->eax = (uint32_t)SSFS_set_device((int32_t)arg1);
+        r->eax = (uint32_t)-1;
         break;
     case SC_CODE_readfile:
         r->eax = (uint32_t)vfs_read((char *)arg1, (int32_t)arg2, (int32_t)arg3, (void *)arg4);

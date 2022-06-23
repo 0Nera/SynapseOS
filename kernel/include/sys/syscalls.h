@@ -1,4 +1,4 @@
-#include <interrupts/idt.h>
+#include <sys/idt.h>
 
 
 #define SC_CODE_puts            0

@@ -5,6 +5,8 @@
         "stdint.h": "c",
         "stdbool.h": "c",
         "kernel.h": "c",
-        "vesa.h": "c"
+        "vesa.h": "c",
+        "elf.h": "c",
+        "syscalls.h": "c"
     }
 }

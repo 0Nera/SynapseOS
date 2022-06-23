@@ -36,12 +36,12 @@ void shell() {
                         "->help                |get list of commands\n" \
                         "->cat   <filename>    |open file to read\n" \
                         "->cd    <folder>      |open folder\n" \
-                        "->./<file>            |run .elf programm in current folder\n" \
+                        "->./<file>            |run programm in current folder\n" \
                         "->sbf   <code>        |run sbf programm\n" \
                         "->ls                  |print32_t list of files\n" \
                         "->sysinfo             |print32_t information about system\n" \
                         "->pcilist             |list of pci devices\n" \
-                        "->ssfs                |open SSFS command line\n" 
+                        "\n" 
                         );
         } else if (strlen(cmd) > 4 && strncmp(cmd, "cat ", 4) == 0) {
             char fname[256];
@@ -72,8 +72,6 @@ void shell() {
         } else if (strcmp(cmd, "pcilist") == 0) {
             tty_printf("PCI devices:\n");
 	        checkAllBuses();
-        } else if (strcmp(cmd, "ssfs") == 0) {
-            SSFS_cmd();
         } else if (strcmp(cmd, "sysinfo") == 0) {
             sysinfo();
         } else if (strcmp(cmd, "ls") == 0) {

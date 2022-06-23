@@ -31,12 +31,10 @@
 #include <io/vgafnt.h>
 #include <io/ports.h>
 
-#include <interrupts/gdt.h>
-#include <interrupts/idt.h>
-#include <interrupts/tss.h>
-#include <interrupts/time.h>
-#include <interrupts/syscalls.h>
-
+#include <sys/gdt.h>
+#include <sys/idt.h>
+#include <sys/tss.h>
+#include <sys/syscalls.h>
 #include <sys/elf.h>
 
 

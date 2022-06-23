@@ -1,4 +1,4 @@
-#include <interrupts/idt.h>
+#include <sys/idt.h>
 #include <stdint.h>
 
 #define KEYBOARD_DATA_PORT 0x60
