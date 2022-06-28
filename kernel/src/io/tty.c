@@ -32,9 +32,11 @@ uint16_t vga_entry(uint8_t c, uint8_t tty_color) {
     return (uint16_t) c | (uint16_t) tty_color << 8;
 }
 
+
 void tty_setcolor(int32_t color) {
     tty_text_color = color;
 }
+
 
 void init_vbe(multiboot_info *mboot) {
    
@@ -59,11 +61,13 @@ void init_vbe(multiboot_info *mboot) {
     create_back_framebuffer();
 }
 
+
 void create_back_framebuffer() {
     back_framebuffer_addr = kheap_malloc(framebuffer_size);
     log("back_framebuffer_addr = %x", back_framebuffer_addr);
     memset(back_framebuffer_addr, 0, framebuffer_size); //causes page fault at c0800000 when this line is placed in the end of init_vbe
 }
+
 
 /*
     tty_init - очистка экрана и сброс настроек tty
@@ -85,6 +89,7 @@ void tty_init(struct multiboot_info *mboot_info) {
     back_framebuffer_addr = framebuffer_addr;
 }
 
+
 void tty_scroll() {
     // charheight = 16???
     uint32_t num_rows = 1;
@@ -103,6 +108,7 @@ void tty_scroll() {
     //swap buffers
     memcpy(framebuffer_addr, back_framebuffer_addr, framebuffer_size);
 }
+
 
 void set_pixel(int32_t x, int32_t y, uint32_t color) {
     if (x < 0 || y < 0 || 
