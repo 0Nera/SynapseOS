@@ -244,27 +244,61 @@ int32_t register_interrupt_handler(uint32_t idt_index, interrupt_handler_t handl
     return 1;
 }
 
+
+static const char *exception_strs[] = {
+        //  Intel 64 Manual Volume 2 - Table 6-1 -> Exceptions and Interrupts
+        "#DE: Integer Divide-by-Zero Exception",
+        "#DB: Debug exception",
+        "Non-maskable interrupt",
+        "#BP: Breakpoint Exception (INT 3)",
+        "#OF: Overflow Exception (INTO instruction)",
+        "#BR: Bound-Range Exception (BOUND instruction)",
+        "#UD: Invalid opcode exception",
+        "#NM: Device-Not-Available Exception",
+        "#DF: Double-Fault Exception",
+        "Coprocessor segment overrun (reserved in AMD64)",
+        "#TS: Invalid-TSS Exception",
+        "#NP: Segment-Not-Present Exception",
+        "#SS: Stack exception",
+        "#GP: General-Protection exception",
+        "#PF: Page-Fault exception",
+        "(Reserved)",
+        "#MF: x87 FPU Floating-Point error",
+        "#AC: Alignment-Check exception",
+        "#MC: Machine-Check exception",
+        "#XM: SIMD Floating-Point exception",
+        "#VE: Virtualisation Exception",
+        "#CP: Control-Protection Exception"
+};
+
+
 void fault_handler(struct regs *r) {
     uint32_t adr;
     asm volatile("movl %%cr2, %0" : "=r" (adr));
 
-    log("System Exception. System Halted! cr2 = %x  r->idt_index = %x eax = %x  ebx = %x" \
+    log("!!!\t\tError: %s", exception_strs[r->idt_index]);
+    log("cr2 = %x  r->idt_index = %x eax = %x  ebx = %x" \
                 "  ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x", 
         adr, r->idt_index, r->eax, r->ebx, 
         r->ecx, r->edx, r->esp, r->ebp, r->eip);
-    log("System Exception. System Halted! cr2 = %d  r->idt_index = %d eax = %d  ebx = %d" \
+    log("cr2 = %d  r->idt_index = %d eax = %d  ebx = %d" \
         "  ecx = %d  edx = %d  esp = %d  ebp = %d  eip = %d", 
+        adr, r->idt_index, r->eax, r->ebx, 
+        r->ecx, r->edx, r->esp, r->ebp, r->eip);
+
+    tty_printf("\n\t\tError: %s", exception_strs[r->idt_index]);
+
+    tty_printf("\n\t\tSystem Exception. System Halted!\n"    \
+        "\tcr2 = %x  r->idt_index = %x eax = %x  ebx = %x\n" \
+        "\tecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x\n", 
+        adr, r->idt_index, r->eax, r->ebx, 
+        r->ecx, r->edx, r->esp, r->ebp, r->eip);
+    tty_printf(
+        "\tcr2 = %d  r->idt_index = %d eax = %d  ebx = %d\n" \
+        "\tecx = %d  edx = %d  esp = %d  ebp = %d  eip = %d\n", 
         adr, r->idt_index, r->eax, r->ebx, 
         r->ecx, r->edx, r->esp, r->ebp, r->eip);
     
-    tty_printf("\nSystem Exception. System Halted! cr2 = %x  r->idt_index = %x eax = %x  ebx = %x" \
-        "  ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x", 
-        adr, r->idt_index, r->eax, r->ebx, 
-        r->ecx, r->edx, r->esp, r->ebp, r->eip);
-    tty_printf("System Exception. System Halted! cr2 = %d  r->idt_index = %d eax = %d  ebx = %d" \
-        "  ecx = %d  edx = %d  esp = %d  ebp = %d  eip = %d", 
-        adr, r->idt_index, r->eax, r->ebx, 
-        r->ecx, r->edx, r->esp, r->ebp, r->eip);
     while(1){
         asm volatile("hlt");
     }
