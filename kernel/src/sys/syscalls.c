@@ -49,68 +49,68 @@ void syscall_handler(struct regs *r) {
     uint32_t arg5 = r->edi;
 
     switch (r->eax) {
-    case SC_CODE_puts: // I/O
-        tty_printf("%s", (char *)(arg1));
-        r->eax = (uint32_t)1;
-        break;
-    case SC_CODE_getscancode:
-        r->eax = (uint32_t)keyboard_getscancode();
-        break;
-    case SC_CODE_getchar:
-        r->eax = (uint32_t)keyboard_getchar();
-        break;
-    case SC_CODE_gets:
-        r->eax = (uint32_t)keyboard_gets();
-        break;
-    case SC_CODE_malloc:
-        r->eax = (uint32_t)kheap_malloc((int32_t)arg1);
-        break;
-    case SC_CODE_free:
-        kheap_free((void *)arg1);
-        r->eax = (uint32_t)1;
-        break;
-    case SC_CODE_setdev: // Хранилище
-        r->eax = (uint32_t)-1;
-        break;
-    case SC_CODE_readfile:
-        r->eax = (uint32_t)vfs_read((char *)arg1, (int32_t)arg2, (int32_t)arg3, (void *)arg4);
-        break;
-    case SC_CODE_rand:
-        r->eax = (uint64_t)rand();
-        break;
-    case SC_CODE_srand:
-        srand((uint64_t)(arg1));
-        r->eax = (uint64_t)rand();
-        break;
-    case SC_CODE_putpixel: // Графика
-        set_pixel((int32_t)(arg1), (int32_t)(arg2), (uint32_t)(arg3));
-        r->eax = (uint32_t)1;
-        break;
-    case SC_CODE_drawline:
-        set_line((int32_t)(arg1), (int32_t)(arg2), (int32_t)(arg3), (int32_t)(arg4), (uint32_t)(arg5));
-        r->eax = (uint32_t)1;
-        break;
-    case SC_CODE_version: // Система
-        r->eax = (uint32_t)(VERSION_MAJOR * 100 + VERSION_MINOR);
-        break;
-    case SC_CODE_newtask: 
-        r->eax = add_task(&r);
-        break;
-    default:
-        log("Invalid syscall #%x", r->eax);
-        log("r->idt_index = %x eax = %x  ebx = %x  "
-            "ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x",
-            r->idt_index, r->eax, r->ebx,
-            r->ecx, r->edx, r->esp, r->ebp, r->eip);
-        tty_printf("Invalid syscall %x\n", r->eax);
-        tty_printf("Invalid syscall %d\n", r->eax);
-        tty_printf("r->idt_index = %x eax = %x  ebx = %x  "
-                   "ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x",
-                   r->idt_index, r->eax, r->ebx,
-                   r->ecx, r->edx, r->esp, r->ebp, r->eip);
-        tty_printf("r->idt_index = %d eax = %d  ebx = %d  "
-                   "ecx = %d  edx = %d  esp = %d  ebp = %d  eip = %d",
-                   r->idt_index, r->eax, r->ebx,
-                   r->ecx, r->edx, r->esp, r->ebp, r->eip);
+        case SC_CODE_puts: // I/O
+            tty_printf("%s", (char *)(arg1));
+            r->eax = (uint32_t)1;
+            break;
+        case SC_CODE_getscancode:
+            r->eax = (uint32_t)keyboard_getscancode();
+            break;
+        case SC_CODE_getchar:
+            r->eax = (uint32_t)keyboard_getchar();
+            break;
+        case SC_CODE_gets:
+            r->eax = (uint32_t)keyboard_gets();
+            break;
+        case SC_CODE_malloc:
+            r->eax = (uint32_t)kheap_malloc((int32_t)arg1);
+            break;
+        case SC_CODE_free:
+            kheap_free((void *)arg1);
+            r->eax = (uint32_t)1;
+            break;
+        case SC_CODE_setdev: // Хранилище
+            r->eax = (uint32_t)-1;
+            break;
+        case SC_CODE_readfile:
+            r->eax = (uint32_t)vfs_read((char *)arg1, (int32_t)arg2, (int32_t)arg3, (void *)arg4);
+            break;
+        case SC_CODE_rand:
+            r->eax = (uint64_t)rand();
+            break;
+        case SC_CODE_srand:
+            srand((uint64_t)(arg1));
+            r->eax = (uint64_t)rand();
+            break;
+        case SC_CODE_putpixel: // Графика
+            set_pixel((int32_t)(arg1), (int32_t)(arg2), (uint32_t)(arg3));
+            r->eax = (uint32_t)1;
+            break;
+        case SC_CODE_drawline:
+            set_line((int32_t)(arg1), (int32_t)(arg2), (int32_t)(arg3), (int32_t)(arg4), (uint32_t)(arg5));
+            r->eax = (uint32_t)1;
+            break;
+        case SC_CODE_version: // Система
+            r->eax = (uint32_t)(VERSION_MAJOR * 100 + VERSION_MINOR);
+            break;
+        case SC_CODE_newtask: 
+            r->eax = add_task(&r);
+            break;
+        default:
+            log("Invalid syscall #%x", r->eax);
+            log("r->idt_index = %x eax = %x  ebx = %x  "
+                "ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x",
+                r->idt_index, r->eax, r->ebx,
+                r->ecx, r->edx, r->esp, r->ebp, r->eip);
+            tty_printf("Invalid syscall %x\n", r->eax);
+            tty_printf("Invalid syscall %d\n", r->eax);
+            tty_printf("r->idt_index = %x eax = %x  ebx = %x  "
+                    "ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x",
+                    r->idt_index, r->eax, r->ebx,
+                    r->ecx, r->edx, r->esp, r->ebp, r->eip);
+            tty_printf("r->idt_index = %d eax = %d  ebx = %d  "
+                    "ecx = %d  edx = %d  esp = %d  ebp = %d  eip = %d",
+                    r->idt_index, r->eax, r->ebx,
+                    r->ecx, r->edx, r->esp, r->ebp, r->eip);
     }
 }
