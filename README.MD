@@ -54,3 +54,4 @@ SynapseOS- простая x86 операционная система на яз�
 - <http://www.brokenthorn.com/Resources/>
 - <http://www.osdever.net/tutorials/>
 - <https://github.com/rgimad/EOS>
+- <https://phantomexos.blogspot.com/>
