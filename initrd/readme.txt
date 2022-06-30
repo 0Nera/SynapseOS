@@ -1,1 +1,0 @@
-SynapseOS is simple OS by Aren Elchinyan
