@@ -3,10 +3,6 @@
 
 tss_entry_t kernel_tss;
 
-static task_t *task_list;   // Список задач
-task_t current_task;
-pid_t task_counter = 0;     // Счетчик задач (сколько всего было)
-
 /*
     Многозадачность. 
     Чтобы её реализовать нужно чтобы PIT(timer.c) каждые N единиц времени генерировал прерывание.
@@ -15,12 +11,77 @@ pid_t task_counter = 0;     // Счетчик задач (сколько все�
     Также надо не забывать про приоритет процесса.
 */
 
+uint32_t     next_pid = 0;       // Следующий идентификатор процесса (PID)
+uint32_t     next_thread_id = 0; // Следующий идентификатор потока
+list_t      process_list;       // Список процессов
+list_t     thread_list;        // Список потоков
+bool       multi_task = false; // Флаг готовности планировщика
+process_t *kernel_proc = 0;    // Описатель процесса ядра
+thread_t *kernel_thread = 0;  // Описатель потока ядра
+process_t *current_proc;       // Текущий процесс
+thread_t *current_thread;     // Текущий поток
 
 /*
     Выделяет номер процессу
 */
 static pid_t take_pid() {
-    return task_counter++;
+    return next_pid++;
+}
+
+
+/*
+    Инициализация планировщика задач
+*/
+void init_task_manager(void) {
+    /* Читаем текущий указатель стека */
+    uint32_t    esp = 0;
+    asm volatile ("mov %%esp, %0":"=a"(esp));       
+
+    /* Выключаем прерывания и инициализируем списки задач */
+    asm volatile ("cli");
+
+    list_init(&process_list);
+    list_init(&thread_list);
+
+    /* Создаем процесс ядра 
+       Выделяем память под описатель процесса и обнуляем её */
+    kernel_proc = (process_t*) kheap_malloc(sizeof(process_t));
+
+    memset(kernel_proc, 0, sizeof(process_t));
+
+    /* Инициализируем процесс */
+    kernel_proc->pid = take_pid();
+    kernel_proc->page_dir = get_kernel_dir();
+    kernel_proc->list_item.list = NULL;
+    kernel_proc->threads_count = 1;
+    strcpy(kernel_proc->name, "Kernel");
+    kernel_proc->suspend = false;
+
+    list_add(&process_list, &kernel_proc->list_item);
+
+    /* Создаем главный поток ядра */
+    kernel_thread = (thread_t*) kheap_malloc(sizeof(thread_t));
+
+    memset(kernel_thread, 0, sizeof(thread_t));
+
+    kernel_thread->process = kernel_proc;
+    kernel_thread->list_item.list = NULL;
+    kernel_thread->id = next_thread_id++;
+    kernel_thread->stack_size = 0x4000;
+    kernel_thread->suspend = false;
+    kernel_thread->esp = esp;
+   
+    list_add(&thread_list, &kernel_thread->list_item);
+
+    /* Делаем процесс и поток ядра текущими */
+    current_proc = kernel_proc;
+    current_thread = kernel_thread;
+   
+    /* Взводим флаг готовности планировщика */
+    multi_task = true;
+   
+    /* Снова включаем прерывания */
+    asm volatile ("sti");
 }
 
 

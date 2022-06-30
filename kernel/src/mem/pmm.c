@@ -130,7 +130,7 @@ int32_t pmm_find_free_blocks(uint32_t count) {
 }
 
 // Функции для управления одним блоком в памяти
-physical_addres pmm_alloc_block() {
+physical_addres_t pmm_alloc_block() {
     if (phys_block_count - phys_used_block_count <= 0) {
         return 0xFFFFFFFF;
     }
@@ -148,7 +148,7 @@ physical_addres pmm_alloc_block() {
 }
 
 
-void pmm_free_block(physical_addres addr) {
+void pmm_free_block(physical_addres_t addr) {
     int32_t block = addr / PHYS_BLOCK_SIZE;
 
     bitmap_unset(block);
@@ -156,7 +156,7 @@ void pmm_free_block(physical_addres addr) {
 }
 
 
-bool pmm_is_block_alloced(physical_addres addr) {
+bool pmm_is_block_alloced(physical_addres_t addr) {
     int32_t block = addr / PHYS_BLOCK_SIZE;
 
     return bitmap_test(block);
@@ -164,7 +164,7 @@ bool pmm_is_block_alloced(physical_addres addr) {
 
 
 // Функции для выделения нескольких блоков памяти
-physical_addres pmm_alloc_blocks(uint32_t count) {
+physical_addres_t pmm_alloc_blocks(uint32_t count) {
     if (phys_block_count - phys_used_block_count <= 0) {
         return 0xFFFFFFFF; 
     }
@@ -185,7 +185,7 @@ physical_addres pmm_alloc_blocks(uint32_t count) {
 }
 
 
-void pmm_free_blocks(physical_addres addr, uint32_t count) {
+void pmm_free_blocks(physical_addres_t addr, uint32_t count) {
     int32_t block = addr / PHYS_BLOCK_SIZE;
 
     for (uint32_t i = 0; i < count; i++) {
@@ -296,6 +296,6 @@ void pmm_init(struct multiboot_info *mboot_info) {
 }
 
 
-void update_phys_memory_bitmap_addres(physical_addres addr) {
+void update_phys_memory_bitmap_addres(physical_addres_t addr) {
     phys_memory_bitmap = (uint32_t*) addr;
 }

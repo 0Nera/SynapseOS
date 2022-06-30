@@ -10,15 +10,14 @@ typedef struct list_item list_item_t;
 typedef struct {
     list_item_t*    first; // Указатель на первый элемент 
     size_t          count; // Число элементов в списке 
-   
 } list_t;
 
 
-struct list_item {
+typedef struct list_item {
     list_item_t*    prev; // Предыдущий элемент списка 
     list_item_t*    next; // Следующий элемент списка 
     list_t*         list; // Список которому принадлежит данный элемент 
-};
+} list_item_t;
 
 
 void list_init(list_t* list); //Инициализация списка 

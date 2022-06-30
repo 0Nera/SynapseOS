@@ -1,8 +1,8 @@
 #include <kernel.h>
 
 
-virtual_addr kheap_begin; // Начало кучи ядра
-virtual_addr kheap_end; // Конец кучи ядра
+virtual_addr_t kheap_begin; // Начало кучи ядра
+virtual_addr_t kheap_end; // Конец кучи ядра
 
 uint32_t kheap_memory_used; // Использованно памяти
 int32_t kheap_alloc_number; // Число выделений
@@ -10,7 +10,7 @@ int32_t kheap_alloc_number; // Число выделений
 
 void kheap_init() {
     kheap_begin = KHEAP_START_VADDR;
-    kheap_end = (virtual_addr)NULL;
+    kheap_end = (virtual_addr_t)NULL;
 
     kheap_alloc_number = 0;
     kheap_memory_used = 0;
@@ -20,7 +20,7 @@ void kheap_init() {
 
 // Увеличение кучи ядра на некоторый размер, он будет округлен до размера страницы
 void *kheap_morecore(uint32_t size) {
-    if (kheap_end == (virtual_addr)NULL) {    // Когда kheap_end == NULL мы должны создать начальную кучу
+    if (kheap_end == (virtual_addr_t)NULL) {    // Когда kheap_end == NULL мы должны создать начальную кучу
         kheap_end = kheap_begin;
     }
 
@@ -84,7 +84,7 @@ void *kheap_malloc(uint32_t size) {
 
     kheap_item *last_item;
     // Если куча уже есть
-    if (kheap_end != (virtual_addr)NULL) {
+    if (kheap_end != (virtual_addr_t)NULL) {
         // Поиск первого элемента
         for (new_item = (kheap_item*)kheap_begin; new_item != NULL; new_item = new_item->next) {
             if (new_item->next == NULL) {

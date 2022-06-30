@@ -33,14 +33,14 @@ void shell() {
             tty_printf("SynapseOS is a simple x86 C operating system with a well-documented kernel.");
         } else if (strcmp(cmd, "help") == 0) {
             tty_printf("Commands:\n" \
-                        "->help                |get list of commands\n" \
-                        "->cat   <filename>    |open file to read\n" \
-                        "->cd    <folder>      |open folder\n" \
-                        "->./<file>            |run programm in current folder\n" \
-                        "->sbf   <code>        |run sbf programm\n" \
-                        "->ls                  |print32_t list of files\n" \
-                        "->sysinfo             |print32_t information about system\n" \
-                        "->pcilist             |list of pci devices\n" \
+                        "\t\t->help                |get list of commands\n" \
+                        "\t\t->cat   <filename>    |open file to read\n" \
+                        "\t\t->cd    <folder>      |open folder\n" \
+                        "\t\t->./<file>            |run programm in current folder\n" \
+                        "\t\t->sbf   <code>        |run sbf programm\n" \
+                        "\t\t->ls                  |list of files\n" \
+                        "\t\t->sysinfo             |information about system\n" \
+                        "\t\t->pcilist             |list of pci devices\n" \
                         "\n" 
                         );
         } else if (strlen(cmd) > 4 && strncmp(cmd, "cat ", 4) == 0) {
@@ -107,8 +107,22 @@ void shell() {
                 tty_printf("run: incorrect argument\n");
             }
         } else {
-            tty_setcolor(COLOR_ERROR);
-            tty_printf("Unknown: [%s]\n", cmd);
+            char fname[256];
+
+            char *tok = (char *)strtok(cmd, "/");
+
+            tok = (char *)strtok(0, "/"); // tok - имя файла
+
+            if (fname != 0) {
+                char temp[256] = {0};
+                strcpy(temp, current_dir);
+                strcat(temp, tok);
+                run_elf_file(temp);
+
+            } else {
+                tty_setcolor(COLOR_ERROR);
+                tty_printf("run: incorrect argument\n");
+            }
         }
     }
 }

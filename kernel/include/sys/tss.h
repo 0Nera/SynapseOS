@@ -44,13 +44,27 @@ typedef struct tss_entry {
 typedef uint32_t pid_t;
 
 // Задача
-typedef struct __attribute__((packed)) task {
-    uint8_t priority;
-    pid_t pid;                         // ID процесса
-    struct regs *r;                    // Дамп регистров
-    //page_directory *page_directory;     // Директория страницы
-    struct task *next;                 // Следующий таск
-} task_t;
+typedef struct {
+    list_item_t list_item;      // Элемент списка 
+    physical_addres_t  page_dir;// Каталог страниц 
+    size_t      threads_count;  // Число потоков в этом процессе 
+    bool        suspend;        // Флаг паузы 
+    pid_t    pid;            // Идентификатор процесса (PID) 
+    char        name[256];      // Имя процесса 
+
+} __attribute__((packed)) process_t;
+
+
+typedef struct {
+    list_item_t list_item;   // Элемент списка 
+    process_t*  process;     // Родительский процесс 
+    bool        suspend;     // Флаг паузы 
+    size_t      stack_size;  // Размер стека потока 
+    void*       stack;       // Указатель на блок памяти под стек 
+    uint32_t    esp;         // Указатель стека     
+    uint32_t    entry_point; // Точка входа в поток 
+    pid_t       id;          // Идентификатор потока 
+} __attribute__((packed)) thread_t;
 
 
 extern void tss_flush();

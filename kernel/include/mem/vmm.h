@@ -54,7 +54,7 @@ enum PAGE_PDE_FLAGS {
 #define PAGE_TABLE_INDEX(x)     (((x) >> 12) & 0x3FF)
 
 #define PAGE_GET_TABLE_ADDRESS(x)    (*x & ~0xFFF) 
-#define PAGE_GET_physical_addresESS(x) (*x & ~0xFFF) 
+#define PAGE_GET_physical_addres_tESS(x) (*x & ~0xFFF) 
 
 #define GET_PDE(v) (page_dir_entry*) (0xFFFFF000 +  (v >> 22) * 4) 
 #define GET_PTE(v) (page_table_entry*) (0xFFC00000 + (v >> 12) * 4)
@@ -64,32 +64,32 @@ extern page_directory *kernel_page_dir;
 
 void page_table_entry_add_attrib(page_table_entry *entry, uint32_t attrib);
 void page_table_entry_del_attrib(page_table_entry *entry, uint32_t attrib); 
-void page_table_entry_set_frame(page_table_entry *entry, physical_addres addr); 
+void page_table_entry_set_frame(page_table_entry *entry, physical_addres_t addr); 
 bool page_table_entry_is_present(page_table_entry entry);
 bool page_table_entry_is_writable(page_table_entry entry);
-physical_addres page_table_entry_frame(page_table_entry entry);
+physical_addres_t page_table_entry_frame(page_table_entry entry);
 
 void page_dir_entry_add_attrib(page_dir_entry *entry, uint32_t attrib); 
 void page_dir_entry_del_attrib(page_dir_entry *entry, uint32_t attrib); 
-void page_dir_entry_set_frame(page_dir_entry *entry, physical_addres addr);
+void page_dir_entry_set_frame(page_dir_entry *entry, physical_addres_t addr);
 bool page_dir_entry_is_present(page_dir_entry entry);
 bool page_dir_entry_is_user(page_dir_entry entry);
 bool page_dir_entry_is_4mb(page_dir_entry entry);
 bool page_dir_entry_is_writable(page_dir_entry entry);
-physical_addres page_dir_entry_frame(page_dir_entry entry); 
+physical_addres_t page_dir_entry_frame(page_dir_entry entry); 
 
-void flush_tlb_entry(virtual_addr addr);
+void flush_tlb_entry(virtual_addr_t addr);
 
-extern void enable_paging(physical_addres page_dir);
+extern void enable_paging(physical_addres_t page_dir);
 
 void vmm_init();
 void vmm_create_kernel_page_dir();
 
-bool vmm_alloc_page(virtual_addr vaddr);
-bool vmm_alloc_page_with_userbit(virtual_addr vaddr);
-void vmm_free_page(virtual_addr vaddr);
-void vmm_map_page(physical_addres paddr, virtual_addr vaddr);
-virtual_addr vmm_temp_map_page(physical_addres paddr);
+bool vmm_alloc_page(virtual_addr_t vaddr);
+bool vmm_alloc_page_with_userbit(virtual_addr_t vaddr);
+void vmm_free_page(virtual_addr_t vaddr);
+void vmm_map_page(physical_addres_t paddr, virtual_addr_t vaddr);
+virtual_addr_t vmm_temp_map_page(physical_addres_t paddr);
 void vmm_switch_page_directory(page_directory *page_dir_phys_addr);
 
 void vmm_test();

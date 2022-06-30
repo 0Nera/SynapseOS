@@ -18,8 +18,8 @@ uint32_t kv2p(void *a) {
     return (uint32_t)a - 0xC0000000;
 }
 
-void * virtual2phys(page_directory * dir, void * virtual_addr) {
-    uint32_t page_dir_idx = PAGEDIR_INDEX(virtual_addr), page_tbl_idx = PAGETBL_INDEX(virtual_addr), page_frame_offset = PAGEFRAME_INDEX(virtual_addr);
+void * virtual2phys(page_directory * dir, void * virtual_addr_t) {
+    uint32_t page_dir_idx = PAGEDIR_INDEX(virtual_addr_t), page_tbl_idx = PAGETBL_INDEX(virtual_addr_t), page_frame_offset = PAGEFRAME_INDEX(virtual_addr_t);
     if(!dir->ref_tables[page_dir_idx]) {
         log("virtual2phys: page dir entry %d does not exist\n", page_tbl_idx);
         return NULL;
@@ -34,8 +34,8 @@ void * virtual2phys(page_directory * dir, void * virtual_addr) {
     return (void*)t;
 }
 
-bool vmm_alloc_page(virtual_addr vaddr) {
-    physical_addres paddr = pmm_alloc_block();
+bool vmm_alloc_page(virtual_addr_t vaddr) {
+    physical_addres_t paddr = pmm_alloc_block();
     if (!paddr) {
         return false;
     }
@@ -45,8 +45,8 @@ bool vmm_alloc_page(virtual_addr vaddr) {
 }
 
 
-bool vmm_alloc_page_with_userbit(virtual_addr vaddr) {
-    physical_addres paddr = pmm_alloc_block();
+bool vmm_alloc_page_with_userbit(virtual_addr_t vaddr) {
+    physical_addres_t paddr = pmm_alloc_block();
 
     if (!paddr) {
         return false;
@@ -59,7 +59,7 @@ bool vmm_alloc_page_with_userbit(virtual_addr vaddr) {
 }
 
 
-void vmm_free_page(virtual_addr vaddr) {
+void vmm_free_page(virtual_addr_t vaddr) {
     page_table_entry *pte = GET_PTE(vaddr);
 
     if (!page_table_entry_is_present(*pte)) {
@@ -67,7 +67,7 @@ void vmm_free_page(virtual_addr vaddr) {
         return;
     }
 
-    physical_addres block = page_table_entry_frame(*pte);
+    physical_addres_t block = page_table_entry_frame(*pte);
     if (block) {
         pmm_free_block(block);
     }
@@ -94,17 +94,17 @@ void vmm_create_kernel_page_dir() {
 
         if (i == PAGE_ENTRIES - 1) { // Техника фрактального (рекурсивного) отображения, которая позволяет нам получить доступ к PD и PT
             page_dir_entry_add_attrib(pde, I86_PTE_PRESENT);
-            page_dir_entry_set_frame(pde, (physical_addres) kernel_page_dir);
+            page_dir_entry_set_frame(pde, (physical_addres_t) kernel_page_dir);
         }
     }
 }
 
 
-void vmm_map_page(physical_addres paddr, virtual_addr vaddr) {
+void vmm_map_page(physical_addres_t paddr, virtual_addr_t vaddr) {
     page_dir_entry *pde = GET_PDE(vaddr);
 
     if (!page_dir_entry_is_present(*pde)) {                         // Если таблицы страниц нет, создайте ее
-        physical_addres pt_p = pmm_alloc_block();                   // Это ФИЗИЧЕСКИЙ адрес
+        physical_addres_t pt_p = pmm_alloc_block();                   // Это ФИЗИЧЕСКИЙ адрес
         if (pt_p == 0xFFFFFFFF) {
             tty_printf("No free phys memory. Minimum 3 mb\n");
             return;
@@ -125,7 +125,7 @@ void vmm_map_page(physical_addres paddr, virtual_addr vaddr) {
 }
 
 
-virtual_addr vmm_temp_map_page(physical_addres paddr) {
+virtual_addr_t vmm_temp_map_page(physical_addres_t paddr) {
     page_table_entry *pte = GET_PTE(TEMP_PAGE_ADDR);
 
     page_table_entry_set_frame(pte, PAGE_ALIGN_DOWN(paddr));
@@ -153,8 +153,8 @@ void vmm_init() {
     memset((void*) table1, 0, sizeof(page_table));      // Очистить выделенные таблицы страниц
     memset((void*) table2, 0, sizeof(page_table));
 
-    physical_addres frame;                              // Сопоставляет первый МБ с 3 ГБ
-    virtual_addr virt;
+    physical_addres_t frame;                              // Сопоставляет первый МБ с 3 ГБ
+    virtual_addr_t virt;
     for (frame = 0x0, virt = 0xC0000000;
          frame < 0x100000;
          frame += PAGE_SIZE, virt += PAGE_SIZE) {
@@ -177,16 +177,16 @@ void vmm_init() {
     page_dir_entry *pde1 = (page_dir_entry*) &kernel_page_dir->entries[PAGE_DIRECTORY_INDEX(0x00000000)];
     page_dir_entry_add_attrib(pde1, I86_PDE_PRESENT);
     page_dir_entry_add_attrib(pde1, I86_PDE_WRITABLE);
-    page_dir_entry_set_frame(pde1, (physical_addres) table1);
+    page_dir_entry_set_frame(pde1, (physical_addres_t) table1);
 
     page_dir_entry **pde2 = (page_dir_entry**) &kernel_page_dir->entries[PAGE_DIRECTORY_INDEX(0xC0100000)];
     page_dir_entry_add_attrib((page_dir_entry*)pde2, I86_PDE_PRESENT);
     page_dir_entry_add_attrib((page_dir_entry*)pde2, I86_PDE_WRITABLE);
-    page_dir_entry_set_frame((page_dir_entry*)pde2, (physical_addres) table2);
+    page_dir_entry_set_frame((page_dir_entry*)pde2, (physical_addres_t) table2);
 
     update_phys_memory_bitmap_addres(KERNEL_END_VADDR);
 
-    enable_paging((physical_addres) kernel_page_dir);
+    enable_paging((physical_addres_t) kernel_page_dir);
     log("VMM installed");
 }
 
@@ -204,7 +204,7 @@ void page_table_entry_del_attrib(page_table_entry *entry, uint32_t attrib) {
 
 
 // Map pte to physical frame
-void page_table_entry_set_frame(page_table_entry *entry, physical_addres addr) {
+void page_table_entry_set_frame(page_table_entry *entry, physical_addres_t addr) {
     *entry = (*entry & ~I86_PTE_FRAME) | addr;
 }
 
@@ -216,7 +216,7 @@ bool page_table_entry_is_present(page_table_entry entry) {
 
 
 // Return the address of physical frame which pte refers to
-physical_addres page_table_entry_frame(page_table_entry entry) {
+physical_addres_t page_table_entry_frame(page_table_entry entry) {
     return entry & I86_PTE_FRAME;
 }
 
@@ -234,7 +234,7 @@ void page_dir_entry_del_attrib(page_dir_entry *entry, uint32_t attrib) {
 
 
 // Map pde to physical frame (where the appropriate page table stores)
-void page_dir_entry_set_frame(page_dir_entry *entry, physical_addres addr) {
+void page_dir_entry_set_frame(page_dir_entry *entry, physical_addres_t addr) {
     *entry = (*entry & ~I86_PDE_FRAME) | addr;
 }
 
@@ -244,6 +244,6 @@ bool page_dir_entry_is_present(page_dir_entry entry) {
 }
 
 
-void flush_tlb_entry(virtual_addr addr) {
+void flush_tlb_entry(virtual_addr_t addr) {
     asm volatile("invlpg (%0)" : : "b"(addr) : "memory");
 }

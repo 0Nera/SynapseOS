@@ -155,8 +155,8 @@ void initrd_init(uint32_t phys_begin, uint32_t phys_end) {
     initrd_size = phys_end - phys_begin;
     initrd_begin = kheap_malloc(initrd_size + 4 * PAGE_SIZE);
 
-    physical_addres frame;
-    virtual_addr virt;
+    physical_addres_t frame;
+    virtual_addr_t virt;
     for (frame = PAGE_ALIGN_DOWN(phys_begin), virt = PAGE_ALIGN_DOWN(initrd_begin) + PAGE_SIZE;
          frame <= (PAGE_ALIGN_DOWN(phys_end));
          frame += PAGE_SIZE, virt += PAGE_SIZE) {

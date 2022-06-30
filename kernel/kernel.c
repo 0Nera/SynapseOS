@@ -11,8 +11,13 @@ int32_t os_mode = 1; // 0 - мало ОЗУ, 1 - обычный режим, 2 - 
 
 void test_task(){
     uint32_t uid = add_task();
+
     tty_printf("1");
+
     log("task: %d", uid);
+
+
+
     tty_printf("2");
     uid = uid + 300;
     for(int i = 300; i > 0; i--){
@@ -29,7 +34,7 @@ void test_task(){
         asm volatile("nop");
         asm volatile("nop");
         asm volatile("nop");
-        log("%d", uid);
+        //log("%d", uid);
     }
     kill_task(uid);
     tty_printf("3");
@@ -94,6 +99,7 @@ void kernel(int32_t magic_number, struct multiboot_info *mboot_info) {
     //     asm volatile("hlt");
     // }
     //log("task: %d", create_task());
+    init_task_manager();
     test_task();
     shell();                                // Активация терминала
 

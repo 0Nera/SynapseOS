@@ -90,7 +90,7 @@ if __name__ == "__main__":
         else:
             os.system("ubuntu run grub-mkrescue -o \"SynapseOS.iso\" isodir/ -V SynapseOS ")
 
-        qemu_command = "qemu-system-i386 -name SynapseOS -soundhw all" \
+        qemu_command = "qemu-system-i386 -name SynapseOS -soundhw all -m 16" \
             " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
             " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log"
 
