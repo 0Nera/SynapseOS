@@ -42,10 +42,10 @@ typedef struct STFS_folder {
     uint8_t     description[170];
 } STFS_folder_t __attribute__((packed));
 
-struct STFS_block {
+typedef struct STFS_block {
     blockinfo_t block;
     uint8_t     data[4090];
-} STFS_file_t __attribute__((packed));
+} STFS_block_t __attribute__((packed));
 
 
 /*
