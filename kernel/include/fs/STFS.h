@@ -26,7 +26,7 @@ typedef struct STFS_file {
     uint32_t    create_time;
     uint32_t    edit_time;
     uint8_t     description[3820];
-} SynFS_file_t __attribute__((packed));
+} STFS_file_t __attribute__((packed));
 
 typedef struct STFS_folder {
     blockinfo_t block;
@@ -40,12 +40,12 @@ typedef struct STFS_folder {
     uint32_t    edit_time;
     blockinfo_t file_array[625];
     uint8_t     description[170];
-} SynFS_folder_t __attribute__((packed));
+} STFS_folder_t __attribute__((packed));
 
 struct STFS_block {
     blockinfo_t block;
     uint8_t     data[4090];
-} SynFS_file_t __attribute__((packed));
+} STFS_file_t __attribute__((packed));
 
 
 /*
@@ -103,4 +103,9 @@ struct STFS_block {
     > 34 сектора системные (загрузчик, данные об файловой системе, свободные блоки)
     > Свободно 2 097 118 секторов
     > 262 139 блока свободно, это 1 023,98 мегабайт 
+
+    Важно:
+    > Файлы не могут иметь id менее 1
+    > Блок/Файл/Папка имеющие id 0 - удалены
+    > Если адрес следующего блока - 0, то это последний блок
 */
