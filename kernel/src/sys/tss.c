@@ -51,7 +51,7 @@ void init_task_manager(void) {
 
     /* Инициализируем процесс */
     kernel_proc->pid = take_pid();
-    kernel_proc->page_dir = get_kernel_dir();
+    kernel_proc->page_dir = &kernel_page_dir;
     kernel_proc->list_item.list = NULL;
     kernel_proc->threads_count = 1;
     strcpy(kernel_proc->name, "Kernel");
@@ -104,9 +104,21 @@ int32_t kill_task(uint32_t pid) {
 /*
     Переключает задачу
 */
-void task_switch(struct regs *r) {
-    
+void task_switch(void) {
+	asm volatile ("pushf ");
+	asm volatile ("cli");
+	asm volatile ("mov %%esp, %0":"=a"(current_thread->esp));
+
+	do{
+		current_thread = (thread_t*) current_thread->list_item.next;
+		current_proc = (process_t*) current_proc->list_item.next;
+
+	}	while ((current_thread->suspend) || (current_proc->suspend));
+
+	asm volatile ("mov %0, %%esp"::"a"(current_thread->esp));
+	asm volatile ("popf");
 }
+
 
 
 // We don't need tss to assist all the task switching, but it's required to have one tss for switching back to kernel mode(system call for example)
@@ -150,41 +162,14 @@ void tss_set_stack(uint32_t kss, uint32_t kesp) {
 0x89 = 10001001
 */
 
+regs_t *dump_regs(){
+    regs_t *tmp;
 
-/*
-struct regs *dupm_regs(){
-    asm volatile(
-        "pushal \n"\
-        "push %ds \n"\
-        "push %es \n"\
-        "push %fs \n"\
-        "push %gs \n"\
 
-        "mov $0x10, %ax \n"\
-        "mov %ax, %ds \n"\
-        "mov %ax, %es \n"\
-        "mov %ax, %fs \n"\
-        "mov %ax, %gs \n"\
+    asm volatile("mov %%eax, %%cs" 
+                : "=a"(tmp->cs)
+                );
 
-        "mov %esp, %eax  \n"\
-        "push %eax");
-        
-    asm volatile(
-        "pop %eax \n"\
-        "pop %gs \n"\
-        "pop %fs \n"\
-        "pop %es \n"\
-        "pop %ds \n"\
 
-        "popal \n"\
-        "add $8, %esp  \n"\
-
-        "sti \n"\
-
-        "iret"
-        );
+    return &tmp;
 }
-
-struct regs *dupm_regs_c(struct regs *){
-
-}*/

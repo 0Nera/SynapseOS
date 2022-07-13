@@ -4,7 +4,7 @@ import os, shutil, sys, tarfile, os.path
 SYS_OBJ = "bin/kernel/kernel.o bin/kernel/elf.o bin/kernel/tss.o bin/kernel/syscalls.o bin/kernel/gdt.o bin/kernel/idt.o"
 FS_OBJ = ""
 ARCH_OBJ = "bin/kernel/starter.o bin/kernel/interrupts.o bin/kernel/paging.o"
-MEM_OBJ = "bin/kernel/pmm.o bin/kernel/vmm.o bin/kernel/kheap.o bin/kernel/paging_c.o"
+MEM_OBJ = "bin/kernel/pmm.o bin/kernel/vmm.o bin/kernel/kheap.o bin/kernel/paging_c.o bin/kernel/tasks.o"
 DRIVERS_OBJ = "bin/kernel/vfs.o bin/kernel/ramdisk.o bin/kernel/keyboard.o bin/kernel/pci.o bin/kernel/ata.o bin/kernel/time.o" \
     " bin/kernel/RTL8139.o bin/kernel/dhcp.o bin/kernel/udp.o bin/kernel/net_utils.o bin/kernel/ethernet.o bin/kernel/arp.o bin/kernel/ip.o"
 IO_OBJ = "bin/kernel/tty.o bin/kernel/vgafnt.o bin/kernel/ports.o bin/kernel/shell.o"
@@ -20,6 +20,7 @@ def build_all():
     os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/arch/x86/starter.s -o bin/kernel/starter.o")
     os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/arch/x86/interrupts.s -o bin/kernel/interrupts.o")
     os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/arch/x86/paging.s -o bin/kernel/paging.o")
+    os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -w -Wno-implicit-function-declaration -c kernel/arch/x86/tasks.s -o bin/kernel/tasks.o")
 
     os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -Wno-implicit-function-declaration -c kernel/src/mem/pmm.c -o bin/kernel/pmm.o")
     os.system("i686-elf-gcc -g -ffreestanding -I kernel/include/ -Wno-implicit-function-declaration -c kernel/src/mem/vmm.c -o bin/kernel/vmm.o")
@@ -93,7 +94,7 @@ if __name__ == "__main__":
         qemu_command = "qemu-system-i386 -name SynapseOS -soundhw all -m 16" \
             " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
             " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log"
-
+        
         os.system(
             qemu_command
             )

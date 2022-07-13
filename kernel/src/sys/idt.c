@@ -273,6 +273,7 @@ static const char *exception_strs[] = {
 
 
 void fault_handler(struct regs *r) {
+    multi_task = false;
     uint32_t adr;
     asm volatile("movl %%cr2, %0" : "=r" (adr));
 

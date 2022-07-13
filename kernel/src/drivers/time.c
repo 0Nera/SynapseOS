@@ -11,6 +11,7 @@
 
 
 uint64_t timer_ticks = 0;
+extern void task_switch(void);
 
 
 void timer_set_frequency(int32_t hz) {
@@ -24,7 +25,10 @@ void timer_set_frequency(int32_t hz) {
 
 void timer_handler(struct regs *r) {
     trand(++timer_ticks);
-    task_switch(&r);
+
+    if (multi_task) {
+        task_switch();  /* Переключаемся */
+    }
     // tty_printf("\ntimer_handler idt: %d", r->idt_index);
     //log("timer_handler idt: %d", r->idt_index);
 }

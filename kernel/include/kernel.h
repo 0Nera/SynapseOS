@@ -1,5 +1,3 @@
-#pragma warning(disable: _IMPLICIT_FUNCTION_DECLARATION)
-
 #pragma once
 
 
@@ -58,7 +56,7 @@
 
 
 extern int32_t os_mode;
-
+extern bool multi_task;
 
 void shell();
 void sysinfo();

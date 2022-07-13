@@ -39,7 +39,7 @@ typedef struct regs {
     uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; // Отправлено pusha
     uint32_t idt_index, err_code;                    // Отправлено вручную
     uint32_t eip, cs, eflags, useresp, ss;           // Отправлено автоматически
-} regs;
+} regs_t;
 
 
 struct idt_entry {

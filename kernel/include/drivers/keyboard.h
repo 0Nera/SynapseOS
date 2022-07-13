@@ -8,8 +8,8 @@
 extern unsigned char keyboard_map[128];
 extern int32_t input_type;
 void keyboard_install(void);
-void keyboard_handler(regs *r);
-void keyboard_handler_main(struct regs *r);
+void keyboard_handler(regs_t *r);
+void keyboard_handler_main(regs_t *r);
 char *keyboard_gets();
 int32_t keyboard_getchar();
 int32_t keyboard_getscancode();
