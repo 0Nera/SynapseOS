@@ -12,9 +12,15 @@ def build_all():
 
     for path, directories, files in os.walk("kernel\\"):
         for i in files:
-            if i.endswith('.c') or i.endswith('.s'):
+            if i.endswith('.c'):
                 SRC_TARGETS.append(os.path.join(path, i))
                 BIN_TARGETS.append(os.path.join("bin\kernel\\", os.path.splitext(i)[0]+'.o'  ))
+            elif i.endswith('.s'):
+                SRC_TARGETS.append(os.path.join(path, i))
+                BIN_TARGETS.append(os.path.join("bin\kernel\\", os.path.splitext(i)[0]+'_ASM.o'  ))
+
+    shutil.rmtree("bin/kernel/", ignore_errors=True)
+    os.mkdir("bin/kernel/")
     
     for i in range(0, len(SRC_TARGETS)):
         os.system(f"{CC} {SRC_TARGETS[i]} -o {BIN_TARGETS[i]}")

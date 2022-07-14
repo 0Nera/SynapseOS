@@ -13,6 +13,7 @@
 
 page_directory *kernel_page_dir; // Pointer (physical) to kernel page dircetory structure
 
+extern void enable_paging(physical_addres_t page);
 
 uint32_t kv2p(void *a) {
     return (uint32_t)a - 0xC0000000;
