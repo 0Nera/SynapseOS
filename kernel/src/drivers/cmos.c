@@ -21,8 +21,6 @@ unsigned char last_year;
 unsigned char last_century;
 unsigned char registerB;
 
-void outb(int32_t port, int32_t value);
-int32_t inb(int32_t port);
  
 enum {
     cmos_address = 0x70,
@@ -109,16 +107,4 @@ void read_rtc() {
         year += (CURRENT_YEAR / 100) * 100;
         if(year < CURRENT_YEAR) year += 100;
     }
-}
-
-int32_t []cmos_get_time(){
-    int32_t time[] = {
-        second,
-        minute,
-        hour,
-        day,
-        month,
-        year
-    };
-    return time; 
 }

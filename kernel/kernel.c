@@ -71,10 +71,7 @@ void kernel(int32_t magic_number, struct multiboot_info *mboot_info) {
     //log("task: %d", create_task());
 
     init_task_manager();
-    log("proc");
-    log("thread_create");
-    
-    while(1){asm volatile("hlt");}
+    create_STFS(0);
     shell();                                // Активация терминала
 
 

@@ -29,7 +29,7 @@ bool secure_check_elf(const char *name) {
 
     while(i--){
         
-        tty_printf("%d;", elf_file[i]);
+        //tty_printf("%d;", elf_file[i]);
         
     }
 

@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 #define EXT2_DIRECT_BLOCKS 12
 
 
@@ -34,6 +36,8 @@ struct ext2_super_block {
     uint32_t   s_checkinterval;       //  POSIX время между принудительными проверками 
     uint32_t   s_creator_os;          //  ID ОС (см. ниже)  
     uint32_t   s_rev_level;           //  Версия 
+    
+    
     uint16_t   s_def_resuid;          //  UserID, могущий использовать зар. блоки 
     uint16_t   s_def_resgid;          //  GroupID, могущий использовать зар. блоки 
     uint32_t   s_reserved[235];       //  Зарезервировано 
