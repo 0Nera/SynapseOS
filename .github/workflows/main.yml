@@ -37,11 +37,9 @@ jobs:
       - name: Run build
         run: python3 build.py kernel iso
 
-      # Commit files
-      #- name: Commit files
-      #  run: |
-          #git config user.name SynapseOS-Buildbot
-          #git config user.email github-actions@github.com
-          #git add .
-          #git commit -m "Add files from SynapseOS Buildbot"
-          #git push
+      - name: Create a Release
+		uses: elgohr/Github-Release-Action@v4
+			env:
+				GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+			with:
+				title: Autobuild
