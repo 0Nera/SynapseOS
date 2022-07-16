@@ -38,8 +38,8 @@ jobs:
         run: python3 build.py kernel iso
 
       - name: Create a Release
-		uses: elgohr/Github-Release-Action@v4
-			env:
-				GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-			with:
-				title: Autobuild
+        uses: elgohr/Github-Release-Action@v4
+            env:
+                GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+            with:
+                title: Autobuild
