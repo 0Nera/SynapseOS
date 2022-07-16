@@ -1,10 +1,8 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
+name: SynapseOS Buildbot
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "master" branch
+  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "master" ]
   pull_request:
@@ -25,14 +23,8 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        # Install grub-pc-bin, xorriso, mtools
-      - name: Install grub-pc-bin, xorriso, mtools
+      # Install python3, grub-pc-bin, xorriso, mtools
+      - name: Install python3, grub-pc-bin, xorriso, mtools
         run: sudo apt install python3 grub-pc-bin xorriso mtools
 
       # Download i686-elf-tools
@@ -41,6 +33,15 @@ jobs:
           wget -nv https://github.com/lordmilko/i686-elf-tools/releases/download/7.1.0/i686-elf-tools-linux.zip
           sudo unzip i686-elf-tools-linux.zip -d /usr/local
           rm i686-elf-tools-linux.zip
-      # Run 
-      - name: Run build.py [kernel apps iso]
-        run: python3 build.py kernel apps iso
+      # Run ./build-actions.sh
+      - name: Run build
+        run: python3 build.py kernel iso
+
+      # Commit files
+      #- name: Commit files
+      #  run: |
+          #git config user.name SynapseOS-Buildbot
+          #git config user.email github-actions@github.com
+          #git add .
+          #git commit -m "Add files from SynapseOS Buildbot"
+          #git push
