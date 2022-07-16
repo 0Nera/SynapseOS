@@ -70,3 +70,16 @@ jobs:
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
+    # Install nasm, grub-pc-bin, xorriso, mtools
+      - name: Install grub-pc-bin, xorriso, mtools
+        run: sudo apt install python3 grub-pc-bin xorriso mtools
+
+      # Download i686-elf-tools
+      - name: Download i686-elf-tools
+        run: |
+          wget -nv https://github.com/lordmilko/i686-elf-tools/releases/download/7.1.0/i686-elf-tools-linux.zip
+          sudo unzip i686-elf-tools-linux.zip -d /usr/local
+          rm i686-elf-tools-linux.zip
+      # Run ./build-actions.sh
+      - name: Run build.py [kernel apps iso]
+        run: python3 build.py kernel apps iso
