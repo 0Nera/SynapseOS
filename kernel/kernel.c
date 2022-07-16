@@ -55,15 +55,15 @@ void kernel(int32_t magic_number, struct multiboot_info *mboot_info) {
 
     keyboard_install();                     // Установка драйвера клавиатуры
 
-    timer_install();
+    timer_install();                        // Установка PIT
 
     pci_init();                             // Установка драйвера PCI
 
     ata_init();                             // Установка драйвера ATA
 
-    unit_test(RTL8139_init());
+    unit_test(RTL8139_init());              // Тестируем драйвер RTL8139
 
-    vfs_mount_list();
+    vfs_mount_list();                       // Выводим список корня VFS
 
     // while(1){
     //     asm volatile("hlt");
@@ -71,7 +71,7 @@ void kernel(int32_t magic_number, struct multiboot_info *mboot_info) {
     //log("task: %d", create_task());
 
     init_task_manager();
-    create_STFS(0);
+    //create_STFS(0);
     shell();                                // Активация терминала
 
 
