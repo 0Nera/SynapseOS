@@ -4,8 +4,12 @@ name: SynapseOS Buildbot
 on:
   # В нашем случае это push в ветку master
   push:
+    tags:
+        - "v*"
     branches: [ "master" ]
   pull_request:
+    tags:
+        - "v*"
     branches: [ "master" ]
   # Позволяет запускать этот рабочий процесс вручную на вкладке Actions
   workflow_dispatch:
@@ -30,11 +34,16 @@ jobs:
           wget -nv https://github.com/lordmilko/i686-elf-tools/releases/download/7.1.0/i686-elf-tools-linux.zip
           sudo unzip i686-elf-tools-linux.zip -d /usr/local
           rm i686-elf-tools-linux.zip
+          
       # Запуск сборки
       - name: Run build
         run: python3 build.py kernel iso
+
       # Публикация релиза
       - name: Publish
+        run: |
+          echo "done!"
+
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
