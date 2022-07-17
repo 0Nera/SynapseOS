@@ -34,9 +34,13 @@ jobs:
       - name: Run build
         run: python3 build.py kernel iso
       # Публикация релиза
-      - name: Create a Release
-        uses: elgohr/Github-Release-Action@v4
-        env:
-            GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      - name: Publish
+      - uses: "marvinpinto/action-automatic-releases@latest"
         with:
-            title: Autobuild
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Autobuild"
+          files: |
+            LICENSE
+            SynapseOS.iso
