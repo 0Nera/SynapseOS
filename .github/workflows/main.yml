@@ -25,24 +25,19 @@ jobs:
       - uses: actions/checkout@v3
 
       # Установка зависимостей
-      - name: Install python3, grub-pc-bin, xorriso, mtools
-        run: sudo apt install python3 grub-pc-bin xorriso mtools
+      - name: Install python3 grub-pc-bin xorriso mtools clang
+        run: sudo apt install python3 grub-pc-bin xorriso mtools clang
 
-      # Скачивание и установка i686-elf-tools
-      - name: Download i686-elf-tools
-        run: |
-          wget -nv https://github.com/lordmilko/i686-elf-tools/releases/download/7.1.0/i686-elf-tools-linux.zip
-          sudo unzip i686-elf-tools-linux.zip -d /usr/local
-          rm i686-elf-tools-linux.zip
           
       # Запуск сборки
       - name: Run build
-        run: python3 build.py kernel iso
+        run: python3 build.py kernel apps iso
 
       # Публикация релиза
       - name: Publish
         run: |
           echo "done!"
+          ls
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:

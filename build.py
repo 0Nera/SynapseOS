@@ -1,7 +1,7 @@
 import os, shutil, sys, tarfile, time
 
 
-CC = "i686-elf-gcc -g -w -ffreestanding -I kernel/include/ -c"
+CC = "clang -target i386-pc-none-elf -w -mno-sse -mno-avx -std=gnu99 -ffreestanding -I kernel/include/ -c"
 
 
 def build_kernel():
@@ -13,31 +13,30 @@ def build_kernel():
 
     for path, directories, files in os.walk("kernel\\"):
         for i in files:
-            if i.endswith('.c'):
+            if i.endswith('.c') or i.endswith('.s'):
                 SRC_TARGETS.append(os.path.join(path, i))
-                BIN_TARGETS.append(os.path.join("bin\kernel\\", os.path.splitext(i)[0]+'.o'  ))
-            elif i.endswith('.s'):
-                SRC_TARGETS.append(os.path.join(path, i))
-                BIN_TARGETS.append(os.path.join("bin\kernel\\", os.path.splitext(i)[0]+'_ASM.o'  ))
+                BIN_TARGETS.append(os.path.join("bin\kernel\\", i + '.o'  ))
 
-    shutil.rmtree("bin/kernel/", ignore_errors=True)
-    os.mkdir("bin/kernel/")
+    shutil.rmtree("bin\kernel\\", ignore_errors=True)
+    os.mkdir("bin\kernel\\")
     
     for i in range(0, len(SRC_TARGETS)):
         os.system(f"{CC} {SRC_TARGETS[i]} -o {BIN_TARGETS[i]}")
         
 
     # Получаем список файлов в переменную files
-    files = os.listdir("bin/kernel/")
+    files = os.listdir("bin\kernel\\")
 
     # Фильтруем список
     bins = filter(lambda x: x.endswith('.o'), files)
     OBJ = ""
     
     for i in bins:
-        OBJ += f"bin/kernel/{i} "
+        OBJ += f"bin\kernel\\{i} "
+        print(f"bin\kernel\\{i}")
 
-    os.system("i686-elf-gcc -T kernel/link.ld -nostdlib -lgcc -o isodir/boot/kernel.elf " + OBJ)
+
+    os.system("ld.lld -T kernel/link.ld -nostdlib -o isodir/boot/kernel.elf " + OBJ)
     print(f"Build end at: {time.time() - start_time}")
 
 
@@ -76,7 +75,7 @@ def run_qemu():
     else:
         os.system("qemu-img create -f raw ata.vhd 32M")
     
-    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw all -m 16" \
+    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 16" \
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
         " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log"
         

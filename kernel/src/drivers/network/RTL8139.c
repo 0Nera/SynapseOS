@@ -34,6 +34,14 @@ void RTL8139_read_mac_addr() {
 }
 
 
+// Перезагружает RTL8139
+void RTL8139_reset() {
+    outb(RTL8139_device.io_base + 0x37, 0x10);
+    while((inb(RTL8139_device.io_base + 0x37) & 0x10) != 0);
+}
+
+
+
 void RTL8139_get_mac_addr(uint8_t src_mac_addr[6]){
     memcpy(src_mac_addr, RTL8139_device.mac_addr, 6);
 }
@@ -130,11 +138,4 @@ int RTL8139_init() {
     
     RTL8139_send_packet("123", 4);
     return 1;
-}
-
-
-// Перезагружает RTL8139
-void RTL8139_reset() {
-    outb(RTL8139_device.io_base + 0x37, 0x10);
-    while((inb(RTL8139_device.io_base + 0x37) & 0x10) != 0);
 }
