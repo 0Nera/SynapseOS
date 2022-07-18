@@ -59,7 +59,7 @@ void kernel(int32_t magic_number, struct multiboot_info *mboot_info) {
 
     pci_init();                             // Установка драйвера PCI
 
-    ata_init();                             // Установка драйвера ATA
+    //ata_init();                             // Установка драйвера ATA
 
     unit_test(RTL8139_init());              // Тестируем драйвер RTL8139
 
