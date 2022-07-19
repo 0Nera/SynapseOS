@@ -77,14 +77,14 @@ def create_iso_l():
     os.system("make -C limine")
     os.system("mkdir -p iso_root")
     os.system("""cp -v isodir/boot/kernel.elf limine.cfg limine/limine.sys \
-        limine/limine-cd.bin limine/limine-cd-efi.bin iso_root/
+        limine/limine-cd.bin limine/limine-cd-efi.bin isodir/boot/bg.bmp iso_root/
     """)
     os.system("""xorriso -as mkisofs -b limine-cd.bin \
           -no-emul-boot -boot-load-size 4 -boot-info-table \
           --efi-boot limine-cd-efi.bin \
           -efi-boot-part --efi-boot-image --protective-msdos-label \
-          iso_root -o SynapseOS.iso""")
-    os.system("./limine/limine-deploy SynapseOS.iso")
+          iso_root -o SynapseOS-limine.iso""")
+    os.system("./limine/limine-deploy SynapseOS-limine.iso")
     
     print(f"Build end at: {time.time() - start_time}")
 
