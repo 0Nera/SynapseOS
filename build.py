@@ -1,7 +1,7 @@
 import os, shutil, sys, tarfile, time
 
 
-CC = "clang -target i386-pc-none-elf -w -mno-sse -mno-avx -std=gnu99 -ffreestanding -I kernel/include/ -c"
+CC = "clang -target i386-pc-none-elf -w -mno-sse -mno-avx -O0 -ffreestanding -I kernel/include/ -c"
 
 
 def build_kernel():
@@ -84,6 +84,21 @@ def run_qemu():
         )
 
 
+def run_qemu_debug():
+    if os.path.exists("ata.vhd"):
+        pass
+    else:
+        os.system("qemu-img create -f raw ata.vhd 32M")
+    
+    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 16" \
+        " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
+        " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log" 
+    print("gdb kernel.elf -ex target remote localhost:1234")
+    os.system(
+        qemu_command + """ -s -S"""
+        )
+
+
 if __name__ == "__main__":
     try:
         start_time = time.time()
@@ -105,6 +120,8 @@ if __name__ == "__main__":
                     create_iso()
                 elif sys.argv[i] == "run":
                     run_qemu()
+                elif sys.argv[i] == "rund":
+                    run_qemu_debug()
                 else:
                     print(f"Ошибка, неизвестный аргумент: {sys.argv[i]}")
         print(f"Конец: {time.time() - start_time}")
