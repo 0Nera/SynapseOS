@@ -12,8 +12,7 @@ def compile_kernel():
     for i in range(0, len(SRC_TARGETS)):
         start_time = time.time()
         BIN_TARGETS.append(os.path.join(".\\bin\\", os.path.basename(SRC_TARGETS[i]) + '.o '  ))
-        os.system(f"echo {CC} & {CC} -o {BIN_TARGETS[i]} {SRC_TARGETS[i]} ")
-        print(f"{CC} -o {BIN_TARGETS[i]} {SRC_TARGETS[i]} | {time.time() - start_time}")
+        os.system(f"echo {CC} -o {BIN_TARGETS[i]} {SRC_TARGETS[i]} & {CC} -o {BIN_TARGETS[i]} {SRC_TARGETS[i]} ")
 
 
 def link_kernel():
