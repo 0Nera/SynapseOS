@@ -32,7 +32,12 @@ def build_kernel():
     
     compile_kernel()
     link_kernel()
-
+    x = 0
+    while not os.path.exists("isodir/boot/kernel.elf"):
+        x += 1
+        compile_kernel()
+        link_kernel()
+        print(f"Errors: {x}")
     print(f"Build end at: {time.time() - start_time}")
 
 
