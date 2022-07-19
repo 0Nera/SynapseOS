@@ -31,11 +31,14 @@ jobs:
 
           
       # Запуск сборки
-      - name: Run build
-        run: |
-          python3 build.py kernel
-          python3 build.py apps
-          python3 build.py iso
+      - name: Building  kernel
+        run: python3 build.py kernel
+
+      - name: Building  apps
+        run: python3 build.py apps
+
+      - name: Building  iso
+        run: python3 build.py iso
 
       # Публикация релиза
       - name: Publish
