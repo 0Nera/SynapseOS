@@ -19,7 +19,7 @@ def compile_kernel():
 def link_kernel():
     print("Linking...")
     print(f"BIN_TARGETS = {BIN_TARGETS}")
-    #os.system("ld.lld -T kernel/link.ld -nostdlib -o isodir/boot/kernel.elf " + ''.join(BIN_TARGETS))
+    os.system("ld.lld -T kernel/link.ld -nostdlib -o isodir/boot/kernel.elf " + ''.join(BIN_TARGETS))
 
 def build_kernel():
     print("Building kernel", os.getcwd(), os.listdir())
