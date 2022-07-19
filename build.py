@@ -11,30 +11,30 @@ def build_kernel():
     SRC_TARGETS = []
     BIN_TARGETS = []
 
-    for path, directories, files in os.walk("kernel\\"):
+    for path, directories, files in os.walk(".\\kernel\\"):
         for i in files:
             if i.endswith('.c') or i.endswith('.s'):
                 SRC_TARGETS.append(os.path.join(path, i))
-                BIN_TARGETS.append(os.path.join("bin\kernel\\", i + '.o'  ))
+                BIN_TARGETS.append(os.path.join(".\\bin\kernel\\", i + '.o'  ))
                 print(i)
 
-    shutil.rmtree("bin\kernel\\", ignore_errors=True)
-    os.mkdir("bin\kernel\\")
+    shutil.rmtree(".\\bin\kernel\\", ignore_errors=True)
+    os.mkdir(".\\bin\kernel\\")
     
     for i in range(0, len(SRC_TARGETS)):
         os.system(f"{CC} {SRC_TARGETS[i]} -o {BIN_TARGETS[i]}")
         
 
     # Получаем список файлов в переменную files
-    files = os.listdir("bin\kernel\\")
+    files = os.listdir(".\\bin\kernel\\")
 
     # Фильтруем список
     bins = filter(lambda x: x.endswith('.o'), files)
     OBJ = ""
     
     for i in bins:
-        OBJ += f"bin\kernel\\{i} "
-        print(f"bin\kernel\\{i}")
+        OBJ += f".\\bin\kernel\\{i} "
+        print(f".\\bin\kernel\\{i}")
 
     print(f"OBJ = {OBJ}")
     os.system("ld.lld -T kernel/link.ld -nostdlib -o isodir/boot/kernel.elf " + OBJ)
