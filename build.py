@@ -16,7 +16,7 @@ def build_kernel():
             if i.endswith('.c') or i.endswith('.s'):
                 SRC_TARGETS.append(os.path.join(path, i))
                 BIN_TARGETS.append(os.path.join(".\\bin\kernel\\", i + '.o'  ))
-                print(i)
+            print(i)
 
     shutil.rmtree(".\\bin\kernel\\", ignore_errors=True)
     os.mkdir(".\\bin\kernel\\")
