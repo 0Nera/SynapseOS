@@ -4,7 +4,7 @@ import os, shutil, sys, tarfile, time
 
 
 def build_kernel():
-    print("Building kernel", os.getcwd())
+    print("Building kernel", os.getcwd(), os.listdir())
     CC = "clang -target i386-pc-none-elf -w -mno-sse -mno-avx -O0 -ffreestanding -I kernel/include/ -c"
     start_time = time.time()
 
