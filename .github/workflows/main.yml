@@ -27,7 +27,7 @@ jobs:
       # Установка зависимостей
       - name: Installing
         run: |
-          sudo apt install python3 grub-pc-bin xorriso mtools llvm ld.lld lld
+          sudo apt install python3 grub-pc-bin xorriso mtools llvm lld
 
           
       # Запуск сборки
