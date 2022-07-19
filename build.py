@@ -35,7 +35,7 @@ def build_kernel():
         OBJ += f"bin\kernel\\{i} "
         print(f"bin\kernel\\{i}")
 
-    print(OBJ)
+    print(f"OBJ = {OBJ}")
     os.system("ld.lld -T kernel/link.ld -nostdlib -o isodir/boot/kernel.elf " + OBJ)
     print(f"Build end at: {time.time() - start_time}")
 
