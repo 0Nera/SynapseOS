@@ -1,22 +1,26 @@
-import os, shutil, sys, tarfile, time
+import os, shutil, sys, tarfile, time, glob
 
 
-
+def listdir_fullpath(d):
+    with os.scandir(d) as it:
+        for entry in it:
+            if not entry.name.startswith('.') and entry.is_file():
+                print(entry.name)
 
 def build_kernel():
     print("Building kernel", os.getcwd(), os.listdir())
     CC = "clang -target i386-pc-none-elf -w -mno-sse -mno-avx -O0 -ffreestanding -I kernel/include/ -c"
     start_time = time.time()
-
+    
     SRC_TARGETS = []
     BIN_TARGETS = []
 
-    for path, directories, files in os.walk(".\\kernel\\"):
-        for i in files:
-            if i.endswith('.c') or i.endswith('.s'):
-                SRC_TARGETS.append(os.path.join(path, i))
-                BIN_TARGETS.append(os.path.join(".\\bin\kernel\\", i + '.o'  ))
-            print(i)
+    files = glob.glob("kernel/**/*.c", recursive=True) + glob.glob("kernel/**/*.s", recursive=True)
+    
+    for i in files:
+        SRC_TARGETS.append(i)
+        BIN_TARGETS.append(os.path.join(".\\bin\\", os.path.basename(i) + '.o '  ))
+        print(i)
 
     shutil.rmtree(".\\bin\kernel\\", ignore_errors=True)
     os.mkdir(".\\bin\kernel\\")
@@ -25,19 +29,8 @@ def build_kernel():
         os.system(f"{CC} {SRC_TARGETS[i]} -o {BIN_TARGETS[i]}")
         
 
-    # Получаем список файлов в переменную files
-    files = os.listdir(".\\bin\kernel\\")
-
-    # Фильтруем список
-    bins = filter(lambda x: x.endswith('.o'), files)
-    OBJ = ""
-    
-    for i in bins:
-        OBJ += f".\\bin\kernel\\{i} "
-        print(f".\\bin\kernel\\{i}")
-
-    print(f"OBJ = {OBJ}")
-    os.system("ld.lld -T kernel/link.ld -nostdlib -o isodir/boot/kernel.elf " + OBJ)
+    print(f"BIN_TARGETS = {BIN_TARGETS}")
+    os.system("ld.lld -T kernel/link.ld -nostdlib -o isodir/boot/kernel.elf " + ''.join(BIN_TARGETS))
     print(f"Build end at: {time.time() - start_time}")
 
 
