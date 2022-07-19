@@ -38,7 +38,7 @@ jobs:
         run: python3 build.py apps
 
       - name: Building  iso
-        run: python3 build.py iso
+        run: python3 build.py isol
 
       # Публикация релиза
       - name: Publish
