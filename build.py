@@ -70,20 +70,20 @@ def create_iso():
 
 
 def create_iso_l():
-    print("Creating ISO")
+    print("Creating ISO with limine")
     start_time = time.time()
 
     os.system("git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1")
     os.system("make -C limine")
     os.system("mkdir -p iso_root")
     os.system("""cp -v isodir/boot/kernel.elf limine.cfg limine/limine.sys \
-        limine/limine-cd.bin limine/limine-cd-efi.bin iso_root/""")
-    os.system(""" xorriso -as mkisofs -b limine-cd.bin \
+        limine/limine-cd.bin limine/limine-cd-efi.bin iso_root/
+    """)
+    os.system("""xorriso -as mkisofs -b limine-cd.bin \
           -no-emul-boot -boot-load-size 4 -boot-info-table \
           --efi-boot limine-cd-efi.bin \
           -efi-boot-part --efi-boot-image --protective-msdos-label \
           iso_root -o SynapseOS.iso""")
-
     os.system("./limine/limine-deploy SynapseOS.iso")
     
     print(f"Build end at: {time.time() - start_time}")
