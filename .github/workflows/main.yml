@@ -37,6 +37,7 @@ jobs:
       - name: Publish
         run: |
           echo "done!"
+          ls isodir/boot/
           ls
 
       - uses: "marvinpinto/action-automatic-releases@latest"

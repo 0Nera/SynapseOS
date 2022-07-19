@@ -1,10 +1,10 @@
 import os, shutil, sys, tarfile, time
 
 
-CC = "clang -target i386-pc-none-elf -w -mno-sse -mno-avx -O0 -ffreestanding -I kernel/include/ -c"
 
 
 def build_kernel():
+    CC = "clang -target i386-pc-none-elf -w -mno-sse -mno-avx -O0 -ffreestanding -I kernel/include/ -c"
     start_time = time.time()
     print("Building kernel")
 
