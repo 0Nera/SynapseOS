@@ -38,7 +38,7 @@ jobs:
         run: python3 build.py apps
 
       - name: Building  iso
-        run: python3 build.py isol
+        run: python3 build.py iso isol
 
       # Публикация релиза
       - name: Publish
@@ -56,5 +56,6 @@ jobs:
           files: |
             LICENSE
             SynapseOS.iso
+            SynapseOS-limine.iso
             isodir/boot/initrd.tar
             isodir/boot/kernel.elf
