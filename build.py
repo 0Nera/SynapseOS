@@ -1,36 +1,36 @@
 import os, shutil, sys, tarfile, time, glob
 
+CC = "clang -target i386-pc-none-elf -w -mno-sse -mno-avx -O0 -ffreestanding -I kernel/include/ -c"
+SRC_TARGETS = []
+BIN_TARGETS = []
 
-def listdir_fullpath(d):
-    with os.scandir(d) as it:
-        for entry in it:
-            if not entry.name.startswith('.') and entry.is_file():
-                print(entry.name)
+
+def compile_kernel():
+    print("Compiling...")
+    shutil.rmtree(".\\bin\kernel\\", ignore_errors=True)
+    os.mkdir(".\\bin\kernel\\")
+    for i in range(0, len(SRC_TARGETS)):
+        os.system(f"{CC} {SRC_TARGETS[i]} -o {BIN_TARGETS[i]}")
+
+
+def link_kernel():
+    print("Linking...")
+    print(f"BIN_TARGETS = {BIN_TARGETS}")
+    os.system("ld.lld -T kernel/link.ld -nostdlib -o isodir/boot/kernel.elf " + ''.join(BIN_TARGETS))
 
 def build_kernel():
     print("Building kernel", os.getcwd(), os.listdir())
-    CC = "clang -target i386-pc-none-elf -w -mno-sse -mno-avx -O0 -ffreestanding -I kernel/include/ -c"
     start_time = time.time()
-    
-    SRC_TARGETS = []
-    BIN_TARGETS = []
 
     files = glob.glob("kernel/**/*.c", recursive=True) + glob.glob("kernel/**/*.s", recursive=True)
-    
+
     for i in files:
         SRC_TARGETS.append(i)
         BIN_TARGETS.append(os.path.join(".\\bin\\", os.path.basename(i) + '.o '  ))
-        print(i)
-
-    shutil.rmtree(".\\bin\kernel\\", ignore_errors=True)
-    os.mkdir(".\\bin\kernel\\")
     
-    for i in range(0, len(SRC_TARGETS)):
-        os.system(f"{CC} {SRC_TARGETS[i]} -o {BIN_TARGETS[i]}")
-        
+    compile_kernel()
+    link_kernel()
 
-    print(f"BIN_TARGETS = {BIN_TARGETS}")
-    os.system("ld.lld -T kernel/link.ld -nostdlib -o isodir/boot/kernel.elf " + ''.join(BIN_TARGETS))
     print(f"Build end at: {time.time() - start_time}")
 
 
