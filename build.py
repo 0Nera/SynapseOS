@@ -10,6 +10,7 @@ def compile_kernel():
     shutil.rmtree(".\\bin\kernel\\", ignore_errors=True)
     os.mkdir(".\\bin\kernel\\")
     for i in range(0, len(SRC_TARGETS)):
+        BIN_TARGETS.append(os.path.join(".\\bin\\", os.path.basename(SRC_TARGETS[i]) + '.o '  ))
         os.system(f"{CC} {SRC_TARGETS[i]} -o {BIN_TARGETS[i]}")
 
 
@@ -26,7 +27,6 @@ def build_kernel():
 
     for i in files:
         SRC_TARGETS.append(i)
-        BIN_TARGETS.append(os.path.join(".\\bin\\", os.path.basename(i) + '.o '  ))
     
     compile_kernel()
     link_kernel()
