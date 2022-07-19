@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v3
 
       # Установка зависимостей
-      - name: Install python3 grub-pc-bin xorriso mtools clang
+      - name: Installing
         run: sudo apt install python3 grub-pc-bin xorriso mtools llvm
 
           
