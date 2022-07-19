@@ -69,6 +69,26 @@ def create_iso():
     print(f"Build end at: {time.time() - start_time}")
 
 
+def create_iso_l():
+    print("Creating ISO")
+    start_time = time.time()
+
+    os.system("git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1")
+    os.system("make -C limine")
+    os.system("mkdir -p iso_root")
+    os.system("""cp -v isodir/boot/kernel.elf limine.cfg limine/limine.sys \
+        limine/limine-cd.bin limine/limine-cd-efi.bin iso_root/""")
+    os.system(""" xorriso -as mkisofs -b limine-cd.bin \
+          -no-emul-boot -boot-load-size 4 -boot-info-table \
+          --efi-boot limine-cd-efi.bin \
+          -efi-boot-part --efi-boot-image --protective-msdos-label \
+          iso_root -o SynapseOS.iso""")
+
+    os.system("./limine/limine-deploy SynapseOS.iso")
+    
+    print(f"Build end at: {time.time() - start_time}")
+
+
 def run_qemu():
     if os.path.exists("ata.vhd"):
         pass
@@ -116,6 +136,8 @@ if __name__ == "__main__":
                     build_kernel()
                 elif sys.argv[i] == "apps":
                     build_apps()
+                elif sys.argv[i] == "isol":
+                    create_iso_l()
                 elif sys.argv[i] == "iso":
                     create_iso()
                 elif sys.argv[i] == "run":
