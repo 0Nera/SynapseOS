@@ -32,7 +32,10 @@ jobs:
           
       # Запуск сборки
       - name: Run build
-        run: python3 build.py kernel apps iso
+        run: |
+          python3 build.py kernel
+          python3 build.py apps
+          python3 build.py iso
 
       # Публикация релиза
       - name: Publish
