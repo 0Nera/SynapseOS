@@ -41,7 +41,7 @@ void RTL8139_reset() {
 }
 
 
-
+// Сохраняет MAC адресс в src_mac_addr
 void RTL8139_get_mac_addr(uint8_t src_mac_addr[6]){
     memcpy(src_mac_addr, RTL8139_device.mac_addr, 6);
 }
