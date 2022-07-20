@@ -76,7 +76,7 @@ def create_iso_l():
     os.system("git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1")
     os.system("make -C limine")
     os.system("mkdir -p iso_root")
-    os.system("""cp -v isodir/boot/kernel.elf limine.cfg limine/limine.sys \
+    os.system("""cp -v isodir/boot/kernel.elf isodir/boot/initrd.tar limine.cfg limine/limine.sys \
         limine/limine-cd.bin limine/limine-cd-efi.bin isodir/boot/bg.bmp iso_root/
     """)
     os.system("""xorriso -as mkisofs -b limine-cd.bin \
