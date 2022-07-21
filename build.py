@@ -15,8 +15,8 @@ def compile(binary, source, cur="--", total="--"):
 
 def compile_kernel():
     print("Compiling...")
-    shutil.rmtree(".\\bin\kernel\\", ignore_errors=True)
-    os.mkdir(".\\bin\kernel\\")
+    shutil.rmtree(".\\bin\\kernel\\", ignore_errors=True)
+    os.mkdir(".\\bin\\kernel\\")
     filescount = len(SRC_TARGETS)
     # TODO: Multithreading
     
