@@ -1,4 +1,4 @@
-import os, shutil, sys, tarfile, time, glob, subprocess, threading
+import os, shutil, sys, tarfile, time, glob
 
 CC = "clang -target i386-pc-none-elf"
 LD = "ld.lld"

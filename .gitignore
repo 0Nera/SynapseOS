@@ -20,3 +20,4 @@ initrd/apps/
 limine/*
 limine
 iso_root/*
+.vscode/
