@@ -19,15 +19,16 @@ def compile_kernel():
     os.mkdir(".\\bin\kernel\\")
     filescount = len(SRC_TARGETS)
     # TODO: Multithreading
-    '''
+    
     for i in range(filescount):
         #start_time = time.time()
         BIN_TARGETS.append(os.path.join("bin\\", os.path.basename(SRC_TARGETS[i]) + '.o '  ))
         #os.system(f"echo {CC} -o {BIN_TARGETS[i]} {SRC_TARGETS[i]} & {CC} -o ./{BIN_TARGETS[i]} {SRC_TARGETS[i]} ")
-        print(f"[\x1b[32mBUILD\x1b[0m]~[{i}/{filescount}]: Compiling: {SRC_TARGETS[i]}")
-        subprocess.call(f"{CC} -o ./{BIN_TARGETS[i]} {SRC_TARGETS[i]}", shell=True, stdout=subprocess.STDOUT, stderr=subprocess.STDOUT)
-    '''
+        #print(f"[\x1b[32mBUILD\x1b[0m]~[{i}/{filescount}]: Compiling: {SRC_TARGETS[i]}")
+        #subprocess.call(f"{CC} -o ./{BIN_TARGETS[i]} {SRC_TARGETS[i]}", shell=True, stdout=subprocess.STDOUT, stderr=subprocess.STDOUT)
+        compile(BIN_TARGETS[i], SRC_TARGETS[i], i, filescount)
 
+    '''
     JOBS = 8 # Количество ядер используемых при сборке
 
     currentfileindex = 0
@@ -42,7 +43,7 @@ def compile_kernel():
                 proc.start()
                 currentfileindex+=1
             else: break
-            
+    '''
 
 def link_kernel():
     print("Linking...")
