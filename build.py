@@ -1,6 +1,11 @@
 import os, shutil, sys, tarfile, time, glob
 
-CC = "clang -target i386-pc-none-elf -w -mno-sse -mno-avx -O0 -ffreestanding -I kernel/include/ -c"
+CC = "clang -target i386-pc-none-elf"
+LD = "ld.lld"
+CFLAGS = "-w -mno-sse -mno-avx -O0 -ffreestanding -I kernel/include/ -c"
+
+CC = f"{CC} {CFLAGS}"
+
 SRC_TARGETS = []
 BIN_TARGETS = []
 
@@ -18,7 +23,7 @@ def compile_kernel():
 def link_kernel():
     print("Linking...")
     print(f"BIN_TARGETS = {BIN_TARGETS}")
-    os.system("ld.lld -T kernel/link.ld -nostdlib -o isodir/boot/kernel.elf " + ''.join(BIN_TARGETS))
+    os.system(f"{LD} -T kernel/link.ld -nostdlib -o isodir/boot/kernel.elf " + ''.join(BIN_TARGETS))
 
 def build_kernel():
     print("Building kernel", os.getcwd(), os.listdir())
