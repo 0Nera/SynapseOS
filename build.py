@@ -17,7 +17,8 @@ def compile_kernel():
     print("Compiling...")
     if not (sys.platform == "linux" or sys.platform == "linux2"): 
         shutil.rmtree(".\\bin\\kernel\\", ignore_errors=True)
-        os.mkdir(".\\bin\\kernel\\")
+        os.mkdir("bin")
+        os.mkdir("bin\\kernel")
     else:
         shutil.rmtree("./bin/kernel/", ignore_errors=True)
         os.mkdir("bin")
