@@ -7,6 +7,6 @@ void fread(const char *filename, int32_t offset, int32_t size, void *buf) {
                   "b"(filename),
                   "c"(offset),
                   "d"(size),
-                  "si"(buf)
+                  "S"(buf)
                 );
 }
