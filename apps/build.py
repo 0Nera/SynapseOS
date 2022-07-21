@@ -24,7 +24,8 @@ def build(typ, infile, outfile):
         cmd = f"{CC} {infile} -o {outfile}"
         subprocess.call(cmd, shell=True);
     if typ=="link":
-        print(f"[\x1b[32mBUILD\x1b[0m]: Linking   {infile}")
+        # print(f"[\x1b[32mBUILD\x1b[0m]: Linking   {infile.split(" ")[0]}") # Error
+        print(f"[\x1b[32mBUILD\x1b[0m]: Linking  ", infile.split(" ")[0])
         cmd = f"{LD} {outfile} {infile}"
         subprocess.call(cmd, shell=True);
 
@@ -57,9 +58,10 @@ def build_all():
     build("compile", "examples/C/vesa_Russia.c", "./bin/vesa_Russia.o")
     build("compile", "examples/C/char.c", "./bin/char.o")
     build("compile", "apps/0Nera/NeraMath/main.c", "./bin/NeraMath.o")
-    build("compile", "apps/0Nera/VGGI/main.c", "./bin/VGGI.o")
+    # build("compile", "apps/0Nera/VGGI/main.c", "./bin/VGGI.o")
     build("compile", "games/kernelmode_power/snake/snake.c", "./bin/snake.o")
     build("compile", "examples/C/test.c", "./bin/test.o")
+    build("compile", "apps/NDRAEY/ImageView/imageview.c", "./bin/imageview.o")
     
     print("Building libc")
     build("compile", "libc/stdio.c", "./bin/libc/stdio.o")
@@ -78,15 +80,18 @@ def build_all():
     build("link", "./bin/beep.o" + O_LIBC, "../bin/apps/beep")
     build("link", "./bin/char.o" + O_LIBC, "../bin/apps/char")
     build("link", "./bin/NeraMath.o" + O_LIBC, "../bin/apps/NeraMath")
-    build("link", "./bin/VGGI.o" + O_LIBC, "../bin/apps/vggi")
+    # build("link", "./bin/VGGI.o" + O_LIBC, "../bin/apps/vggi")
     build("link", "./bin/snake.o" + O_LIBC, "../bin/apps/snake")
     build("link", "./bin/test.o", "../bin/apps/test")
+    build("link", "./bin/imageview.o" + O_LIBC, "../bin/apps/imageview")
 
+    '''
     if BUILD_LUA:
         print(("="*20)+"[Building Lua]"+("="*20))
         os.chdir("lua");
-        subprocess.call("make -j2", shell = True)
-
+        # subprocess.call("make -j2", shell = True)
+    '''
+    
 if __name__ == "__main__":
     try:
         build_all()

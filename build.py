@@ -14,7 +14,7 @@ def compile_kernel():
     print("Compiling...")
     shutil.rmtree(".\\bin\kernel\\", ignore_errors=True)
     os.mkdir(".\\bin\kernel\\")
-    for i in range(0, len(SRC_TARGETS)):
+    for i in range(len(SRC_TARGETS)):
         start_time = time.time()
         BIN_TARGETS.append(os.path.join("bin\\", os.path.basename(SRC_TARGETS[i]) + '.o '  ))
         os.system(f"echo {CC} -o {BIN_TARGETS[i]} {SRC_TARGETS[i]} & {CC} -o ./{BIN_TARGETS[i]} {SRC_TARGETS[i]} ")
@@ -100,13 +100,23 @@ def run_qemu():
     else:
         os.system("qemu-img create -f raw ata.vhd 32M")
     
-    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 16" \
+    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32" \
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
         " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log"
         
-    os.system(
-        qemu_command
-        )
+    os.system(qemu_command)
+
+
+def run_kvm():
+    " Это помогает запускать SynapseOS быстрее, по сравнению с обычным режимом"
+    if not os.path.exists("ata.vhd"):
+        os.system("qemu-img create -f raw ata.vhd 32M")
+    
+    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32" \
+        " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
+        " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log -accel kvm"
+        
+    os.system(qemu_command)
 
 
 def run_qemu_debug():
@@ -115,7 +125,7 @@ def run_qemu_debug():
     else:
         os.system("qemu-img create -f raw ata.vhd 32M")
     
-    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 16" \
+    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32" \
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
         " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log" 
     print("gdb kernel.elf -ex target remote localhost:1234")
@@ -147,6 +157,8 @@ if __name__ == "__main__":
                     create_iso()
                 elif sys.argv[i] == "run":
                     run_qemu()
+                elif sys.argv[i] == "runk":
+                    run_kvm()
                 elif sys.argv[i] == "rund":
                     run_qemu_debug()
                 else:
