@@ -7,6 +7,7 @@
         "kernel.h": "c",
         "vesa.h": "c",
         "elf.h": "c",
-        "syscalls.h": "c"
+        "syscalls.h": "c",
+        "stdfile.h": "c"
     }
 }

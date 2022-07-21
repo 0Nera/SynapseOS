@@ -1,5 +1,5 @@
 #include <string.h>
-
+#include "../include/stdlib.h"
 
 void strver(char *str) {
     char c;
@@ -31,4 +31,21 @@ int itoa(int n, char *buffer) {
     strver(buffer);
     
     return length;
+}
+
+void* malloc(int value) {
+	void *mem;
+    asm volatile("mov %%eax, %0" : "=a"(mem) : "a"(SC_CODE_malloc), "b"(value));
+    asm volatile("int $0x80");
+	return mem;
+}
+
+void free(void* memory) {
+    asm volatile("int $0x80" 
+                :
+                : "a"(SC_CODE_free),
+                  "b"(memory)
+    );
+    asm volatile("mov %%eax, %0" : : "a"(SC_CODE_free), "b"(memory));
+    asm volatile("int $0x80");
 }
