@@ -1,4 +1,4 @@
-import os, shutil, sys, tarfile, time, glob, subprocess, threading
+import os, shutil, sys, tarfile, time, glob
 
 CC = "clang -target i386-pc-none-elf"
 LD = "ld.lld"
@@ -15,8 +15,14 @@ def compile(binary, source, cur="--", total="--"):
 
 def compile_kernel():
     print("Compiling...")
-    shutil.rmtree(".\\bin\kernel\\", ignore_errors=True)
-    os.mkdir(".\\bin\kernel\\")
+    if not (sys.platform == "linux" or sys.platform == "linux2"): 
+        shutil.rmtree(".\\bin\\kernel\\", ignore_errors=True)
+        os.mkdir(".\\bin\\kernel\\")
+    else:
+        shutil.rmtree("./bin/kernel/", ignore_errors=True)
+        os.mkdir("bin")
+        os.mkdir("bin/kernel")
+
     filescount = len(SRC_TARGETS)
     # TODO: Multithreading
     
@@ -91,7 +97,7 @@ def create_iso():
     print("Creating ISO")
     start_time = time.time()
 
-    if sys.platform == "linux" or sys.platform == "linux2":
+    if sys.platform == "linux" or sys.platform == "linux2": 
         os.system("grub-mkrescue -o \"SynapseOS.iso\" isodir/ -V SynapseOS")
     else:
         os.system("ubuntu run grub-mkrescue -o \"SynapseOS.iso\" isodir/ -V SynapseOS ")
