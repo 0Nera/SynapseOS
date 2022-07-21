@@ -14,7 +14,10 @@ print("[\x1b[32mCONFIGURATION\x1b[0m] Using C compiler:", CC)
 print("[\x1b[32mCONFIGURATION\x1b[0m] Using linker:", LD)
 
 AR = "llvm-ar"
-O_LIBC = " ./bin/libc/stdio.o ./bin/libc/ports.o ./bin/libc/stdlib.o ./bin/libc/string.o ./bin/libc/learntask.o ./bin/libc/vesa.o ./bin/libc/scancodes.o"
+O_LIBC = ["./bin/libc/stdio.o","./bin/libc/stdfile.o",
+          "./bin/libc/ports.o","./bin/libc/stdlib.o","./bin/libc/string.o",
+          "./bin/libc/learntask.o","./bin/libc/vesa.o","./bin/libc/scancodes.o"]
+O_LIBC = ' '+' '.join(O_LIBC)
 data = []
 files = []
 
@@ -67,6 +70,7 @@ def build_all():
     build("compile", "libc/stdio.c", "./bin/libc/stdio.o")
     build("compile", "libc/ports.c", "./bin/libc/ports.o")
     build("compile", "libc/stdlib.c", "./bin/libc/stdlib.o")
+    build("compile", "libc/stdfile.c", "./bin/libc/stdfile.o")
     build("compile", "libc/string.c", "./bin/libc/string.o")
     build("compile", "libc/learntask.c", "./bin/libc/learntask.o")
     build("compile", "libc/vesa.c", "./bin/libc/vesa.o")

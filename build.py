@@ -1,4 +1,4 @@
-import os, shutil, sys, tarfile, time, glob
+import os, shutil, sys, tarfile, time, glob, subprocess, threading
 
 CC = "clang -target i386-pc-none-elf"
 LD = "ld.lld"
@@ -9,16 +9,41 @@ CC = f"{CC} {CFLAGS}"
 SRC_TARGETS = []
 BIN_TARGETS = []
 
+def compile(binary, source, cur="--", total="--"):
+    print(f"[\x1b[32mBUILD\x1b[0m]~[{cur}/{total}]: Compiling: {source}")
+    os.system(f"{CC} -o ./{binary} {source}")
 
 def compile_kernel():
     print("Compiling...")
     shutil.rmtree(".\\bin\kernel\\", ignore_errors=True)
     os.mkdir(".\\bin\kernel\\")
-    for i in range(len(SRC_TARGETS)):
-        start_time = time.time()
+    filescount = len(SRC_TARGETS)
+    # TODO: Multithreading
+    
+    for i in range(filescount):
+        #start_time = time.time()
         BIN_TARGETS.append(os.path.join("bin\\", os.path.basename(SRC_TARGETS[i]) + '.o '  ))
-        os.system(f"echo {CC} -o {BIN_TARGETS[i]} {SRC_TARGETS[i]} & {CC} -o ./{BIN_TARGETS[i]} {SRC_TARGETS[i]} ")
+        #os.system(f"echo {CC} -o {BIN_TARGETS[i]} {SRC_TARGETS[i]} & {CC} -o ./{BIN_TARGETS[i]} {SRC_TARGETS[i]} ")
+        #print(f"[\x1b[32mBUILD\x1b[0m]~[{i}/{filescount}]: Compiling: {SRC_TARGETS[i]}")
+        #subprocess.call(f"{CC} -o ./{BIN_TARGETS[i]} {SRC_TARGETS[i]}", shell=True, stdout=subprocess.STDOUT, stderr=subprocess.STDOUT)
+        compile(BIN_TARGETS[i], SRC_TARGETS[i], i, filescount)
 
+    '''
+    JOBS = 8 # Количество ядер используемых при сборке
+
+    currentfileindex = 0
+    while True:
+        if threading.active_count()<=4:    
+            if currentfileindex<filescount: 
+                BIN_TARGETS.append(os.path.join("bin\\", os.path.basename(SRC_TARGETS[currentfileindex]) + '.o '  ))
+                proc = threading.Thread(target=compile, args=(BIN_TARGETS[currentfileindex], 
+                                                              SRC_TARGETS[currentfileindex],
+                                                              currentfileindex,
+                                                              filescount-1))
+                proc.start()
+                currentfileindex+=1
+            else: break
+    '''
 
 def link_kernel():
     print("Linking...")
@@ -42,7 +67,7 @@ def build_kernel():
         compile_kernel()
         link_kernel()
         print(f"Errors: {x}")
-    print(f"Build end at: {time.time() - start_time}")
+    print(f"Сборка ядра заняла: {(time.time() - start_time):2f} сек.")
 
 
 
@@ -71,7 +96,7 @@ def create_iso():
     else:
         os.system("ubuntu run grub-mkrescue -o \"SynapseOS.iso\" isodir/ -V SynapseOS ")
     
-    print(f"Build end at: {time.time() - start_time}")
+    print(f"Сборка ISO/Grub образа заняла: {(time.time() - start_time):2f} сек.")
 
 
 def create_iso_l():
@@ -91,7 +116,7 @@ def create_iso_l():
           iso_root -o SynapseOS-limine.iso""")
     os.system("./limine/limine-deploy SynapseOS-limine.iso")
     
-    print(f"Build end at: {time.time() - start_time}")
+    print(f"Сборка ISO/Limine образа заняла: {(time.time() - start_time):2f} сек.")
 
 
 def run_qemu():
@@ -144,6 +169,7 @@ if __name__ == "__main__":
             build_kernel()
             build_apps()
             create_iso()
+            print(f"Время сборки: {(time.time()-start_time):2f} сек.")
             run_qemu()
         else:
             for i in range(1, len(sys.argv)):

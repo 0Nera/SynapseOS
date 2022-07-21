@@ -8,6 +8,7 @@
         "vesa.h": "c",
         "elf.h": "c",
         "syscalls.h": "c",
-        "stdfile.h": "c"
+        "stdfile.h": "c",
+        "stdio.h": "c"
     }
 }
