@@ -1,4 +1,16 @@
-import os, shutil, sys, tarfile, time, glob
+"""
+    Build script for SynapseOS.
+    Source code: https://github.com/0Nera/SynapseOS
+"""
+
+import time
+
+import os
+import shutil
+import sys
+import tarfile
+import glob
+
 
 _CC = "clang -target i386-pc-none-elf"
 LD = "ld.lld"
@@ -10,18 +22,9 @@ SRC_TARGETS = []
 BIN_TARGETS = []
 
 
-def warn(message):
-    print(f"[\x1b[33;1mWARNING\x1b[0m]: {message}")
-
-
-def compile(binary, source, cur="--", total="--", warnings=False):
-    print(f"[\x1b[32;1mBUILD\x1b[0m]~[{cur}/{total}]: Compiling: {source}")
-    os.system(f"{CC} -o ./{binary} {source}")
-
-
-def compile_kernel(warnings=False):
+def compile_kernel():
     print("Compiling...")
-    if not (sys.platform == "linux" or sys.platform == "linux2"):
+    if not _os_is_linux():
         shutil.rmtree(".\\bin\\kernel\\", ignore_errors=True)
         os.mkdir("bin")
         os.mkdir("bin\\kernel")
@@ -42,7 +45,7 @@ def compile_kernel(warnings=False):
         # os.system(f"echo {CC} -o {BIN_TARGETS[i]} {SRC_TARGETS[i]} & {CC} -o ./{BIN_TARGETS[i]} {SRC_TARGETS[i]} ")
         # print(f"[\x1b[32mBUILD\x1b[0m]~[{i}/{filescount}]: Compiling: {SRC_TARGETS[i]}")
         # subprocess.call(f"{CC} -o ./{BIN_TARGETS[i]} {SRC_TARGETS[i]}", shell=True, stdout=subprocess.STDOUT, stderr=subprocess.STDOUT)
-        compile(BIN_TARGETS[i], SRC_TARGETS[i], i, filescount, warnings)
+        compile_step(BIN_TARGETS[i], SRC_TARGETS[i], i, filescount)
 
     """
     JOBS = 8 # Количество ядер используемых при сборке
@@ -62,16 +65,8 @@ def compile_kernel(warnings=False):
     """
 
 
-def link_kernel():
-    print("Linking...")
-    print(f"BIN_TARGETS = {BIN_TARGETS}")
-    os.system(
-        f"{LD} -T kernel/link.ld -nostdlib -o isodir/boot/kernel.elf "
-        + "".join(BIN_TARGETS)
-    )
-
-
-def build_kernel(warnings=False):
+def cmd_build_kernel(warnings: bool = False):
+    """`kernel` command"""
     print("Building kernel", os.getcwd(), os.listdir())
     start_time = time.time()
 
@@ -82,18 +77,24 @@ def build_kernel(warnings=False):
     for i in files:
         SRC_TARGETS.append(i)
 
-    compile_kernel(warnings)
+    compile_kernel()
     link_kernel()
+
+    # Weird stuff.
     x = 0
     while not os.path.exists("isodir/boot/kernel.elf"):
         x += 1
-        compile_kernel(warnings)
+        compile_kernel()
         link_kernel()
         print(f"Errors: {x}")
-    print(f"Сборка ядра заняла: {(time.time() - start_time):2f} сек.")
+
+    # Debug elapsed time.
+    elapsed_time = time.time() - start_time
+    print(f"Сборка ядра заняла: {elapsed_time:2f} сек.")
 
 
-def build_apps():
+def cmd_build_apps():
+    """`apps` command."""
     os.chdir("apps/")
     os.system("python build.py")
 
@@ -108,22 +109,27 @@ def build_apps():
     os.chdir("../")
 
 
-def create_iso():
-    print("Creating ISO")
+def cmd_create_iso_grub():
+    """`iso` command."""
+    print("Creating ISO with grub...")
     start_time = time.time()
 
-    if sys.platform == "linux" or sys.platform == "linux2":
-        os.system('grub-mkrescue -o "SynapseOS.iso" isodir/ -V SynapseOS')
+    if _os_is_linux():
+        os.system("grub-mkrescue -o 'SynapseOS.iso' isodir/ -V SynapseOS")
     else:
-        os.system('ubuntu run grub-mkrescue -o "SynapseOS.iso" isodir/ -V SynapseOS ')
+        os.system("ubuntu run grub-mkrescue -o 'SynapseOS.iso' isodir/ -V SynapseOS")
 
-    print(f"Сборка ISO/Grub образа заняла: {(time.time() - start_time):2f} сек.")
+    # Debug elapsed time.
+    elapsed_time = time.time() - start_time
+    print(f"Сборка ISO/Grub образа заняла: {elapsed_time:2f} сек.")
 
 
-def create_iso_l():
-    print("Creating ISO with limine")
+def cmd_create_iso_limine():
+    """`isol` command."""
+    print("Creating ISO with limine...")
     start_time = time.time()
 
+    # Not documented.
     os.system(
         "git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1"
     )
@@ -143,104 +149,172 @@ def create_iso_l():
     )
     os.system("./limine/limine-deploy SynapseOS-limine.iso")
 
-    print(f"Сборка ISO/Limine образа заняла: {(time.time() - start_time):2f} сек.")
+    # Debug elapsed time.
+    elapsed_time = time.time() - start_time
+    print(f"Сборка ISO/Limine образа заняла: {elapsed_time:2f} сек.")
 
 
-def run_qemu():
-    if os.path.exists("ata.vhd"):
-        pass
-    else:
-        os.system("qemu-img create -f raw ata.vhd 32M")
+def compile_step(binary, source, current="--", total="--"):
+    """Compiles with CC, with showing current/total counter."""
+    print(f"[\x1b[32;1mBUILD\x1b[0m]~[{current}/{total}]: Compiling: {source}")
+    _cc_compile(source=source, output=binary)
 
-    qemu_command = (
-        "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32"
+
+def link_kernel():
+    """Links kernel with LD. """
+    print("Linking...")
+    print(f"BIN_TARGETS = {BIN_TARGETS}")
+
+    bin_targets = "".join(BIN_TARGETS)
+    _ld_exec(f"-T kernel/link.ld -nostdlib -o isodir/boot/kernel.elf {bin_targets}")
+
+
+def warn(message: str):
+    """Show a warning colored message."""
+    print(f"[\x1b[33;1mWARNING\x1b[0m]: {message}")
+
+
+def cmd_run_qemu(name: str = "SynapseOS", iso: str = "SynapseOS.iso", size: int = 32):
+    """`run` command."""
+    _qemu_create_ata_vhd()
+    _qemu_system_exec(
+        f"-name {name} -soundhw pcspk -m {size}"
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 "
-        " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log"
+        f" -cdrom {iso} -hda ata.vhd -serial file:Qemu.log"
     )
 
-    os.system(qemu_command)
 
-
-def run_kvm():
-    "Это помогает запускать SynapseOS быстрее, по сравнению с обычным режимом"
-    if not os.path.exists("ata.vhd"):
-        os.system("qemu-img create -f raw ata.vhd 32M")
-
-    qemu_command = (
-        "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32"
+def cmd_run_qemu_kvm(name: str = "SynapseOS", iso: str = "SynapseOS.iso", size: int = 32):
+    """
+    `runk` command. 
+    Это помогает запускать SynapseOS быстрее, по сравнению с обычным режимом
+    """
+    _qemu_create_ata_vhd()
+    _qemu_system_exec(
+        f"-name {name} -soundhw pcspk -m {size}"
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 "
-        " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log -accel kvm"
+        f" -cdrom {iso} -hda ata.vhd -serial file:Qemu.log -accel kvm"
     )
 
-    os.system(qemu_command)
 
-
-def run_qemu_debug():
-    if os.path.exists("ata.vhd"):
-        pass
-    else:
-        os.system("qemu-img create -f raw ata.vhd 32M")
-
-    qemu_command = (
-        "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32"
-        " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 "
-        " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log"
-    )
+def cmd_run_qemu_debug(name: str = "SynapseOS", iso: str = "SynapseOS.iso", size: int = 32):
+    """`rund` command."""
+    _qemu_create_ata_vhd()
     print("gdb kernel.elf -ex target remote localhost:1234")
-    os.system(qemu_command + """ -s -S""")
+    _qemu_system_exec(
+        f"-name {name} -soundhw pcspk -m {size} "
+        "-netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 "
+        f"-cdrom {iso} -hda ata.vhd -serial file:Qemu.log -s -S"
+    )
+
+
+def _os_is_linux() -> bool:
+    """Returns true if current OS is Linux."""
+    return sys.platform.startswith("linux")
+
+
+def _ld_exec(cmd: str) -> int:
+    """Executes LD linker command. """
+    return os.system(
+        f"{LD} {cmd}"
+    )
+
+
+def _cc_exec(cmd: str) -> int:
+    """Executes CC compiler command. """
+    return os.system(
+        f"{CC} {cmd}"
+    ) 
+
+
+def _cc_compile(source: str, output: str) -> int:
+    """Compiles with CC compiler."""
+    return _cc_exec(f"-o ./{output} {source}")
+
+
+def _qemu_system_exec(command: str, system: str = "i386") -> int:
+    """Executes system command for QEMU system."""
+    return os.system(f"qemu-system-{system} {command}")
+
+
+def _qemu_create_ata_vhd(size: int = 32) -> int:
+    """Creates `ata.vhd` file by QEMU if it is not exists."""
+    if os.path.exists("ata.vhd"):
+        return -1
+    return os.system(f"qemu-img create -f raw ata.vhd {size}M")
+
+
+def _execute_arg_cmd(arg: str):
+    """Executes command by argument from terminal."""
+    if arg == "kernel":
+        cmd_build_kernel()
+    elif arg == "apps":
+        cmd_build_apps()
+    elif arg == "isol":
+        cmd_create_iso_limine()
+    elif arg == "iso":
+        cmd_create_iso_grub()
+    elif arg == "run":
+        cmd_run_qemu()
+    elif arg == "runk":
+        cmd_run_qemu_kvm()
+    elif arg== "rund":
+        cmd_run_qemu_debug()
+    else:
+        print(f"Ошибка, неизвестный аргумент: {arg}")
+    
+
+def _execute_default_build():
+    """Executes default build command, when there is no special argument passed. """
+
+    # Build.
+    cmd_build_kernel(warnings)
+    cmd_build_apps()
+
+    # Create final ISO image.
+    cmd_create_iso_grub()
+
+    # Debug elapsed time.
+    elapsed_time = time.time() - start_time
+    print(f"Время сборки: {elapsed_time:2f} сек.")
+
+    # Run QEMU.
+    cmd_run_qemu()
 
 
 if __name__ == "__main__":
+    # Entry point for the build program.
+    start_time = time.time()
     try:
-        start_time = time.time()
-
-        # Стандартная сборка
-
-        warnings = False
-
         args = sys.argv[1:]  # Filter out program name (build.py)
-
-        i = 0
-        while i < len(args):
-            elem = args[i]
-            if elem.startswith(
+        
+        # Search for `--warn{n}` argument,
+        # and then enable warnings if it passed.
+        warnings = False
+        for i in range(0, len(args)):
+            argument = args[i]
+            if argument.startswith(
                 "--warn"
             ):  # This may be --warn or --warni or --warning and so on
-                warn("Вывод предупреждений компилятора включен")
+                warn("Вывод предупреждений компилятора включен.")
                 warnings = True
                 del args[i]
                 continue
-            i += 1
 
         if warnings:
             CFLAGS = CFLAGS[2:]
             CC = f"{_CC} {CFLAGS}"
 
-        if not args:  # Equivalent to 'if len(args)==0'
-            build_kernel(warnings)
-            build_apps()
-            create_iso()
-            print(f"Время сборки: {(time.time()-start_time):2f} сек.")
-            run_qemu()
+        # If no arguments passed, run default build,
+        # if any arguments, execute by argument.
+        if not args:
+            _execute_default_build()
         else:
-            for i in range(1, len(sys.argv)):
-                if sys.argv[i] == "kernel":
-                    build_kernel()
-                elif sys.argv[i] == "apps":
-                    build_apps()
-                elif sys.argv[i] == "isol":
-                    create_iso_l()
-                elif sys.argv[i] == "iso":
-                    create_iso()
-                elif sys.argv[i] == "run":
-                    run_qemu()
-                elif sys.argv[i] == "runk":
-                    run_kvm()
-                elif sys.argv[i] == "rund":
-                    run_qemu_debug()
-                else:
-                    print(f"Ошибка, неизвестный аргумент: {sys.argv[i]}")
-        print(f"Конец: {time.time() - start_time}")
-
-    except Exception as E:
-        print(E)
+            for arg in args:
+                _execute_arg_cmd(arg)
+    
+        # Debug elapsed time.
+        elapsed_time = time.time() - start_time
+        print(f"Конец. Затраченное время: {elapsed_time:2f} сек.")
+    except Exception as e:
+        print(f"Произошло исключение! Исключение: \n{e}")
