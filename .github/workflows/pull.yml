@@ -1,0 +1,41 @@
+name: SynapseOS Pull Requests
+
+# Контроль событий при которых будет сборка
+on:
+  # В нашем случае это push в ветку master
+  #push:
+  #  tags:
+  #      - "v*"
+  #  branches: [ "master" ]
+  pull_request:
+    tags:
+        - "v*"
+    branches: [ "master" ]
+  # Позволяет запускать этот рабочий процесс вручную на вкладке Actions
+  workflow_dispatch:
+
+# Выполнение рабочего процесса состоит из одного или нескольких заданий, которые могут выполняться последовательно или параллельно
+jobs:
+  build:
+    #  Все будет работать на последней версии Ubuntu
+    runs-on: ubuntu-latest
+
+    # Шаги представляют собой последовательность задач, которые будут выполняться как часть задания
+    steps:
+      - uses: actions/checkout@v3
+
+      # Установка зависимостей
+      - name: Installing
+        run: |
+          sudo apt install python3 grub-pc-bin xorriso mtools llvm lld
+
+          
+      # Запуск сборки
+      - name: Building  kernel
+        run: python3 build.py kernel
+
+      - name: Building  apps
+        run: python3 build.py apps
+
+      - name: Building  iso
+        run: python3 build.py iso isol
