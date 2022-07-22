@@ -1,6 +1,9 @@
+# SynapseOS 
+![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![CMake](https://img.shields.io/badge/CMake-%23008FBA.svg?style=for-the-badge&logo=cmake&logoColor=white)
+
 # О проекте
 
-SynapseOS- простая x86 операционная система на языке C с хорошо документированным ядром.
+SynapseOS - простая x86 операционная система на языке C с хорошо документированным ядром.
 ![SynapseOS](https://raw.githubusercontent.com/0Nera/SynapseOS/master/screenshots/test.png "SynapseOS")
 
 ## Имеется
@@ -23,18 +26,53 @@ SynapseOS- простая x86 операционная система на яз�
 
 ## Сборка и запуск
 
-Для сборки требуется:
+[Linux Debian/Ubuntu]
 
-- i686-elf-tools <https://github.com/lordmilko/i686-elf-tools/releases/tag/7.1.0>
-- Python3 или make
-- wsl (только на Windows)
-- grub-pc-bin, xorriso, tar  (используя wsl или linux)
+![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black) ![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white) ![Debian](https://img.shields.io/badge/Debian-D70A53?style=for-the-badge&logo=debian&logoColor=white)
 
-Для запуска требуется:
+1. Установить ПО для сборки
 
-- Qemu <https://www.qemu.org/>
+`sudo apt-get install python3 clang llvm grub-pc-bin xorriso mtools llvm lld git `
 
-Минимальные системные требования:
+2. Установить ПО для запуска ОС
+
+`sudo apt-get install libvirt-daemon libvirt-clients bridge-utils virt-manager qemu-kvm qemu virt-manager`
+
+3. Установить Git, для импорта 
+
+`sudo apt-get install git`
+
+4. Скачиваем репозиторий с гитхаба (или самому через браузер)
+
+`git clone https://github.com/0Nera/SynapseOS.git`
+
+5. Переходим в проект с папкой
+
+`cd SynapseOS`
+
+6. Запускаем компиляцию
+
+Простая компиляция и запуск - `python3 build.py`
+
+Компиляция, без запуска - `python3 build.py kernel apps iso`
+
+Компиляция, без запуска, без приложений - `python3 build.py kernel apps iso`
+
+[Другие ОС]
+
+Когда-нибудь будет информация...
+
+# Запуск в QEMU
+
+Простой запуск:
+
+`qemu-system-i386 -name SynapseOS -cdrom SynapseOS.iso`
+
+С подключением устройств (Спикер, Сетевая карта RTL8139, откладочным портом в лог):
+
+`qemu-system-i386 -name SynapseOS -soundhw pcspk -m 16 -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 -cdrom SynapseOS.iso -serial file:Qemu.log`
+
+# Минимальные системные требования:
 
 - 5 мегабайт оперативной памяти
 - 4 мегабайта видеопамяти
