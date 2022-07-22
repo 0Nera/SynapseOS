@@ -161,7 +161,7 @@ def compile_step(binary, source, current="--", total="--"):
 
 
 def link_kernel():
-    """Links kernel with LD. """
+    """Links kernel with LD."""
     print("Linking...")
     print(f"BIN_TARGETS = {BIN_TARGETS}")
 
@@ -184,9 +184,11 @@ def cmd_run_qemu(name: str = "SynapseOS", iso: str = "SynapseOS.iso", size: int 
     )
 
 
-def cmd_run_qemu_kvm(name: str = "SynapseOS", iso: str = "SynapseOS.iso", size: int = 32):
+def cmd_run_qemu_kvm(
+    name: str = "SynapseOS", iso: str = "SynapseOS.iso", size: int = 32
+):
     """
-    `runk` command. 
+    `runk` command.
     Это помогает запускать SynapseOS быстрее, по сравнению с обычным режимом
     """
     _qemu_create_ata_vhd()
@@ -197,7 +199,9 @@ def cmd_run_qemu_kvm(name: str = "SynapseOS", iso: str = "SynapseOS.iso", size: 
     )
 
 
-def cmd_run_qemu_debug(name: str = "SynapseOS", iso: str = "SynapseOS.iso", size: int = 32):
+def cmd_run_qemu_debug(
+    name: str = "SynapseOS", iso: str = "SynapseOS.iso", size: int = 32
+):
     """`rund` command."""
     _qemu_create_ata_vhd()
     print("gdb kernel.elf -ex target remote localhost:1234")
@@ -214,17 +218,13 @@ def _os_is_linux() -> bool:
 
 
 def _ld_exec(cmd: str) -> int:
-    """Executes LD linker command. """
-    return os.system(
-        f"{LD} {cmd}"
-    )
+    """Executes LD linker command."""
+    return os.system(f"{LD} {cmd}")
 
 
 def _cc_exec(cmd: str) -> int:
-    """Executes CC compiler command. """
-    return os.system(
-        f"{CC} {cmd}"
-    ) 
+    """Executes CC compiler command."""
+    return os.system(f"{CC} {cmd}")
 
 
 def _cc_compile(source: str, output: str) -> int:
@@ -258,14 +258,14 @@ def _execute_arg_cmd(arg: str):
         cmd_run_qemu()
     elif arg == "runk":
         cmd_run_qemu_kvm()
-    elif arg== "rund":
+    elif arg == "rund":
         cmd_run_qemu_debug()
     else:
         print(f"Ошибка, неизвестный аргумент: {arg}")
-    
+
 
 def _execute_default_build():
-    """Executes default build command, when there is no special argument passed. """
+    """Executes default build command, when there is no special argument passed."""
 
     # Build.
     cmd_build_kernel(warnings)
@@ -287,7 +287,7 @@ if __name__ == "__main__":
     start_time = time.time()
     try:
         args = sys.argv[1:]  # Filter out program name (build.py)
-        
+
         # Search for `--warn{n}` argument,
         # and then enable warnings if it passed.
         warnings = False
@@ -312,7 +312,7 @@ if __name__ == "__main__":
         else:
             for arg in args:
                 _execute_arg_cmd(arg)
-    
+
         # Debug elapsed time.
         elapsed_time = time.time() - start_time
         print(f"Конец. Затраченное время: {elapsed_time:2f} сек.")
