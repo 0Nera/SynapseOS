@@ -9,16 +9,19 @@ CC = f"{_CC} {CFLAGS}"
 SRC_TARGETS = []
 BIN_TARGETS = []
 
+
 def warn(message):
     print(f"[\x1b[33;1mWARNING\x1b[0m]: {message}")
+
 
 def compile(binary, source, cur="--", total="--", warnings=False):
     print(f"[\x1b[32;1mBUILD\x1b[0m]~[{cur}/{total}]: Compiling: {source}")
     os.system(f"{CC} -o ./{binary} {source}")
 
+
 def compile_kernel(warnings=False):
     print("Compiling...")
-    if not (sys.platform == "linux" or sys.platform == "linux2"): 
+    if not (sys.platform == "linux" or sys.platform == "linux2"):
         shutil.rmtree(".\\bin\\kernel\\", ignore_errors=True)
         os.mkdir("bin")
         os.mkdir("bin\\kernel")
@@ -30,16 +33,18 @@ def compile_kernel(warnings=False):
 
     filescount = len(SRC_TARGETS)
     # TODO: Multithreading
-    
+
     for i in range(filescount):
-        #start_time = time.time()
-        BIN_TARGETS.append(os.path.join("bin\\", os.path.basename(SRC_TARGETS[i]) + '.o '  ))
-        #os.system(f"echo {CC} -o {BIN_TARGETS[i]} {SRC_TARGETS[i]} & {CC} -o ./{BIN_TARGETS[i]} {SRC_TARGETS[i]} ")
-        #print(f"[\x1b[32mBUILD\x1b[0m]~[{i}/{filescount}]: Compiling: {SRC_TARGETS[i]}")
-        #subprocess.call(f"{CC} -o ./{BIN_TARGETS[i]} {SRC_TARGETS[i]}", shell=True, stdout=subprocess.STDOUT, stderr=subprocess.STDOUT)
+        # start_time = time.time()
+        BIN_TARGETS.append(
+            os.path.join("bin\\", os.path.basename(SRC_TARGETS[i]) + ".o ")
+        )
+        # os.system(f"echo {CC} -o {BIN_TARGETS[i]} {SRC_TARGETS[i]} & {CC} -o ./{BIN_TARGETS[i]} {SRC_TARGETS[i]} ")
+        # print(f"[\x1b[32mBUILD\x1b[0m]~[{i}/{filescount}]: Compiling: {SRC_TARGETS[i]}")
+        # subprocess.call(f"{CC} -o ./{BIN_TARGETS[i]} {SRC_TARGETS[i]}", shell=True, stdout=subprocess.STDOUT, stderr=subprocess.STDOUT)
         compile(BIN_TARGETS[i], SRC_TARGETS[i], i, filescount, warnings)
 
-    '''
+    """
     JOBS = 8 # Количество ядер используемых при сборке
 
     currentfileindex = 0
@@ -54,22 +59,29 @@ def compile_kernel(warnings=False):
                 proc.start()
                 currentfileindex+=1
             else: break
-    '''
+    """
+
 
 def link_kernel():
     print("Linking...")
     print(f"BIN_TARGETS = {BIN_TARGETS}")
-    os.system(f"{LD} -T kernel/link.ld -nostdlib -o isodir/boot/kernel.elf " + ''.join(BIN_TARGETS))
+    os.system(
+        f"{LD} -T kernel/link.ld -nostdlib -o isodir/boot/kernel.elf "
+        + "".join(BIN_TARGETS)
+    )
+
 
 def build_kernel(warnings=False):
     print("Building kernel", os.getcwd(), os.listdir())
     start_time = time.time()
 
-    files = glob.glob("kernel/**/*.c", recursive=True) + glob.glob("kernel/**/*.s", recursive=True)
+    files = glob.glob("kernel/**/*.c", recursive=True) + glob.glob(
+        "kernel/**/*.s", recursive=True
+    )
 
     for i in files:
         SRC_TARGETS.append(i)
-    
+
     compile_kernel(warnings)
     link_kernel()
     x = 0
@@ -81,7 +93,6 @@ def build_kernel(warnings=False):
     print(f"Сборка ядра заняла: {(time.time() - start_time):2f} сек.")
 
 
-
 def build_apps():
     os.chdir("apps/")
     os.system("python build.py")
@@ -90,7 +101,6 @@ def build_apps():
     shutil.copytree("../bin/apps", "../initrd/apps")
 
     os.chdir("../initrd")
-        
 
     with tarfile.open("../isodir/boot/initrd.tar", "w") as tar:
         for i in os.listdir():
@@ -102,11 +112,11 @@ def create_iso():
     print("Creating ISO")
     start_time = time.time()
 
-    if sys.platform == "linux" or sys.platform == "linux2": 
-        os.system("grub-mkrescue -o \"SynapseOS.iso\" isodir/ -V SynapseOS")
+    if sys.platform == "linux" or sys.platform == "linux2":
+        os.system('grub-mkrescue -o "SynapseOS.iso" isodir/ -V SynapseOS')
     else:
-        os.system("ubuntu run grub-mkrescue -o \"SynapseOS.iso\" isodir/ -V SynapseOS ")
-    
+        os.system('ubuntu run grub-mkrescue -o "SynapseOS.iso" isodir/ -V SynapseOS ')
+
     print(f"Сборка ISO/Grub образа заняла: {(time.time() - start_time):2f} сек.")
 
 
@@ -114,19 +124,25 @@ def create_iso_l():
     print("Creating ISO with limine")
     start_time = time.time()
 
-    os.system("git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1")
+    os.system(
+        "git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1"
+    )
     os.system("make -C limine")
     os.system("mkdir -p iso_root")
-    os.system("""cp -v isodir/boot/kernel.elf isodir/boot/initrd.tar limine.cfg limine/limine.sys \
+    os.system(
+        """cp -v isodir/boot/kernel.elf isodir/boot/initrd.tar limine.cfg limine/limine.sys \
         limine/limine-cd.bin limine/limine-cd-efi.bin isodir/boot/bg.bmp iso_root/
-    """)
-    os.system("""xorriso -as mkisofs -b limine-cd.bin \
+    """
+    )
+    os.system(
+        """xorriso -as mkisofs -b limine-cd.bin \
           -no-emul-boot -boot-load-size 4 -boot-info-table \
           --efi-boot limine-cd-efi.bin \
           -efi-boot-part --efi-boot-image --protective-msdos-label \
-          iso_root -o SynapseOS-limine.iso""")
+          iso_root -o SynapseOS-limine.iso"""
+    )
     os.system("./limine/limine-deploy SynapseOS-limine.iso")
-    
+
     print(f"Сборка ISO/Limine образа заняла: {(time.time() - start_time):2f} сек.")
 
 
@@ -135,23 +151,27 @@ def run_qemu():
         pass
     else:
         os.system("qemu-img create -f raw ata.vhd 32M")
-    
-    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32" \
-        " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
+
+    qemu_command = (
+        "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32"
+        " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 "
         " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log"
-        
+    )
+
     os.system(qemu_command)
 
 
 def run_kvm():
-    " Это помогает запускать SynapseOS быстрее, по сравнению с обычным режимом"
+    "Это помогает запускать SynapseOS быстрее, по сравнению с обычным режимом"
     if not os.path.exists("ata.vhd"):
         os.system("qemu-img create -f raw ata.vhd 32M")
-    
-    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32" \
-        " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
+
+    qemu_command = (
+        "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32"
+        " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 "
         " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log -accel kvm"
-        
+    )
+
     os.system(qemu_command)
 
 
@@ -160,14 +180,14 @@ def run_qemu_debug():
         pass
     else:
         os.system("qemu-img create -f raw ata.vhd 32M")
-    
-    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32" \
-        " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
-        " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log" 
+
+    qemu_command = (
+        "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32"
+        " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 "
+        " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log"
+    )
     print("gdb kernel.elf -ex target remote localhost:1234")
-    os.system(
-        qemu_command + """ -s -S"""
-        )
+    os.system(qemu_command + """ -s -S""")
 
 
 if __name__ == "__main__":
@@ -178,21 +198,25 @@ if __name__ == "__main__":
 
         warnings = False
 
-        args = sys.argv[1:] # Filter out program name (build.py)
+        args = sys.argv[1:]  # Filter out program name (build.py)
 
         i = 0
-        while i<len(args):
+        while i < len(args):
             elem = args[i]
-            if elem.startswith("--warn"): # This may be --warn or --warni or --warning and so on
+            if elem.startswith(
+                "--warn"
+            ):  # This may be --warn or --warni or --warning and so on
                 warn("Вывод предупреждений компилятора включен")
                 warnings = True
                 del args[i]
                 continue
-            i+=1
+            i += 1
 
-        if warnings: CFLAGS = CFLAGS[2:]; CC = f"{_CC} {CFLAGS}";
+        if warnings:
+            CFLAGS = CFLAGS[2:]
+            CC = f"{_CC} {CFLAGS}"
 
-        if not args: # Equivalent to 'if len(args)==0'
+        if not args:  # Equivalent to 'if len(args)==0'
             build_kernel(warnings)
             build_apps()
             create_iso()
