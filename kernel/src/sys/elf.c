@@ -184,9 +184,7 @@ int32_t run_elf_file(const char *name/*, char **argv, char **env __attribute__((
 
     log("Executing");
     
-    int32_t code = entry_point();
-
-    tty_printf("\n[PROGRAMM FINISHED WITH CODE <%d>]", code);
+    tty_printf("\n[PROGRAMM FINISHED WITH CODE <%d>]", entry_point());
     log("[PROGRAMM FINISHED WITH CODE <%d>]", code);
     log("Cleaning VMM:");
 

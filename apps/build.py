@@ -13,6 +13,7 @@ LD = f"{LD} {LDFLAGS}"
 print("[\x1b[32mCONFIGURATION\x1b[0m] Using C compiler:", CC)
 print("[\x1b[32mCONFIGURATION\x1b[0m] Using linker:", LD)
 
+
 AR = "llvm-ar"
 O_LIBC = ["./bin/libc/stdio.o","./bin/libc/stdfile.o",
           "./bin/libc/ports.o","./bin/libc/stdlib.o","./bin/libc/string.o",
@@ -21,16 +22,18 @@ O_LIBC = ' '+' '.join(O_LIBC)
 data = []
 files = []
 
+
+# Сборка
 def build(typ, infile, outfile):
     if typ=="compile":
         print(f"[\x1b[32mBUILD\x1b[0m]: Compiling {infile}")
         cmd = f"{CC} {infile} -o {outfile}"
-        subprocess.call(cmd, shell=True);
+        subprocess.call(cmd, shell=True)
     if typ=="link":
         # print(f"[\x1b[32mBUILD\x1b[0m]: Linking   {infile.split(" ")[0]}") # Error
         print(f"[\x1b[32mBUILD\x1b[0m]: Linking  ", infile.split(" ")[0])
         cmd = f"{LD} {outfile} {infile}"
-        subprocess.call(cmd, shell=True);
+        subprocess.call(cmd, shell=True)
 
 def build_all():
     try:
@@ -61,7 +64,7 @@ def build_all():
     build("compile", "examples/C/vesa_Russia.c", "./bin/vesa_Russia.o")
     build("compile", "examples/C/char.c", "./bin/char.o")
     build("compile", "apps/0Nera/NeraMath/main.c", "./bin/NeraMath.o")
-    # build("compile", "apps/0Nera/VGGI/main.c", "./bin/VGGI.o")
+    build("compile", "apps/0Nera/VGGI/main.c", "./bin/VGGI.o")
     build("compile", "games/kernelmode_power/snake/snake.c", "./bin/snake.o")
     build("compile", "examples/C/test.c", "./bin/test.o")
     build("compile", "apps/NDRAEY/ImageView/imageview.c", "./bin/imageview.o")
@@ -84,7 +87,7 @@ def build_all():
     build("link", "./bin/beep.o" + O_LIBC, "../bin/apps/beep")
     build("link", "./bin/char.o" + O_LIBC, "../bin/apps/char")
     build("link", "./bin/NeraMath.o" + O_LIBC, "../bin/apps/NeraMath")
-    # build("link", "./bin/VGGI.o" + O_LIBC, "../bin/apps/vggi")
+    build("link", "./bin/VGGI.o" + O_LIBC, "../bin/apps/vggi")
     build("link", "./bin/snake.o" + O_LIBC, "../bin/apps/snake")
     build("link", "./bin/test.o", "../bin/apps/test")
     build("link", "./bin/imageview.o" + O_LIBC, "../bin/apps/imageview")
