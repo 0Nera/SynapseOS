@@ -21,7 +21,8 @@ def compile_kernel():
         os.mkdir("bin\\kernel")
     else:
         shutil.rmtree("./bin/kernel/", ignore_errors=True)
-        os.mkdir("bin")
+        if not (os.path.isdir("bin")):
+            os.mkdir("bin")
         os.mkdir("bin/kernel")
 
     filescount = len(SRC_TARGETS)
