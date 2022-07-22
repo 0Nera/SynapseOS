@@ -1,23 +1,27 @@
 import os, shutil, sys, tarfile, time, glob
 
-CC = "clang -target i386-pc-none-elf"
+_CC = "clang -target i386-pc-none-elf"
 LD = "ld.lld"
 CFLAGS = "-w -mno-sse -mno-avx -O0 -ffreestanding -I kernel/include/ -c"
 
-CC = f"{CC} {CFLAGS}"
+CC = f"{_CC} {CFLAGS}"
 
 SRC_TARGETS = []
 BIN_TARGETS = []
 
-def compile(binary, source, cur="--", total="--"):
-    print(f"[\x1b[32mBUILD\x1b[0m]~[{cur}/{total}]: Compiling: {source}")
+def warn(message):
+    print(f"[\x1b[33;1mWARNING\x1b[0m]: {message}")
+
+def compile(binary, source, cur="--", total="--", warnings=False):
+    print(f"[\x1b[32;1mBUILD\x1b[0m]~[{cur}/{total}]: Compiling: {source}")
     os.system(f"{CC} -o ./{binary} {source}")
 
-def compile_kernel():
+def compile_kernel(warnings=False):
     print("Compiling...")
     if not (sys.platform == "linux" or sys.platform == "linux2"): 
         shutil.rmtree(".\\bin\\kernel\\", ignore_errors=True)
-        os.mkdir(".\\bin\\kernel\\")
+        os.mkdir("bin")
+        os.mkdir("bin\\kernel")
     else:
         shutil.rmtree("./bin/kernel/", ignore_errors=True)
         if not (os.path.isdir("bin")):
@@ -33,7 +37,7 @@ def compile_kernel():
         #os.system(f"echo {CC} -o {BIN_TARGETS[i]} {SRC_TARGETS[i]} & {CC} -o ./{BIN_TARGETS[i]} {SRC_TARGETS[i]} ")
         #print(f"[\x1b[32mBUILD\x1b[0m]~[{i}/{filescount}]: Compiling: {SRC_TARGETS[i]}")
         #subprocess.call(f"{CC} -o ./{BIN_TARGETS[i]} {SRC_TARGETS[i]}", shell=True, stdout=subprocess.STDOUT, stderr=subprocess.STDOUT)
-        compile(BIN_TARGETS[i], SRC_TARGETS[i], i, filescount)
+        compile(BIN_TARGETS[i], SRC_TARGETS[i], i, filescount, warnings)
 
     '''
     JOBS = 8 # Количество ядер используемых при сборке
@@ -57,7 +61,7 @@ def link_kernel():
     print(f"BIN_TARGETS = {BIN_TARGETS}")
     os.system(f"{LD} -T kernel/link.ld -nostdlib -o isodir/boot/kernel.elf " + ''.join(BIN_TARGETS))
 
-def build_kernel():
+def build_kernel(warnings=False):
     print("Building kernel", os.getcwd(), os.listdir())
     start_time = time.time()
 
@@ -66,12 +70,12 @@ def build_kernel():
     for i in files:
         SRC_TARGETS.append(i)
     
-    compile_kernel()
+    compile_kernel(warnings)
     link_kernel()
     x = 0
     while not os.path.exists("isodir/boot/kernel.elf"):
         x += 1
-        compile_kernel()
+        compile_kernel(warnings)
         link_kernel()
         print(f"Errors: {x}")
     print(f"Сборка ядра заняла: {(time.time() - start_time):2f} сек.")
@@ -171,9 +175,25 @@ if __name__ == "__main__":
         start_time = time.time()
 
         # Стандартная сборка
-        
-        if len(sys.argv) == 1:
-            build_kernel()
+
+        warnings = False
+
+        args = sys.argv[1:] # Filter out program name (build.py)
+
+        i = 0
+        while i<len(args):
+            elem = args[i]
+            if elem.startswith("--warn"): # This may be --warn or --warni or --warning and so on
+                warn("Вывод предупреждений компилятора включен")
+                warnings = True
+                del args[i]
+                continue
+            i+=1
+
+        if warnings: CFLAGS = CFLAGS[2:]; CC = f"{_CC} {CFLAGS}";
+
+        if not args: # Equivalent to 'if len(args)==0'
+            build_kernel(warnings)
             build_apps()
             create_iso()
             print(f"Время сборки: {(time.time()-start_time):2f} сек.")
