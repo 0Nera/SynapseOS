@@ -52,7 +52,7 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest-unstable"
           prerelease: true
-          title: "Autobuild"
+          title: "Автосборка, нестабильный релиз"
           files: |
             LICENSE
             SynapseOS.iso
