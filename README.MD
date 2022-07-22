@@ -27,13 +27,19 @@ SynapseOS - простая x86 операционная система на яз
 
 ## Сборка и запуск
 
+### Универсальное рещение
+
+``` bash
+python3 build.py
+```
+
 ### [Linux Debian/Ubuntu]
 
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black) ![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white) ![Debian](https://img.shields.io/badge/Debian-D70A53?style=for-the-badge&logo=debian&logoColor=white)
 
 1. Установить ПО для сборки
 
-    `sudo apt-get install python3 clang llvm grub-pc-bin xorriso mtools  lld git`
+    `sudo apt-get install python3 clang llvm grub-pc-bin xorriso mtools lld git`
 
 2. Установить ПО для запуска ОС
 
