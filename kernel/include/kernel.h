@@ -63,3 +63,4 @@ void sysinfo();
 void sbf(char *src);
 void cat(char *fname);
 void cd(char *dname);
+pid_t add_task();

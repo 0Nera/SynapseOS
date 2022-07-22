@@ -16,7 +16,7 @@ void shell() {
         tty_printf("%s>", current_dir);
 
         tty_setcolor(COLOR_TEXT);
-
+        log("1");
         char *cmd = keyboard_gets();
 
         if (strlen(cmd) == 0) {
@@ -50,7 +50,7 @@ void shell() {
             
             tok = (char *)strtok(0, " "); // tok - имя файла
 
-            if (fname != 0) {
+            if (fname[0] != 0) {
                 cat(tok);
             } else {
                 tty_setcolor(COLOR_ERROR);
@@ -63,7 +63,7 @@ void shell() {
             
             tok = (char *)strtok(0, " "); // tok - now is dirname
 
-            if (dname != 0) {
+            if (dname[0] != 0) {
                 cd(tok);
             } else {
                 tty_setcolor(COLOR_ERROR);
@@ -83,7 +83,7 @@ void shell() {
 
             tok = (char *)strtok(0, " "); // tok - имя файла
 
-            if (fname != 0) {
+            if (fname[0] != 0) {
                 sbf(tok);
             } else {
                 tty_setcolor(COLOR_ERROR);
@@ -96,7 +96,7 @@ void shell() {
 
             tok = (char *)strtok(0, "/"); // tok - имя файла
 
-            if (fname != 0) {
+            if (fname[0] != 0) {
                 char temp[256] = {0};
                 strcpy(temp, current_dir);
                 strcat(temp, tok);
@@ -113,7 +113,7 @@ void shell() {
 
             tok = (char *)strtok(0, "/"); // tok - имя файла
 
-            if (fname != 0) {
+            if (fname[0] != 0) {
                 char temp[256] = {0};
                 strcpy(temp, current_dir);
                 strcat(temp, tok);
