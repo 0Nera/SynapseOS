@@ -32,25 +32,21 @@ SynapseOS - простая x86 операционная система на яз
 
 1. Установить ПО для сборки
 
-`sudo apt-get install python3 clang llvm grub-pc-bin xorriso mtools llvm lld git `
+`sudo apt-get install python3 clang llvm grub-pc-bin xorriso mtools  lld git `
 
 2. Установить ПО для запуска ОС
 
 `sudo apt-get install libvirt-daemon libvirt-clients bridge-utils virt-manager qemu-kvm qemu virt-manager`
 
-3. Установить Git, для импорта 
-
-`sudo apt-get install git`
-
-4. Скачиваем репозиторий с гитхаба (или самому через браузер)
+3. Скачиваем репозиторий с гитхаба (или самому через браузер)
 
 `git clone https://github.com/0Nera/SynapseOS.git`
 
-5. Переходим в проект с папкой
+4. Переходим в проект с папкой
 
 `cd SynapseOS`
 
-6. Запускаем компиляцию
+5. Запускаем компиляцию
 
 Простая компиляция и запуск - `python3 build.py`
 
