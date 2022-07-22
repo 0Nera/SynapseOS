@@ -84,7 +84,7 @@ def build_kernel(warnings=False):
 
 def build_apps():
     os.chdir("apps/")
-    os.system("python build.py")
+    os.system("python3 build.py")
 
     shutil.rmtree("../initrd/apps", ignore_errors=True)
     shutil.copytree("../bin/apps", "../initrd/apps")
