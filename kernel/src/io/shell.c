@@ -1,6 +1,6 @@
 #include <kernel.h>
 #include <libk/string.h>
-
+#include <io/tui.h>
 
 char current_dir[256] = "/initrd/apps/";
 
@@ -31,6 +31,9 @@ void shell() {
 
         if (strcmp(cmd, "about") == 0) {
             tty_printf("SynapseOS is a simple x86 C operating system with a well-documented kernel.");
+        } else if (strcmp(cmd,"tui") == 0){
+            tty_printf("TUI Demo by pimnik98");
+            tui();
         } else if (strcmp(cmd, "help") == 0) {
             tty_printf("Commands:\n" \
                         "\t\t->help                |get list of commands\n" \

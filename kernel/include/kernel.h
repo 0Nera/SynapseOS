@@ -29,6 +29,7 @@
 #include <io/tty.h>
 #include <io/vgafnt.h>
 #include <io/ports.h>
+#include <io/tui.h>
 
 #include <sys/gdt.h>
 #include <sys/idt.h>
