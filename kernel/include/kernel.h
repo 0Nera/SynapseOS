@@ -31,11 +31,13 @@
 #include <io/ports.h>
 #include <io/tui.h>
 
+#include <sys/system.h>
 #include <sys/gdt.h>
 #include <sys/idt.h>
 #include <sys/tss.h>
 #include <sys/syscalls.h>
 #include <sys/elf.h>
+
 
 
 #define VERSION_MAJOR   0       // Версия ядра
@@ -64,3 +66,4 @@ void sysinfo();
 void sbf(char *src);
 void cat(char *fname);
 void cd(char *dname);
+pid_t add_task();

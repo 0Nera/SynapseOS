@@ -38,5 +38,4 @@ void outb(uint16_t port, uint8_t  val); // Запись байта в порт
 void com1_write_char(char a);
 void qemu_puts(char log_data[]);
 void qemu_printf(char *text, ...);
-void reboot();
 void io_wait();
