@@ -29,7 +29,7 @@ SynapseOS - простая x86 операционная система на яз
 
 ### Универсальное рещение
 
-``` bash
+```bash
 python3 build.py
 ```
 
@@ -39,27 +39,44 @@ python3 build.py
 
 1. Установить ПО для сборки
 
-    `sudo apt-get install python3 clang llvm grub-pc-bin xorriso mtools lld git`
+    ``` bash
+    sudo apt-get install python3 clang llvm grub-pc-bin xorriso mtools lld git
+    ```
 
 2. Установить ПО для запуска ОС
 
-    `sudo apt-get install libvirt-daemon libvirt-clients bridge-utils virt-manager qemu-kvm qemu virt-manager`
+    ``` bash
+    sudo apt-get install libvirt-daemon libvirt-clients bridge-utils virt-manager qemu-kvm qemu virt-manager
+    ```
 
 3. Скачиваем репозиторий с гитхаба (или самому через браузер)
 
-    `git clone https://github.com/0Nera/SynapseOS.git`
+    ```bash
+    git clone https://github.com/0Nera/SynapseOS.git
+    ```
 
 4. Переходим в проект с папкой
 
-    `cd SynapseOS`
+    ```bash
+    cd SynapseOS
+    ```
 
 5. Запускаем компиляцию
 
-    Простая компиляция и запуск - `python3 build.py`
+    Простая компиляция и запуск:
+    ```bash
+    python3 build.py
+    ```
 
-    Компиляция, без запуска - `python3 build.py kernel apps iso`
+    Компиляция, без запуска:
+    ```bash
+    python3 build.py kernel apps iso
+    ```
 
-    Компиляция, без запуска, без приложений - `python3 build.py kernel apps iso`
+    Компиляция, без запуска, без приложений:
+    ```bash
+    python3 build.py kernel apps iso
+    ```
 
 ### [Windows]
 
@@ -75,15 +92,21 @@ python3 build.py
 
 Простой запуск:
 
-`qemu-system-i386 -name SynapseOS -cdrom SynapseOS.iso`
+```bash
+qemu-system-i386 -name SynapseOS -cdrom SynapseOS.iso
+```
 
 С подключением устройств (Спикер, Сетевая карта RTL8139, откладочным портом в лог):
 
-`qemu-system-i386 -name SynapseOS -soundhw pcspk -m 16 -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 -cdrom SynapseOS.iso -serial file:Qemu.log`
+```bash
+qemu-system-i386 -name SynapseOS -soundhw pcspk -m 16 -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 -cdrom SynapseOS.iso -serial file:Qemu.log
+```
 
 Стандартный:
 
-`python3 build.py run`
+```bash
+python3 build.py run
+```
 
 ## Минимальные системные требования
 
