@@ -1,5 +1,8 @@
 #pragma once
 
+#include <stdint.h>
+
+
 typedef struct {
     uint8_t  name[16];
     uint8_t  layers[16];

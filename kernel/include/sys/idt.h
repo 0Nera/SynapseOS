@@ -22,15 +22,19 @@
 
 #define DECLARE_INTERRUPT_HANDLER(i) void interrupt_handler_##i(void)
 
-#define ICW1 0x11
-#define ICW4 0x01
-#define PIC1 0x20
-#define PIC2 0xA0
+#define PIC1            0x20        /* IO base address for Active PIC */
+#define PIC2            0xA0        /* IO base address for Passive PIC */
+#define PIC1_COMMAND    PIC1
+#define PIC1_DATA       PIC1 + 1
+#define PIC2_COMMAND    PIC2
+#define PIC2_DATA       PIC2 + 1
+#define PIC_EOI         0x20        /* End-of-interrupt command code */
+#define PIC_READ_IRR    0x0a        /* OCW3 irq ready next CMD read */
+#define PIC_READ_ISR    0x0b        /* OCW3 irq service next CMD read */
 
-#define PIC1_COMMAND PIC1
-#define PIC1_DATA    (PIC1 + 1)
-#define PIC2_COMMAND PIC2
-#define PIC2_DATA    (PIC2 + 1)
+#define ICW1_INIT               (0 << 8) | (1 << 4)
+#define ICW1_ICW4_NEEDED        1
+#define ICW1_CALLADDR_4         1 << 2
 
 
 // Удерживает регистры во время прерывания

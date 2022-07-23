@@ -24,11 +24,12 @@ void timer_set_frequency(int32_t hz) {
 
 
 void timer_handler(struct regs *r) {
-    trand(++timer_ticks);
+    //log("tick: %d",timer_ticks);
+    trand(timer_ticks);
 
-    if (multi_task) {
-        task_switch();  /* Переключаемся */
-    }
+    //if (multi_task) {
+       //task_switch();  /* Переключаемся */
+    //}
     // tty_printf("\ntimer_handler idt: %d", r->idt_index);
     //log("timer_handler idt: %d", r->idt_index);
 }

@@ -51,27 +51,13 @@ void init_task_manager(void) {
 
     /* Инициализируем процесс */
     kernel_proc->pid = take_pid();
-    kernel_proc->page_dir = &kernel_page_dir;
+    //kernel_proc->page_dir = &kernel_page_dir;
     kernel_proc->list_item.list = NULL;
     kernel_proc->threads_count = 1;
     strcpy(kernel_proc->name, "Kernel");
     kernel_proc->suspend = false;
 
-    list_add(&process_list, &kernel_proc->list_item);
-
-    /* Создаем главный поток ядра */
-    kernel_thread = (thread_t*) kheap_malloc(sizeof(thread_t));
-
-    memset(kernel_thread, 0, sizeof(thread_t));
-
-    kernel_thread->process = kernel_proc;
-    kernel_thread->list_item.list = NULL;
-    kernel_thread->id = next_thread_id++;
-    kernel_thread->stack_size = 0x4000;
-    kernel_thread->suspend = false;
-    kernel_thread->esp = esp;
-   
-    list_add(&thread_list, &kernel_thread->list_item);
+    //list_add(&process_list, &kernel_proc->list_item);
 
     /* Делаем процесс и поток ядра текущими */
     current_proc = kernel_proc;
@@ -97,7 +83,7 @@ pid_t add_task() {
     Удаляет процесс
 */
 int32_t kill_task(uint32_t pid) {
-    
+    return 0;
 }
 
 
@@ -161,7 +147,7 @@ void tss_set_stack(uint32_t kss, uint32_t kesp) {
 0xE9 = 11101001
 0x89 = 10001001
 */
-
+/*
 regs_t *dump_regs(){
     regs_t *tmp;
 
@@ -172,4 +158,4 @@ regs_t *dump_regs(){
 
 
     return &tmp;
-}
+}*/

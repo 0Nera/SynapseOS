@@ -293,8 +293,10 @@ int32_t keyboard_getscancode() {
 
 char *keyboard_gets() {
     input_type = 3;
+    log("2");
 
     while (input_type != -3) {
+        log("3");
         asm volatile("hlt");
         //keyboard_handler_main();
     }
