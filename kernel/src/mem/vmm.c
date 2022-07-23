@@ -22,12 +22,12 @@ uint32_t kv2p(void *a) {
 void * virtual2phys(page_directory * dir, void * virtual_addr_t) {
     uint32_t page_dir_idx = PAGEDIR_INDEX(virtual_addr_t), page_tbl_idx = PAGETBL_INDEX(virtual_addr_t), page_frame_offset = PAGEFRAME_INDEX(virtual_addr_t);
     if(!dir->ref_tables[page_dir_idx]) {
-        log("virtual2phys: page dir entry %d does not exist\n", page_tbl_idx);
+        qemu_log("virtual2phys: page dir entry %d does not exist\n", page_tbl_idx);
         return NULL;
     }
     page_table * table = dir->ref_tables[page_dir_idx];
     if(!table->entries[page_tbl_idx]) {
-        log("virtual2phys: page table entry %d does not exist\n", page_tbl_idx);
+        qemu_log("virtual2phys: page table entry %d does not exist\n", page_tbl_idx);
         return NULL;
     }
     uint32_t t = table->entries[page_tbl_idx];
@@ -188,7 +188,7 @@ void vmm_init() {
     update_phys_memory_bitmap_addres(KERNEL_END_VADDR);
 
     enable_paging((physical_addres_t) kernel_page_dir);
-    log("VMM installed");
+    qemu_log("VMM installed");
 }
 
 

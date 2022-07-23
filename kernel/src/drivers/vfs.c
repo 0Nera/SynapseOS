@@ -14,20 +14,20 @@ vfs_mount_info_t **vfs_mount_points = 0;
 
 void vfs_mount_list() {
     for (int32_t i = 0; i < vfs_lastmnt; ++i) {
-        log("%s on %s type ", vfs_mount_points[i]->fs->dev->name, vfs_mount_points[i]->location);
+        qemu_log("%s on %s type ", vfs_mount_points[i]->fs->dev->name, vfs_mount_points[i]->location);
 
         if (vfs_mount_points[i]->fs->fs_type == 0) {
-            log("initrd");
+            qemu_log("initrd");
         } else if (vfs_mount_points[i]->fs->fs_type == 1) {
-            log("ext2");
+            qemu_log("ext2");
         } else if (vfs_mount_points[i]->fs->fs_type == 2) {
-            log("ext3");
+            qemu_log("ext3");
         } else if (vfs_mount_points[i]->fs->fs_type == 3) {
-            log("ext4");
+            qemu_log("ext4");
         } else if (vfs_mount_points[i]->fs->fs_type == 4) {
-            log("fat32");
+            qemu_log("fat32");
         } else {
-            log("none");
+            qemu_log("none");
         }
     }
 }
@@ -35,7 +35,7 @@ void vfs_mount_list() {
 int32_t vfs_mount(vfs_storage_dev_t *dev, vfs_filesystem_handles_t *fs_handles, int32_t type, char *location, int32_t block_size) {
     for (int32_t i = 0; i < vfs_lastmnt; ++i) {
         if (strcmp(vfs_mount_points[i]->location, location) == 0) {
-            log("VFS: Device %s already mounted.", location);
+            qemu_log("VFS: Device %s already mounted.", location);
             return 0;
         }
     }
@@ -50,7 +50,7 @@ int32_t vfs_mount(vfs_storage_dev_t *dev, vfs_filesystem_handles_t *fs_handles, 
 
     vfs_mount_points[vfs_lastmnt] = mnt;
     vfs_lastmnt++;
-    log("VFS: Mounted new device at %s", location);
+    qemu_log("VFS: Mounted new device at %s", location);
 
     return 1;
 }
@@ -245,5 +245,5 @@ void vfs_get_file_name_from_path(char *fpath, char *buf) {
 void vfs_init() {   
     vfs_mount_points = (vfs_mount_info_t**) kheap_malloc(sizeof(vfs_mount_info_t) * MOUNTPOINTS_SIZE);
     __vfs_init = 1;
-    log("VFS installed");
+    qemu_log("VFS installed");
 }

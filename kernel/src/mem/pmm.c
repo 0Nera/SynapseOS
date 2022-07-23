@@ -292,7 +292,7 @@ void pmm_init(struct multiboot_info *mboot_info) {
     pmm_alloc_chunk((uint64_t)(intptr_t)phys_memory_bitmap, phys_block_count);  // Нам также необходимо выделить память, используемую самой физической картой.
     kernel_phys_map_start = (uint32_t) phys_memory_bitmap;
     kernel_phys_map_end = kernel_phys_map_start + (phys_block_count / PHYS_BLOCKS_PER_BYTE);
-    log("PMM installed");
+    qemu_log("PMM installed");
 }
 
 

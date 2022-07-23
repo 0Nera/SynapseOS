@@ -10,7 +10,7 @@ static uint8_t level = 1;
 
 void secure_init(uint8_t new_level) {
     level = new_level;
-    log("Secure level: %d", level);
+    qemu_log("Secure level: %d", level);
 }
 
 

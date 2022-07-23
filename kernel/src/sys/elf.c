@@ -37,7 +37,7 @@ uint8_t elf_check_header(struct elf_hdr *hdr) {
 void *elf_open(const char *fname) { // Returns pointer to ELF file.
     if (!vfs_exists(fname)) {
         tty_printf("elf_open: elf [%s] does not exist", fname);
-        log("elf_open: elf [%s] does not exist", fname);
+        qemu_log("elf_open: elf [%s] does not exist", fname);
         return 0;
     }
 
@@ -45,7 +45,7 @@ void *elf_open(const char *fname) { // Returns pointer to ELF file.
     void *addr = kheap_malloc(fsize);
     int32_t res = vfs_read(fname, 0, fsize, addr);
     
-    log("elf_open res = %d", res);
+    qemu_log("elf_open res = %d", res);
 
     struct elf_hdr *hdr = addr;
 
@@ -111,7 +111,7 @@ void elf_hdr_info(struct elf_hdr *hdr) {
 void elf_info(const char *name) {
     if (!vfs_exists(name)) {
         tty_printf("\nelf_info: elf [%s] does not exist\n", name);
-        log("elf_info: elf [%s] does not exist", name);
+        qemu_log("elf_info: elf [%s] does not exist", name);
         return;
     }
     void *elf_file = elf_open(name);
@@ -139,7 +139,7 @@ void elf_info(const char *name) {
 int32_t run_elf_file(const char *name/*, char **argv, char **env __attribute__((unused)), int32_t argc*/) {
     if (!vfs_exists(name)) {
         tty_printf("\nrun_elf_file: elf [%s] does not exist\n", name);
-        log("run_elf_file: elf [%s] does not exist", name);
+        qemu_log("run_elf_file: elf [%s] does not exist", name);
         return 0;
     }
     void *elf_file = elf_open(name);
@@ -149,7 +149,7 @@ int32_t run_elf_file(const char *name/*, char **argv, char **env __attribute__((
 
     struct elf_hdr *hdr = (struct elf_hdr*) elf_file;
 
-    log("loading segments:");
+    qemu_log("loading segments:");
     uint32_t vmm_alloced[4096] = {0};
     int32_t ptr_vmm_alloced = 0;
 
@@ -160,7 +160,7 @@ int32_t run_elf_file(const char *name/*, char **argv, char **env __attribute__((
             continue; // We only can load segments to the memory, so just skip it.
         }
 
-        log("Loading %x bytes to %x", phdr->size_in_mem, phdr->load_to);
+        qemu_log("Loading %x bytes to %x", phdr->size_in_mem, phdr->load_to);
 
         // Alloc needed amount of pages
         uint32_t alloc_addr;
@@ -169,29 +169,29 @@ int32_t run_elf_file(const char *name/*, char **argv, char **env __attribute__((
             alloc_addr += PAGE_SIZE) {
             vmm_alloced[ptr_vmm_alloced] = alloc_addr;
             ptr_vmm_alloced++;
-            log("Alloc %d: %x", ptr_vmm_alloced, alloc_addr);
+            qemu_log("Alloc %d: %x", ptr_vmm_alloced, alloc_addr);
             vmm_alloc_page(alloc_addr);
         }
 
         memset((void*) phdr->load_to, 0, phdr->size_in_mem); // Null segment memory
         memcpy((void*) phdr->load_to, elf_file + phdr->data_offset, phdr->size_in_file);
-        log("Loaded");
+        qemu_log("Loaded");
     }
 
     int(*entry_point)() = (void*) (hdr->entry);
-    log("ELF entry point: %x", hdr->entry);
+    qemu_log("ELF entry point: %x", hdr->entry);
 
 
-    log("Executing");
+    qemu_log("Executing");
     
     tty_printf("\n[PROGRAMM FINISHED WITH CODE <%d>]", entry_point());
-    log("Cleaning VMM:");
+    qemu_log("Cleaning VMM:");
 
     for (int32_t i = 0; i != ptr_vmm_alloced; i++){
-        log("\tCleaning %d: %x", i, vmm_alloced[i]);
+        qemu_log("\tCleaning %d: %x", i, vmm_alloced[i]);
         vmm_free_page(vmm_alloced[i]);
     }
-    log("[CLEANED <%d> PAGES]", ptr_vmm_alloced);
+    qemu_log("[CLEANED <%d> PAGES]", ptr_vmm_alloced);
 
     return 0;
 }

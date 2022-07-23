@@ -75,7 +75,7 @@ void io_wait(void) {
 
 
 void qemu_breakpoint()  {
-    log("BREAKPOINT!");
+    qemu_log("BREAKPOINT!");
 }
 
 

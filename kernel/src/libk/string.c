@@ -178,3 +178,29 @@ void substr(char* dest, char* source, int from, int length){
     dest[length] = 0;
 }
 
+char *strchr(const char *_s, int _c)
+{
+	while (*_s != (char)_c) {
+		if (!*_s++) {
+			return 0;
+		}
+	}
+	return (char *)_s;
+}
+
+char *strstr(const char *_haystack, const char *_needle)
+{
+	size_t needleLen;
+	if(*_needle == '\0') {
+		return (char *) _haystack;
+	}
+	needleLen = strlen(_needle);
+
+	for(;(_haystack = strchr(_haystack, *_needle))!= NULL;_haystack++) {
+		if (strncmp(_haystack, _needle, needleLen) == 0) {
+			return (char *) _haystack;
+		}
+	}
+	return NULL;
+}
+
