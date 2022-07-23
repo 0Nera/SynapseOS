@@ -55,7 +55,7 @@ void init_vbe(multiboot_info *mboot) {
         frame += PAGE_SIZE, virt += PAGE_SIZE) {
         vmm_map_page(frame, virt);
     }
-    log("VBE create_back_framebuffer");
+    qemu_log("VBE create_back_framebuffer");
 
     create_back_framebuffer();
 }
@@ -63,7 +63,7 @@ void init_vbe(multiboot_info *mboot) {
 
 void create_back_framebuffer() {
     back_framebuffer_addr = kheap_malloc(framebuffer_size);
-    log("back_framebuffer_addr = %x", back_framebuffer_addr);
+    qemu_log("back_framebuffer_addr = %x", back_framebuffer_addr);
     memset(back_framebuffer_addr, 0, framebuffer_size); //causes page fault at c0800000 when this line is placed in the end of init_vbe
 }
 
@@ -159,7 +159,7 @@ void clean_screen(){
     tty_pos_x = 0;
     tty_pos_y = -17;
 
-    log("Screan cleaned!");
+    qemu_log("Screan cleaned!");
 }
 
 
@@ -339,6 +339,9 @@ void tty_print(char *format, va_list args) {
                     break;
                 case 'c':
                     tty_putchar(va_arg(args, int));
+                    break;
+                case 'f':
+                    tty_putchar(va_arg(args, float));
                     break;
                 case 'd':
                     tty_putint(va_arg(args, int));

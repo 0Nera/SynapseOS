@@ -1,7 +1,7 @@
 #include <kernel.h>
 
 void reboot() {
-    log("REBOOT");
+    qemu_log("REBOOT");
 
     uint8_t good = 0x02;
 
@@ -13,7 +13,7 @@ void reboot() {
 
 
 void shutdown(){
-    log("SHUTDOWN");
+    qemu_log("SHUTDOWN");
     outw(0xB004, 0x2000);
     outw(0x604, 0x2000);
     outw(0x4004, 0x3400);
