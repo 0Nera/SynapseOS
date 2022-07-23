@@ -24,12 +24,11 @@ void timer_set_frequency(int32_t hz) {
 
 
 void timer_handler(struct regs *r) {
-    //log("tick: %d",timer_ticks);
-    trand(timer_ticks);
-    timer_ticks++;
-    //if (multi_task) {
-       //task_switch();  /* Переключаемся */
-    //}
+    trand(++timer_ticks);
+
+    if (multi_task) {
+        task_switch();  /* Переключаемся */
+    }
     // tty_printf("\ntimer_handler idt: %d", r->idt_index);
     //log("timer_handler idt: %d", r->idt_index);
 }
@@ -47,16 +46,3 @@ void timer_install() {
     timer_set_frequency(50); // 50 герц
     log("Timer installed");
 }
-
-void sleep(uint16_t delay)
-{
-    uint64_t current_ticks = timer_get_ticks();
-    while (1)
-    {
-        tty_printf("[%d + %d < %d] \n",current_ticks,delay, timer_get_ticks());
-        if (current_ticks + delay < timer_get_ticks()){
-            break;
-        }
-    }
-}
-
