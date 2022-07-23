@@ -11,7 +11,21 @@ uint32_t RTL8139_raw_mac[2];
 // Четыре регистра TXAD, вы должны каждый раз использовать другой для отправки пакета (например, использовать первый, второй... четвертый и обратно к первому)
 uint8_t TSAD_array[4] = {0x20, 0x24, 0x28, 0x2C};
 uint8_t TSD_array[4] = {0x10, 0x14, 0x18, 0x1C};
-
+/*
+static struct board board_tbl[] = {
+    {"RealTek", "RealTek RTL8139+", BUSTYPE_PCI, PCI_UNITCODE(0x10ec, 0x8139), 0xffffffff, 0, 0, 0x20, 0xff, RTL8139D_CAPS},
+    {"RealTek", "RealTek RTL8139C Fast Ethernet", BUSTYPE_PCI, PCI_UNITCODE(0x10ec, 0x8139), 0xffffffff, 0, 0, 0x10, 0xff, RTL8139_CAPS},
+    {"RealTek", "RealTek RTL8129 Fast Ethernet", BUSTYPE_PCI, PCI_UNITCODE(0x10ec, 0x8129), 0xffffffff, 0, 0, 0, 0, RTL8129_CAPS},
+    {"RealTek", "RealTek RTL8139 Fast Ethernet", BUSTYPE_PCI, PCI_UNITCODE(0x10ec, 0x8139), 0xffffffff, 0, 0, 0, 0, RTL8139_CAPS},
+    {"RealTek", "RealTek RTL8139B PCI",  BUSTYPE_PCI, PCI_UNITCODE(0x10ec, 0x8138), 0xffffffff, 0, 0, 0, 0, RTL8139_CAPS},
+    {"Accton", "Accton EN-1207D Fast Ethernet Adapter", BUSTYPE_PCI, PCI_UNITCODE(0x1113, 0x1211), 0xffffffff, PCI_UNITCODE(0x1113, 0x9211), 0xffffffff, 0, 0, RTL8139_CAPS},
+    {"SMC", "SMC1211TX EZCard 10/100 (RealTek RTL8139)", BUSTYPE_PCI, PCI_UNITCODE(0x1113, 0x1211), 0xffffffff, 0, 0, 0, 0, RTL8139_CAPS},
+    {"D-Link", "D-Link DFE-538TX (RTL8139)", BUSTYPE_PCI, PCI_UNITCODE(0x1186, 0x1300), 0xffffffff, 0, 0, 0, 0, RTL8139_CAPS},
+    {"LevelOne", "LevelOne FPC-0106Tx (RTL8139)", BUSTYPE_PCI, PCI_UNITCODE(0x018a, 0x0106), 0xffffffff, 0, 0, 0, 0, RTL8139_CAPS},
+    {"Compaq", "Compaq HNE-300 (RTL8139c)", BUSTYPE_PCI, PCI_UNITCODE(0x021b, 0x8139), 0xffffffff, 0, 0, 0, 0, RTL8139_CAPS},
+    {"Generic", "Generic RTL8139", BUSTYPE_PCI, 0, 0, 0, 0, 0, 0, RTL8139_CAPS},
+    {NULL,},
+};*/
 
 // Получение MAC адреса
 void RTL8139_read_mac_addr() {
@@ -48,17 +62,8 @@ void RTL8139_get_mac_addr(uint8_t src_mac_addr[6]){
 
 
 // Отправка пакета
-void RTL8139_send_packet(void *data, uint32_t len) {
-    // Копируем данные
-    void * transfer_data = kheap_malloc(len);
-    void * phys_addr = kv2p(transfer_data);
-    memcpy(transfer_data, data, len);
+void RTL8139_send_packet() {
 
-    // Отправка
-    outl(RTL8139_device.io_base + TSAD_array[RTL8139_device.tx_cur], (uint32_t)phys_addr);
-    outl(RTL8139_device.io_base + TSD_array[RTL8139_device.tx_cur++], len);
-    if(RTL8139_device.tx_cur > 3)
-        RTL8139_device.tx_cur = 0;
 }
 
 
@@ -136,6 +141,6 @@ int RTL8139_init() {
     IRQ_clear_mask(irq_num);
     log("RTL8139 installed, idt: %d, irq: %d", 32 + irq_num, irq_num);
     
-    RTL8139_send_packet("123", 4);
+
     return 1;
 }

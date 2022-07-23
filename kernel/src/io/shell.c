@@ -16,7 +16,7 @@ void shell() {
         tty_printf("%s>", current_dir);
 
         tty_setcolor(COLOR_TEXT);
-
+        log("1");
         char *cmd = keyboard_gets();
 
         if (strlen(cmd) == 0) {
@@ -47,26 +47,26 @@ void shell() {
                         "\n" 
                         );
         } else if (strlen(cmd) > 4 && strncmp(cmd, "cat ", 4) == 0) {
-            char fname[256];
+            char fname[256] = {0};
 
             char *tok = (char *)strtok(cmd, " ");
             
             tok = (char *)strtok(0, " "); // tok - имя файла
 
-            if (fname != 0) {
+            if (fname[0] == 0) {
                 cat(tok);
             } else {
                 tty_setcolor(COLOR_ERROR);
                 tty_printf("cat: incorrect argument\n");
             }
         } else if (strlen(cmd) > 3 && strncmp(cmd, "cd ", 3) == 0) {
-            char dname[256];
+            char dname[256] = {0};
             
             char *tok = (char *)strtok(cmd, " ");
             
             tok = (char *)strtok(0, " "); // tok - now is dirname
 
-            if (dname != 0) {
+            if (dname[0] != 0) {
                 cd(tok);
             } else {
                 tty_setcolor(COLOR_ERROR);
@@ -80,26 +80,26 @@ void shell() {
         } else if (strcmp(cmd, "ls") == 0) {
             initrd_list(0, 0);
         } else if (strlen(cmd) > 4 && strncmp(cmd, "sbf  ", 4) == 0) {
-            char fname[256];
+            char fname[256] = {0};
 
             char *tok = (char *)strtok(cmd, " ");
 
             tok = (char *)strtok(0, " "); // tok - имя файла
 
-            if (fname != 0) {
+            if (fname[0] == 0) {
                 sbf(tok);
             } else {
                 tty_setcolor(COLOR_ERROR);
                 tty_printf("sbf: incorrect argument\n");
             }
         } else if (strlen(cmd) > 2 && strncmp(cmd, "./", 2) == 0) {
-            char fname[256];
+            char fname[256] = {0};
 
             char *tok = (char *)strtok(cmd, "/");
 
             tok = (char *)strtok(0, "/"); // tok - имя файла
 
-            if (fname != 0) {
+            if (fname[0] == 0) {
                 char temp[256] = {0};
                 strcpy(temp, current_dir);
                 strcat(temp, tok);
@@ -110,13 +110,13 @@ void shell() {
                 tty_printf("run: incorrect argument\n");
             }
         } else {
-            char fname[256];
+            char fname[256] = {0};
 
             char *tok = (char *)strtok(cmd, "/");
 
             tok = (char *)strtok(0, "/"); // tok - имя файла
 
-            if (fname != 0) {
+            if (fname[0] == 0) {
                 char temp[256] = {0};
                 strcpy(temp, current_dir);
                 strcat(temp, tok);

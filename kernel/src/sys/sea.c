@@ -20,7 +20,7 @@ int32_t sea_validate(char *data){
 }
 
 
-void *sea_load(char *fname){
+void *sea_load(const char *fname){
     if (!vfs_exists(fname)) {
         tty_printf("app doesnt exist\n");
         return 0;
@@ -32,7 +32,7 @@ void *sea_load(char *fname){
 
     int32_t res = vfs_read(fname, 0, fsize, addr);
 
-    return res;
+    return (void*)res;
 }
 
 int32_t sea_run(const char *name/*, char **argv, char **env __attribute__((unused)), int32_t argc*/) {

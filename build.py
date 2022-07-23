@@ -1,5 +1,6 @@
 import os, shutil, sys, tarfile, time, glob
 
+
 _CC = "clang -target i386-pc-none-elf"
 LD = "ld.lld"
 CFLAGS = "-w -mno-sse -mno-avx -O0 -ffreestanding -I kernel/include/ -c"
@@ -9,21 +10,24 @@ CC = f"{_CC} {CFLAGS}"
 SRC_TARGETS = []
 BIN_TARGETS = []
 
+
 def warn(message):
     print(f"[\x1b[33;1mWARNING\x1b[0m]: {message}")
+
 
 def compile(binary, source, cur="--", total="--", warnings=False):
     print(f"[\x1b[32;1mBUILD\x1b[0m]~[{cur}/{total}]: Compiling: {source}")
     os.system(f"{CC} -o ./{binary} {source}")
 
+
 def compile_kernel(warnings=False):
     print("Compiling...")
     if not (sys.platform == "linux" or sys.platform == "linux2"): 
-        shutil.rmtree(".\\bin\\kernel\\", ignore_errors=True)
+        shutil.rmtree("./bin/", ignore_errors=True)
         os.mkdir("bin")
         os.mkdir("bin\\kernel")
     else:
-        shutil.rmtree("./bin/kernel/", ignore_errors=True)
+        shutil.rmtree("./bin/", ignore_errors=True)
         if not (os.path.isdir("bin")):
             os.mkdir("bin")
         os.mkdir("bin/kernel")
@@ -78,6 +82,8 @@ def build_kernel(warnings=False):
         compile_kernel(warnings)
         link_kernel()
         print(f"Errors: {x}")
+        if x > 4:
+            exit(-1)
     print(f"Сборка ядра заняла: {(time.time() - start_time):2f} сек.")
 
 

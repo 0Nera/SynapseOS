@@ -63,7 +63,7 @@ uint32_t get_secondary_bus(pci_dev_t dev) {
 }
 
 
-void checkAllBuses(void) {
+void checkAllBuses() {
     for (uint16_t bus = 0; bus < 256; bus++) {
         for (uint8_t device = 0; device < 32; device++) {
             for (uint8_t function = 1; function < 8; function++) {

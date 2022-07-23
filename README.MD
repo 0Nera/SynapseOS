@@ -1,7 +1,8 @@
-# SynapseOS 
+# О проекте
+<!-- -->
+
 ![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![CMake](https://img.shields.io/badge/CMake-%23008FBA.svg?style=for-the-badge&logo=cmake&logoColor=white)
 
-# О проекте
 
 SynapseOS - простая x86 операционная система на языке C с хорошо документированным ядром.
 ![SynapseOS](https://raw.githubusercontent.com/0Nera/SynapseOS/master/screenshots/test.png "SynapseOS")
@@ -26,53 +27,88 @@ SynapseOS - простая x86 операционная система на яз
 
 ## Сборка и запуск
 
-[Linux Debian/Ubuntu]
+### Универсальное рещение
+
+```bash
+python3 build.py
+```
+
+### [Linux Debian/Ubuntu]
 
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black) ![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white) ![Debian](https://img.shields.io/badge/Debian-D70A53?style=for-the-badge&logo=debian&logoColor=white)
 
 1. Установить ПО для сборки
 
-`sudo apt-get install python3 clang llvm grub-pc-bin xorriso mtools llvm lld git `
+    ``` bash
+    sudo apt-get install python3 clang llvm grub-pc-bin xorriso mtools lld git
+    ```
 
 2. Установить ПО для запуска ОС
 
-`sudo apt-get install libvirt-daemon libvirt-clients bridge-utils virt-manager qemu-kvm qemu virt-manager`
+    ``` bash
+    sudo apt-get install libvirt-daemon libvirt-clients bridge-utils virt-manager qemu-kvm qemu virt-manager
+    ```
 
-3. Установить Git, для импорта 
+3. Скачиваем репозиторий с гитхаба (или самому через браузер)
 
-`sudo apt-get install git`
+    ```bash
+    git clone https://github.com/0Nera/SynapseOS.git
+    ```
 
-4. Скачиваем репозиторий с гитхаба (или самому через браузер)
+4. Переходим в проект с папкой
 
-`git clone https://github.com/0Nera/SynapseOS.git`
+    ```bash
+    cd SynapseOS
+    ```
 
-5. Переходим в проект с папкой
+5. Запускаем компиляцию
 
-`cd SynapseOS`
+    Простая компиляция и запуск:
+    ```bash
+    python3 build.py
+    ```
 
-6. Запускаем компиляцию
+    Компиляция, без запуска:
+    ```bash
+    python3 build.py kernel apps iso
+    ```
 
-Простая компиляция и запуск - `python3 build.py`
+    Компиляция, без запуска, без приложений:
+    ```bash
+    python3 build.py kernel apps iso
+    ```
 
-Компиляция, без запуска - `python3 build.py kernel apps iso`
+### [Windows]
 
-Компиляция, без запуска, без приложений - `python3 build.py kernel apps iso`
+Установите WSL или виртуальную машину с Ubuntu не ниже 18.
+Соберите ядро по инструкции для Linux.
+В будущем, по мере перехода на Limine, сборка упростится в разы.
 
-[Другие ОС]
+### [Другие ОС]
 
 Когда-нибудь будет информация...
 
-# Запуск в QEMU
+## Запуск в QEMU
 
 Простой запуск:
 
-`qemu-system-i386 -name SynapseOS -cdrom SynapseOS.iso`
+```bash
+qemu-system-i386 -name SynapseOS -cdrom SynapseOS.iso
+```
 
 С подключением устройств (Спикер, Сетевая карта RTL8139, откладочным портом в лог):
 
-`qemu-system-i386 -name SynapseOS -soundhw pcspk -m 16 -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 -cdrom SynapseOS.iso -serial file:Qemu.log`
+```bash
+qemu-system-i386 -name SynapseOS -soundhw pcspk -m 16 -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 -cdrom SynapseOS.iso -serial file:Qemu.log
+```
 
-# Минимальные системные требования:
+Стандартный:
+
+```bash
+python3 build.py run
+```
+
+## Минимальные системные требования
 
 - 5 мегабайт оперативной памяти
 - 4 мегабайта видеопамяти

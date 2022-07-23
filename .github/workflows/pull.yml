@@ -1,16 +1,16 @@
-name: SynapseOS Buildbot
+name: SynapseOS Pull Requests
 
 # Контроль событий при которых будет сборка
 on:
   # В нашем случае это push в ветку master
-  push:
-    tags:
-        - "v*"
-    branches: [ "master" ]
-  #pull_request:
+  #push:
   #  tags:
   #      - "v*"
   #  branches: [ "master" ]
+  pull_request:
+    tags:
+        - "v*"
+    branches: [ "master" ]
   # Позволяет запускать этот рабочий процесс вручную на вкладке Actions
   workflow_dispatch:
 
@@ -39,23 +39,3 @@ jobs:
 
       - name: Building  iso
         run: python3 build.py iso isol
-
-      # Публикация релиза
-      - name: Publish
-        run: |
-          echo "done!"
-          ls isodir/boot/
-          ls
-
-      - uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest-unstable"
-          prerelease: true
-          title: "Автосборка, нестабильный релиз"
-          files: |
-            LICENSE
-            SynapseOS.iso
-            SynapseOS-limine.iso
-            isodir/boot/initrd.tar
-            isodir/boot/kernel.elf
