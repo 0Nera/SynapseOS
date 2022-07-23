@@ -1,4 +1,5 @@
 import os, shutil, sys, tarfile, time, glob
+from reprlib import recursive_repr
 
 _CC = "clang -target i386-pc-none-elf"
 LD = "ld.lld"
@@ -88,6 +89,8 @@ def build_apps():
 
     shutil.rmtree("../initrd/apps", ignore_errors=True)
     shutil.copytree("../bin/apps", "../initrd/apps")
+    shutil.rmtree("../initrd/res", ignore_errors=True)
+    shutil.copytree("res", "../initrd/res")
 
     os.chdir("../initrd")
         
@@ -136,7 +139,7 @@ def run_qemu():
     else:
         os.system("qemu-img create -f raw ata.vhd 32M")
     
-    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32" \
+    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -device sb16 -m 32" \
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
         " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log"
         
@@ -148,7 +151,7 @@ def run_kvm():
     if not os.path.exists("ata.vhd"):
         os.system("qemu-img create -f raw ata.vhd 32M")
     
-    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32" \
+    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -device sb16 -m 32" \
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
         " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log -accel kvm"
         
@@ -161,7 +164,7 @@ def run_qemu_debug():
     else:
         os.system("qemu-img create -f raw ata.vhd 32M")
     
-    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32" \
+    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -device sb16 -m 32" \
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
         " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log" 
     print("gdb kernel.elf -ex target remote localhost:1234")

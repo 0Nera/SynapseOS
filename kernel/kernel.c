@@ -5,7 +5,8 @@
 */
 
 #include <kernel.h>
-
+#include <drivers/ata.h>
+#include <drivers/experimental/sb16/sb16.h>
 
 int32_t os_mode = 1; // 0 - мало ОЗУ, 1 - обычный режим, 2 - режим повышенной производительности, 3 - сервер
 
@@ -73,6 +74,31 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
 
     init_task_manager();
     //create_STFS(0);
+
+    sb16_reset();
+    sb16_init();
+
+    // Закомментируйте отсюда...
+    
+    // Play Pikachu Sound!
+    char* fname = "/initrd/res/Pikachu.wav";
+    if(vfs_exists(fname)) {
+        int filesize = vfs_get_size(fname);
+        tty_printf("Pikachu.wav filesize: %d\n", filesize);
+        
+        char *sound = kheap_malloc(filesize);
+        vfs_read(fname, 0, filesize, sound);
+        tty_printf("First 4 bytes: %c, %c, %c, %c\n", sound[0], sound[1], sound[2], sound[3]);
+        int address = (void*)sound;
+        tty_printf("Address of the data: %x\n", address);
+
+        _sb16_play(44100, ((address&0x00FF00)>>8)|(address&0x0000FF), (address&0xFF0000)>>16);
+        
+        kheap_free(sound);
+        
+        // До этой строки если хотите выключить звук 
+    }
+
     shell();                                // Активация терминала
 
 
