@@ -31,9 +31,20 @@ void shell() {
 
         if (strcmp(cmd, "about") == 0) {
             tty_printf("SynapseOS is a simple x86 C operating system with a well-documented kernel.");
+        } else if (strcmp(cmd, "reboot") == 0) {
+            tty_printf("REBOOT NOW!\n");
+            sleep(10);
+            reboot();
+        } else if (strcmp(cmd, "shutdown") == 0) {
+            tty_printf("SHUTDOWN NOW!\n");
+            sleep(10);
+            shutdown();
+        } else if (strcmp(cmd, "cls") == 0) {
+            clean_screen();
         } else if (strcmp(cmd, "help") == 0) {
             tty_printf("Commands:\n" \
                         "\t\t->help                |get list of commands\n" \
+                        "\t\t->cls                 |clean screen\n" \
                         "\t\t->cat   <filename>    |open file to read\n" \
                         "\t\t->cd    <folder>      |open folder\n" \
                         "\t\t->./<file>            |run programm in current folder\n" \
@@ -41,6 +52,8 @@ void shell() {
                         "\t\t->ls                  |list of files\n" \
                         "\t\t->sysinfo             |information about system\n" \
                         "\t\t->pcilist             |list of pci devices\n" \
+                        "\t\t->reboot              |reboot device\n" \
+                        "\t\t->shutdown            |shutdown device\n" \
                         "\n" 
                         );
         } else if (strlen(cmd) > 4 && strncmp(cmd, "cat ", 4) == 0) {

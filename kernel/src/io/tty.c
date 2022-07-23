@@ -5,7 +5,6 @@
 
 
 #include <kernel.h>
-
 uint8_t *framebuffer_addr;
 uint32_t framebuffer_pitch;
 uint32_t framebuffer_bpp;
@@ -63,7 +62,6 @@ void init_vbe(multiboot_info *mboot) {
 
 
 void create_back_framebuffer() {
-    log("create_back_framebuffer");
     back_framebuffer_addr = kheap_malloc(framebuffer_size);
     log("back_framebuffer_addr = %x", back_framebuffer_addr);
     memset(back_framebuffer_addr, 0, framebuffer_size); //causes page fault at c0800000 when this line is placed in the end of init_vbe
@@ -88,6 +86,7 @@ void tty_init(struct multiboot_info *mboot_info) {
     framebuffer_height = svga_mode->screen_height;
     framebuffer_size = framebuffer_height * framebuffer_pitch;
     back_framebuffer_addr = framebuffer_addr;
+    tty_printf("[Display] %dx%d@%d\n",framebuffer_width,framebuffer_height,framebuffer_pitch);
 }
 
 
@@ -132,6 +131,21 @@ void set_pixel(int32_t x, int32_t y, uint32_t color) {
 }
 
 
+void setPosX(int32_t x){
+    tty_pos_x = x;
+}
+
+void setPosY(int32_t y){
+    tty_pos_y = y;
+}
+
+uint32_t getWidthScreen(){
+    return framebuffer_width;
+}
+
+uint32_t getHeightScreen(){
+    return framebuffer_height;
+}
 /*
     clean_screen - Заливка экрана консоли черным цветом
 */
@@ -161,6 +175,30 @@ void set_line(int32_t x, int32_t y, int32_t xe, int32_t ye, uint32_t color){
 /*
     tty_putchar - вывод одного символа
 */
+
+void tty_putchar_color(char c,uint32_t txColor,uint32_t bgColor) {
+
+    if ((tty_pos_x + 8) >= (int)VESA_WIDTH || c == '\n') {
+        tty_line_fill[tty_pos_y] = tty_pos_x;
+        tty_pos_x = 0;
+
+        if ((tty_pos_y + 17) >= (int)VESA_HEIGHT) {
+            tty_scroll();
+        } else {
+            tty_pos_y += 17;
+        }
+    } else {
+
+        if ((tty_pos_y + 17) >= (int)VESA_HEIGHT) {
+            tty_scroll();
+        }
+        draw_vga_character(c, tty_pos_x, tty_pos_y, txColor, bgColor, 1);
+        tty_pos_x += 8;
+    }
+}
+
+
+
 void tty_putchar(char c) {
     
     if ((tty_pos_x + 8) >= (int)VESA_WIDTH || c == '\n') { 
@@ -220,7 +258,11 @@ void tty_puts(const char c[]) {
     }
 }
 
-
+void tty_puts_color(const char c[],uint32_t txColor,uint32_t bgColor) {
+    for (size_t i = 0; i < strlen(c); i++) {
+        tty_putchar_color(c[i],txColor,bgColor);
+    }
+}
 
 
 /*

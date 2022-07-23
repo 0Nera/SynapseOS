@@ -159,8 +159,22 @@ char *strtok(char *s, const char *delim) {
     return token;
 }
 
+char *strncpy(char *dest, const char *src, size_t n){
+    size_t i;
+    for (i = 0; i < n && src[i] != '\0'; i++)
+        dest[i] = src[i];
+    for ( ; i < n; i++)
+        dest[i] = '\0';
+    return dest;
+}
 
 char *strcat(char *s, const char *t) {
     strcpy(s + strlen(s), t);
     return s;
 }
+
+void substr(char* dest, char* source, int from, int length){
+    strncpy(dest, source+from, length);
+    dest[length] = 0;
+}
+

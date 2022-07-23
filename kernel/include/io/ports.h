@@ -32,12 +32,10 @@ uint8_t inb(uint16_t port); // Чтение байта из порта
 uint16_t ins(uint16_t _port);
 void insl(uint16_t reg, uint32_t *buffer, int32_t quads);
 void outsl(uint16_t reg, uint32_t *buffer, int32_t quads);
-void outl(uint16_t port, uint32_t val);
 int32_t com1_is_transmit_empty();
 int is_com_port(int port);
 void outb(uint16_t port, uint8_t  val); // Запись байта в порт
 void com1_write_char(char a);
 void qemu_puts(char log_data[]);
 void qemu_printf(char *text, ...);
-void reboot();
 void io_wait();
