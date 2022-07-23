@@ -26,10 +26,10 @@
 #include <drivers/time.h>
 #include <drivers/net.h>
 
+#include <io/tui.h>
 #include <io/tty.h>
 #include <io/vgafnt.h>
 #include <io/ports.h>
-#include <io/tui.h>
 
 #include <sys/system.h>
 #include <sys/gdt.h>
@@ -37,8 +37,6 @@
 #include <sys/tss.h>
 #include <sys/syscalls.h>
 #include <sys/elf.h>
-
-
 
 #define VERSION_MAJOR   0       // Версия ядра
 #define VERSION_MINOR   2       // Пре-релиз 
