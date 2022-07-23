@@ -63,6 +63,7 @@ void init_vbe(multiboot_info *mboot) {
 
 
 void create_back_framebuffer() {
+    log("create_back_framebuffer");
     back_framebuffer_addr = kheap_malloc(framebuffer_size);
     log("back_framebuffer_addr = %x", back_framebuffer_addr);
     memset(back_framebuffer_addr, 0, framebuffer_size); //causes page fault at c0800000 when this line is placed in the end of init_vbe

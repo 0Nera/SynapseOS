@@ -71,3 +71,5 @@ int32_t register_interrupt_handler(uint32_t idt_index, interrupt_handler_t handl
 
 // Настройка idt
 void idt_init();
+void IRQ_clear_mask(unsigned char IRQline);
+void outs(uint16_t port, uint16_t data);

@@ -3,7 +3,7 @@ import os, shutil, sys, tarfile, time, glob
 
 _CC = "clang -target i386-pc-none-elf"
 LD = "ld.lld"
-CFLAGS = "-w -mno-sse -mno-avx -O0 -ffreestanding -I kernel/include/ -c"
+CFLAGS = "-mno-sse -mno-avx -O0 -ffreestanding -I kernel/include/ -c"
 
 CC = f"{_CC} {CFLAGS}"
 
