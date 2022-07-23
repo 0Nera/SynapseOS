@@ -23,7 +23,7 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
         VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH,    // Версия ядра 
         __TIMESTAMP__                                   // Время окончания компиляции ядра
         );
-    
+
     // Проверка, является ли сборка дистрибутивом
     if (isDistr) {
         //Вывод информации о дистрибутиве
@@ -73,7 +73,7 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
 
     init_task_manager();
     //create_STFS(0);
-
+    tui();
     shell();                                // Активация терминала
 
 

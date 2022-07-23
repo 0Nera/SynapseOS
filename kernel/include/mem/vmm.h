@@ -91,5 +91,5 @@ void vmm_free_page(virtual_addr_t vaddr);
 void vmm_map_page(physical_addres_t paddr, virtual_addr_t vaddr);
 virtual_addr_t vmm_temp_map_page(physical_addres_t paddr);
 void vmm_switch_page_directory(page_directory *page_dir_phys_addr);
-
+uint32_t kv2p(void *a);
 void vmm_test();
