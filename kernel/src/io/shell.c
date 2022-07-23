@@ -1,6 +1,6 @@
 #include <kernel.h>
 #include <libk/string.h>
-#include <io/tui.h>
+
 
 char current_dir[256] = "/initrd/apps/";
 
@@ -16,7 +16,7 @@ void shell() {
         tty_printf("%s>", current_dir);
 
         tty_setcolor(COLOR_TEXT);
-
+        log("1");
         char *cmd = keyboard_gets();
 
         if (strlen(cmd) == 0) {
@@ -31,12 +31,20 @@ void shell() {
 
         if (strcmp(cmd, "about") == 0) {
             tty_printf("SynapseOS is a simple x86 C operating system with a well-documented kernel.");
-        } else if (strcmp(cmd,"tui") == 0){
-            tty_printf("TUI Demo by pimnik98");
-            tui();
+        } else if (strcmp(cmd, "reboot") == 0) {
+            tty_printf("REBOOT NOW!\n");
+            sleep(10);
+            reboot();
+        } else if (strcmp(cmd, "shutdown") == 0) {
+            tty_printf("SHUTDOWN NOW!\n");
+            sleep(10);
+            shutdown();
+        } else if (strcmp(cmd, "cls") == 0) {
+            clean_screen();
         } else if (strcmp(cmd, "help") == 0) {
             tty_printf("Commands:\n" \
                         "\t\t->help                |get list of commands\n" \
+                        "\t\t->cls                 |clean screen\n" \
                         "\t\t->cat   <filename>    |open file to read\n" \
                         "\t\t->cd    <folder>      |open folder\n" \
                         "\t\t->./<file>            |run programm in current folder\n" \
@@ -44,29 +52,31 @@ void shell() {
                         "\t\t->ls                  |list of files\n" \
                         "\t\t->sysinfo             |information about system\n" \
                         "\t\t->pcilist             |list of pci devices\n" \
+                        "\t\t->reboot              |reboot device\n" \
+                        "\t\t->shutdown            |shutdown device\n" \
                         "\n" 
                         );
         } else if (strlen(cmd) > 4 && strncmp(cmd, "cat ", 4) == 0) {
-            char fname[256];
+            char fname[256] = {0};
 
             char *tok = (char *)strtok(cmd, " ");
             
             tok = (char *)strtok(0, " "); // tok - имя файла
 
-            if (fname != 0) {
+            if (fname[0] == 0) {
                 cat(tok);
             } else {
                 tty_setcolor(COLOR_ERROR);
                 tty_printf("cat: incorrect argument\n");
             }
         } else if (strlen(cmd) > 3 && strncmp(cmd, "cd ", 3) == 0) {
-            char dname[256];
+            char dname[256] = {0};
             
             char *tok = (char *)strtok(cmd, " ");
             
             tok = (char *)strtok(0, " "); // tok - now is dirname
 
-            if (dname != 0) {
+            if (dname[0] != 0) {
                 cd(tok);
             } else {
                 tty_setcolor(COLOR_ERROR);
@@ -80,26 +90,26 @@ void shell() {
         } else if (strcmp(cmd, "ls") == 0) {
             initrd_list(0, 0);
         } else if (strlen(cmd) > 4 && strncmp(cmd, "sbf  ", 4) == 0) {
-            char fname[256];
+            char fname[256] = {0};
 
             char *tok = (char *)strtok(cmd, " ");
 
             tok = (char *)strtok(0, " "); // tok - имя файла
 
-            if (fname != 0) {
+            if (fname[0] == 0) {
                 sbf(tok);
             } else {
                 tty_setcolor(COLOR_ERROR);
                 tty_printf("sbf: incorrect argument\n");
             }
         } else if (strlen(cmd) > 2 && strncmp(cmd, "./", 2) == 0) {
-            char fname[256];
+            char fname[256] = {0};
 
             char *tok = (char *)strtok(cmd, "/");
 
             tok = (char *)strtok(0, "/"); // tok - имя файла
 
-            if (fname != 0) {
+            if (fname[0] == 0) {
                 char temp[256] = {0};
                 strcpy(temp, current_dir);
                 strcat(temp, tok);
@@ -110,13 +120,13 @@ void shell() {
                 tty_printf("run: incorrect argument\n");
             }
         } else {
-            char fname[256];
+            char fname[256] = {0};
 
             char *tok = (char *)strtok(cmd, "/");
 
             tok = (char *)strtok(0, "/"); // tok - имя файла
 
-            if (fname != 0) {
+            if (fname[0] == 0) {
                 char temp[256] = {0};
                 strcpy(temp, current_dir);
                 strcat(temp, tok);

@@ -1,218 +1,494 @@
- /*
-    Автор: Пиминов Никита. Распространяется по лицензии GNU GPL 3.0 (pimnik98)
-    Имя файла:  tui.c
-    Описание:   Программа для теста TUI
-*/
 #include <kernel.h>
-#include <io/tui.h>
 
-void print_char(char ch)
-{
-  vga_buffer[vga_index_db] = vga_entry(ch, g_fore_color, g_back_color);
-  vga_index_db++;
-}
-void print_string(char *str)
-{
-  uint32_t index = 0;
-  while(str[index]){
-    print_char(str[index]);
-    index++;
-  }
-}
 
-uint32_t digit_count(uint8_t num)
-{
-    uint32_t count = 0;
-    if(num == 0)
-        return 1;
-    while(num > 0){
-        count++;
-        num = num/10;
+int32_t DV_W = 1024;
+int32_t DV_H = 768;
+int32_t bgColor = VESA_BLUE;
+int32_t txColor = VESA_WHITE;
+int32_t TUIMode = 0; // Режим коррекции отображения на разных экранах
+int32_t typeDisplay = 0;
+char* Display;
+
+void testDisplay(int w, int h){
+    int32_t pixels = w*h;
+    int32_t tDsize = w/h;
+    // Типы дисплеев:
+    // Unknown  - 0
+    // 4:3      - 1
+    // 16:9     - 2
+    // 16:10    - 3
+    // 5:3      - 4
+    // 5:4      - 5
+    // 5:6      - 6
+    // 22:15    - 7
+    // 11:9     - 8
+    // 8:3      - 9
+    // 15:9     - 10
+    // 2:1      - 11
+    // 3:2      - 12
+    // 25:16    - 13
+    // 19:10    - 14
+    // 21:9     - 15
+    // 25:16    - 16
+    // 43:18    - 17
+
+
+    switch(pixels){
+        case 76800:{
+            // 320×240 (4:3)
+            Display = "QVGA";
+            typeDisplay = 1;
+            break;
+        }
+        case 84480: {
+            // 352×240 (22:15)
+            Display = "SIF(MPEG1 SIF)";
+            typeDisplay = 7;
+            break;
+        }
+        case 101376: {
+            // 352×288 (11:9)
+            Display = "CIF(MPEG1 VideoCD)";
+            typeDisplay = 8;
+            break;
+        }
+        case 96000: {
+            // 400×240 (5:3)
+            Display = "WQVGA";
+            typeDisplay = 4;
+            break;
+        }
+        case 276480: {
+            // 480×576 (5:6 - 12:10)
+            Display = "[MPEG2 SV-CD]";
+            typeDisplay = 6;
+            break;
+        }
+        case 153600: {
+            // 640×240 (8:3) или 320×480 (2:3)
+            Display = "HVGA";
+            typeDisplay = 9;
+            break;
+        }
+        case 230400: {
+            // 640×360 (16:9)
+            Display = "nHD";
+            typeDisplay = 2;
+            break;
+        }
+        case 307200: {
+            // 640×480 (4:3 - 12:9)
+            Display = "VGA";
+            typeDisplay = 1;
+            break;
+        }
+        case 384000: {
+            // 800×480 (5:3)
+            Display = "WVGA";
+            typeDisplay = 4;
+            break;
+        }
+        case 480000: {
+            // 800×600 (4:3)
+            Display = "SVGA";
+            typeDisplay = 1;
+            break;
+        }
+        case 409920: {
+            // 854×480 (16:9)
+            Display = "FWVGA";
+            typeDisplay = 2;
+            break;
+        }
+        case 518400: {
+            // 960×540 (16:9)
+            Display = "qHD";
+            typeDisplay = 2;
+            break;
+        }
+        case 614400: {
+            // 1024×600 (128:75 - 15:9)
+            Display = "WSVGA";
+            typeDisplay = 10;
+            break;
+        }
+        case 786432: {
+            // 1024×768 (4:3)
+            Display = "XGA";
+            typeDisplay = 1;
+            break;
+        }
+        case 995328: {
+            // 1152×864 (4:3)
+            Display = "XGA+";
+            typeDisplay = 1;
+            break;
+        }
+        case 720000: {
+            // 1200×600 (2:1)
+            Display = "WXVGA";
+            typeDisplay = 11;
+            break;
+        }
+        case 921600: {
+            // 1280×720 (16:9)
+            Display = "HDV 720p (HD ready) (720p)";
+            typeDisplay = 2;
+            break;
+        }
+        case 983040: {
+            // 1280×768 (5:3)
+            Display = "WXGA";
+            typeDisplay = 4;
+            break;
+        }
+        case 1049088: {
+            // 1366×768 (16:9)
+            Display = "HD";
+            typeDisplay = 2;
+            break;
+        }
+        case 1310720: {
+            // 1280×1024 (5:4)
+            Display = "SXGA";
+            typeDisplay = 5;
+            break;
+        }
+        case 1622016: {
+            // 1408×1152 (11:9)
+            Display = "16CIF";
+            typeDisplay = 8;
+            break;
+        }
+        case 1296000: {
+            // 1440×900 (8:5 - 16:10)
+            Display = "WXGA+";
+            typeDisplay = 3;
+            break;
+        }
+        case 1470000: {
+            // 1400×1050 (4:3)
+            Display = "SXGA+";
+            typeDisplay = 1;
+            break;
+        }
+        case 15120000: {
+            // 1400×10800 (4:3)
+            Display = "HDV 1080i ";
+            typeDisplay = 1;
+            break;
+        }
+        case 1474560: {
+            // 1536×960 (8:5 - 16:10)
+            Display = "XJXGA";
+            typeDisplay = 3;
+            break;
+        }
+        case 1572864: {
+            // 1536×1024 (3:2)
+            Display = "WSXGA (x)";
+            typeDisplay = 12;
+            break;
+        }
+        case 1440000: {
+            // 1600×900 (16:9)
+            Display = "WXGA++";
+            typeDisplay = 2;
+            break;
+        }
+        case 1638400: {
+            // 1600×1024 (25:16)
+            Display = "WSXGA";
+            typeDisplay = 13;
+            break;
+        }
+        case 1920000: {
+            // 1600×1200 (4:3)
+            Display = "UXGA";
+            typeDisplay = 1;
+            break;
+        }
+        case 1764000: {
+            // 1680×1050 (16:10)
+            Display = "WSXGA+";
+            typeDisplay = 3;
+            break;
+        }
+        case 2073600: {
+            // 1920×1080 (16:9)
+            Display = "Full HD (FHD)";
+            typeDisplay = 2;
+            break;
+        }
+        case 2304000: {
+            // 1920×1200 (8:5 - 16:10)
+            Display = "WUXGA";
+            typeDisplay = 3;
+            break;
+        }
+        case 2111840: {
+            // 2048×1080 (19:10)
+            Display = "2K DCI (Cinema 2K)";
+            typeDisplay = 14;
+            break;
+        }
+        case 2359296: {
+            // 2048×1152 (16:9)
+            Display = "QWXGA";
+            typeDisplay = 2;
+            break;
+        }
+        case 2777088: {
+            // 2048×1536 (4:3)
+            Display = "QXGA";
+            typeDisplay = 1;
+            break;
+        }
+        case 2764800: {
+            // 2560×1080 (64:27 (21:9))
+            Display = "UWHD";
+            typeDisplay = 15;
+            break;
+        }
+        case 3686400: {
+            // 2560×1440 (16:9)
+            Display = "WQXGA (WQHD) (QHD)";
+            typeDisplay = 2;
+            break;
+        }
+        case 4096000: {
+            // 2560×1600 (8:5 - 16:10)
+            Display = "WQXGA";
+            typeDisplay = 3;
+            break;
+        }
+        case 5242880: {
+            // 2560×2048 (5:4)
+            Display = "QSXGA";
+            typeDisplay = 5;
+            break;
+        }
+        case 5760000: {
+            // 3200×1800 (16:9)
+            Display = "WXGA+";
+            typeDisplay = 2;
+            break;
+        }
+        case 6553600: {
+            // 3200×2048 (25:16)
+            Display = "WQSXGA";
+
+            typeDisplay = 16;
+            break;
+        }
+        case 7680000: {
+            // 3200×2400 (4:3)
+            Display = "QUXGA";
+            typeDisplay = 1;
+            break;
+        }
+        case 4953600: {
+            // 3440×1440 (43:18)
+            Display = "Ultra WQHD";
+            typeDisplay = 17;
+            break;
+        }
+        case 4838400: {
+            // 3840×2400 (8:5 - 16:10)
+            Display = "WQUXGA";
+            typeDisplay = 3;
+            break;
+        }
+        case 829440: {
+            // 3840×2160 (16:9)
+            Display = "4K Ultra HD 1 (4K UHD-1)";
+            typeDisplay = 2;
+            break;
+        }
+        case 8847360: {
+            // 4096×2160 (19:10)
+            Display = "4K DCI (Cinema 4K)";
+            typeDisplay = 14;
+            break;
+        }
+        case 14745600: {
+            // 5120×2880 (16:9)
+            Display = "5K / UHD +";
+            typeDisplay = 2;
+            break;
+        }
+        case 20971520: {
+            // 5120×4096 (5:4)
+            Display = "HSXGA";
+            typeDisplay = 5;
+            break;
+        }
+        case 26214400: {
+            // 6400×4096 (25:16)
+            Display = "WHSXGA";
+            typeDisplay = 13;
+            break;
+        }
+        case 30720000: {
+            // 6400×4800 (4:3)
+            Display = "HUXGA";
+            typeDisplay = 1;
+            break;
+        }
+        case 33177600: {
+            // 7680×4320 (16:9)
+            Display = "8K Ultra HD 2 (8K UHD-2)";
+            typeDisplay = 2;
+            break;
+        }
+        case 36864000: {
+            // 7680×4800 (8:5, 16:10)
+            Display = "WHUXGA";
+            typeDisplay = 3;
+            break;
+        }
+        case 58982400: {
+            // 10240×5760 (16:9)
+            Display = "10k";
+            typeDisplay = 2;
+            break;
+        }
+        case 74649600: {
+            // 11520×6480 (16:9)
+            Display = "12K";
+            typeDisplay = 2;
+            break;
+        }
+        default: {
+            Display = "Unknown";
+            typeDisplay = 0;
+            break;
+        }
     }
-    return count;
+    //tty_printf("%d",framebuffer_width);
+    log("[testDisplay] %dx%d - %d pixels | %d | %s",w,h,pixels,typeDisplay,Display);
+    tty_printf("[testDisplay] %dx%d - %d pixels | %d | %s \n",w,h,pixels,typeDisplay,Display);
 }
 
-void print_color_string(char *str, uint8_t fore_color, uint8_t back_color)
-{
-  uint32_t index = 0;
-  uint8_t fc, bc;
-  fc = g_fore_color;
-  bc = g_back_color;
-  g_fore_color = fore_color;
-  g_back_color = back_color;
-  while(str[index]){
-    print_char(str[index]);
-    index++;
-  }
-  g_fore_color = fc;
-  g_back_color = bc;
-}
-
-void print_int(uint8_t num)
-{
-  char str_num[digit_count(num)+1];
-  itoa(num, str_num);
-  print_string(str_num);
-}
-
-uint16_t get_box_draw_char(uint8_t chn, uint8_t fore_color, uint8_t back_color)
-{
-  uint16_t ax = 0;
-  uint8_t ah = 0;
-
-  ah = back_color;
-  ah <<= 4;
-  ah |= fore_color;
-  ax = ah;
-  ax <<= 8;
-  ax |= chn;
-
-  return ax;
-}
-
-void clear_vga_buffer(uint16_t **buffer, uint8_t fore_color, uint8_t back_color)
-{
-  uint32_t i;
-  for(i = 0; i < BUFSIZE; i++){
-    (*buffer)[i] = vga_entry(NULL, fore_color, back_color);
-  }
-  next_line_index = 1;
-  vga_index_db = 0;
-}
-
-void gotoxy(uint16_t x, uint16_t y)
-{
-  vga_index_db = x_end*y;
-  vga_index_db += x;
-}
-
-void draw_generic_box(uint16_t x, uint16_t y,
-                      uint16_t width, uint16_t height,
-                      uint8_t fore_color, uint8_t back_color,
-                      uint8_t topleft_ch,
-                      uint8_t topbottom_ch,
-                      uint8_t topright_ch,
-                      uint8_t leftrightside_ch,
-                      uint8_t bottomleft_ch,
-                      uint8_t bottomright_ch)
-{
-  uint32_t i;
-
-  //increase vga_index_db to x & y location
-  vga_index_db = x_end*y;
-  vga_index_db += x;
-
-  //draw top-left box character
-  vga_buffer[vga_index_db] = get_box_draw_char(topleft_ch, fore_color, back_color);
-
-  vga_index_db++;
-  //draw box top characters, -
-  for(i = 0; i < width; i++){
-    vga_buffer[vga_index_db] = get_box_draw_char(topbottom_ch, fore_color, back_color);
-    vga_index_db++;
-  }
-
-  //draw top-right box character
-  vga_buffer[vga_index_db] = get_box_draw_char(topright_ch, fore_color, back_color);
-
-  // increase y, for drawing next line
-  y++;
-  // goto next line
-  vga_index_db = x_end*y;
-  vga_index_db += x;
-
-  //draw left and right sides of box
-  for(i = 0; i < height; i++){
-    //draw left side character
-    vga_buffer[vga_index_db] = get_box_draw_char(leftrightside_ch, fore_color, back_color);
-    vga_index_db++;
-    //increase vga_index_db to the width of box
-    vga_index_db += width;
-    //draw right side character
-    vga_buffer[vga_index_db] = get_box_draw_char(leftrightside_ch, fore_color, back_color);
-    //goto next line
-    y++;
-    vga_index_db = x_end*y;
-    vga_index_db += x;
-  }
-  //draw bottom-left box character
-  vga_buffer[vga_index_db] = get_box_draw_char(bottomleft_ch, fore_color, back_color);
-  vga_index_db++;
-  //draw box bottom characters, -
-  for(i = 0; i < width; i++){
-    vga_buffer[vga_index_db] = get_box_draw_char(topbottom_ch, fore_color, back_color);
-    vga_index_db++;
-  }
-  //draw bottom-right box character
-  vga_buffer[vga_index_db] = get_box_draw_char(bottomright_ch, fore_color, back_color);
-
-  vga_index_db = 0;
-}
-
-void draw_box(uint8_t boxtype,
-              uint16_t x, uint16_t y,
-              uint16_t width, uint16_t height,
-              uint8_t fore_color, uint8_t back_color)
-{
-  switch(boxtype){
-    case BOX_SINGLELINE :
-      draw_generic_box(x, y, width, height,
-                      fore_color, back_color,
-                      218, 196, 191, 179, 192, 217);
-      break;
-
-    case BOX_DOUBLELINE :
-      draw_generic_box(x, y, width, height,
-                      fore_color, back_color,
-                      201, 205, 187, 186, 200, 188);
-      break;
-  }
-}
-
-void fill_box(uint8_t ch, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t color)
-{
-  uint32_t i,j;
-
-  for(i = 0; i < height; i++){
-    //increase vga_index_db_db to x & y location
-    vga_index_db = x_end*y;
-    vga_index_db += x;
-
-    for(j = 0; j < width; j++){
-      vga_buffer[vga_index_db] = get_box_draw_char(ch, 0, color);
-      vga_index_db++;
+void cleanScreen(){
+    for (int x = 0; x != 1024; x++){ // Вывод синего цвета по середине
+        for (int y = 0; y != 768; y++){
+            set_pixel(x, y, bgColor);
+        }
     }
-    y++;
-  }
+}
+/*
+ * Рисуем прямоугольник
+ * x - Начальная координата X
+ * y - Начальная координата y
+ * w - Длина
+ * h - Высота
+ * color - цвет заливки
+ */
+void drawRect(int x,int y,int w, int h,int color){
+    for (int _x = x; _x < x+w ; _x++){
+        for (int _y = y; _y < y+h; _y++){
+            set_pixel(_x, _y, color);
+        }
+    }
 }
 
-void init_vga(uint8_t fore_color, uint8_t back_color)
-{
-  vga_buffer = (uint16_t*)VGA_ADDRESS;
-  clear_vga_buffer(&vga_buffer, fore_color, back_color);
-  g_fore_color = fore_color;
-  g_back_color = back_color;
+void drawRectLine(int x,int y,int w, int h,int color, int c){
+    for (int _x = x; _x < x+w ; _x += 8){
+        draw_vga_character(c, _x, y, txColor, color, true);
+        draw_vga_character(c, _x, y+h-16, txColor, color, true);
+    }
+    for (int _y = y; _y < y+h; _y += 16){
+        draw_vga_character(c, x, _y, txColor, color, true);
+        draw_vga_character(c, x+w-8, _y, txColor, color, true);
+    }
 }
 
+void footBar(int32_t y){
+    drawRect(0,y-16,1024,y,VESA_LIGHT_GREY);
+    setPosX(0);
+    setPosY(y-16);
+    tty_puts_color("Press 'Start' to open menu",VESA_BLACK, VESA_LIGHT_GREY);
+}
 
-int tui(){
+bool tui(){
+    int32_t w = getWidthScreen();
+    int32_t h = getHeightScreen();
+    testDisplay(w,h);
+    if (typeDisplay != 1){
+        tty_printf("Sorry, your screen extension is not supported by TUI.\nYou are redirected immediately to the console application of the operating system.\n");
+        return false;
+    }
+    tty_printf("TUI Kerner Test...\n");
+    sleep(30);
+    int32_t i = 0;
 
-    const char*str = "Box Demo";
+    char* OSNAME = "SynapseOS v0.2.12 (Dev)";
+    int32_t l_OSNAME = (w/2)-(strlen(OSNAME)*4);
+
+    int32_t maxStrLine = (w/8)-2;
+    while(1){
+        if (i == 0){
+            i = 1;
+            // Чистим экран
+
+            cleanScreen();
+            // Рисуем обводку
+            drawRectLine(0,0,w,h,VESA_LIGHT_GREY,178);
+            // Выводим ноги
+            footBar(h);
+            // Выводим заголовок
+            setPosX(l_OSNAME);
+            setPosY(0);
+            tty_puts_color(OSNAME,VESA_WHITE, VESA_LIGHT_GREY);
+            // Рисуем треугольник для параметров
+            drawRectLine(8,16,w/2,112,VESA_LIGHT_GREY,176);
+            drawRectLine(w/2,16,w-32,112,VESA_LIGHT_GREY,176);
+
+            setPosX(16);
+            setPosY(32);
+            char infoOS[512];
+            substr(infoOS, "OS: SynOSx86DevBuild", 0, (maxStrLine/2)-2);
+            tty_puts_color(infoOS,txColor, bgColor);
+
+            setPosX(16);
+            setPosY(48);
+            char infoCPU[512];
+            substr(infoCPU, "CPU: TEST CPU", 0, (maxStrLine/2)-2);
+            tty_puts_color(infoCPU,txColor, bgColor);
+
+            setPosX(16);
+            setPosY(64);
+            char infoRAM[512];
+            substr(infoRAM, "RAM: 32 MB", 0, (maxStrLine/2)-2);
+            tty_puts_color(infoRAM,txColor, bgColor);
+
+            setPosX(16);
+            setPosY(80);
+            char infoVideo[512];
+            substr(infoVideo, "Video: Unknown", 0, (maxStrLine/2)-2);
+            tty_puts_color(infoVideo,txColor, bgColor);
+
+            setPosX(16);
+            setPosY(96);
+            char infoDisplay[512] = "";
+            strncpy(infoDisplay,"Display: ",512);
+            strcat(infoDisplay,Display);
+            tty_puts_color(infoDisplay,txColor, bgColor);
+
+            setPosX(16);
+            setPosY(128);
+            tty_puts_color("Error in TUI module. You will be returned to the console in 10 seconds.",txColor, bgColor);
+            sleep(1000);
+            break;
+
+        }
 
 
-    gotoxy((x_end/2)-strlen(str), 1);
-    print_color_string("Box Demo", VESA_WHITE, VESA_BLACK);
 
-    draw_box(BOX_DOUBLELINE, 0, 0, 320, 240, VESA_LIGHT_GREEN, VESA_BLACK);
 
-    draw_box(BOX_SINGLELINE, 5, 3, 20, 5, VESA_LIGHT_YELLOW, VESA_BLACK);
-    gotoxy(10, 6);
-    print_color_string("Hello World", VESA_LIGHT_RED, VESA_BLACK);
+        //drawRect(0,0,1024,768,VESA_BLUE);
 
-    // NULL for only to fill colors, or provide any other character
-    fill_box(0, 36, 5, 30, 10, VESA_RED);
-
-    fill_box(1, 6, 16, 30, 4, VESA_GREEN);
-    draw_box(BOX_DOUBLELINE, 6, 16, 28, 3, VESA_BLUE, VESA_GREEN);
-    return 0;                            // Программа завершена, надо вернуть 0 - все хорошо выполнено
+    }
+    return true;
 }
