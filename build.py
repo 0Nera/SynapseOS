@@ -17,7 +17,7 @@ def warn(message):
 
 
 def compile(binary, source, cur="--", total="--", warnings=False):
-    print(f"[\x1b[32;1mBUILD\x1b[0m]~[{cur}/{total}]: Compiling: {source}")
+    print(f"[\x1b[32;1mBUILD\x1b[0m] [{cur}/{total}]: Compiling: {source}")
     os.system(f"{CC} -o ./{binary} {source}")
 
 
@@ -145,7 +145,7 @@ def run_qemu():
     else:
         os.system("qemu-img create -f raw ata.vhd 32M")
     
-    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -device sb16 -m 32" \
+    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -device ac97 -m 32" \
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
         " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log"
         
@@ -157,7 +157,7 @@ def run_kvm():
     if not os.path.exists("ata.vhd"):
         os.system("qemu-img create -f raw ata.vhd 32M")
     
-    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -device sb16 -m 32" \
+    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -device ac97 -m 32" \
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
         " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log -accel kvm"
         
@@ -170,7 +170,7 @@ def run_qemu_debug():
     else:
         os.system("qemu-img create -f raw ata.vhd 32M")
     
-    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -device sb16 -m 32" \
+    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -device ac97 -m 32" \
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
         " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log" 
     print("gdb kernel.elf -ex target remote localhost:1234")
