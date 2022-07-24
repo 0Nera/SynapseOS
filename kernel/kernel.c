@@ -74,7 +74,7 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     init_task_manager();
     //create_STFS(0);
     tui();
-    draw_from_file("/initrd/res/SynapseOSLogo.raw", 1024-106, 32);
+    //draw_from_file("/initrd/res/SynapseOSLogo.raw", 1024-106, 32);
     shell();                                // Активация терминала
 
 
