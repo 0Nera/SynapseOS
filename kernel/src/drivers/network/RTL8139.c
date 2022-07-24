@@ -95,7 +95,7 @@ int RTL8139_init() {
             );
 
     if(RTL8139_ret == 0) {
-        log("RTL8139 can't install");
+        qemu_log("RTL8139 can't install");
         return -1;
     }
 
@@ -139,7 +139,7 @@ int RTL8139_init() {
     uint32_t irq_num = pci_read(pci_RTL8139_device, PCI_INTERRUPT_LINE);
     register_interrupt_handler(32 + irq_num, &RTL8139_handler);
     IRQ_clear_mask(irq_num);
-    log("RTL8139 installed, idt: %d, irq: %d", 32 + irq_num, irq_num);
+    qemu_log("RTL8139 installed, idt: %d, irq: %d", 32 + irq_num, irq_num);
     
 
     return 1;

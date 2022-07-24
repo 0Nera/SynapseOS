@@ -106,7 +106,7 @@ void keyboard_install(void) {
     input_type = 1;
     register_interrupt_handler(33, &keyboard_handler_main);
     IRQ_clear_mask(33 - 32); // - 32 потому что после ремаппинга номера смещаются на 32
-    log("Keyboard installed");
+    qemu_log("Keyboard installed");
 }
 
 void keyboard_handler_main(struct regs *r) {
@@ -121,7 +121,7 @@ void keyboard_handler_main(struct regs *r) {
     // Проверяем статус используя нижний бит
     if (status & 0x01) {
         keycode = inb(KEYBOARD_DATA_PORT);
-        //log("KEY %d", keycode);
+        //qemu_log("KEY %d", keycode);
 
         if (input_type == 0) {
             return;
@@ -209,7 +209,7 @@ void keyboard_handler_main(struct regs *r) {
             return;
         }
         if (input_type == 3) {
-            //log("getch: %d ", keycode);
+            //qemu_log("getch: %d ", keycode);
             input_type = -2;
         }
 
@@ -251,7 +251,7 @@ void keyboard_handler_main(struct regs *r) {
             return;
         }
         tty_putchar(last_char);
-        log("key = %c (index %d)", keyboard_map[(unsigned char) keycode], (unsigned char) keycode);
+        qemu_log("key = %c (index %d)", keyboard_map[(unsigned char) keycode], (unsigned char) keycode);
     }
 }
 
@@ -281,22 +281,22 @@ int32_t keyboard_getscancode() {
         if (keycode == -100){
             keyboard_handler_main(r);
         } else {
-            log("keyboard_getscancode %d, after^ %d ", keycode, i);
+            qemu_log("keyboard_getscancode %d, after^ %d ", keycode, i);
             return keycode;
         }
     }
     
-    log("keyboard_getscancode %d ", keycode);
+    qemu_log("keyboard_getscancode %d ", keycode);
     return keycode;
 }
 
 
 char *keyboard_gets() {
     input_type = 3;
-    log("2");
+    //qemu_log("2");
 
     while (input_type != -3) {
-        log("3");
+        //qemu_log("3");
         asm volatile("hlt");
         //keyboard_handler_main();
     }

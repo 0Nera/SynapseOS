@@ -20,3 +20,5 @@ void* memmove(void* , void* , size_t);
 void *memset(void *destination, int32_t c, size_t n);
 void* memcpy(void*, const void*, size_t);
 void substr(char* dest, char* source, int from, int length);
+char *strchr(const char *_s, int _c);
+char *strstr(const char *_haystack, const char *_needle);

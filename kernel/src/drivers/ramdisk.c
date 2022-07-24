@@ -149,7 +149,7 @@ void initrd_list(int32_t argc, char **arg) {
 void initrd_init(uint32_t phys_begin, uint32_t phys_end) {
     // TODO: map initrd image to virtual memory
 
-    log("initrd phys begin = %x initrd phys end = %x", phys_begin, phys_end);
+    qemu_log("initrd phys begin = %x initrd phys end = %x", phys_begin, phys_end);
 
 
     initrd_size = phys_end - phys_begin;

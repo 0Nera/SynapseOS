@@ -366,7 +366,7 @@ void testDisplay(int w, int h){
         }
     }
     //tty_printf("%d",framebuffer_width);
-    log("[testDisplay] %dx%d - %d pixels | %d | %s",w,h,pixels,typeDisplay,Display);
+    qemu_log("[testDisplay] %dx%d - %d pixels | %d | %s",w,h,pixels,typeDisplay,Display);
     tty_printf("[testDisplay] %dx%d - %d pixels | %d | %s \n",w,h,pixels,typeDisplay,Display);
 }
 

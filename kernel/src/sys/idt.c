@@ -138,7 +138,7 @@ void pic_init(void) {
     /* mask (disable) all PIC interrupts */
     pic_disable_all_irq();
 
-    log("PIC installed");
+    qemu_log("PIC installed");
 }
 
 
@@ -265,12 +265,12 @@ void fault_handler(struct regs *r) {
     uint32_t adr;
     asm volatile("movl %%cr2, %0" : "=r" (adr));
 
-    log("!!!\t\tError: %s", exception_strs[r->idt_index]);
-    log("cr2 = %x  r->idt_index = %x eax = %x  ebx = %x" \
+    qemu_log("!!!\t\tError: %s", exception_strs[r->idt_index]);
+    qemu_log("cr2 = %x  r->idt_index = %x eax = %x  ebx = %x" \
                 "  ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x", 
         adr, r->idt_index, r->eax, r->ebx, 
         r->ecx, r->edx, r->esp, r->ebp, r->eip);
-    log("cr2 = %d  r->idt_index = %d eax = %d  ebx = %d" \
+    qemu_log("cr2 = %d  r->idt_index = %d eax = %d  ebx = %d" \
         "  ecx = %d  edx = %d  esp = %d  ebp = %d  eip = %d", 
         adr, r->idt_index, r->eax, r->ebx, 
         r->ecx, r->edx, r->esp, r->ebp, r->eip);

@@ -70,7 +70,7 @@ void checkAllBuses() {
 				uint16_t id = getDeviceID(bus, device, function);
                 if (id != 0 & id != 65535 ) {    
                     tty_printf("\t%d->", bus);
-                    log("%d->", bus);
+                    qemu_log("%d->", bus);
 
 					switch (id) {
 						case 0x7010:
@@ -163,7 +163,7 @@ void checkAllBuses() {
 							break;
 						case 0x1002:
 							tty_printf("Advanced Micro Devices, Inc. [AMD/ATI]\n");
-							log("Advanced Micro Devices, Inc. [AMD/ATI]");
+							qemu_log("Advanced Micro Devices, Inc. [AMD/ATI]");
 							break;
 						case 0x1039:
 							tty_printf("Silicon Integrated Systems [SiS]\n");
@@ -263,7 +263,7 @@ pci_dev_t pci_get_device(uint16_t vendor_id, uint16_t device_id, int32_t device_
 	// Handle multiple pci host controllers
 
 	if(pci_reach_end(dev_zero)) {
-		log("PCI Get device failed");
+		qemu_log("PCI Get device failed");
 	}
 
 	for(int32_t function = 1; function < FUNCTION_PER_DEVICE; function++) {
@@ -279,7 +279,7 @@ pci_dev_t pci_get_device(uint16_t vendor_id, uint16_t device_id, int32_t device_
 			return t;
 		}
 	}
-	log("dev zero!");
+	qemu_log("dev zero!");
 	return dev_zero;
 }
 
@@ -313,5 +313,5 @@ void pci_init() {
 	pci_size_map[PCI_INTERRUPT_LINE]	= 1;
 	pci_size_map[PCI_SECONDARY_BUS]		= 1;
 	
-	log("PCI installed");
+	qemu_log("PCI installed");
 }
