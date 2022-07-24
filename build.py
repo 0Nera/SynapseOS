@@ -18,8 +18,7 @@ def warn(message):
 
 def compile(binary, source, cur="--", total="--", warnings=False):
     print(f"[\x1b[32;1mBUILD\x1b[0m] [{cur}/{total}]: Compiling: {source}")
-    os.system(f"{CC} -o ./{binary} {source}")
-
+    os.system(f"{CC} {'' if warnings else '-w'} -o ./{binary} {source}")
 
 def compile_kernel(warnings=False):
     print("Compiling...")
