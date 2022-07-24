@@ -358,6 +358,7 @@ void tty_print(char *format, va_list args) {
                 default:
                     tty_putchar(format[i]);
             }
+            // \n
         } else if (format[i] == 10) {
             tty_line_fill[tty_pos_y] = tty_pos_x;
             tty_pos_x = 0;
@@ -367,6 +368,7 @@ void tty_print(char *format, va_list args) {
             } else {
                 tty_pos_y += 17;
             }
+            // \t
         } else if (format[i] == 9) {
             tty_pos_x += 4 * 17;
         } else {

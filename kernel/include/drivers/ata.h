@@ -125,9 +125,10 @@ sec_channel_base_addr: Secondary channel base address(0x170-0x177)
 sec_channel_control_addr: Secondary channel control base address(0x376)
 bus_master_addr: Bus master address(pass 0 for now)
 */
-void ide_init(uint32_t prim_channel_base_addr, uint32_t prim_channel_control_base_addr,
-            uint32_t sec_channel_base_addr, uint32_t sec_channel_control_addr,
-            uint32_t bus_master_addr);
+void ide_init(uint32_t prim_channel_base_addr,
+              uint32_t prim_channel_control_base_addr,
+              uint32_t sec_channel_base_addr, uint32_t sec_channel_control_addr,
+              uint32_t bus_master_addr);
 
 void ide_wait_irq();
 void ide_irq();
