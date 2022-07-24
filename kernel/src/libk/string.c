@@ -204,3 +204,22 @@ char *strstr(const char *_haystack, const char *_needle)
 	return NULL;
 }
 
+
+void strtolower(char* as)
+{
+	while(*as != 0)
+	{
+		if(*as >= 'A' && *as <= 'Z')
+			*as += ('a' - 'A');
+		as++;
+	}
+}
+void strtoupper(char* as)
+{
+	while(*as != 0)
+	{
+		if(*as >= 'a' && *as <= 'z')
+			*as -= ('a' - 'A');
+		as++;
+	}
+}

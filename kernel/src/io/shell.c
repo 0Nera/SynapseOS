@@ -40,6 +40,8 @@ void shell() {
             shutdown();
         } else if (strcmp(cmd, "cls") == 0) {
             clean_screen();
+        } else if (strcmp(cmd, "cpuinfo") == 0) {
+            detect_cpu(0);
         } else if (strcmp(cmd, "help") == 0) {
             tty_printf("Commands:\n" \
                         "\t\t->help                |get list of commands\n" \
@@ -51,6 +53,7 @@ void shell() {
                         "\t\t->ls                  |list of files\n" \
                         "\t\t->sysinfo             |information about system\n" \
                         "\t\t->pcilist             |list of pci devices\n" \
+                        "\t\t->cpuinfo             |info cpu\n" \
                         "\t\t->reboot              |reboot device\n" \
                         "\t\t->shutdown            |shutdown device\n" \
                         "\n" 

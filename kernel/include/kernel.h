@@ -33,6 +33,7 @@
 #include <io/vgafnt.h>
 #include <io/ports.h>
 
+#include <sys/cpuinfo.h>
 #include <sys/system.h>
 #include <sys/gdt.h>
 #include <sys/idt.h>

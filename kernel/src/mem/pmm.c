@@ -36,6 +36,18 @@ inline static bool bitmap_test(int32_t bit) {
     return phys_memory_bitmap[bit / 32] & (1 << (bit % 32));
 }
 
+uint64_t getInstalledRam(){
+    return phys_installed_memory_size;
+}
+
+uint64_t getAvailableRam(){
+    return phys_available_memory_size;
+}
+
+uint64_t getUsedRam(){
+    return phys_installed_memory_size-phys_available_memory_size;
+}
+
 
 void pmm_parse_memory_map(multiboot_memory_map_entry *mmap_addr, uint32_t length) {
     multiboot_memory_map_entry *mentry = 0;	
