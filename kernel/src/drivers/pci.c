@@ -67,11 +67,12 @@ void checkAllBuses() {
     for (uint16_t bus = 0; bus < 256; bus++) {
         for (uint8_t device = 0; device < 32; device++) {
             for (uint8_t function = 1; function < 8; function++) {
-                if (getDeviceID(bus, device, function) != 0 & getDeviceID(bus, device, function) != 65535 ){    
+				uint16_t id = getDeviceID(bus, device, function);
+                if (id != 0 & id != 65535){
                     tty_printf("\t%d->", bus);
                     qemu_log("%d->", bus);
 
-					switch (getDeviceID(bus, device, function)) {
+					switch (id) {
 						case 0x7010:
 							tty_printf("82371SB PIIX3 IDE [Natoma/Triton II] ");
 							qemu_log("82371SB PIIX3 IDE [Natoma/Triton II] ");
@@ -144,6 +145,18 @@ void checkAllBuses() {
 							tty_printf("RTL8139 Ethernet ");
 							qemu_log("RTL8139 Ethernet ");
 							break;
+						case 0xBEEF:
+							tty_printf("VirtualBox Virtual Driver");
+							qemu_log("VirtualBox Virtual Driver");
+							break;
+						case 0x1111:
+							tty_printf("QEMU Virtual Driver");
+							qemu_log("QEMU Virtual Driver");
+							break;
+						case 0xCAFE:
+							tty_printf("VirtualBox Guest Additions Driver");
+							qemu_log("VirtualBox Guest Additions Driver");
+							break;
 						default:
 							tty_printf("device %x ", getDeviceID(bus, device, function));
 							qemu_log("device %x ", getDeviceID(bus, device, function));
@@ -165,6 +178,14 @@ void checkAllBuses() {
 						case 0x0B05:
 							tty_printf("ASUSTek Computer, Inc.");
 							qemu_log("ASUSTek Computer, Inc.");
+							break;
+						case 0x80EE:
+							tty_printf("VirtualBox internal");
+							qemu_log("VirtualBox internal");
+							break;
+						case 0x1234:
+							tty_printf("QEMU internal");
+							qemu_log("QEMU internal");
 							break;
 						default:
 							tty_printf("vendor %x", getVendorID(bus, device, function));

@@ -273,6 +273,25 @@ uint32_t format_string_size(char *text, va_list args){
     return size;
 }
 
+
+void strtolower(char* as)
+{
+	while(*as != 0)
+	{
+		if(*as >= 'A' && *as <= 'Z')
+			*as += ('a' - 'A');
+		as++;
+	}
+}
+void strtoupper(char* as)
+{
+	while(*as != 0)
+	{
+		if(*as >= 'a' && *as <= 'z')
+			*as -= ('a' - 'A');
+		as++;
+	}
+}
 char *format_string(char *text, ...){
     va_list args;
     uint32_t i = 0;
