@@ -173,6 +173,14 @@ void checkAllBuses() {
 							tty_printf("ASUSTek Computer, Inc.\n");
 							qemu_log("ASUSTek Computer, Inc.");
 							break;
+						case 0x80EE:
+							tty_printf("VirtualBox internal");
+							qemu_log("VirtualBox internal");
+							break;
+						case 0x1234:
+							tty_printf("QEMU internal");
+							qemu_log("QEMU internal");
+							break;
 						default:
 							tty_printf("vendor %x\n", getVendorID(bus, device, function));
 							qemu_log("vendor %x", getVendorID(bus, device, function));

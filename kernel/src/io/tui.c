@@ -420,7 +420,9 @@ bool tui(){
         return false;
     }
     tty_printf("TUI Kerner Test...\n");
-    sleep(30);
+
+    sleep(300);
+    //return false;
     int32_t i = 0;
 
     char* OSNAME = "SynapseOS v0.2.12 (Dev)";
@@ -454,7 +456,9 @@ bool tui(){
             setPosX(16);
             setPosY(48);
             char infoCPU[512];
-            substr(infoCPU, "CPU: TEST CPU", 0, (maxStrLine/2)-2);
+            strcat(infoCPU,"CPU: ");
+            strcat(infoCPU,getNameBrand());
+            substr(infoCPU, infoCPU, 0, (maxStrLine/2)-2);
             tty_puts_color(infoCPU,txColor, bgColor);
 
             setPosX(16);

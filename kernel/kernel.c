@@ -65,13 +65,13 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     unit_test(RTL8139_init());              // Тестируем драйвер RTL8139
 
     vfs_mount_list();                       // Выводим список корня VFS
-
+    detect_cpu(1);
     // while(1){
     //     asm volatile("hlt");
     // }
     //qemu_log("task: %d", create_task());
 
-    //init_task_manager();
+    init_task_manager();
     //create_STFS(0);
 
 
