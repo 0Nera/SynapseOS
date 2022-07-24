@@ -478,8 +478,8 @@ bool tui(){
 
             setPosX(16);
             setPosY(128);
-            tty_puts_color("Error in TUI module. You will be returned to the console in 10 seconds.",txColor, bgColor);
-            sleep(1000);
+            tty_puts_color("Error in TUI module. You will be returned to the console in 5 seconds.",txColor, bgColor);
+            sleep(500);
             break;
 
         }

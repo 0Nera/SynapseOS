@@ -94,8 +94,8 @@ def build_apps():
 
     shutil.rmtree("../initrd/apps", ignore_errors=True)
     shutil.copytree("../bin/apps", "../initrd/apps")
-    #shutil.rmtree("../initrd/res", ignore_errors=True)
-    #shutil.copytree("res", "../initrd/res")
+    shutil.rmtree("../initrd/res", ignore_errors=True)
+    shutil.copytree("res", "../initrd/res")
 
     os.chdir("../initrd")
         

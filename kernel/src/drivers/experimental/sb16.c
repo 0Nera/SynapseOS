@@ -1,6 +1,6 @@
 /*    Драйвер SoundBlaster 16
  *
- *    By Andrey(David) Pavlenko
+ *    By Andrey(David) Pavlenko aka NDRAEY
  */ 
 
 // Нам нужно место в пределах 0x00100000 - 0x00FFFFFF
@@ -140,6 +140,6 @@ void sb16_play_audio(char *data, short sampling_rate, char channels, char eightb
 		memcpy(driver_memory, data, LOAD_LENGTH);
 		sb16_program_dma16(channels, driver_memory, LOAD_LENGTH);
 		loaded+=LOAD_LENGTH;
-		data_at+=LOAD_LENGTH;
+		data+=LOAD_LENGTH;
 	}
 }

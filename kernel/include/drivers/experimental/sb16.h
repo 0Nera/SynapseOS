@@ -37,6 +37,6 @@ void sb16_program_dma16(char channel, int address, short length);
 char sb16_calculate_time_constant(char channels, short sampling_rate);
 void sb16_program(short sampling_rate, char channels, char eightbit, char sign, short length);
 void sb16_set_master_volume(char left, char right);
-void sb16_play_audio(int address, short sampling_rate, char channels, char eightbit, char sign, int length);
+void sb16_play_audio(char *data, short sampling_rate, char channels, char eightbit, char sign, int length);
 
 #endif
