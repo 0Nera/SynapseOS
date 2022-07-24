@@ -1,9 +1,9 @@
 import os, shutil, sys, tarfile, os.path, subprocess
 
 LD = "ld.lld"
-LDFLAGS = "-T link.ld -nostdlib -o"
+LDFLAGS = " -nostdlib -e main -o"
 CC = "clang -target i386-pc-none-elf"
-CFLAGS = "-w -mno-sse -mno-avx -O0 -ffreestanding -I include/ -c"
+CFLAGS = "  -std=gnu11 -lgcc -mno-sse -mno-avx -O0 -ffreestanding -I include/ -c"
 
 BUILD_LUA = True # Change this to enable or disable Lua build.
 

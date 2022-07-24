@@ -77,33 +77,60 @@ const char *elf_get_section_name(void *elf_file, int32_t num) {
 
 
 void elf_hdr_info(struct elf_hdr *hdr) {
-    tty_printf("\tHeader information:\n");
-    tty_printf("\t\tArchitecture: %s\n", (hdr->arch==ELF_ARCH_32BIT) 
+    qemu_log("\tHeader information:");
+    qemu_log("\t Architecture: %s", (hdr->arch==ELF_ARCH_32BIT) 
                                          ? "32-bit" 
                                          : (hdr->arch == ELF_ARCH_64BIT) 
                                            ? "64-bit" 
                                            : "Unknown architecture");
-    tty_printf("\t\tByte order: %s\n", (hdr->byte_order == ELF_BYTEORDER_LENDIAN) 
+    qemu_log("\t Byte order: %s", (hdr->byte_order == ELF_BYTEORDER_LENDIAN) 
                                        ? "little-endian" 
                                        : "unknown");
-    tty_printf("\t\tELF file version: %u\n", hdr->elf_ver);
-    tty_printf("\t\tELF file type: %s\n", (hdr->file_type == ELF_REL) 
+    qemu_log("\t ELF file version: %u", hdr->elf_ver);
+    qemu_log("\t ELF file type: %s", (hdr->file_type == ELF_REL) 
                                           ? "relocatable" 
                                           : (hdr->file_type == ELF_EXEC) 
                                             ? "executable" 
                                             : "unknown");
-    tty_printf("\t\tTarget machine: %s\n", (hdr->machine == ELF_386_MACHINE) 
+    qemu_log("\t Target machine: %s", (hdr->machine == ELF_386_MACHINE) 
                                            ? "i386" 
                                            : "unknown");
-    tty_printf("\t\tEntry point: %x\n", hdr->entry);
-    tty_printf("\t\tProgram header offset: %u\n", hdr->phoff);
-    tty_printf("\t\tSection header offset: %u\n", hdr->shoff);
-    tty_printf("\t\tFile flags: %u\n", hdr->flags);
-    tty_printf("\t\tFile header size: %u\n", hdr->hsize);
-    tty_printf("\t\tProgram header entry size: %u\n", hdr->ph_ent_size);
-    tty_printf("\t\tSection header entry size: %u\n", hdr->sh_ent_size);
-    tty_printf("\t\tSection header count: %d\n", hdr->sh_ent_cnt);
-    tty_printf("\t\tProgram header count: %d\n", hdr->ph_ent_cnt);
+    qemu_log("\t Entry point: %x", hdr->entry);
+    qemu_log("\t Program header offset: %u", hdr->phoff);
+    qemu_log("\t Section header offset: %u", hdr->shoff);
+    qemu_log("\t File flags: %u", hdr->flags);
+    qemu_log("\t File header size: %u", hdr->hsize);
+    qemu_log("\t Program header entry size: %u", hdr->ph_ent_size);
+    qemu_log("\t Section header entry size: %u", hdr->sh_ent_size);
+    qemu_log("\t Section header count: %d", hdr->sh_ent_cnt);
+    qemu_log("\t Program header count: %d", hdr->ph_ent_cnt);
+    tty_printf("\tHeader information:\n");
+    tty_printf("\t Architecture: %s\n", (hdr->arch==ELF_ARCH_32BIT) 
+                                         ? "32-bit" 
+                                         : (hdr->arch == ELF_ARCH_64BIT) 
+                                           ? "64-bit" 
+                                           : "Unknown architecture");
+    tty_printf("\t Byte order: %s\n", (hdr->byte_order == ELF_BYTEORDER_LENDIAN) 
+                                       ? "little-endian" 
+                                       : "unknown");
+    tty_printf("\t ELF file version: %u\n", hdr->elf_ver);
+    tty_printf("\t ELF file type: %s\n", (hdr->file_type == ELF_REL) 
+                                          ? "relocatable" 
+                                          : (hdr->file_type == ELF_EXEC) 
+                                            ? "executable" 
+                                            : "unknown");
+    tty_printf("\t Target machine: %s\n", (hdr->machine == ELF_386_MACHINE) 
+                                           ? "i386" 
+                                           : "unknown");
+    tty_printf("\t Entry point: %x\n", hdr->entry);
+    tty_printf("\t Program header offset: %u\n", hdr->phoff);
+    tty_printf("\t Section header offset: %u\n", hdr->shoff);
+    tty_printf("\t File flags: %u\n", hdr->flags);
+    tty_printf("\t File header size: %u\n", hdr->hsize);
+    tty_printf("\t Program header entry size: %u\n", hdr->ph_ent_size);
+    tty_printf("\t Section header entry size: %u\n", hdr->sh_ent_size);
+    tty_printf("\t Section header count: %d\n", hdr->sh_ent_cnt);
+    tty_printf("\t Program header count: %d\n", hdr->ph_ent_cnt);
 }
 
 
@@ -116,25 +143,33 @@ void elf_info(const char *name) {
     }
     void *elf_file = elf_open(name);
     tty_printf("pointer to this elf_file = %x\n", elf_file);
+    qemu_log("pointer to this elf_file = %x", elf_file);
     if (elf_file == NULL) {
         return;
     }
 
     struct elf_hdr *hdr = (struct elf_hdr*) elf_file;
     tty_printf("\tName: %s\n", name);
+    qemu_log("\tName: %s", name);
     tty_printf("\tFile size: %u\n\tELF file info:\n", vfs_get_size(name));
+    qemu_log("\tFile size: %u\n\tELF file info:", vfs_get_size(name));
     elf_hdr_info(hdr);
 
     int32_t i;
     for (i = 0; i < hdr->sh_ent_cnt; i++) {
         elf_section_header_t *shdr = (elf_section_header_t*) (elf_file + hdr->shoff + hdr->sh_ent_size * i);
-        tty_printf("\t\t\tSection %d:\n", i);
-        tty_printf("\t\t\t\tActual section offset: %u\n\t\t\t\tSection name offset in string table: %d\n", shdr->offset, shdr->name);
-        tty_printf("\t\t\t\tSection name: %s\n", elf_get_section_name(elf_file, i));
+        tty_printf("\t  Section %d:\n", i);
+        qemu_log("\t  Section %d:", i);
+        tty_printf("\t   Actual section offset: %u\t   Section name offset in string table: %d\n", shdr->offset, shdr->name);
+        qemu_log("\t   Actual section offset: %u\t   Section name offset in string table: %d\n", shdr->offset, shdr->name);
+        tty_printf("\t   Section name: %s\n", elf_get_section_name(elf_file, i));
+        qemu_log("\t   Section name: %s", elf_get_section_name(elf_file, i));
     }
 
     //kheap_free(elf_file); //!!!!!!
 }
+
+
 
 int32_t run_elf_file(const char *name/*, char **argv, char **env __attribute__((unused)), int32_t argc*/) {
     if (!vfs_exists(name)) {
@@ -183,8 +218,10 @@ int32_t run_elf_file(const char *name/*, char **argv, char **env __attribute__((
 
 
     qemu_log("Executing");
+    int _result = entry_point();
     
-    tty_printf("\n[PROGRAMM FINISHED WITH CODE <%d>]", entry_point());
+    tty_printf("\n[PROGRAMM FINISHED WITH CODE <%d>]", _result);
+    qemu_log("[PROGRAMM FINISHED WITH CODE <%d>]", _result);
     qemu_log("Cleaning VMM:");
 
     for (int32_t i = 0; i != ptr_vmm_alloced; i++){

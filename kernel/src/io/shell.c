@@ -115,6 +115,7 @@ void shell() {
                 char temp[256] = {0};
                 strcpy(temp, current_dir);
                 strcat(temp, tok);
+                //elf_info(temp);                
                 run_elf_file(temp);
 
             } else {
@@ -132,6 +133,7 @@ void shell() {
                 char temp[256] = {0};
                 strcpy(temp, current_dir);
                 strcat(temp, tok);
+                //elf_info(temp);                
                 run_elf_file(temp);
 
             } else {
