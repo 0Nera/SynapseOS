@@ -5,7 +5,7 @@
 */
 
 #include <kernel.h>
-
+#include <drivers/ata.h>
 
 int32_t os_mode = 1; // 0 - мало ОЗУ, 1 - обычный режим, 2 - режим повышенной производительности, 3 - сервер
 
@@ -73,7 +73,15 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
 
     init_task_manager();
     //create_STFS(0);
-    tui();
+
+
+    //tui();
+    tty_printf("\n%d\n%s\n", 101/10, format_string("Hello! %d, %x, %c, %s", 1, 0x90, 'H', "Hi!"));
+
+    //draw_from_file("/initrd/res/SynapseOSLogo.raw", 1024-106, 32);
+
+
+
     shell();                                // Активация терминала
 
 
@@ -83,3 +91,4 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     //run_driver_thread("/initrd/sys/interface.sea");
     //run_driver_thread("/initrd/sys/kernel.elf");
 }
+

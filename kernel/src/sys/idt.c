@@ -208,7 +208,7 @@ void idt_init() {
     SET_IDT_ENTRY(47);
 
 
-    SET_IDT_ENTRY(128); // Need for system calls - int32_t 0x80 , 0x80 = 128 inРІ РІРёРґРµ С‡РёСЃР»Р°
+    SET_IDT_ENTRY(128); // Need for system calls - int32_t 0x80 , 0x80 = 128 
 
     asm volatile("sti");
 }
