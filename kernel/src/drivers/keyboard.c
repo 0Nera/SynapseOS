@@ -10,7 +10,20 @@ int32_t input_type = 1, SHIFT = 0, string_mem_counter = 0;
 char keycode, last_char; 
 char string_mem[256];
 char last_string[256];
+int32_t lastkey = 0;        // ID последней нажатой кнопки
+int32_t lastkeyinset;   // Последний тик нажатия кнопки
+int32_t enabledKeyboard = 0;
 
+// Смена состояния для вывода на экран клавиатуры
+void changeStageKeyboard(int32_t s){
+    enabledKeyboard = s;
+}
+int32_t keyLastInset(){
+    if (lastkeyinset+5 > timer_get_ticks()){
+        return lastkey;
+    }
+    return 0;
+}
 
 unsigned  char keyboard_map[] = {
     0, 
@@ -120,14 +133,21 @@ void keyboard_handler_main(struct regs *r) {
 
     // Проверяем статус используя нижний бит
     if (status & 0x01) {
+        if (enabledKeyboard == 2){
+            return;
+        }
         keycode = inb(KEYBOARD_DATA_PORT);
+        lastkey = keycode;
+        lastkeyinset = timer_get_ticks();
         //qemu_log("KEY %d", keycode);
 
         if (input_type == 0) {
             return;
         }
         if (keycode == 72) {
-            tty_printf("72!");
+            if (enabledKeyboard == 1){
+                tty_printf("72!");
+            }
             // Очистка строковой памяти
             
             while (string_mem_counter != 0) {
@@ -136,11 +156,15 @@ void keyboard_handler_main(struct regs *r) {
                 tty_backspace();
             }
 
-            tty_printf("string_mem_counter = %d\n", string_mem_counter);
+            if (enabledKeyboard == 1){
+                tty_printf("string_mem_counter = %d\n", string_mem_counter);
+            }
             string_mem_counter = strlen(last_string);  
             strcpy(string_mem, last_string); 
-            tty_printf("last_string = [%s]\n", last_string);
-            tty_printf(last_string);
+            if (enabledKeyboard == 1){
+                tty_printf("last_string = [%s]\n", last_string);
+                tty_printf(last_string);
+            }
             return;
         }  
         if (input_type == 2) {
@@ -214,10 +238,13 @@ void keyboard_handler_main(struct regs *r) {
         }
 
         if (keycode == ENTER_KEY_CODE) {
-            tty_printf("\nlast_string[%s]string_mem[%s]", last_string, string_mem);
+            if (enabledKeyboard == 1){
+                tty_printf("\nlast_string[%s]string_mem[%s]", last_string, string_mem);
+            }
             strcpy(last_string, string_mem);
-            tty_printf("\nlast_string[%s]string_mem[%s]\n", last_string, string_mem);
-
+            if (enabledKeyboard == 1){
+                tty_printf("\nlast_string[%s]string_mem[%s]\n", last_string, string_mem);
+            }
             if (input_type == 1) {
                 string_mem_counter = 0;
                 memset(string_mem, 0, 256);
@@ -225,19 +252,6 @@ void keyboard_handler_main(struct regs *r) {
             return;
         }
 
-        if (keycode == 1) {
-            shutdown();
-            return;
-        }
-
-        if (keycode == 59) {
-            clean_screen();
-        }
-
-        if (keycode == 71) {
-            reboot();
-            return;
-        }
 
         if (string_mem_counter >= 256) {
             tty_printf("\nBuffer string_mem is full!!");
@@ -250,7 +264,9 @@ void keyboard_handler_main(struct regs *r) {
         if (keycode < 0) {
             return;
         }
-        tty_putchar(last_char);
+        if (enabledKeyboard == 1){
+            tty_putchar(last_char);
+        }
         qemu_log("key = %c (index %d)", keyboard_map[(unsigned char) keycode], (unsigned char) keycode);
     }
 }

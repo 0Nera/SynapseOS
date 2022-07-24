@@ -31,6 +31,13 @@ uint16_t vga_entry(uint8_t c, uint8_t tty_color) {
     return (uint16_t) c | (uint16_t) tty_color << 8;
 }
 
+int32_t getPosX(){
+    return tty_pos_x;
+}
+
+int32_t getPosY(){
+    return tty_pos_y;
+}
 
 void tty_setcolor(int32_t color) {
     tty_text_color = color;

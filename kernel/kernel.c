@@ -5,7 +5,7 @@
 */
 
 #include <kernel.h>
-
+#include <drivers/ata.h>
 
 int32_t os_mode = 1; // 0 - мало ОЗУ, 1 - обычный режим, 2 - режим повышенной производительности, 3 - сервер
 
@@ -70,16 +70,19 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     //     asm volatile("hlt");
     // }
     //qemu_log("task: %d", create_task());
-
     init_task_manager();
     //create_STFS(0);
+
     tui();
+
+    //tty_printf("\n%d\n%s\n", 101/10, format_string("Hello! %d, %x, %c, %s", 120, 0x90, 'H', "Hi!"));
+    draw_from_file("/initrd/res/SynapseOSLogo.raw", getWidthScreen()-106, 36);
+
     shell();                                // Активация терминала
-
-
     // Работает, но надо доделать 
     //run_driver_thread("/initrd/sys/shell.sea");
     //run_driver_thread("/initrd/sys/user.sea");
     //run_driver_thread("/initrd/sys/interface.sea");
     //run_driver_thread("/initrd/sys/kernel.elf");
 }
+
