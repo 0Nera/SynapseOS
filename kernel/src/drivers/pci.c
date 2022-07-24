@@ -62,6 +62,8 @@ uint32_t get_secondary_bus(pci_dev_t dev) {
 	return pci_read(dev, PCI_SECONDARY_BUS);
 }
 
+#define klog(text, ...) qemu_log(text);
+
 // FIXME: PCI не определяет AC'97 (class = 0x04, subclass = 0x01)
 void checkAllBuses() {
     for (uint16_t bus = 0; bus < 256; bus++) {
@@ -75,107 +77,107 @@ void checkAllBuses() {
 					switch (id) {
 						case 0x7010:
 							tty_printf("82371SB PIIX3 IDE [Natoma/Triton II]\n");
-							log("82371SB PIIX3 IDE [Natoma/Triton II] ");
+							klog("82371SB PIIX3 IDE [Natoma/Triton II] ");
 							break;
 						case 0x7111:
 							tty_printf("82371AB/EB/MB PIIX4 IDE\n");
-							log("82371AB/EB/MB PIIX4 IDE ");
+							klog("82371AB/EB/MB PIIX4 IDE ");
 							break;
 						case 0x7113:
 							tty_printf("82371AB/EB/MB PIIX4 ACPI \n");
-							log("82371AB/EB/MB PIIX4 ACPI ");
+							klog("82371AB/EB/MB PIIX4 ACPI ");
 							break;
 						case 0x5513:
 							tty_printf("5513 IDE Controller \n");
-							log("5513 IDE Controller ");
+							klog("5513 IDE Controller ");
 							break;
 						case 0x7001:
 							tty_printf("USB 1.1 Controller \n");
-							log("USB 1.1 Controller ");
+							klog("USB 1.1 Controller ");
 							break;
 						case 0x7002:
 							tty_printf("USB 2.0 Controller \n");
-							log("USB 2.0 Controller ");
+							klog("USB 2.0 Controller ");
 							break;
 						case 0xAA28:
 							tty_printf("RV620 HDMI Audio [Radeon HD 3450/3470/3550/3570] \n");
-							log("RV620 HDMI Audio [Radeon HD 3450/3470/3550/3570] ");
+							klog("RV620 HDMI Audio [Radeon HD 3450/3470/3550/3570] ");
 							break;
 						case 0xA012:
 							tty_printf("Atom Processor D4xx/D5xx/N4xx/N5xx Integrated Graphics Controller \n");
-							log("Atom Processor D4xx/D5xx/N4xx/N5xx Integrated Graphics Controller ");
+							klog("Atom Processor D4xx/D5xx/N4xx/N5xx Integrated Graphics Controller ");
 							break;
 						case 0x27D2:
 							tty_printf("NM10/ICH7 Family PCI Express Port 2 \n");
-							log("NM10/ICH7 Family PCI Express Port 2 ");
+							klog("NM10/ICH7 Family PCI Express Port 2 ");
 							break;
 						case 0x27D6:
 							tty_printf("NM10/ICH7 Family PCI Express Port 4 \n");
-							log("NM10/ICH7 Family PCI Express Port 4 ");
+							klog("NM10/ICH7 Family PCI Express Port 4 ");
 							break;
 						case 0x27C9:
 							tty_printf("NM10/ICH7 Family USB UHCI Controller #2 \n");
-							log("NM10/ICH7 Family USB UHCI Controller #2 ");
+							klog("NM10/ICH7 Family USB UHCI Controller #2 ");
 							break;
 						case 0x27CA:
 							tty_printf("NM10/ICH7 Family USB UHCI Controller #3 \n");
-							log("NM10/ICH7 Family USB UHCI Controller #3 ");
+							klog("NM10/ICH7 Family USB UHCI Controller #3 ");
 							break;
 						case 0x27CB:
 							tty_printf("NM10/ICH7 Family USB UHCI Controller #4 \n");
-							log("NM10/ICH7 Family USB UHCI Controller #4 ");
+							klog("NM10/ICH7 Family USB UHCI Controller #4 ");
 							break;
 						case 0x27CC:
 							tty_printf("NM10/ICH7 Family USB2 EHCI Controller \n");
-							log("NM10/ICH7 Family USB2 EHCI Controller ");
+							klog("NM10/ICH7 Family USB2 EHCI Controller ");
 							break;
 						case 0x27C1:
 							tty_printf("NM10/ICH7 Family SATA Controller [AHCI mode] \n");
-							log("NM10/ICH7 Family SATA Controller [AHCI mode] \n");
+							klog("NM10/ICH7 Family SATA Controller [AHCI mode] \n");
 							break;
 						case 0x27DA:
 							tty_printf("NM10/ICH7 Family SMBus Controller \n");
-							log("NM10/ICH7 Family SMBus Controller \n");
+							klog("NM10/ICH7 Family SMBus Controller \n");
 							break;
 						case 0x1360:
 							tty_printf("RTL8139 Ethernet \n");
-							log("RTL8139 Ethernet ");
+							klog("RTL8139 Ethernet ");
 							break;
 						case 0x1300:
 							tty_printf("RTL8139 Ethernet \n");
-							log("RTL8139 Ethernet ");
+							klog("RTL8139 Ethernet ");
 							break;
 						case 0x24D5:
 							tty_printf("ICH5 AC'97 \n");
-							log("ICH5 AC'97 ");
+							klog("ICH5 AC'97 ");
 						case 0x24C5:
 							tty_printf("Realtek AC'97 \n");
-							log("ICH5 AC'97 ");
+							klog("ICH5 AC'97 ");
 						default:
 							tty_printf("device %x \n", getDeviceID(bus, device, function));
-							log("device %x ", getDeviceID(bus, device, function));
+							klog("device %x ", getDeviceID(bus, device, function));
 							break;
 					}
 					switch (getVendorID(bus, device, function)) {
 						case 0x8086:
 							tty_printf("Intel Corporation\n");
-							log("Intel Corporation");
+							klog("Intel Corporation");
 							break;
 						case 0x1002:
 							tty_printf("Advanced Micro Devices, Inc. [AMD/ATI]\n");
-							qemu_log("Advanced Micro Devices, Inc. [AMD/ATI]");
+							klog("Advanced Micro Devices, Inc. [AMD/ATI]");
 							break;
 						case 0x1039:
 							tty_printf("Silicon Integrated Systems [SiS]\n");
-							log("Silicon Integrated Systems [SiS]");
+							klog("Silicon Integrated Systems [SiS]");
 							break;
 						case 0x0B05:
 							tty_printf("ASUSTek Computer, Inc.\n");
-							log("ASUSTek Computer, Inc.");
+							klog("ASUSTek Computer, Inc.");
 							break;
 						default:
 							tty_printf("vendor %x\n", getVendorID(bus, device, function));
-							log("vendor %x", getVendorID(bus, device, function));
+							klog("vendor %x", getVendorID(bus, device, function));
 							break;
 					}
                 }
