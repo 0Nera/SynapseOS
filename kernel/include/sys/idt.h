@@ -16,9 +16,8 @@
 
 #define PIC_CMD_EOI 0x20
 
-#define SET_IDT_ENTRY(idx) \
-    set_idt_entry(idx, (uint32_t) &interrupt_handler_##idx,\
-                  0x08, 0x8E);
+#define SET_IDT_ENTRY(idx)                                                     \
+  set_idt_entry(idx, (uint32_t)&interrupt_handler_##idx, 0x08, 0x8E);
 
 #define DECLARE_INTERRUPT_HANDLER(i) void interrupt_handler_##i(void)
 

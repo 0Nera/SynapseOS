@@ -71,10 +71,17 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     // }
     //qemu_log("task: %d", create_task());
 
-    init_task_manager();
+    //init_task_manager();
     //create_STFS(0);
-    tui();
+
+
+    //tui();
+    tty_printf("\n%d\n%s\n", 101/10, format_string("Hello! %d, %x, %c, %s", 1, 0x90, 'H', "Hi!"));
+
     //draw_from_file("/initrd/res/SynapseOSLogo.raw", 1024-106, 32);
+
+
+
     shell();                                // Активация терминала
 
 
