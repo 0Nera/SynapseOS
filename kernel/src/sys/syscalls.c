@@ -41,7 +41,6 @@ void syscall_handler(struct regs *r) {
         esi - параметр-указатель 4
         edi - параметр-указатель 5
     */
-
     uint32_t arg1 = r->ebx;
     uint32_t arg2 = r->edx;
     uint32_t arg3 = r->ecx;
@@ -95,6 +94,9 @@ void syscall_handler(struct regs *r) {
             break;
         case SC_CODE_newtask: 
             r->eax = add_task(&r);
+            break;
+        case SC_CODE_ticks: 
+            r->eax = timer_get_ticks();
             break;
         default:
             qemu_log("Invalid syscall #%x", r->eax);
