@@ -12,10 +12,10 @@
 #define PORT_COM8 0x4E8
 
 
-#define log(M, ...) qemu_printf("[LOG] (%s:%s:%d) " M "\n", __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
+#define qemu_log(M, ...) qemu_printf("[LOG] (%s:%s:%d) " M "\n", __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
     
 #define assert(condition) if (condition){                 \
-    log("ASSERT FAIL");                                   \
+    qemu_log("ASSERT FAIL");                                   \
     while(1);                                             \
 } 
 

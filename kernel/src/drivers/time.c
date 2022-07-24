@@ -24,13 +24,13 @@ void timer_set_frequency(int32_t hz) {
 
 
 void timer_handler(struct regs *r) {
-    //log("tick: %d",timer_ticks);
+    //qemu_log("tick: %d",timer_ticks);
     trand(++timer_ticks);
     //if (multi_task) {
        //task_switch();  /* Переключаемся */
     //}
     // tty_printf("\ntimer_handler idt: %d", r->idt_index);
-    //log("timer_handler idt: %d", r->idt_index);
+    //qemu_log("timer_handler idt: %d", r->idt_index);
 }
 
 
@@ -44,7 +44,7 @@ void timer_install() {
     register_interrupt_handler(32, &timer_handler);
     IRQ_clear_mask(32 - 32); // - 32 потому что после ремаппинга номера смещаются на 32
     timer_set_frequency(50); // 50 герц
-    log("Timer installed");
+    qemu_log("Timer installed");
 }
 
 void sleep(uint16_t delay)

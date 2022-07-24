@@ -15,7 +15,7 @@ int32_t os_mode = 1; // 0 - мало ОЗУ, 1 - обычный режим, 2 - 
 	\warning Отсутствует проверка multiboot!
 */
 void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
-    log("magic_number = %x", magic_number);
+    qemu_log("magic_number = %x", magic_number);
     tty_init(mboot_info);   // Настройка графики
     
     // Вывод информации о ядре
@@ -38,7 +38,7 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
 
     uint32_t initrd_beg = *(uint32_t*) (mboot_info->mods_addr);     // Адрес начала ramdisk
     uint32_t initrd_end = *(uint32_t*) (mboot_info->mods_addr + 4); // Адрес конца ramdisk
-    log("initrd_beg = %x initrd_end = %x", 
+    qemu_log("initrd_beg = %x initrd_end = %x",
         initrd_beg, initrd_end              // Вывод информации о адресах ramdisk в отладчик
         );
 
@@ -69,7 +69,7 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     // while(1){
     //     asm volatile("hlt");
     // }
-    //log("task: %d", create_task());
+    //qemu_log("task: %d", create_task());
 
     //init_task_manager();
     //create_STFS(0);

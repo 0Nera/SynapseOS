@@ -27,7 +27,7 @@ void srand(uint32_t seed) {
 
 void syscall_init() {
     register_interrupt_handler(SYSCALL_IDT_INDEX, &syscall_handler);
-    log("Syscalls enabled");
+    qemu_log("Syscalls enabled");
 }
 
 
@@ -97,8 +97,8 @@ void syscall_handler(struct regs *r) {
             r->eax = add_task(&r);
             break;
         default:
-            log("Invalid syscall #%x", r->eax);
-            log("r->idt_index = %x eax = %x  ebx = %x  "
+            qemu_log("Invalid syscall #%x", r->eax);
+            qemu_log("r->idt_index = %x eax = %x  ebx = %x  "
                 "ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x",
                 r->idt_index, r->eax, r->ebx,
                 r->ecx, r->edx, r->esp, r->ebp, r->eip);

@@ -159,7 +159,6 @@ char *strtok(char *s, const char *delim) {
     return token;
 }
 
-
 char *strncpy(char *dest, const char *src, size_t n){
     size_t i;
     for (i = 0; i < n && src[i] != '\0'; i++)
@@ -169,173 +168,39 @@ char *strncpy(char *dest, const char *src, size_t n){
     return dest;
 }
 
-
 char *strcat(char *s, const char *t) {
     strcpy(s + strlen(s), t);
     return s;
 }
-
 
 void substr(char* dest, char* source, int from, int length){
     strncpy(dest, source+from, length);
     dest[length] = 0;
 }
 
-
-uint32_t format_string_size(char *text, va_list args) {
-    uint32_t i = 0;
-    uint32_t size = 0;
-    while (text[i]) {
-        if (text[i] == '%') {
-            i++;
-            switch (text[i]) {
-                case 's':
-                    size += strlen(va_arg(args, char*));
-                    break;
-                case 'c':
-                    char res = va_arg(args, char);
-                    size++;
-                    break;
-                case 'd':
-                    char res[32];
-                    int temp_int = va_arg(args, int);
-
-                    itoa(temp_int, res);
-                    size += strlen(res);
-                    break;
-                case 'i':
-                    char res[32];
-                    int temp_int = va_arg(args, int);
-
-                    itoa(temp_int, res);
-                    size += strlen(res);
-                    break;
-                case 'u':
-                    char res[32];
-                    int temp_int = va_arg(args, unsigned int);
-
-                    itoa(temp_int, res);
-                    size += strlen(res);
-                    break;
-                case 'x':
-                    char res[32];
-                    int temp_int = va_arg(args, unsigned int);
-                        const unsigned char hex[18]  =  { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
-                        uint32_t n, d = 0x10000000;
-
-                        res[0] = '0';
-                        res[1] = 'x';
-
-                        while((temp_int / d == 0) && (d >= 0x10)) d /= 0x10;
-
-                        n = temp_int;
-
-                        while( d >= 0xF ) {
-                            strcpy(res, hex[n/d]);
-                            n = n % d;
-                            d /= 0x10;
-                        }
-
-                        size += strlen(res);
-                        break;
-                    case 'v':
-                        char res[32];
-                        int temp_int = va_arg(args, unsigned int);
-                        const unsigned char hex[18]  =  { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
-                        uint32_t n, d = 0x10000000;
-
-                        while((temp_int / d == 0) && (d >= 0x10)) d /= 0x10;
-
-                        n = temp_int;
-
-                        while( d >= 0xF ) {
-                            strcpy(res, hex[n/d]);
-                            n = n % d;
-                            d /= 0x10;
-                        }
-                        
-                        size += strlen(res);
-                        break;
-                    default:
-                        result[i] = text[i];
-                }
-                // \n
-            } else if (text[i] == 10) {
-                size++;
-            } else if (text[i] == 9) {
-                size += 4;
-            } else {
-                size++;
-            }
-        i++;
-    }
+char *strchr(const char *_s, int _c)
+{
+	while (*_s != (char)_c) {
+		if (!*_s++) {
+			return 0;
+		}
+	}
+	return (char *)_s;
 }
 
+char *strstr(const char *_haystack, const char *_needle)
+{
+	size_t needleLen;
+	if(*_needle == '\0') {
+		return (char *) _haystack;
+	}
+	needleLen = strlen(_needle);
 
-char *format_string(char *text, ...) {
-    va_list args;
-    uint32_t i = 0;
-    va_start(args, text);
-    uint32_t size = format_string_size(char *text, args);
-
-    
-    
-    char *result = kheap_malloc(strlen(text) + size);
-    memset(result, 0, strlen(text));
-
-
-
-    while (text[i]) {
-        if (text[i] == '%') {
-            i++;
-            switch (text[i]) {
-                case 's':
-                    strcat(result, va_arg(args, char*));
-                    break;
-                case 'c':
-                    strcat(result, va_arg(args, int));
-                    break;
-                case 'd':
-                    char res[32];
-
-                    if (i < 0) {
-                        strcat(result, va_arg(args, int));
-                    }
-
-                    itoa(i, res);
-                    strcat(result, res);
-                    break;
-                case 'i':
-                    tty_putint(va_arg(args, int));
-                    break;
-                case 'u':
-                    tty_putint(va_arg(args, unsigned int));
-                    break;
-                case 'x':
-                    tty_puthex(va_arg(args, uint32_t));
-                    break;
-                case 'v':
-                    tty_puthex_v(va_arg(args, uint32_t));
-                    break;
-                default:
-                    result[i] = text[i];
-            }
-        } else if (text[i] == 10) {
-            //tty_line_fill[tty_pos_y] = tty_pos_x;
-            //tty_pos_x = 0;
-
-            //if ((tty_pos_y + 17) >= (int)VESA_HEIGHT) { 
-               //tty_scroll();
-            //} else {
-                //tty_pos_y += 17;
-            //}
-        } else if (text[i] == 9) {
-            //tty_pos_x += 4 * 17;
-        } else {
-            result[i] = text[i];
-        }
-        i++;
-    }
-
-    return  result;
+	for(;(_haystack = strchr(_haystack, *_needle))!= NULL;_haystack++) {
+		if (strncmp(_haystack, _needle, needleLen) == 0) {
+			return (char *) _haystack;
+		}
+	}
+	return NULL;
 }
+

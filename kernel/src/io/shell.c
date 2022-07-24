@@ -16,7 +16,6 @@ void shell() {
         tty_printf("%s>", current_dir);
 
         tty_setcolor(COLOR_TEXT);
-        log("1");
         char *cmd = keyboard_gets();
 
         if (strlen(cmd) == 0) {
