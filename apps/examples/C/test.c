@@ -43,18 +43,25 @@
 
 
 int print_str(char *str) {
-    uint32_t result = 0;
- 
-    asm volatile("int $0x80" 
-                : "=a"(result)                  // result = eax (после выполнения)
-                : "a"(SC_CODE_puts),            // eax = SC_CODE_puts(0)
-                  "b"(str)                      // ebx = str
-                );
 
-    return result;
+ uint32_t result = 0;
+
+   asm volatile("int $0x80" 
+
+          : "=a"(result)         // result = eax (после выполнения)
+
+            : "a"(SC_CODE_puts),      // eax = SC_CODE_puts(0)
+
+             "b"(str)           // ebx = str
+
+            );
+
+   return result;
+
 }
 
-
 int main() {
-    return print_str("*****TEST SYSCALLS*****\n");
+
+   return print_str("Hello world!\n");
+
 }

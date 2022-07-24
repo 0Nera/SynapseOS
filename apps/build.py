@@ -91,7 +91,12 @@ def build_all():
     build("link", "./bin/snake.o" + O_LIBC, "../bin/apps/snake")
     build("link", "./bin/test.o", "../bin/apps/test")
     build("link", "./bin/imageview.o" + O_LIBC, "../bin/apps/imageview")
-
+    
+    try:
+        os.system("fasm examples/fasm/hello.asm ./bin/asm.o")
+        build("link", "./bin/asm.o", "../bin/apps/asm")
+    except Exception:
+        pass
     '''
     if BUILD_LUA:
         print(("="*20)+"[Building Lua]"+("="*20))
