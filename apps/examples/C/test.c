@@ -7,56 +7,54 @@
 
 #include <stdint.h>
 
+/*
+    Регистры сисфункций
+    eax - номер
+    ebx - параметр 1
+    edx - параметр 2
+    ecx - параметр 3
+    esi - параметр 4
+    edi - параметр 5
+    ebp - параметр 6
+
+    Символьный код | Регистры
+    a                eax, ax, al
+    b                ebx, bx, bl
+    c                ecx, cx, cl
+    d                edx, dx, dl
+    S                esi, si
+    D                edi, di
+*/
+
 #define SC_CODE_puts            0
 #define SC_CODE_getscancode     1
 #define SC_CODE_getchar         2
 #define SC_CODE_gets            3
 #define SC_CODE_malloc          4
 #define SC_CODE_free            5
+#define SC_CODE_setdev          10
+#define SC_CODE_readfile        11
+#define SC_CODE_writefile       12
+#define SC_CODE_rand            20
+#define SC_CODE_srand           21
 #define SC_CODE_putpixel        32
-#define SC_CODE_drawline        33
+#define SC_CODE_drawline        33 
 #define SC_CODE_version         40
 
 
 int print_str(char *str) {
-    void* res = 8;
+    uint32_t result = 0;
+ 
+    asm volatile("int $0x80" 
+                : "=a"(result)                  // result = eax (после выполнения)
+                : "a"(SC_CODE_puts),            // eax = SC_CODE_puts(0)
+                  "b"(str)                      // ebx = str
+                );
 
-    asm volatile("mov %%eax, %0" : "=a"(res) : "a"(SC_CODE_puts), "b"(&str));
-    asm volatile("int $0x80");
-    return res;
-}
-
-
-int getversion(){
-    void* res = 8;
-    int result = -1;
-
-    asm volatile("mov %%eax, %0" : "=a"(res) : "a"(SC_CODE_version));
-    asm volatile("int $0x80");
-    asm volatile("mov %%edx, %0" : "=a"(result));
     return result;
 }
 
 
-int getscancode(){
-    void* res = 8;
-
-    asm volatile("mov %%eax, %0" : "=a"(res) : "a"(SC_CODE_getscancode));
-    asm volatile("int $0x80");
-    return res;
-}
-
-
 int main() {
-    print_str("*****TEST ALL SYSCALLS*****\n");
-    print_str("Try get version\n");
-
-    if (getversion() == 26){
-        print_str("RIGHT!\n");
-        return 1;
-    }
-
-    print_str("FAIL!\n");
-    
-    return -3;
+    return print_str("*****TEST SYSCALLS*****\n");
 }
