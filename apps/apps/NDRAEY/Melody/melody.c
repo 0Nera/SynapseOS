@@ -46,6 +46,7 @@ int main(){
         if(notes[i]==0) {continue;}
         play_sound(notes[i][0], notes[i][1]);
     }
+    nosound();
     /*
     for (int i = 10000; i != 500; i--) {
         play_sound(i);
