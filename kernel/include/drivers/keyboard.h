@@ -13,3 +13,6 @@ void keyboard_handler_main(regs_t *r);
 char *keyboard_gets();
 int32_t keyboard_getchar();
 int32_t keyboard_getscancode();
+int32_t keyLastInset();
+
+void changeStageKeyboard(int32_t s);
