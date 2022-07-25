@@ -68,6 +68,7 @@ def build_all():
     build("compile", "games/kernelmode_power/snake/snake.c", "./bin/snake.o")
     build("compile", "examples/C/test.c", "./bin/test.o")
     build("compile", "apps/NDRAEY/ImageView/imageview.c", "./bin/imageview.o")
+    build("compile", "apps/NDRAEY/Melody/melody.c", "./bin/melody.o")
     
     print("Building libc")
     build("compile", "libc/stdio.c", "./bin/libc/stdio.o")
@@ -91,7 +92,8 @@ def build_all():
     build("link", "./bin/snake.o" + O_LIBC, "../bin/apps/snake")
     build("link", "./bin/test.o", "../bin/apps/test")
     build("link", "./bin/imageview.o" + O_LIBC, "../bin/apps/imageview")
-    
+    build("link", "./bin/melody.o" + O_LIBC, "../bin/apps/melody")
+
     try:
         os.system("fasm examples/fasm/hello.asm ./bin/asm.o")
         build("link", "./bin/asm.o", "../bin/apps/asm")

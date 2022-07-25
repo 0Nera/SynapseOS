@@ -150,7 +150,13 @@ void checkAllBuses() {
 							qemu_log("ICH5 AC'97 ");
 						case 0x24C5:
 							tty_printf("Realtek AC'97 \n");
-							qemu_log("ICH5 AC'97 ");
+							qemu_log("Realtek AC'97 ");
+						case 0x2668:
+							tty_printf("Intel High Definition Audio \n");
+							qemu_log("Intel High Definition Audio ");
+						case 0x27D8:
+							tty_printf("Intel High Definition Audio \n");
+							qemu_log("Intel High Definition Audio ");
 						default:
 							tty_printf("device %x \n", getDeviceID(bus, device, function));
 							qemu_log("device %x ", getDeviceID(bus, device, function));
