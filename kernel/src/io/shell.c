@@ -6,6 +6,7 @@ char current_dir[256] = "/initrd/apps/";
 
 
 void shell() {
+    changeStageKeyboard(1);
     tty_setcolor(COLOR_ALERT);
     tty_printf("\nUse \"help\" command to get info about commands.");
 
