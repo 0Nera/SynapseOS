@@ -119,6 +119,10 @@ python3 build.py run
 
 - <https://vk.com/id_doczom>
 - <https://github.com/rgimad>
+- <https://vk.com/kernelmode_power>
+- <https://vk.com/piminov_remont>
+- <https://vk.com/ndraey>
+- <https://vk.com/4auka228>
 
 ## Используемые ресурсы
 
