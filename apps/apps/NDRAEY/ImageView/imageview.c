@@ -6,9 +6,12 @@
 int main() {
 	char metadata[4];
 
-	printf("File > ");
-	char fname = getchar(); // Doesn't work
-	printf("Opening %s...\n", fname);
+	printf("Warning! Keyboard doesn't work!\nFile > ");
+	while(1) {
+		char *fname = gets();
+		printf("%s\n", fname);
+	}
+	//printf("Opening %s...\n", fname);
 	
 	return 0;
 }

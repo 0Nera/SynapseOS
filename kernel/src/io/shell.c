@@ -14,7 +14,7 @@ void shell() {
         tty_setcolor(COLOR_SYS_TEXT);
         tty_printf("\nROOT ");
         tty_setcolor(COLOR_SYS_PATH);
-        tty_printf("%s>", current_dir);
+        tty_printf("%s> ", current_dir);
 
         tty_setcolor(COLOR_TEXT);
         char *cmd = keyboard_gets();

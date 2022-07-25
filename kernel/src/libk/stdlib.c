@@ -29,6 +29,6 @@ int32_t itoa(int32_t n, char *buffer) {
 
     buffer[length] = '\0';
     strver(buffer);
-    
+
     return length;
 }
