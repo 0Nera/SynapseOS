@@ -40,7 +40,7 @@ python3 build.py
 1. Установить ПО для сборки
 
     ``` bash
-    sudo apt-get install python3 clang llvm grub-pc-bin xorriso mtools lld git
+    sudo apt-get install python3 clang llvm grub-pc-bin xorriso mtools lld git fasm
     ```
 
 2. Установить ПО для запуска ОС
