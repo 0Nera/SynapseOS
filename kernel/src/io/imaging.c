@@ -1,10 +1,12 @@
 // Image Drawing library by Andrey(David) Pavlenko aka NDRAEY ~2022~
 
+// It parses Duke Image and draws it on screen
+
 #include <drivers/vfs.h>
 #include <mem/kheap.h>
 //#include <io/tty.h>
 
-struct ImageMeta {
+struct DukeImageMeta {
     short width;
     short height;
     int   data_length;
@@ -16,7 +18,7 @@ char draw_from_file(char *filename, int sx, int sy) {
     char meta[4];
     if(vfs_exists(filename)) {
         vfs_read(filename, 0, 9, meta);
-        struct ImageMeta* realmeta = (struct ImageMeta*)meta;
+        struct DukeImageMeta* realmeta = (struct DukeImageMeta*)meta;
 
         char *imagedata = kheap_malloc(realmeta->data_length);
         

@@ -87,7 +87,6 @@ def build_kernel(warnings=False):
     print(f"Сборка ядра заняла: {(time.time() - start_time):2f} сек.")
 
 
-
 def build_apps():
     os.chdir("apps/")
     os.system("python3 build.py")
