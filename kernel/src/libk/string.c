@@ -292,6 +292,8 @@ void strtoupper(char* as)
 		as++;
 	}
 }
+
+
 char *format_string(char *text, ...){
     va_list args;
     uint32_t i = 0;
@@ -303,6 +305,8 @@ char *format_string(char *text, ...){
 
     while (text[i]){
         char res[32];
+        int temp_int = 0;
+
         if (text[i] == '%'){
             i++;
             switch (text[i]){
@@ -310,16 +314,13 @@ char *format_string(char *text, ...){
                     strcat(result, va_arg(args, char *));
                     break;
                 case 'c':
-                    strcat(result, va_arg(args, int));
+                    strcat(result, va_arg(args, char));
                     break;
                 case 'd':
 
-                    if (i < 0)
-                    {
-                        strcat(result, va_arg(args, int));
-                    }
+                    temp_int = va_arg(args, int);
 
-                    itoa(i, res);
+                    itoa(temp_int, res);
                     strcat(result, res);
                     break;
                 case 'i':

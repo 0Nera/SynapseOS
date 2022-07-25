@@ -40,6 +40,7 @@
 #define SC_CODE_putpixel        32
 #define SC_CODE_drawline        33 
 #define SC_CODE_version         40
+#define SC_CODE_ticks           42
 
 
 
@@ -90,7 +91,18 @@ int getversion(){
 }
 
 
-int print_str(char *str) {
+uint32_t timer_get_ticks() {
+    uint32_t result = 0;
+ 
+    asm volatile("int $0x80" 
+                : "=a"(result)
+                : "a"(SC_CODE_ticks)
+                );
+
+    return result;
+}
+
+int print_str(char str[]) {
     uint32_t result = 0;
  
     asm volatile("int $0x80" 
@@ -135,7 +147,7 @@ void putint(const int i) {
     char res[32];
 
     if (i < 0) {
-        print_str('-');
+        print_str("-");
     }
 
     itoa(i, res);
@@ -146,7 +158,7 @@ void putint(const int i) {
 
 
 void puthex(unsigned int i) {
-    const unsigned char hex[16]  =  { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+    char hex[16]  =  { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
     unsigned int n, d = 0x10000000;
 
     print_str("0x");
@@ -156,12 +168,12 @@ void puthex(unsigned int i) {
     n = i;
 
     while( d >= 0xF ) {
-        print_str(hex[n/d]);
+        print_str(&hex[n/d]);
         n = n % d;
         d /= 0x10;
     }
 
-    print_str(hex[n]);
+    print_str(&hex[n]);
 }
 
 
@@ -177,7 +189,7 @@ void print(char *format, va_list args) {
                     print_str(va_arg(args, char*));
                     break;
                 case 'c':
-                    temp[0] = va_arg(args, char*);
+                    temp[0] = (char) va_arg(args, char*)[0];
                     print_str(temp);
                     break;
                 case 'd':

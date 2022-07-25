@@ -9,6 +9,7 @@
         "elf.h": "c",
         "syscalls.h": "c",
         "stdfile.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "sb16.h": "c"
     }
 }

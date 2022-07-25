@@ -1,9 +1,9 @@
 import os, shutil, sys, tarfile, os.path, subprocess
 
 LD = "ld.lld"
-LDFLAGS = "-T link.ld -nostdlib -o"
+LDFLAGS = " -nostdlib -e main -o"
 CC = "clang -target i386-pc-none-elf"
-CFLAGS = "-w -mno-sse -mno-avx -O0 -ffreestanding -I include/ -c"
+CFLAGS = "  -std=gnu11 -lgcc -mno-sse -mno-avx -O0 -ffreestanding -I include/ -c"
 
 BUILD_LUA = True # Change this to enable or disable Lua build.
 
@@ -91,7 +91,12 @@ def build_all():
     build("link", "./bin/snake.o" + O_LIBC, "../bin/apps/snake")
     build("link", "./bin/test.o", "../bin/apps/test")
     build("link", "./bin/imageview.o" + O_LIBC, "../bin/apps/imageview")
-
+    
+    try:
+        os.system("fasm examples/fasm/hello.asm ./bin/asm.o")
+        build("link", "./bin/asm.o", "../bin/apps/asm")
+    except Exception:
+        pass
     '''
     if BUILD_LUA:
         print(("="*20)+"[Building Lua]"+("="*20))
