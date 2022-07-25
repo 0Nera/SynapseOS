@@ -48,7 +48,7 @@ python3 build.py
     sudo apt-get install libvirt-daemon libvirt-clients bridge-utils virt-manager qemu-kvm qemu virt-manager
     ```
 
-    Хватит и простого qemu
+    Или просто установите любую из поддерживаемых виртуальных машин
 
 3. Скачиваем репозиторий с гитхаба (или самому через браузер)
 
