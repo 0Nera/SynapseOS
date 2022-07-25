@@ -70,7 +70,6 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     //     asm volatile("hlt");
     // }
     //qemu_log("task: %d", create_task());
-
     init_task_manager();
     //create_STFS(0);
 
@@ -84,7 +83,10 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
 
     shell();                                // Активация терминала
 
+    //tty_printf("\n%d\n%s\n", 101/10, format_string("Hello! %d, %x, %c, %s", 120, 0x90, 'H', "Hi!"));
+    draw_from_file("/initrd/res/SynapseOSLogo.raw", getWidthScreen()-106, 36);
 
+    shell();                                // Активация терминала
     // Работает, но надо доделать 
     //run_driver_thread("/initrd/sys/shell.sea");
     //run_driver_thread("/initrd/sys/user.sea");

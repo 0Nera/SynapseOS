@@ -72,5 +72,7 @@ void draw_vga_character(uint8_t c, int32_t x, int32_t y, int32_t fg, int32_t bg,
 void create_back_framebuffer();
 void setPosX(int32_t x);
 void setPosY(int32_t y);
+int32_t getPosX();
+int32_t getPosY();
 uint32_t getWidthScreen();
 uint32_t getHeightScreen();

@@ -1,13 +1,26 @@
+/*
+ * TUI для SynapseOS
+ * Автор: Пиминов Никита
+ * VK: @piminov_remont
+ * GitHub: github.com/pimnik98
+ * piminoff.ru
+ */
 #include <kernel.h>
 
-
-int32_t DV_W = 1024;
-int32_t DV_H = 768;
-int32_t bgColor = VESA_BLUE;
-int32_t txColor = VESA_WHITE;
-int32_t TUIMode = 0; // Режим коррекции отображения на разных экранах
-int32_t typeDisplay = 0;
-char* Display;
+int32_t bgColor = VESA_BLUE;        // Фон на экране
+int32_t txColor = VESA_WHITE;       // Основной текст для печати на экране
+int32_t TUIMode = TUI_DEFAULT;      // Режим TUI
+int32_t typeDisplay = 0;            // Тип дисплея (?)
+int32_t lastUpdate = 0;             // Последнее обновление экрана
+int32_t w = 0;                      // Длина экрана
+int32_t h = 0;                      // Высота экрана
+int32_t ww = 0;                     // Длина рабочего места
+int32_t wh = 0;                     // Высота рабочего места
+int32_t maxStrLine = 0;             // Максимальное количество символов на линии
+int32_t maxHeightLine = 0;          // Максимальное количество линий
+int32_t oldPosX = 0;                // Последние местоположение символа по X (место печати)
+int32_t oldPosY = 0;                // Последние местоположение символа по Y (место печати)
+char* Display;                      // Название расширения монитора
 
 void testDisplay(int w, int h){
     int32_t pixels = w*h;
@@ -370,13 +383,6 @@ void testDisplay(int w, int h){
     tty_printf("[testDisplay] %dx%d - %d pixels | %d | %s \n",w,h,pixels,typeDisplay,Display);
 }
 
-void cleanScreen(){
-    for (int x = 0; x != 1024; x++){ // Вывод синего цвета по середине
-        for (int y = 0; y != 768; y++){
-            set_pixel(x, y, bgColor);
-        }
-    }
-}
 /*
  * Рисуем прямоугольник
  * x - Начальная координата X
@@ -393,106 +399,207 @@ void drawRect(int x,int y,int w, int h,int color){
     }
 }
 
-void drawRectLine(int x,int y,int w, int h,int color, int c){
+void drawRectLine(int x,int y,int w, int h,int color,int color2, int c){
     for (int _x = x; _x < x+w ; _x += 8){
-        draw_vga_character(c, _x, y, txColor, color, true);
-        draw_vga_character(c, _x, y+h-16, txColor, color, true);
+        draw_vga_character(c, _x, y, color, color2, true);
+        draw_vga_character(c, _x, y+h-16, color, color2, true);
     }
     for (int _y = y; _y < y+h; _y += 16){
-        draw_vga_character(c, x, _y, txColor, color, true);
-        draw_vga_character(c, x+w-8, _y, txColor, color, true);
+        draw_vga_character(c, x, _y, color, color2, true);
+        draw_vga_character(c, x+w-8, _y, color, color2, true);
     }
 }
 
-void footBar(int32_t y){
-    drawRect(0,y-16,1024,y,VESA_LIGHT_GREY);
+void cleanScreen(bool fast){
+    if (fast){
+        drawRect(0,0,w,h,bgColor);
+    } else {
+        for (int x = 0; x != w; x++){
+            for (int y = 0; y != h; y++){
+                set_pixel(x, y, bgColor);
+            }
+        }
+    }
+}
+
+void headBar(){
+    char* OSNAME = "SynapseOS v0.2.12 (Dev)";
+    int32_t l_OSNAME = (w/2)-(strlen(OSNAME)*4);
+    setPosX(l_OSNAME);
+    setPosY(16*1);
+    tty_puts_color(OSNAME,VESA_WHITE, VESA_LIGHT_GREY);
+    // Рисуем треугольник для параметров
+    drawRectLine(8,32,w/2,112,txColor,VESA_LIGHT_GREY,176);
+    drawRectLine(w/2,32,(w/2)-8,112,txColor,VESA_LIGHT_GREY,176);
+
+    setPosX(16);
+    setPosY(16*3);
+    char infoOS[512];
+    substr(infoOS, format_string("OS: %s",OSNAME), 0, (maxStrLine/2)-2);
+    tty_puts_color(infoOS,txColor, bgColor);
+
+    setPosX(16);
+    setPosY(16*4);
+    char infoCPU[512];
+    substr(infoCPU, format_string("CPU: %s",getNameBrand()), 0, (maxStrLine/2)-2);
+    tty_puts_color(infoCPU,txColor, bgColor);
+
+    setPosX(16);
+    setPosY(16*5);
+    char infoRAM[512];
+    substr(infoRAM, strcat(format_string("RAM: %d",(getInstalledRam()))," kb"), 0, (maxStrLine/2)-2);
+    tty_puts_color(infoRAM,txColor, bgColor);
+
+    setPosX(16);
+    setPosY(16*6);
+    char infoVideo[512];
+    substr(infoVideo, "Video: Basic video adapter (Unknown)", 0, (maxStrLine/2)-2);
+    tty_puts_color(infoVideo,txColor, bgColor);
+
+    setPosX(16);
+    setPosY(16*7);
+    char infoDisplay[512];
+    substr(infoDisplay, (format_string("Display: %s",Display,w,h)), 0, (maxStrLine/2)-2);
+    tty_puts_color(infoDisplay,txColor, bgColor);
+}
+
+void footBar(char* text){
+    drawRect(0,h-16,1024,h,VESA_LIGHT_GREY);
     setPosX(0);
-    setPosY(y-16);
-    tty_puts_color("Press 'Start' to open menu",VESA_BLACK, VESA_LIGHT_GREY);
+    setPosY(h-16);
+    tty_puts_color(text,VESA_BLACK, VESA_LIGHT_GREY);
+}
+
+void cleanWorkSpace(int color){
+    drawRect(8,128,ww,wh,color);
+
+}
+
+/**
+ * Выводит фатальный красный блок
+ */
+void createErrorBox(char* title,char* text){
+    // Переводим TUI в режим ERRORBOX
+    //TUIMode = TUI_ERROR_BOX;
+    // Установка отступа экрана в длину (left/right)
+    uint32_t padding_w = maxStrLine/4; // 320 - 10 символа; 1024 - 32 символа
+    // Установка отступа экрана в высоту (up)
+    uint32_t padding_h = maxHeightLine/4;
+    // Получаем размеры коробки
+    uint32_t boxWidth = ww-((padding_w*8)*2);
+    uint32_t boxHeight = wh-((padding_h));      // ? Реализовал а зачем, забыл :)
+    // Получаем максимальное количество символов на строку в коробке
+    uint32_t maxStrLineBox = (boxWidth/8)-4; // 60 - символов при 1024
+    // maxHeightLine
+    // Высота бокса для текса
+    uint32_t lineHeight = 1;
+    // Обрезаем строку до максимального лимита на строку
+    substr(title, title, 0, maxStrLineBox);
+    // Если текст длинее допустимой строки
+    if (strlen(text) > maxStrLineBox){
+        lineHeight = maxStrLineBox/strlen(text);
+    }
+    // Если на экран все не помещается
+    if (maxHeightLine < lineHeight){
+        lineHeight = maxHeightLine;
+    }
+    if (strlen(text) > maxStrLineBox){
+        // Объявим переменную для деления текста
+        char strings[lineHeight][maxStrLineBox+1];
+        for (int i = 0;i < lineHeight;i++){
+            substr(title, title, 0+(i*maxStrLineBox), ((i+1)*maxStrLineBox));
+        }
+    }
+    // Рисуем коробку
+    drawRect(8+(padding_w*8),16*(8+padding_h),boxWidth,16*(6+lineHeight),VESA_RED);
+    drawRectLine(8+(padding_w*8),16*(8+padding_h),boxWidth,16*(6+lineHeight),VESA_WHITE,VESA_RED,19);
+    // Показываем титл и считаем равнение по центру
+    uint32_t centerTitle = (maxStrLineBox/2)-(strlen(title)/2);
+
+    setPosX(((3+centerTitle+padding_w)*8));
+    setPosY(16*((10)+padding_h));
+    tty_puts_color(title,VESA_WHITE,VESA_RED);
+
+    // Рисуем буковки
+    if (strlen(text) > maxStrLineBox){
+        for (int i = 0;i < lineHeight;i++){
+            //substr(title, title, 0+(i*maxStrLineBox), ((i+1)*maxStrLineBox));
+
+        }
+    } else {
+        setPosX(((3+padding_w)*8));
+        setPosY(16*((12)+padding_h));
+        tty_puts_color(text,VESA_WHITE,VESA_RED);
+    }
+}
+
+void updateLoop(){
+    // Получаем последнию позицию курсора
+    oldPosX = getPosX();
+    oldPosY = getPosY();
+
+    // Выводим нажатую кнопку во второй колонке в шапке
+    setPosX(((maxStrLine/2)*8)+(8*2));
+    setPosY(32);
+    draw_vga_character(0, ((maxStrLine/2)*8)+(8*2), 32, txColor, bgColor, true);
+    draw_vga_character(0, ((maxStrLine/2)*8)+(8*3), 32, txColor, bgColor, true);
+    draw_vga_character(0, ((maxStrLine/2)*8)+(8*4), 32, txColor, bgColor, true);
+    draw_vga_character(0, ((maxStrLine/2)*8)+(8*5), 32, txColor, bgColor, true);
+    tty_printf("%d",keyLastInset());
+
+    // Возращаем указатель обратно
+    setPosX(oldPosX);
+    setPosY(oldPosY);
 }
 
 bool tui(){
-    int32_t w = getWidthScreen();
-    int32_t h = getHeightScreen();
-    testDisplay(w,h);
-    if (typeDisplay != 1){
-        tty_printf("Sorry, your screen extension is not supported by TUI.\nYou are redirected immediately to the console application of the operating system.\n");
-        return false;
-    }
-    tty_printf("TUI Kerner Test...\n");
-
-    sleep(300);
-    //return false;
     int32_t i = 0;
-
-    char* OSNAME = "SynapseOS v0.2.12 (Dev)";
-    int32_t l_OSNAME = (w/2)-(strlen(OSNAME)*4);
-
-    int32_t maxStrLine = (w/8)-2;
+    w = getWidthScreen();
+    h = getHeightScreen();
+    ww = w-16;
+    wh = h-(16*9);
+    maxHeightLine = wh/16;
+    maxStrLine = (w/8)-2;
+    changeStageKeyboard(2); // Блокируем нажатие и отображение кнопок
+    testDisplay(w,h);       // Тестируем монитор на валидность (Скорее всего останеться только для детекта, когда резина будет готова)
+    tty_printf("TUI Starting...\n");
     while(1){
-        if (i == 0){
-            i = 1;
-            // Чистим экран
-
-            cleanScreen();
-            // Рисуем обводку
-            drawRectLine(0,0,w,h,VESA_LIGHT_GREY,178);
-            // Выводим ноги
-            footBar(h);
-            // Выводим заголовок
-            setPosX(l_OSNAME);
-            setPosY(0);
-            tty_puts_color(OSNAME,VESA_WHITE, VESA_LIGHT_GREY);
-            // Рисуем треугольник для параметров
-            drawRectLine(8,16,w/2,112,VESA_LIGHT_GREY,176);
-            drawRectLine(w/2,16,w-32,112,VESA_LIGHT_GREY,176);
-
-            setPosX(16);
-            setPosY(32);
-            char infoOS[512];
-            substr(infoOS, "OS: SynOSx86DevBuild", 0, (maxStrLine/2)-2);
-            tty_puts_color(infoOS,txColor, bgColor);
-
-            setPosX(16);
-            setPosY(48);
-            char infoCPU[512];
-            strcat(infoCPU,"CPU: ");
-            strcat(infoCPU,getNameBrand());
-            substr(infoCPU, infoCPU, 0, (maxStrLine/2)-2);
-            tty_puts_color(infoCPU,txColor, bgColor);
-
-            setPosX(16);
-            setPosY(64);
-            char infoRAM[512];
-            substr(infoRAM, "RAM: 32 MB", 0, (maxStrLine/2)-2);
-            tty_puts_color(infoRAM,txColor, bgColor);
-
-            setPosX(16);
-            setPosY(80);
-            char infoVideo[512];
-            substr(infoVideo, "Video: Unknown", 0, (maxStrLine/2)-2);
-            tty_puts_color(infoVideo,txColor, bgColor);
-
-            setPosX(16);
-            setPosY(96);
-            char infoDisplay[512] = "";
-            strncpy(infoDisplay,"Display: ",512);
-            strcat(infoDisplay,Display);
-            tty_puts_color(infoDisplay,txColor, bgColor);
-
-            setPosX(16);
-            setPosY(128);
-            tty_puts_color("Error in TUI module. You will be returned to the console in 5 seconds.",txColor, bgColor);
-            sleep(500);
+        if (timer_get_ticks() < lastUpdate){
+            // Просто игнорируем работу цикла
+        } else if (TUIMode == TUI_ERROR_BOX){
+            // Режим обработки фатального окна
+        } else if (keyLastInset() == 68){
+            createErrorBox("Error","Test Fatal Screen");
+            sleep(100);
+            //break;
+        } else if (keyLastInset() == 88){
+            // Нажата клавиша F12 - закроем TUI и вернем управление shell()
+            createErrorBox("Error in TUI module. ","You will be returned to the console in 1 seconds.");
+            sleep(100);
+            bgColor = VESA_BLACK;
+            cleanScreen(true);
             break;
-
+        } else {
+            if (i == 0){
+                i = 1;
+                // Чистим экран
+                cleanScreen(true);
+                // Рисуем обводку
+                drawRectLine(0,0,w,h,txColor,VESA_LIGHT_GREY,178);
+                // Выводим шапку
+                headBar();
+                // Выводим ноги
+                footBar("Press 'Start' to open menu");
+                // Установка позиции для печати
+                setPosX(8);
+                setPosY(16*8);
+                changeStageKeyboard(1);
+            }
+            // Выполняем цикл
+            updateLoop();
+            // Обновляем таймер, для переотображения
+            lastUpdate = timer_get_ticks()+3;
         }
-
-
-
-
-        //drawRect(0,0,1024,768,VESA_BLUE);
-
     }
     return true;
 }
