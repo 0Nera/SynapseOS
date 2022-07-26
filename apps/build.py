@@ -5,7 +5,7 @@ LDFLAGS = " -nostdlib -e main -o"
 CC = "clang -target i386-pc-none-elf"
 CFLAGS = "  -std=gnu11 -lgcc -mno-sse -mno-avx -O0 -ffreestanding -I include/ -c"
 
-BUILD_LUA = True # Change this to enable or disable Lua build.
+BUILD_BASIC = True # Change this to enable or disable Lua build.
 
 CC = f"{CC} {CFLAGS}"
 LD = f"{LD} {LDFLAGS}"
@@ -13,15 +13,13 @@ LD = f"{LD} {LDFLAGS}"
 print("[\x1b[32mCONFIGURATION\x1b[0m] Using C compiler:", CC)
 print("[\x1b[32mCONFIGURATION\x1b[0m] Using linker:", LD)
 
-
 AR = "llvm-ar"
-O_LIBC = ["./bin/libc/stdio.o","./bin/libc/stdfile.o",
+_O_LIBC = ["./bin/libc/stdio.o","./bin/libc/stdfile.o",
           "./bin/libc/ports.o","./bin/libc/stdlib.o","./bin/libc/string.o",
           "./bin/libc/learntask.o","./bin/libc/vesa.o","./bin/libc/scancodes.o"]
-O_LIBC = ' '+' '.join(O_LIBC)
+O_LIBC = ' '+' '.join(_O_LIBC)
 data = []
 files = []
-
 
 # Сборка
 def build(typ, infile, outfile):
@@ -45,7 +43,7 @@ def build_all():
     except Exception as E:
         print(E)
     
-    print("Building apps")
+    print("[\x1b[33;1mNOTICE\x1b[0m] Building apps")
     '''
     os.system(f"{CC} examples/C/HelloWorld.c -o ./bin/HelloWorld.o")
     os.system(f"{CC} examples/C/sound.c -o ./bin/beep.o")
@@ -69,8 +67,8 @@ def build_all():
     build("compile", "examples/C/test.c", "./bin/test.o")
     build("compile", "apps/NDRAEY/ImageView/imageview.c", "./bin/imageview.o")
     build("compile", "apps/NDRAEY/Melody/melody.c", "./bin/melody.o")
-    
-    print("Building libc")
+
+    print("[\x1b[33;1mNOTICE\x1b[0m] Building libc")
     build("compile", "libc/stdio.c", "./bin/libc/stdio.o")
     build("compile", "libc/ports.c", "./bin/libc/ports.o")
     build("compile", "libc/stdlib.c", "./bin/libc/stdlib.o")
@@ -79,8 +77,8 @@ def build_all():
     build("compile", "libc/learntask.c", "./bin/libc/learntask.o")
     build("compile", "libc/vesa.c", "./bin/libc/vesa.o")
     build("compile", "libc/scancodes.c", "./bin/libc/scancodes.o")
-    
-    print("Linking apps")
+
+    print("[\x1b[33;1mNOTICE\x1b[0m] Linking apps")
     # There we should swap the second and third arguments (acctording to original code)
     build("link", "./bin/HelloWorld.o" + O_LIBC, "../bin/apps/hi")
     build("link", "./bin/popsort_int_test.o" + O_LIBC, "../bin/apps/sort")
@@ -99,12 +97,22 @@ def build_all():
         build("link", "./bin/asm.o", "../bin/apps/asm")
     except Exception:
         pass
-    '''
-    if BUILD_LUA:
-        print(("="*20)+"[Building Lua]"+("="*20))
-        os.chdir("lua");
-        # subprocess.call("make -j2", shell = True)
-    '''
+
+    if BUILD_BASIC:
+        print(("="*20)+"[Building BASIC]"+("="*20))
+        os.chdir("basic-prog-lang");
+        subprocess.call("make", shell = True)
+        files = subprocess.Popen("make synchronize", shell = True, stdout = subprocess.PIPE).stdout.read()[:-1]
+        files = files.decode("utf-8").split(" ")
+        os.chdir("..")
+        for n, i in enumerate(files):
+            files[n] = "basic-prog-lang/"+i
+        files = ' '.join(files)
+        
+        cmd = f"{LD} basic {files} {O_LIBC}"
+        print(f"[\x1b[33;1mNOTICE\x1b[0m] Running command: {cmd}")
+        subprocess.call(cmd, shell=True)
+
     
 if __name__ == "__main__":
     try:

@@ -176,6 +176,9 @@ void puthex(unsigned int i) {
     print_str(&hex[n]);
 }
 
+void putchar(unsigned char ch) {
+	printf("%c", ch);
+}
 
 void print(char *format, va_list args) {
     int i = 0;
