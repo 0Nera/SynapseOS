@@ -123,6 +123,24 @@ void shell() {
                 tty_setcolor(COLOR_ERROR);
                 tty_printf("run: incorrect argument\n");
             }
+        } else if (strlen(cmd) > 2 && strncmp(cmd, "d/", 2) == 0) {
+            char fname[256] = {0};
+
+            char *tok = (char *)strtok(cmd, "/");
+
+            tok = (char *)strtok(0, "/"); // tok - имя файла
+
+            if (fname[0] == 0) {
+                char temp[256] = {0};
+                strcpy(temp, current_dir);
+                strcat(temp, tok);
+                elf_info(temp);                
+                run_elf_file(temp);
+
+            } else {
+                tty_setcolor(COLOR_ERROR);
+                tty_printf("run: incorrect argument\n");
+            }
         } else {
             char fname[256] = {0};
 
@@ -198,8 +216,7 @@ void cat(char *fname) {
         tty_printf("cat: error file not found\n");
     } else {
         uint32_t fsize = vfs_get_size(fname);
-        int32_t res = vfs_read(fname, 0, fsize, buf);
-        (void)res;
+        vfs_read(fname, 0, fsize, buf);
 
         buf[fsize] = '\0';
 
