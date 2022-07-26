@@ -14,3 +14,4 @@ size_t strspn(const char *s, const char *accept);
 int strncmp(const char *s1, const char *s2, size_t num);
 char *strtok(char *s, const char *delim);
 char *strcat(char *s, const char *t);
+char *strstr(char *str, char *substr);

@@ -53,12 +53,8 @@ int32_t tar_lookup(unsigned char *archive, char *filename) {
 
 uint32_t initrd_read(char *filename, int32_t offset, int32_t size, vfs_filesystem_t *fs, void *buffer) {
     int32_t read_size = 0;
-    if (!filename) {
-        return 0;
-    }
-    if (!size) {
-        return 0;
-    }
+    if (!filename) return 0;
+    if (!size) return 0;
 
     int32_t file_addr = tar_lookup(initrd_begin, filename);
     if (!file_addr) { // File not found
@@ -94,9 +90,7 @@ uint32_t initrd_file_exists(char *filename, vfs_filesystem_t *fs) {
 }
 
 uint32_t initrd_get_filesize(char *filename) {
-    if (!filename) {
-        return 0;
-    }
+    if (!filename) return 0;
 
     int32_t file_addr = tar_lookup(initrd_begin, filename);
     if (!file_addr) { // file not found
@@ -109,9 +103,7 @@ uint32_t initrd_get_filesize(char *filename) {
 }
 
 uint32_t initrd_is_dir(char *filename) {
-    if (!filename) {
-        return 0;
-    }
+    if (!filename) return 0;
 
     int32_t file_addr = tar_lookup(initrd_begin, filename);
     if (!file_addr) { // file not found
@@ -132,16 +124,17 @@ void initrd_list(int32_t argc, char **arg) {
         if (file->type == USTAR_DIRECTORY) {
             tty_printf("\n    <dir>       /initrd/%s", file->fname);
         } else if (file->type == USTAR_NORMAL_FILE) {
-            tty_printf("\n    <file> %d   /initrd/%s ", filesize, file->fname);
+            tty_printf("\n     <file> %d   /initrd/%s ", filesize, file->fname);
         }
         addr += (((filesize + 511) / 512) + 1) * 512;
         
-        if (addr == initrd_end) {
+        /*if (addr == initrd_end) {
             break;
         }
         if (addr > initrd_end ) {
             break;
-        }
+        }*/ // Warning: These if blocks can be collapsed into -----|
+        if(addr>=initrd_end) break; //  <--------------------------|
     }
     tty_printf("\n");
 }

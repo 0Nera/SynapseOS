@@ -158,3 +158,16 @@ char *strcat(char *s, const char *t) {
     strcpy(s + strlen(s), t);
     return s;
 }
+
+char *strstr(char *str, char *substr)
+{
+    int len = strlen(substr);
+    char *ref = substr;
+    while(*str && *ref)
+    {
+        if (*str++ == *ref) ref++;
+        if(!*ref) return (str - len);
+        if (len == (ref - substr)) ref = substr;
+    }
+    return NULL;
+}

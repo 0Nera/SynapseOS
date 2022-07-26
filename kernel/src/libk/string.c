@@ -283,6 +283,7 @@ void strtolower(char* as)
 		as++;
 	}
 }
+
 void strtoupper(char* as)
 {
 	while(*as != 0)
@@ -311,18 +312,19 @@ char *format_string(char *text, ...){
             i++;
             switch (text[i]){
                 case 's':
-                    strcat(result, va_arg(args, char *));
+                    strcat(result, va_arg(args, char*));
                     break;
-                case 'c':
-                    strcat(result, va_arg(args, char));
+                case 'c': {
+                    //strcat(result, va_arg(args, char)) // Wrong!
+                    result[i] = va_arg(args, char);  // Maybe correct                  
                     break;
-                case 'd':
-
+                }
+                case 'd':{
                     temp_int = va_arg(args, int);
-
                     itoa(temp_int, res);
                     strcat(result, res);
                     break;
+                }
                 case 'i':
                     //tty_putint(va_arg(args, int));
                     break;
@@ -330,6 +332,7 @@ char *format_string(char *text, ...){
                     //tty_putint(va_arg(args, unsigned int));
                     break;
                 case 'x':
+                    result[i]='!';
                     //tty_puthex(va_arg(args, uint32_t));
                     break;
                 case 'v':
@@ -357,6 +360,6 @@ char *format_string(char *text, ...){
         }
         i++;
     }
-
+    va_end(args);
     return result;
 }
