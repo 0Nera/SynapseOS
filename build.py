@@ -143,9 +143,15 @@ def run_qemu():
     else:
         os.system("qemu-img create -f raw ata.vhd 32M")
     
+    if os.path.exists("fdb.img"):
+        pass
+    else:
+        print("111")
+    os.system("qemu-img create -f raw fdb.img 1440K")
+    
     qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32" \
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
-        " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log"
+        " -cdrom SynapseOS.iso -fdb fdb.img -hda ata.vhd -serial  file:Qemu.log"
         
     os.system(qemu_command)
 
@@ -167,6 +173,7 @@ def run_qemu_debug():
         pass
     else:
         os.system("qemu-img create -f raw ata.vhd 32M")
+
     
     qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32" \
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
