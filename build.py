@@ -4,7 +4,7 @@ from reprlib import recursive_repr
 
 _CC = "clang -target i386-pc-none-elf"
 LD = "ld.lld"
-CFLAGS = "-mno-sse -mno-avx -O0 -ffreestanding -I kernel/include/ -c"
+CFLAGS = "  -nostdlib -mno-sse -mno-avx -g -O0 -ffreestanding -I kernel/include/ -c"
 
 CC = f"{_CC} {CFLAGS}"
 
@@ -18,7 +18,7 @@ def warn(message):
 
 def compile(binary, source, cur="--", total="--", warnings=False):
     print(f"[\x1b[32;1mBUILD\x1b[0m] [{cur}/{total}]: Compiling: {source}")
-    os.system(f"{CC} {'' if warnings else '-w'} -o ./{binary} {source}")
+    os.system(f"{CC}  {'' if warnings else ' -w '}  -o ./{binary} {source}")
 
 def compile_kernel(warnings=False):
     print("Compiling...")
