@@ -1,8 +1,7 @@
 # О проекте
 <!-- -->
 
-![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![CMake](https://img.shields.io/badge/CMake-%23008FBA.svg?style=for-the-badge&logo=cmake&logoColor=white)
-
+![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
 SynapseOS - простая x86 операционная система на языке C с хорошо документированным ядром.
 ![SynapseOS](https://raw.githubusercontent.com/0Nera/SynapseOS/master/screenshots/test.png "SynapseOS")
@@ -27,7 +26,7 @@ SynapseOS - простая x86 операционная система на яз
 
 ## Сборка и запуск
 
-### Универсальное рещение
+### Универсальное решение
 
 ```bash
 python3 build.py
@@ -48,6 +47,8 @@ python3 build.py
     ``` bash
     sudo apt-get install libvirt-daemon libvirt-clients bridge-utils virt-manager qemu-kvm qemu virt-manager
     ```
+
+    Или просто установите любую из поддерживаемых виртуальных машин
 
 3. Скачиваем репозиторий с гитхаба (или самому через браузер)
 
@@ -80,7 +81,7 @@ python3 build.py
 
 ### [Windows]
 
-Установите WSL или виртуальную машину с Ubuntu не ниже 18.
+Установите WSL или виртуальную машину с Ubuntu версии не ниже 18.
 Соберите ядро по инструкции для Linux.
 В будущем, по мере перехода на Limine, сборка упростится в разы.
 
@@ -118,6 +119,10 @@ python3 build.py run
 
 - <https://vk.com/id_doczom>
 - <https://github.com/rgimad>
+- <https://vk.com/kernelmode_power>
+- <https://vk.com/piminov_remont>
+- <https://vk.com/ndraey>
+- <https://vk.com/4auka228>
 
 ## Используемые ресурсы
 
