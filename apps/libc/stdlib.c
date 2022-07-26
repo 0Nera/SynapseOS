@@ -49,3 +49,7 @@ void free(void* memory) {
     asm volatile("mov %%eax, %0" : : "a"(SC_CODE_free), "b"(memory));
     asm volatile("int $0x80");
 }
+
+void *calloc(size_t number, size_t size) {
+	return malloc(number*size);
+}
