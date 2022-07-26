@@ -1,5 +1,13 @@
 #include <kernel.h>
 
+void* calloc(size_t nmemb, size_t size) {
+	void* ptr = kheap_malloc(nmemb * size);
+	if (!ptr) {
+		return NULL;
+	}
+	memset(ptr, 0, nmemb * size);
+	return ptr;
+}
 
 void strver(char *str) {
     char c;
@@ -29,6 +37,6 @@ int32_t itoa(int32_t n, char *buffer) {
 
     buffer[length] = '\0';
     strver(buffer);
-
+    
     return length;
 }
