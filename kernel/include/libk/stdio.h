@@ -1,28 +1,47 @@
 #pragma once
+
+#define EOF -1
 #define SEEK_SET 1
 #define SEEK_CUR 2
 #define SEEK_END 3
 
-typedef struct _FILE
-{
+#define STDIO_ERR_NO_FOUND 		1	// Файл не найден
+#define STDIO_ERR_MODE_ERROR	2	// Режим работы не определён
+#define STDIO_ERR_SIZE			3	// Размер файла имеет недопустимый размер
+#define STDIO_ERR_NO_OPEN		4	// Файл не был открыт
 
-    char name[32];
-    uint32_t flags;
-    uint32_t fileLength;
-    uint32_t id;
-    uint32_t eof;
-    uint32_t position;
-    uint32_t currentCluster;
-    uint32_t deviceID;
-    uint32_t fstream_ptr;
-    uint32_t fsize;
-} FILE, *PFILE;
+typedef struct {
+	char* path;
+    int32_t size;
+    uint32_t fmode;
+	size_t bufSize;
+	char* buf;
+	bool open;
+	int64_t pos;
+	uint32_t err;
+} FILE;
 
-FILE *fopen(const char *filename, const char *mode);
+// Типы открытого файла, тип флагов rw и т.д.
+enum FileOpenMode {
+	O_READ = 1,
+	O_WRITE = 2,
+	O_CREATE = 4,
+	O_APPEND = 8,
+	O_TRUNC = 16,
+};
+
+FILE* fopen(const char* filename, const char* mode);
 void fclose(FILE *stream);
-int fseek(FILE *stream, int offset, int whence);
-int ftell(FILE *stream);
-size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
-size_t fwrite(const void *ptr, size_t size, size_t count, FILE *stream);
-int fsize(FILE *stream);
+char* fread(FILE* stream);
+int64_t ftell(FILE* stream);
+int32_t fsize(FILE *stream);
+int64_t fseek(FILE* stream, int64_t offset, uint32_t whence);
 void rewind(FILE *stream);
+void perror(FILE* stream,char* s);
+uint32_t ferror(FILE* stream);
+void fsetpos(FILE* stream, int64_t pos);
+int64_t fgetpos(FILE* stream);
+void fdebuginfo(FILE* stream);
+
+//size_t fread(FILE* stream, char* ptr, size_t size, size_t nmemb);
+size_t fwrite(const void *ptr, size_t size, size_t count, FILE *stream);

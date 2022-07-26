@@ -8,13 +8,46 @@ char current_dir[256] = "/initrd/apps/";
 void shell() {
     changeStageKeyboard(1);
     tty_setcolor(COLOR_ALERT);
-    tty_printf("\nUse \"help\" command to get info about commands.");
+    tty_printf("\nUse \"help\" command to get info about commands.\n");
+
+    tty_setcolor(COLOR_TEXT);
+    // Задаем путь
+    char * filename = "/initrd/chip.txt";
+    // Открываем файл (режим работы пока не важно, так как особо не проверяется)
+    FILE* debug_readme = fopen(filename,"r");
+    // Получаем размер файла
+    uint32_t lSize = fsize(debug_readme);
+    // Получаем содержимое файла
+    char * buffer = fread(debug_readme);
+    // Закончили работу с файлом
+    fclose(debug_readme);
+    // Выводим текст
+    tty_printf("Debug stdio.c:\n\tPath: %s\n\tSize: %d\n\tText: %s\n",filename,lSize,buffer);
+
+    // Задаем путь, но к файлу который не работает
+    char * filename2 = "/initrd/readm.txt";
+    // Открываем файл (режим работы пока не важно, так как особо не проверяется)
+    FILE* debug_readme2 = fopen(filename2,"r");
+    if (ferror(debug_readme2) != 0){
+        (perror(debug_readme2,"Error"));
+        fdebuginfo(debug_readme2);
+    } else {
+        // Получаем размер файла
+        uint32_t lSize2 = fsize(debug_readme2);
+        // Получаем содержимое файла
+        char * buffer2 = fread(debug_readme2);
+        // Закончили работу с файлом
+        fclose(debug_readme2);
+        // Выводим текст
+        tty_printf("Debug stdio.c:\n\tPath: %s\n\tSize: %d\n\tText: %s\n",filename2,lSize2,buffer2);
+    }
+
 
     while (1) {
         tty_setcolor(COLOR_SYS_TEXT);
         tty_printf("\nROOT ");
         tty_setcolor(COLOR_SYS_PATH);
-        tty_printf("%s> ", current_dir);
+        tty_printf("%s>", current_dir);
 
         tty_setcolor(COLOR_TEXT);
         char *cmd = keyboard_gets();
