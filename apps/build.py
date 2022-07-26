@@ -5,7 +5,7 @@ LDFLAGS = " -nostdlib -e main -o"
 CC = "clang -target i386-pc-none-elf"
 CFLAGS = "  -std=gnu11 -lgcc -mno-sse -mno-avx -O0 -ffreestanding -I include/ -c"
 
-BUILD_BASIC = True # Change this to enable or disable Lua build.
+BUILD_BASIC = False # Change this to enable or disable BASIC build.
 
 CC = f"{CC} {CFLAGS}"
 LD = f"{LD} {LDFLAGS}"
