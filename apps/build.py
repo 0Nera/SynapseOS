@@ -3,11 +3,7 @@ import os, shutil, sys, tarfile, os.path, subprocess
 LD = "ld.lld"
 LDFLAGS = " -nostdlib -e main -o"
 CC = "clang -target i386-pc-none-elf"
-<<<<<<< HEAD
 CFLAGS = " -Wno-unused-command-line-argument -std=gnu11 -lgcc -mno-sse -mno-avx -O0 -ffreestanding -I include/ -c"
-=======
-CFLAGS = "  -Wall -mno-sse -mno-avx -O0 -ffreestanding -I include/ -c"
->>>>>>> e600e84202cf23e7312c3eea9185cb42d5964b5a
 
 BUILD_BASIC = False # Change this to enable or disable BASIC build.
 
