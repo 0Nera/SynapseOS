@@ -79,6 +79,42 @@ python3 build.py
     python3 build.py kernel apps iso
     ```
 
+### [Arch Linux]
+
+1. Установить ПО для сборки
+    ```bash
+    sudo pacman -S python3 clang llvm grub xorriso mtools lld git fasm
+    ```
+
+2. Установить ПО для запуска ОС
+    ```bash
+    sudo pacman -S libvirt bridge-utils virt-manager qemu virt-manager
+    ```
+
+3. Скачиваем репозиторий с гитхаба (или самому через браузер)
+    ```bash
+    git clone https://github.com/0Nera/SynapseOS.git
+    ```
+4. Переходим в проект с папкой
+    ```bash
+    cd SynapseOS
+    ```
+5. Запускаем компиляцию
+    Простая компиляция и запуск:
+    ```bash
+    python3 build.py
+    ```
+
+    Компиляция, без запуска:
+    ```bash
+    python3 build.py kernel apps iso
+    ```
+
+    Компиляция, без запуска, без приложений:
+    ```bash
+    python3 build.py kernel apps iso
+    ```
+
 ### [Windows]
 
 Установите WSL или виртуальную машину с Ubuntu версии не ниже 18.
