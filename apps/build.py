@@ -3,18 +3,18 @@ import os, shutil, sys, tarfile, os.path, subprocess
 LD = "ld.lld"
 LDFLAGS = " -nostdlib -e main -o"
 CC = "clang -target i386-pc-none-elf"
-CFLAGS = "  -Wall -mno-sse -mno-avx -O0 -ffreestanding -I include/ -c"
+CFLAGS = " -Wno-unused-command-line-argument -mno-sse -mno-avx -O0 -ffreestanding -I include/ -c"
 
 BUILD_BASIC = False # Change this to enable or disable BASIC build.
 
 CC = f"{CC} {CFLAGS}"
 LD = f"{LD} {LDFLAGS}"
 
-print("[\x1b[32mCONFIGURATION\x1b[0m] Using C compiler:", CC)
-print("[\x1b[32mCONFIGURATION\x1b[0m] Using linker:", LD)
+print("[\x1b[32;1mCONFIGURATION\x1b[0m] Using C compiler:", CC)
+print("[\x1b[32;1mCONFIGURATION\x1b[0m] Using linker:", LD)
 
 AR = "llvm-ar"
-_O_LIBC = ["./bin/libc/stdio.o","./bin/libc/stdfile.o",
+_O_LIBC = ["./bin/libc/stdio.o", "./bin/libc/math.o", 
           "./bin/libc/ports.o","./bin/libc/stdlib.o","./bin/libc/string.o",
           "./bin/libc/learntask.o","./bin/libc/vesa.o","./bin/libc/scancodes.o"]
 O_LIBC = ' ' + ' '.join(_O_LIBC)
@@ -25,14 +25,17 @@ files = []
 # Сборка
 def build(typ, infile, outfile):
     if typ=="compile":
-        print(f"[\x1b[32mBUILD\x1b[0m]: Compiling {infile}")
+        print(f"[\x1b[32;1mBUILD\x1b[0m]: Compiling {infile}")
         cmd = f"{CC} {infile} -o {outfile}"
         subprocess.call(cmd, shell=True)
     if typ=="link":
         # print(f"[\x1b[32mBUILD\x1b[0m]: Linking   {infile.split(" ")[0]}") # Error
-        print(f"[\x1b[32mBUILD\x1b[0m]: Linking  ", infile.split(" ")[0])
+        print(f"[\x1b[32;1mBUILD\x1b[0m]: Linking  ", infile.split(" ")[0])
         cmd = f"{LD} {outfile} {infile}"
         subprocess.call(cmd, shell=True)
+    if typ=="copy":
+        print(f"[\x1b[34;1mCOPY\x1b[0m]: Copying  ", infile+" -> "+outfile)
+        shutil.copy(infile, outfile)
 
 
 def build_all():
@@ -71,10 +74,14 @@ def build_all():
     build("compile", "apps/NDRAEY/Melody/melody.c", "./bin/melody.o")
 
     print("[\x1b[33;1mNOTICE\x1b[0m] Building libc")
+    '''
+    build("copy", "../kernel/src/libk/math.c", "libc/math.c")
+    build("copy", "../kernel/include/libk/math.h", "include/math.h")
+    '''
+    build("compile", "libc/math.c", "./bin/libc/math.o")
     build("compile", "libc/stdio.c", "./bin/libc/stdio.o")
     build("compile", "libc/ports.c", "./bin/libc/ports.o")
     build("compile", "libc/stdlib.c", "./bin/libc/stdlib.o")
-    build("compile", "libc/stdfile.c", "./bin/libc/stdfile.o")
     build("compile", "libc/string.c", "./bin/libc/string.o")
     build("compile", "libc/learntask.c", "./bin/libc/learntask.o")
     build("compile", "libc/vesa.c", "./bin/libc/vesa.o")
@@ -95,8 +102,11 @@ def build_all():
     build("link", "./bin/melody.o" + O_LIBC, "../bin/apps/melody")
 
     try:
-        os.system("fasm examples/fasm/hello.asm ./bin/asm.o")
-        build("link", "./bin/asm.o", "../bin/apps/asm")
+        if shutil.which("fasm"):
+            os.system("fasm examples/fasm/hello.asm ./bin/asm.o")
+            build("link", "./bin/asm.o", "../bin/apps/asm")
+        else:
+            print("[\x1b[31;1mERROR\x1b[0m] Binary 'fasm' not found, skipping...")
     except Exception:
         pass
 
