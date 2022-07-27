@@ -274,7 +274,8 @@ VARIANT eval(const char expr[]) {
 			continue;
 		}
 
-		assert(stack != NULL);
+		if(stack!=NULL) {printf("Assertion failed at line %d\n", __LINE__); exit(0);}
+		//assert(stack != NULL);
 
 		// 操作符
 		switch(p->token.ator.oper) {
@@ -536,8 +537,8 @@ VARIANT eval(const char expr[]) {
 		}
 		free(p);
 	}
-
-	assert(stack && !stack->next);
+    if(stack && !stack->next) {printf("Assertion failed at line %d\n", __LINE__); exit(0);}
+	//assert(stack && !stack->next);
 	v = stack->token.var;
 	free(stack);
 

@@ -28,7 +28,7 @@ int open(const char *name, int flags, ...){
 
 }
 
-
+/*
 // Чтение файла
 int read(int file, char *ptr, int len){
 
@@ -45,7 +45,7 @@ int write(int file, char *ptr, int len){
 int close(int file){
 
 }
-
+*/
 
 // Передача управления новому процессу
 int execve(char *name, char **argv, char **env){

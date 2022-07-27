@@ -10,6 +10,8 @@
 #define SC_CODE_setdev          10
 #define SC_CODE_readfile        11
 #define SC_CODE_writefile       12
+#define SC_CODE_exists          13
+#define SC_CODE_filesize        14
 #define SC_CODE_rand            20
 #define SC_CODE_srand           21
 #define SC_CODE_putpixel        32

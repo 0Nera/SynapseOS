@@ -51,5 +51,8 @@ void free(void* memory) {
 }
 
 void *calloc(size_t number, size_t size) {
-	return malloc(number*size);
+	void* allocated = malloc(number*size);
+	if(!allocated) return 0;
+	memset(allocated, 0, size*number);
+	return allocated;
 }
