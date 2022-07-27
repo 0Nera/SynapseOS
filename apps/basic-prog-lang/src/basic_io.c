@@ -1,5 +1,5 @@
 #include <assert.h>
-#include <stdlib.h>
+#include "../../include/stdlib.h"
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
@@ -8,7 +8,7 @@
 #include "lexical.h"
 
 // I wonder, we will port libk function to libc!
-#include "../../kernel/include/libk/stdio.h"
+//#include "../../kernel/include/libk/stdio.h"
 
 // Wikipedia says...
 #define EOF -1
@@ -92,7 +92,8 @@ void exec_input(const STRING line) {
   const char *s = line;
   int n;
 
-  assert(s != NULL);
+  //assert(s != NULL);
+  if(s!=NULL) {printf("Assertion failed at line %d\n", __LINE__); exit(0);}
   s += 5;
 
   while(*s) {
@@ -141,7 +142,8 @@ void exec_print(const STRING line) {
   strcpy(l, line);
   s = l;
 
-  assert(s != NULL);
+  //assert(s != NULL);
+  if(s!=NULL) {printf("Assertion failed at line %d\n", __LINE__); exit(0);}
   s += 5;
 
   for (;;) {

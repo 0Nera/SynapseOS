@@ -1,7 +1,6 @@
 #include "../../../include/vesa.h"
 #include "../../../include/stdlib.h"
 #include "../../../include/stdio.h"
-#include "../../../include/stdfile.h"
 
 int main() {
 	char metadata[4];

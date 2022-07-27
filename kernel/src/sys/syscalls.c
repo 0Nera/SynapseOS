@@ -74,6 +74,12 @@ void syscall_handler(struct regs *r) {
         case SC_CODE_readfile:
             r->eax = (uint32_t)vfs_read((char *)arg1, (int32_t)arg2, (int32_t)arg3, (void *)arg4);
             break;
+        case SC_CODE_exists:
+            r->eax = (uint32_t)vfs_exists((char *)arg1);
+            break;
+        case SC_CODE_filesize:
+        	r->eax = (uint32_t)vfs_get_size((char*)arg1);
+        	break;
         case SC_CODE_rand:
             r->eax = (uint64_t)rand();
             break;
