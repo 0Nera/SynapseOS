@@ -81,7 +81,7 @@ void floppy_reset() {
 
     qemu_log("FDC_DOR 0x0c");
     // Снова разрешаем прерывания
-    outb(FDC_DOR, 0x0C);
+    //outb(FDC_DOR, 0x0C);
 
     // Ждем пока получим прерывание
     done = false;
