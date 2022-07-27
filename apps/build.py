@@ -3,7 +3,11 @@ import os, shutil, sys, tarfile, os.path, subprocess
 LD = "ld.lld"
 LDFLAGS = " -nostdlib -e main -o"
 CC = "clang -target i386-pc-none-elf"
+<<<<<<< HEAD
 CFLAGS = " -Wno-unused-command-line-argument -std=gnu11 -lgcc -mno-sse -mno-avx -O0 -ffreestanding -I include/ -c"
+=======
+CFLAGS = "  -Wall -mno-sse -mno-avx -O0 -ffreestanding -I include/ -c"
+>>>>>>> e600e84202cf23e7312c3eea9185cb42d5964b5a
 
 BUILD_BASIC = False # Change this to enable or disable BASIC build.
 
@@ -17,9 +21,10 @@ AR = "llvm-ar"
 _O_LIBC = ["./bin/libc/stdio.o","./bin/libc/stdfile.o",
           "./bin/libc/ports.o","./bin/libc/stdlib.o","./bin/libc/string.o",
           "./bin/libc/learntask.o","./bin/libc/vesa.o","./bin/libc/scancodes.o"]
-O_LIBC = ' '+' '.join(_O_LIBC)
+O_LIBC = ' ' + ' '.join(_O_LIBC)
 data = []
 files = []
+
 
 # Сборка
 def build(typ, infile, outfile):
@@ -32,6 +37,7 @@ def build(typ, infile, outfile):
         print(f"[\x1b[32mBUILD\x1b[0m]: Linking  ", infile.split(" ")[0])
         cmd = f"{LD} {outfile} {infile}"
         subprocess.call(cmd, shell=True)
+
 
 def build_all():
     try:
