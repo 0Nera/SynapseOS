@@ -72,6 +72,7 @@ def build_all():
     build("compile", "examples/C/test.c", "./bin/test.o")
     build("compile", "apps/NDRAEY/ImageView/imageview.c", "./bin/imageview.o")
     build("compile", "apps/NDRAEY/Melody/melody.c", "./bin/melody.o")
+    build("compile", "examples/gas/chronicles.asm", "./bin/chronicles.o")
 
     print("[\x1b[33;1mNOTICE\x1b[0m] Building libc")
     '''
@@ -100,6 +101,7 @@ def build_all():
     build("link", "./bin/test.o", "../bin/apps/test")
     build("link", "./bin/imageview.o" + O_LIBC, "../bin/apps/imageview")
     build("link", "./bin/melody.o" + O_LIBC, "../bin/apps/melody")
+    build("link", "./bin/chronicles.o" + O_LIBC, "../bin/apps/chronicles")
 
     try:
         if shutil.which("fasm"):
