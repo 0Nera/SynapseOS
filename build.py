@@ -11,7 +11,6 @@ CC = f"{_CC} {CFLAGS}"
 SRC_TARGETS = []
 BIN_TARGETS = []
 
-
 def warn(message):
     print(f"[\x1b[33;1mWARNING\x1b[0m]: {message}")
 
@@ -37,7 +36,7 @@ def compile_kernel(warnings=False):
     
     for i in range(filescount):
         #start_time = time.time()
-        BIN_TARGETS.append(os.path.join("bin\\", os.path.basename(SRC_TARGETS[i]) + '.o '  ))
+        BIN_TARGETS.append(os.path.join("bin\\", os.path.basename(SRC_TARGETS[i]) + f'_{i}.o '  ))
         #os.system(f"echo {CC} -o {BIN_TARGETS[i]} {SRC_TARGETS[i]} & {CC} -o ./{BIN_TARGETS[i]} {SRC_TARGETS[i]} ")
         #print(f"[\x1b[32mBUILD\x1b[0m]~[{i}/{filescount}]: Compiling: {SRC_TARGETS[i]}")
         #subprocess.call(f"{CC} -o ./{BIN_TARGETS[i]} {SRC_TARGETS[i]}", shell=True, stdout=subprocess.STDOUT, stderr=subprocess.STDOUT)
