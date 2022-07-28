@@ -41,7 +41,7 @@ def compile_kernel(warnings=False):
         #os.system(f"echo {CC} -o {BIN_TARGETS[i]} {SRC_TARGETS[i]} & {CC} -o ./{BIN_TARGETS[i]} {SRC_TARGETS[i]} ")
         #print(f"[\x1b[32mBUILD\x1b[0m]~[{i}/{filescount}]: Compiling: {SRC_TARGETS[i]}")
         #subprocess.call(f"{CC} -o ./{BIN_TARGETS[i]} {SRC_TARGETS[i]}", shell=True, stdout=subprocess.STDOUT, stderr=subprocess.STDOUT)
-        compile(BIN_TARGETS[i], SRC_TARGETS[i], i, filescount, warnings)
+        compile(BIN_TARGETS[i], SRC_TARGETS[i], i+1, filescount, warnings)
 
     '''
     JOBS = 8 # Количество ядер используемых при сборке
