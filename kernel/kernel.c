@@ -40,7 +40,7 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     uint32_t initrd_end = *(uint32_t*) (mboot_info->mods_addr + 4); // Адрес конца ramdisk
     qemu_log("initrd_beg = %x initrd_end = %x",
         initrd_beg, initrd_end              // Вывод информации о адресах ramdisk в отладчик
-        );
+    );
 
     vmm_init();                             // Инициализация менеджера виртуальной памяти
 
@@ -72,7 +72,6 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     //qemu_log("task: %d", create_task());
     //init_task_manager();
     //create_STFS(0);
-
 
     //tui();
     // Should be                   

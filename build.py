@@ -22,6 +22,7 @@ def compile(binary, source, cur="--", total="--", warnings=False):
 
 def compile_kernel(warnings=False):
     print("Compiling...")
+    '''
     if not (sys.platform == "linux" or sys.platform == "linux2"): 
         shutil.rmtree("./bin/", ignore_errors=True)
         os.mkdir("bin")
@@ -31,17 +32,34 @@ def compile_kernel(warnings=False):
         if not (os.path.isdir("bin")):
             os.mkdir("bin")
         os.mkdir("bin/kernel")
-
+    '''
     filescount = len(SRC_TARGETS)
     # TODO: Multithreading
-    
+
+    updated = []    
     for i in range(filescount):
-        #start_time = time.time()
         BIN_TARGETS.append(os.path.join("bin\\", os.path.basename(SRC_TARGETS[i]) + '.o '  ))
+        srcf = SRC_TARGETS[i]
+        objf = os.path.join("bin/", os.path.basename(SRC_TARGETS[i]) + '.o')
+        if os.path.isfile(objf):
+            if os.path.getmtime(srcf)>os.path.getmtime(objf):
+                updated.append(srcf)
+        else:
+            #print("*", objf, "doesn't exist")
+            updated.append(srcf)
+
+    print("*** *** *** *** *** *** *** ***")
+    print("Makefile tactics: Updated only ->", updated)
+    print("*** *** *** *** *** *** *** ***")
+
+    filescount = len(updated)
+
+    for i in range(filescount):
+        #BIN_TARGETS.append(os.path.join("bin\\", os.path.basename(SRC_TARGETS[i]) + '.o '  ))
         #os.system(f"echo {CC} -o {BIN_TARGETS[i]} {SRC_TARGETS[i]} & {CC} -o ./{BIN_TARGETS[i]} {SRC_TARGETS[i]} ")
         #print(f"[\x1b[32mBUILD\x1b[0m]~[{i}/{filescount}]: Compiling: {SRC_TARGETS[i]}")
-        #subprocess.call(f"{CC} -o ./{BIN_TARGETS[i]} {SRC_TARGETS[i]}", shell=True, stdout=subprocess.STDOUT, stderr=subprocess.STDOUT)
-        compile(BIN_TARGETS[i], SRC_TARGETS[i], i, filescount, warnings)
+        #compile(BIN_TARGETS[i], updated[i], i+1, filescount, warnings)
+        compile(os.path.join("bin\\", os.path.basename(updated[i]) + '.o '), updated[i], i+1, filescount, warnings)
 
     '''
     JOBS = 8 # Количество ядер используемых при сборке

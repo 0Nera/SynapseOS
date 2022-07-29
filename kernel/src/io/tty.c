@@ -21,7 +21,6 @@ size_t tty_line_fill[1024];
 int32_t tty_pos_x;
 int32_t tty_pos_y;
 
-
 uint32_t tty_text_color;
 
 /*
@@ -45,7 +44,6 @@ void tty_setcolor(int32_t color) {
 
 
 void init_vbe(multiboot_info *mboot) {
-   
     svga_mode_info_t *svga_mode = (svga_mode_info_t*) mboot->vbe_mode_info;
     framebuffer_addr = (uint8_t *)svga_mode->physbase; 
     framebuffer_pitch = svga_mode->pitch;
@@ -95,7 +93,6 @@ void tty_init(struct multiboot_info *mboot_info) {
     back_framebuffer_addr = framebuffer_addr;
     tty_printf("[Display] %dx%d@%d\n",framebuffer_width,framebuffer_height,framebuffer_pitch);
 }
-
 
 void tty_scroll() {
     // charheight = 16???
@@ -207,7 +204,6 @@ void tty_putchar_color(char c,uint32_t txColor,uint32_t bgColor) {
 
 
 void tty_putchar(char c) {
-    
     if ((tty_pos_x + 8) >= (int)VESA_WIDTH || c == '\n') { 
         tty_line_fill[tty_pos_y] = tty_pos_x;
         tty_pos_x = 0;
