@@ -58,7 +58,7 @@ def compile_kernel(warnings=False):
         #os.system(f"echo {CC} -o {BIN_TARGETS[i]} {SRC_TARGETS[i]} & {CC} -o ./{BIN_TARGETS[i]} {SRC_TARGETS[i]} ")
         #print(f"[\x1b[32mBUILD\x1b[0m]~[{i}/{filescount}]: Compiling: {SRC_TARGETS[i]}")
         #compile(BIN_TARGETS[i], updated[i], i+1, filescount, warnings)
-        compile(os.path.join("bin\\", os.path.basename(updated[i]) + '.o '), updated[i], i+1, filescount, warnings)
+        compile(os.path.join("bin\\" if not (sys.platform == "linux" or sys.platform == "linux2") else "bin/", os.path.basename(updated[i]) + '.o '), updated[i], i+1, filescount, warnings)
 
 
     '''
