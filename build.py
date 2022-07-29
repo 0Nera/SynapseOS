@@ -10,6 +10,7 @@ CC = f"{_CC} {CFLAGS}"
 
 SRC_TARGETS = []
 BIN_TARGETS = []
+BINFLDR = "bin\\" if not (sys.platform == "linux" or sys.platform == "linux2") else "bin/"
 
 def warn(message):
     print(f"[\x1b[33;1mWARNING\x1b[0m]: {message}")
@@ -21,25 +22,28 @@ def compile(binary, source, cur="--", total="--", warnings=False):
 
 def compile_kernel(warnings=False):
     print("Compiling...")
-    '''
+    
     if not (sys.platform == "linux" or sys.platform == "linux2"): 
-        shutil.rmtree("./bin/", ignore_errors=True)
-        os.mkdir("bin")
-        os.mkdir("bin\\kernel")
-    else:
-        shutil.rmtree("./bin/", ignore_errors=True)
-        if not (os.path.isdir("bin")):
+        # shutil.rmtree("./bin/", ignore_errors=True)
+        if not os.path.isdir("bin"):
             os.mkdir("bin")
-        os.mkdir("bin/kernel")
-    '''
+        if not os.path.isdir("bin\\kernel"):
+            os.mkdir("bin\\kernel")
+    else:
+        # shutil.rmtree("./bin/", ignore_errors=True)
+        if not os.path.isdir("bin"):
+            os.mkdir("bin")
+        if not os.path.isdir("bin/kernel"):
+            os.mkdir("bin/kernel")
+    
     filescount = len(SRC_TARGETS)
     # TODO: Multithreading
 
     updated = []
     for i in range(filescount):
-        BIN_TARGETS.append(os.path.join("bin\\" if not (sys.platform == "linux" or sys.platform == "linux2") else "bin/", os.path.basename(SRC_TARGETS[i]) + '.o '  ))
+        BIN_TARGETS.append(os.path.join(BINFLDR, os.path.basename(SRC_TARGETS[i]) + '.o '  ))
         srcf = SRC_TARGETS[i]
-        objf = os.path.join("bin\\" if not (sys.platform == "linux" or sys.platform == "linux2") else "bin/", os.path.basename(SRC_TARGETS[i]) + '.o')
+        objf = os.path.join(BINFLDR, os.path.basename(SRC_TARGETS[i]) + '.o')
         if os.path.isfile(objf):
             if os.path.getmtime(srcf)>os.path.getmtime(objf):
                 updated.append(srcf)
