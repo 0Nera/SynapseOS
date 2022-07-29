@@ -2,7 +2,8 @@
 #include "../../include/stdlib.h"
 #include <string.h>
 #include <stdio.h>
-#include <ctype.h>
+// #include <ctype.h>
+#include "../../include/ctype.h"
 
 #include "basic_io.h"
 #include "lexical.h"

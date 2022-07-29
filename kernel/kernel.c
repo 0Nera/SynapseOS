@@ -73,12 +73,7 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     //init_task_manager();
     //create_STFS(0);
 
-
     //tui();
-    // Should be                   
-    //                             -|
-    // 10                           |
-    // Hello! 120, 0x90, H, Hi!    -| ?
     if (floppy_install()){
         
     } else {
