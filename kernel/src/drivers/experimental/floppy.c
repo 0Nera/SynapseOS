@@ -123,7 +123,7 @@ bool floppy_install() {
     IRQ_clear_mask(6);
 
     qemu_log("floppy_reset");
-    floppy_reset();
+    //floppy_reset();
 
     return true;
 }

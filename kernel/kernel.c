@@ -74,18 +74,12 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     //create_STFS(0);
 
     //tui();
-    // Should be                   
-    //                             -|
-    // 10                           |
-    // Hello! 120, 0x90, H, Hi!    -| ?
-    /*
     if (floppy_install()){
         
     } else {
         tty_printf("\nFloppy: ERROR\n");
     }
-    */
-    tty_printf("\n%d\n%s\n", 101/10, format_string("Hello! %d, %x, %c, %s", 120, 0x90, 'H', "Hi!"));
+    //tty_printf("\n%d\n%s\n", 101/10, format_string("Hello! %d, %x, %c, %s", 120, 0x90, 'H', "Hi!"));
     draw_from_file("/initrd/res/SynapseOSLogo.duke", getWidthScreen()-106, 36);
 
     shell();                                // Активация терминала

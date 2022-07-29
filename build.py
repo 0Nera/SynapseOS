@@ -11,7 +11,6 @@ CC = f"{_CC} {CFLAGS}"
 SRC_TARGETS = []
 BIN_TARGETS = []
 
-
 def warn(message):
     print(f"[\x1b[33;1mWARNING\x1b[0m]: {message}")
 
@@ -60,6 +59,7 @@ def compile_kernel(warnings=False):
         #print(f"[\x1b[32mBUILD\x1b[0m]~[{i}/{filescount}]: Compiling: {SRC_TARGETS[i]}")
         #compile(BIN_TARGETS[i], updated[i], i+1, filescount, warnings)
         compile(os.path.join("bin\\", os.path.basename(updated[i]) + '.o '), updated[i], i+1, filescount, warnings)
+
 
     '''
     JOBS = 8 # Количество ядер используемых при сборке
