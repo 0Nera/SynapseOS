@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <ctype.h>
+// #include <ctype.h>
+#include "../../include/ctype.h"
 #include <math.h>
 
 #include "syntax.h"

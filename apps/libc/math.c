@@ -333,3 +333,7 @@ float logx(float x, float base)
    return (log10(x) / log10(base));
 }
 
+double fabs(double val) {
+	if(val < (double)0) return -val;
+	return val;
+}

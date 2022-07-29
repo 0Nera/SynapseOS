@@ -14,7 +14,7 @@ print("[\x1b[32;1mCONFIGURATION\x1b[0m] Using C compiler:", CC)
 print("[\x1b[32;1mCONFIGURATION\x1b[0m] Using linker:", LD)
 
 AR = "llvm-ar"
-_O_LIBC = ["./bin/libc/stdio.o", "./bin/libc/math.o", 
+_O_LIBC = ["./bin/libc/stdio.o", "./bin/libc/math.o", "./bin/libc/ctype.o",
           "./bin/libc/ports.o","./bin/libc/stdlib.o","./bin/libc/string.o",
           "./bin/libc/learntask.o","./bin/libc/vesa.o","./bin/libc/scancodes.o"]
 O_LIBC = ' ' + ' '.join(_O_LIBC)
@@ -87,6 +87,7 @@ def build_all():
     build("compile", "libc/learntask.c", "./bin/libc/learntask.o")
     build("compile", "libc/vesa.c", "./bin/libc/vesa.o")
     build("compile", "libc/scancodes.c", "./bin/libc/scancodes.o")
+    build("compile", "libc/ctype.c", "./bin/libc/ctype.o")
 
     print("[\x1b[33;1mNOTICE\x1b[0m] Linking apps")
     # There we should swap the second and third arguments (acctording to original code)

@@ -2,7 +2,8 @@
 #include <string.h>
 #include <assert.h>
 #include <stdio.h>
-#include <ctype.h>
+// #include <ctype.h>
+#include "../../include/ctype.h"
 #include <math.h>
 
 #include "lexical.h"
