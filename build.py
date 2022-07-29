@@ -39,7 +39,7 @@ def compile_kernel(warnings=False):
     for i in range(filescount):
         BIN_TARGETS.append(os.path.join("bin\\", os.path.basename(SRC_TARGETS[i]) + '.o '  ))
         srcf = SRC_TARGETS[i]
-        objf = os.path.join("bin/", os.path.basename(SRC_TARGETS[i]) + '.o')
+        objf = os.path.join("bin\\", os.path.basename(SRC_TARGETS[i]) + '.o')
         if os.path.isfile(objf):
             if os.path.getmtime(srcf)>os.path.getmtime(objf):
                 updated.append(srcf)
