@@ -35,9 +35,9 @@ def compile_kernel(warnings=False):
     filescount = len(SRC_TARGETS)
     # TODO: Multithreading
 
-    updated = []    
+    updated = []
     for i in range(filescount):
-        BIN_TARGETS.append(os.path.join("bin\\", os.path.basename(SRC_TARGETS[i]) + '.o '  ))
+        BIN_TARGETS.append(os.path.join("bin\\" if not (sys.platform == "linux" or sys.platform == "linux2") else "bin/", os.path.basename(SRC_TARGETS[i]) + '.o '  ))
         srcf = SRC_TARGETS[i]
         objf = os.path.join("bin\\", os.path.basename(SRC_TARGETS[i]) + '.o')
         if os.path.isfile(objf):
