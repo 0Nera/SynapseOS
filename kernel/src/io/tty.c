@@ -257,6 +257,43 @@ void tty_backspace() {
 */
 void tty_puts(const char c[]) {
     for (size_t i = 0; i < strlen(c); i++) {
+        if (c[i] == '\033') {
+            i++;
+            if(c[i] =='[') {
+                char* num = kheap_malloc(4);
+                char idx = 0;
+                i++;
+                while(true) {
+                    if(c[i]=='m') break;
+                    num[idx] = c[i];
+                    idx++;
+                    i++;
+                }
+                i++;
+                // tty_puts("<");
+                // tty_puts(num);
+                // tty_puts(">");
+                if(strcmp(num, "31")==0) {
+                    tty_setcolor(VESA_RED);
+                } else if(strcmp(num, "32")==0) {
+                    tty_setcolor(VESA_GREEN);
+                } else if(strcmp(num, "33")==0) {
+                    tty_setcolor(VESA_LIGHT_YELLOW);
+                } else if(strcmp(num, "34")==0) {
+                    tty_setcolor(VESA_BLUE);
+                } else if(strcmp(num, "35")==0) {
+                    tty_setcolor(VESA_MAGENTA);
+                } else if(strcmp(num, "36")==0) {
+                    tty_setcolor(VESA_CYAN);
+                } else if(strcmp(num, "37")==0) {
+                    tty_setcolor(VESA_WHITE);
+                }
+                else if(strncmp(num, "0", 1)==0) {
+                    tty_setcolor(COLOR_SYS_TEXT);
+                }
+                kheap_free(num);
+            }
+        }
         tty_putchar(c[i]);
     }
 }
