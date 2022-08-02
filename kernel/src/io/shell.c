@@ -91,6 +91,7 @@ void shell() {
                         "\t\t->cpuinfo             |info cpu\n" \
                         "\t\t->reboot              |reboot device\n" \
                         "\t\t->shutdown            |shutdown device\n" \
+                        "\t\t->view   <filename>   |shows an image\n" \
                         "\n" 
                         );
         } else if (strlen(cmd) > 4 && strncmp(cmd, "cat ", 4) == 0) {
