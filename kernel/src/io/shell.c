@@ -1,5 +1,6 @@
 #include <kernel.h>
 #include <libk/string.h>
+#include <io/imaging.h>
 
 
 char current_dir[256] = "/initrd/apps/";
@@ -90,6 +91,7 @@ void shell() {
                         "\t\t->cpuinfo             |info cpu\n" \
                         "\t\t->reboot              |reboot device\n" \
                         "\t\t->shutdown            |shutdown device\n" \
+                        "\t\t->view   <filename>   |shows an image\n" \
                         "\n" 
                         );
         } else if (strlen(cmd) > 4 && strncmp(cmd, "cat ", 4) == 0) {
@@ -107,9 +109,7 @@ void shell() {
             }
         } else if (strlen(cmd) > 3 && strncmp(cmd, "cd ", 3) == 0) {
             char dname[256] = {0};
-            
             char *tok = (char *)strtok(cmd, " ");
-            
             tok = (char *)strtok(0, " "); // tok - now is dirname
 
             if (dname[0] != 0) {
@@ -125,6 +125,20 @@ void shell() {
             sysinfo();
         } else if (strcmp(cmd, "ls") == 0) {
             initrd_list(0, 0);
+        } else if (strlen(cmd) > 5 && strncmp(cmd, "view ", 5) == 0) {
+            char fname[256] = {0};
+            char *tok = (char *)strtok(cmd, " ");
+            tok = (char *)strtok(0, " "); // tok - имя файла
+            
+            if (fname[0] == 0) {
+                struct DukeImageMeta* data = get_image_metadata(tok);
+                if(data!=0) {
+                    draw_from_file(tok, getWidthScreen() - data->width - 8, 0);
+                }
+            } else {
+                tty_setcolor(COLOR_ERROR);
+                tty_printf("view: incorrect argument\n");
+            }
         } else if (strlen(cmd) > 4 && strncmp(cmd, "sbf  ", 4) == 0) {
             char fname[256] = {0};
 

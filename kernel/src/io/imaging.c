@@ -4,18 +4,19 @@
 
 #include <drivers/vfs.h>
 #include <mem/kheap.h>
-//#include <io/tty.h>
+#include <io/imaging.h>
 
-struct DukeImageMeta {
-    short width;
-    short height;
-    int   data_length;
-    char  alpha;
-};
+struct DukeImageMeta* get_image_metadata(char *filename) {
+    char meta[9];
+    if(vfs_exists(filename)) {
+        vfs_read(filename, 0, 9, meta);
+        return (struct DukeImageMeta*)meta;
+    }else{ return (struct DukeImageMeta*)0; }
+}
 
 // Returns 0 if OK, 1 if ERR
 char draw_from_file(char *filename, int sx, int sy) {
-    char meta[4];
+    char meta[9];
     if(vfs_exists(filename)) {
         vfs_read(filename, 0, 9, meta);
         struct DukeImageMeta* realmeta = (struct DukeImageMeta*)meta;
