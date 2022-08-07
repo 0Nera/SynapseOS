@@ -107,8 +107,7 @@ uint32_t timer_get_ticks() {
 void print_str(char str[]) {
  
     asm volatile("int $0x80" 
-                : "=a"(result)                  // result = eax (после выполнения)
-                : "a"(SC_CODE_puts),            // eax = SC_CODE_puts(0)
+                :: "a"(SC_CODE_puts),            // eax = SC_CODE_puts(0)
                   "b"(str)                      // ebx = str
                 );
 
