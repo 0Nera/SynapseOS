@@ -22,19 +22,10 @@ def compile(binary, source, cur="--", total="--", warnings=False):
 
 def compile_kernel(warnings=False):
     print("Compiling...")
-    
-    if not (sys.platform == "linux" or sys.platform == "linux2"): 
-        # shutil.rmtree("./bin/", ignore_errors=True)
-        if not os.path.isdir("bin"):
-            os.mkdir("bin")
-        if not os.path.isdir("bin\\kernel"):
-            os.mkdir("bin\\kernel")
-    else:
-        # shutil.rmtree("./bin/", ignore_errors=True)
-        if not os.path.isdir("bin"):
-            os.mkdir("bin")
-        if not os.path.isdir("bin/kernel"):
-            os.mkdir("bin/kernel")
+    if not os.path.isdir("bin"):
+        os.mkdir("bin")
+    if not os.path.isdir(f"bin{os.sep}kernel"):
+        os.mkdir(f"bin{os.sep}kernel")
     
     filescount = len(SRC_TARGETS)
     # TODO: Multithreading
