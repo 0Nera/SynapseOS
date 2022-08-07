@@ -32,7 +32,7 @@ int getscancode();
 char getchar();
 char *gets();
 int getversion();
-int print_str(char *str);
+void print_str(char str[]);
 void putint(const int i);
 void puthex(unsigned int i);
 void putchar(unsigned char ch);

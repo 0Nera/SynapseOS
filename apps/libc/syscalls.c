@@ -109,13 +109,13 @@ int stat(const char *file, struct stat *st){
 
 //  Временная информация о процессе (сколько тиков: системных, процессорных и т.д.)
 clock_t times(struct tms *buf){
-
+	
 }
 
 
 // Удалить имя файла
 int unlink(char *name){
-
+	return vfs_rm(name)==1?0:-1;
 }
 
 
