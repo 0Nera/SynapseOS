@@ -104,8 +104,7 @@ uint32_t timer_get_ticks() {
     return result;
 }
 
-int print_str(char str[]) {
-    uint32_t result = 0;
+void print_str(char str[]) {
  
     asm volatile("int $0x80" 
                 : "=a"(result)                  // result = eax (после выполнения)
@@ -113,7 +112,6 @@ int print_str(char str[]) {
                   "b"(str)                      // ebx = str
                 );
 
-    return result;
 }
 
 
