@@ -20,7 +20,13 @@ typedef struct {
 	int64_t pos;
 	uint32_t err;
 } FILE;
-
+// Определение принтов
+void print_str(char str[]);
+void putint(const int i);
+void puthex(unsigned int i);
+void putchar(unsigned char ch);
+void print(char *format, va_list args);
+void prinf(char *text, ...);
 // Типы открытого файла, тип флагов rw и т.д.
 enum FileOpenMode {
 	O_READ = 1,
