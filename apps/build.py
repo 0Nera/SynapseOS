@@ -108,7 +108,9 @@ def build_all():
     try:
         if shutil.which("fasm"):
             os.system("fasm examples/fasm/hello.asm ./bin/asm.o")
+            os.system("fasm examples/fasm/test.asm ./bin/asmt.o")
             build("link", "./bin/asm.o", "../bin/apps/asm")
+            build("link", "./bin/asmt.o", "../bin/apps/asmt")
         else:
             print("[\x1b[31;1mERROR\x1b[0m] Binary 'fasm' not found, skipping...")
     except Exception:
