@@ -1,13 +1,35 @@
+/**
+ * @file ports.c
+ * @author Арен Елчинян (a2.dev@yandex.com)
+ * @brief Прослойка для работы с портами ввода-вывода
+ * @version 0.1.0
+ * @date 2022-08-08
+ * 
+ * @copyright Copyright Арен Елчинян (c) 2022
+ * 
+ */
+
+
 #include <kernel.h>
 
-void outb(uint16_t port, uint8_t val) {
-    asm volatile ( "outb %0, %1" : : "a"(val), "Nd"(port) );
-    /* There's an outb %al, $imm8  encoding, for compile-time constant port numbers that fit in 8b.  (N constraint).
-     * Wider immediate constants would be truncated at assemble-time (e.g. "i" constraint).
-     * The  outb  %al, %dx  encoding is the only option for all other cases.
-     * %1 expands to %dx because  port  is a uint16_t.  %w1 could be used if we had the port number a wider C type */
+
+/**
+ * @brief Запись одного байта в порт
+ * 
+ * @param port - порт
+ * @param val - данные
+ */
+void outb(uint16_t port, uint8_t val){
+    asm volatile("outb %1, %0" : : "dN"(port), "a"(val));
 }
 
+
+/**
+ * @brief Получение одного байта из порта
+ * 
+ * @param port - порт
+ * @return uint8_t - данные
+ */
 uint8_t inb(uint16_t port) {
     uint8_t ret;
     asm volatile ( "inb %1, %0"
@@ -16,10 +38,24 @@ uint8_t inb(uint16_t port) {
     return ret;
 }
 
+
+/**
+ * @brief Запись 32х битного числа в порт
+ * 
+ * @param port - порт
+ * @param val - число
+ */
 void outl(uint16_t port, uint32_t val) {
     asm volatile ( "outl %0, %1" : : "a"(val), "Nd"(port) );
 }
 
+
+/**
+ * @brief Чтение 32х битного числа
+ * 
+ * @param port - порт
+ * @return uint32_t - число
+ */
 uint32_t inl(uint16_t port) {
     uint32_t ret;
     asm volatile ( "inl %1, %0"
@@ -28,59 +64,107 @@ uint32_t inl(uint16_t port) {
     return ret;
 }
 
+
+/**
+ * @brief Чтение word из порта
+ * 
+ * @param port - порт
+ * @return uint16_t - word
+ */
 uint16_t ins(uint16_t port) {
     uint16_t rv;
     asm volatile ("inw %1, %0" : "=a" (rv) : "dN" (port));
     return rv;
 }
 
+
+/**
+ * @brief Запись word в порт
+ * 
+ * @param port - порт
+ * @param data - данные
+ */
 void outs(uint16_t port, uint16_t data) {
     asm volatile ("outw %1, %0" : : "dN" (port), "a" (data));
 }
 
-// read long word from reg port for quads times
-void insl(uint16_t reg, uint32_t *buffer, int32_t quads) {
-    int32_t index;
-    for (index = 0; index < quads; index++) {
-        buffer[index] = inl(reg);
+
+/**
+ * @brief Чтение длинного слова через порт
+ * 
+ * @param port - порт
+ * @param buffer - данные
+ * @param times - сколько данных прочесть
+ */
+void insl(uint16_t port, uint32_t *buffer, int32_t times) {
+    for (int32_t index = 0; index < times; index++) {
+        buffer[index] = inl(port);
     }
 }
 
-// write long word to reg port for quads times
-void outsl(uint16_t reg, uint32_t *buffer, int32_t quads) {
-    int32_t index;
-    for (index = 0; index < quads; index++) {
-        outl(reg, buffer[index]);
+
+/**
+ * @brief Запись длинного слова через порт
+ * 
+ * @param port - порт
+ * @param buffer - данные
+ * @param times - сколько данных отправить
+ */
+void outsl(uint16_t port, uint32_t *buffer, int32_t times) {
+    for (int32_t index = 0; index < times; index++) {
+        outl(port, buffer[index]);
     }
 }
 
+
+/**
+ * @brief Проверка занятости порта COM1
+ * 
+ * @return int32_t - состояние
+ */
 int32_t com1_is_transmit_empty() {
     return inb(PORT_COM1 + 5) & 0x20;
 }
 
+
+/**
+ * @brief Вывод одного символа через порт COM1
+ * 
+ * @param a 
+ */
 void com1_write_char(char a) {
     while (com1_is_transmit_empty() == 0);
     outb(PORT_COM1, a);
 }
 
+
+/**
+ * @brief Вывод строки через порт COM1
+ * 
+ * @param log_data - строка
+ */
 void qemu_putstring(char log_data[]) {
     for (size_t i = 0; i < strlen(log_data); i++) {
         com1_write_char(log_data[i]);
     }
 }
 
+
+/**
+ * @brief Небольшая задержка используя порт 128(0x80)
+ * 
+ */
 void io_wait(void) {
     outb(0x80, 0);
 }
 
 
-void qemu_breakpoint()  {
-    qemu_log("BREAKPOINT!");
-}
-
-
-
-void qemu_putuint(int32_t i) {
+/**
+ * @brief Подфункция-обработчик для функции qemu_putint
+ * 
+ * @param i 
+ */
+void qemu_putuint(uint32_t i) {
     uint32_t n, d = 1000000000;
     char str[255];
     uint32_t dec_index = 0;
@@ -101,6 +185,12 @@ void qemu_putuint(int32_t i) {
     qemu_putstring(str);
 }
 
+
+/**
+ * @brief Вывод целого числа через порт COM1
+ * 
+ * @param i - число
+ */
 void qemu_putint(int32_t i) {
     if (i >= 0) {
         qemu_putuint(i);
@@ -110,6 +200,12 @@ void qemu_putint(int32_t i) {
     }
 }
 
+
+/**
+ * @brief Вывод числа через порт COM1 в формате HEX
+ * 
+ * @param i - число
+ */
 void qemu_puthex(uint32_t i) {
     const unsigned char hex[16]  =  { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
     uint32_t n, d = 0x10000000;
@@ -129,6 +225,12 @@ void qemu_puthex(uint32_t i) {
     com1_write_char(hex[n]);
 }
 
+
+/**
+ * @brief Вывод числа через порт COM1 в формате HEX без 0x
+ * 
+ * @param i - число
+ */
 void qemu_puthex_v(uint32_t i) {
     const unsigned char hex[16]  =  { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
     uint32_t n, d = 0x10000000;
@@ -147,6 +249,13 @@ void qemu_puthex_v(uint32_t i) {
     com1_write_char(hex[n]);
 }
 
+
+/**
+ * @brief Подфункция-обработчик аргументов для qemu_printf
+ * 
+ * @param format Строка форматов
+ * @param args Аргументы 
+ */
 void qemu_print(char *format, va_list args) {
     int32_t i = 0;
     char *string;
@@ -188,6 +297,12 @@ void qemu_print(char *format, va_list args) {
     }
 }
 
+
+/**
+ * @brief Вывод через COM1 информации
+ * 
+ * @param text Строка с параметрами
+ */
 void qemu_printf(char *text, ...) {
     va_list args;
     // find the first argument
@@ -196,14 +311,24 @@ void qemu_printf(char *text, ...) {
     qemu_print(text, args);
 }
 
+
+/**
+ * @brief Проверка, читаем ли символ
+ * 
+ * @param c Символ
+ * @return 1 если читаемый, 0 если нет
+ */
 int isprint(char c) {
     return ((c >= ' ' && c <= '~') ? 1 : 0);
 }
 
 
-
-
-
+/**
+ * @brief Проверка на тип порта
+ * 
+ * @param port 
+ * @return Возвращает номер порта или 0 в случае если порт не в списке
+ */
 int is_com_port(int port) {
     switch (port) {
         case PORT_COM1:
