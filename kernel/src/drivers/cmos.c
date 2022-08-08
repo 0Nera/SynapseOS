@@ -21,7 +21,8 @@ unsigned char last_year;
 unsigned char last_century;
 unsigned char registerB;
 
- 
+char month_days[11] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
 enum {
     cmos_address = 0x70,
     cmos_data    = 0x71
@@ -42,6 +43,16 @@ struct synapse_time get_time() {
 		second, minute, hour, day, month, year, century
 	};
 	return time;
+}
+
+uint32_t get_unix_time(struct synapse_time t) {
+	uint32_t s = t.seconds,
+	m = (t.minutes*60),
+	h = (t.hours*60*60),
+	d = (t.day*60*60*24),
+	mo = (t.month*60*60*24*month_days[t.month]),
+	y = mo*12;
+	return y+mo+d+h+m+s;
 }
  
 void read_rtc() {

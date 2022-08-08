@@ -80,6 +80,8 @@ void syscall_handler(struct regs *r) {
         case SC_CODE_filesize:
         	r->eax = (uint32_t)vfs_get_size((char*)arg1);
         	break;
+        //case SC_CODE_get_time:
+        //	r->eax = (uint32_t)
         case SC_CODE_rand:
             r->eax = (uint64_t)rand();
             break;
