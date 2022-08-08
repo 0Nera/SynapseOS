@@ -1,7 +1,13 @@
-/*
-    Взято из https://github.com/rgimad/EOS/tree/d3e2062fc909d8b15d8637950050281f051270d2
-    Под лицензией MIT license
-*/
+/**
+ * @file tty.c
+ * @author Арен Елчинян (a2.dev@yandex.com)
+ * @brief Прослойка для работы с текстовым терминалом и графикой VESA
+ * @version 0.2.0
+ * @date 2022-08-08
+ * 
+ * @copyright Copyright Арен Елчинян (c) 2022
+ * 
+ */
 
 
 #include <kernel.h>
@@ -23,26 +29,51 @@ int32_t tty_pos_y;
 
 uint32_t tty_text_color;
 
-/*
-    vga_entry - слияние символа и цвета, для вывода
-*/
+
+/**
+ * @brief Слияние символа и цвета, для вывода
+ * 
+ */
 uint16_t vga_entry(uint8_t c, uint8_t tty_color) {
     return (uint16_t) c | (uint16_t) tty_color << 8;
 }
 
+
+/**
+ * @brief Получение позиции по x
+ * 
+ * @return int32_t - позиция по x
+ */
 int32_t getPosX(){
     return tty_pos_x;
 }
 
+
+/**
+ * @brief Получение позиции по y
+ * 
+ * @return int32_t - позиция по y
+ */
 int32_t getPosY(){
     return tty_pos_y;
 }
 
+
+/**
+ * @brief Изменение цвета текста
+ * 
+ * @param color - цвет
+ */
 void tty_setcolor(int32_t color) {
     tty_text_color = color;
 }
 
 
+/**
+ * @brief Инициализация графики
+ * 
+ * @param mboot - информация полученная от загрузчика
+ */
 void init_vbe(multiboot_info *mboot) {
     svga_mode_info_t *svga_mode = (svga_mode_info_t*) mboot->vbe_mode_info;
     framebuffer_addr = (uint8_t *)svga_mode->physbase; 
@@ -66,16 +97,24 @@ void init_vbe(multiboot_info *mboot) {
 }
 
 
+/**
+ * @brief Создание второго буффера экрана
+ * 
+ */
 void create_back_framebuffer() {
     back_framebuffer_addr = kheap_malloc(framebuffer_size);
+
     qemu_log("back_framebuffer_addr = %x", back_framebuffer_addr);
-    memset(back_framebuffer_addr, 0, framebuffer_size); //causes page fault at c0800000 when this line is placed in the end of init_vbe
+
+    memset(back_framebuffer_addr, 0, framebuffer_size); // Должно предотвратить падение
 }
 
 
-/*
-    tty_init - очистка экрана и сброс настроек tty
-*/
+/**
+ * @brief Очистка экрана и сброс настроек
+ * 
+ * @param mboot_info - информация о дисплее от загрузчика
+ */
 void tty_init(struct multiboot_info *mboot_info) {
     tty_pos_y = 0;
     tty_pos_x = 0;
@@ -94,26 +133,37 @@ void tty_init(struct multiboot_info *mboot_info) {
     tty_printf("[Display] %dx%d@%d\n",framebuffer_width,framebuffer_height,framebuffer_pitch);
 }
 
+
+/**
+ * @brief Прокрутка экрана на 1 строку
+ * 
+ */
 void tty_scroll() {
-    // charheight = 16???
     uint32_t num_rows = 1;
     tty_pos_y -= 17*num_rows;
 
-    // Copy rows upwards
+    // Копируем строки сверху
     uint8_t *read_ptr = (uint8_t*) back_framebuffer_addr + ((num_rows * 17) * framebuffer_pitch);
     uint8_t *write_ptr = (uint8_t*) back_framebuffer_addr;
-    uint32_t num_bytes = (framebuffer_pitch * VESA_HEIGHT) - (framebuffer_pitch * (num_rows * 17)); //old: unsigned old
+    uint32_t num_bytes = (framebuffer_pitch * VESA_HEIGHT) - (framebuffer_pitch * (num_rows * 17));
     memcpy(write_ptr, read_ptr, num_bytes);
 
-    // Clear the rows at the end
+    // Очистка строк
     write_ptr = (uint8_t*) back_framebuffer_addr + (framebuffer_pitch * VESA_HEIGHT) - (framebuffer_pitch * (num_rows * 17));
     memset(write_ptr, 0, framebuffer_pitch * (num_rows * 17));
 
-    //swap buffers
+    // Копируем буфферы
     memcpy(framebuffer_addr, back_framebuffer_addr, framebuffer_size);
 }
 
 
+/**
+ * @brief Вывод одного пикселя на экран
+ * 
+ * @param x - позиция по x
+ * @param y - позиция по y
+ * @param color - цвет
+ */
 void set_pixel(int32_t x, int32_t y, uint32_t color) {
     if (x < 0 || y < 0 || 
         x >= (int) VESA_WIDTH || 
@@ -135,24 +185,50 @@ void set_pixel(int32_t x, int32_t y, uint32_t color) {
 }
 
 
+/**
+ * @brief Изменяем позицию курсора по X
+ * 
+ * @param x - позиция по X
+ */
 void setPosX(int32_t x){
     tty_pos_x = x;
 }
 
+
+/**
+ * @brief Изменяем позицию курсора по Y
+ * 
+ * @param y - позиция по Y
+ */
 void setPosY(int32_t y){
     tty_pos_y = y;
 }
 
+
+/**
+ * @brief Получение длины экрана
+ * 
+ * @return uint32_t - длина
+ */
 uint32_t getWidthScreen(){
     return framebuffer_width;
 }
 
+
+/**
+ * @brief Получение ширины экрана
+ * 
+ * @return uint32_t - ширина
+ */
 uint32_t getHeightScreen(){
     return framebuffer_height;
 }
-/*
-    clean_screen - Заливка экрана консоли черным цветом
-*/
+
+
+/**
+ * @brief Очистка экрана
+ * 
+ */
 void clean_screen(){
     for (int32_t x = 0; x < VESA_WIDTH; x++){
         for (int32_t y = 0; y < VESA_HEIGHT; y++){
@@ -167,6 +243,15 @@ void clean_screen(){
 }
 
 
+/**
+ * @brief Вывод линии на экран
+ * 
+ * @param x - координата точки 1 по x
+ * @param y - координата точки 1 по y
+ * @param xe - координата точки 2 по x
+ * @param ye - координата точки 2 по y
+ * @param color - цвет
+ */
 void set_line(int32_t x, int32_t y, int32_t xe, int32_t ye, uint32_t color){
     for (int32_t i = x; i < xe; i++) {
         for (int32_t j = y; j < ye; j++) {
@@ -176,11 +261,14 @@ void set_line(int32_t x, int32_t y, int32_t xe, int32_t ye, uint32_t color){
 }
 
 
-/*
-    tty_putchar - вывод одного символа
-*/
-
-void tty_putchar_color(char c,uint32_t txColor,uint32_t bgColor) {
+/**
+ * @brief Вывод одного символа с учетом цвета фона и текста
+ * 
+ * @param c - символ
+ * @param txColor - цвет текста
+ * @param bgColor - цвет фона
+ */
+void tty_putchar_color(char c, uint32_t txColor, uint32_t bgColor) {
 
     if ((tty_pos_x + 8) >= (int)VESA_WIDTH || c == '\n') {
         tty_line_fill[tty_pos_y] = tty_pos_x;
@@ -203,6 +291,11 @@ void tty_putchar_color(char c,uint32_t txColor,uint32_t bgColor) {
 
 
 
+/**
+ * @brief Вывод одного символа
+ * 
+ * @param c - символ
+ */
 void tty_putchar(char c) {
     if ((tty_pos_x + 8) >= (int)VESA_WIDTH || c == '\n') { 
         tty_line_fill[tty_pos_y] = tty_pos_x;
@@ -224,6 +317,16 @@ void tty_putchar(char c) {
 }
 
 
+/**
+ * @brief Вывод символа на экран с учетом позиции, цвета текста и фона
+ * 
+ * @param c - символ
+ * @param x - позиция по x
+ * @param y - позиция по y
+ * @param fg - цвет текста
+ * @param bg - цвет фона
+ * @param bgon - поменять ли местами цвета
+ */
 void draw_vga_character(uint8_t c, int32_t x, int32_t y, int32_t fg, int32_t bg, bool bgon) {
 
     int32_t cx, cy;
@@ -240,6 +343,12 @@ void draw_vga_character(uint8_t c, int32_t x, int32_t y, int32_t fg, int32_t bg,
         }
     }
 }
+
+
+/**
+ * @brief Удаление последнего символа
+ * 
+ */
 void tty_backspace() {
     if (tty_pos_x < 8) { // Old: == 0
         if (tty_pos_y >= 17) {
@@ -252,20 +361,23 @@ void tty_backspace() {
     draw_vga_character(' ', tty_pos_x, tty_pos_y, tty_text_color, 0x000000, 1);
 }
 
-/*
-    tty_puts - вывод строки
-*/
-void tty_puts(const char c[]) {
-    for (size_t i = 0; i < strlen(c); i++) {
-        if (c[i] == '\033') {
+
+/**
+ * @brief Вывод строки
+ * 
+ * @param str - строка
+ */
+void tty_puts(const char str[]) {
+    for (size_t i = 0; i < strlen(str); i++) {
+        if (str[i] == '\033') {
             i++;
             if(c[i] =='[') {
                 char* num = kheap_malloc(4);
                 char idx = 0;
                 i++;
                 while(true) {
-                    if(c[i]=='m') break;
-                    num[idx] = c[i];
+                    if(str[i]=='m') break;
+                    num[idx] = str[i];
                     idx++;
                     i++;
                 }
@@ -298,22 +410,28 @@ void tty_puts(const char c[]) {
     }
 }
 
-void tty_puts_color(const char c[],uint32_t txColor,uint32_t bgColor) {
-    for (size_t i = 0; i < strlen(c); i++) {
-        tty_putchar_color(c[i],txColor,bgColor);
+
+/**
+ * @brief Вывод цветного текста
+ * 
+ * @param str - текст
+ * @param txColor - цвет текста
+ * @param bgColor - цвет фона
+ */
+void tty_puts_color(const char str[], uint32_t txColor, uint32_t bgColor) {
+    for (size_t i = 0; i < strlen(str); i++) {
+        tty_putchar_color(str[i], txColor, bgColor);
     }
 }
 
 
-/*
-    tty_putint32_t - вывод числа
-*/
+/**
+ * @brief Вывод целого числа
+ * 
+ * @param i - число
+ */
 void tty_putint(const int32_t i) {
     char res[32];
-
-    if (i < 0) {
-        tty_putchar('-');
-    }
 
     itoa(i, res);
     tty_puts(res);
@@ -321,9 +439,11 @@ void tty_putint(const int32_t i) {
 }
 
 
-/*
-    tty_puthex - вывод hex чисел
-*/
+/**
+ * @brief Вывод HEX числа
+ * 
+ * @param i - число
+ */
 void tty_puthex(uint32_t i) {
     const unsigned char hex[16]  =  { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
     uint32_t n, d = 0x10000000;
@@ -344,9 +464,11 @@ void tty_puthex(uint32_t i) {
 }
 
 
-/*
-    tty_puthex - вывод hex чисел
-*/
+/**
+ * @brief Вывод числа HEX без префикса 0x
+ * 
+ * @param i - число
+ */
 void tty_puthex_v(uint32_t i) {
     const unsigned char hex[16]  =  { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
     uint32_t n, d = 0x10000000;
@@ -364,9 +486,13 @@ void tty_puthex_v(uint32_t i) {
     tty_putchar(hex[n]);
 }
 
-/*
-    tty_print32_t - строгий, форматированный вывод
-*/
+
+/**
+ * @brief Подфункция-обработчик для tty_printf
+ * 
+ * @param format - строка форматов
+ * @param args - аргументы
+ */
 void tty_print(char *format, va_list args) {
     int32_t i = 0;
 
@@ -422,9 +548,12 @@ void tty_print(char *format, va_list args) {
 }
 
 
-/*
-    tty_printf - форматированный вывод
-*/
+/**
+ * @brief Вывод форматированной строки на экран (аналог printf)
+ * 
+ * @param text - строка форматов
+ * @param ... - параметры
+ */
 void tty_printf(char *text, ...) {
     va_list args;
     va_start(args, text);
