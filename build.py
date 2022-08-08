@@ -164,19 +164,20 @@ def run_qemu():
     
     qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32" \
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
-        " -cdrom SynapseOS.iso -fdb fdb.img -hda ata.vhd -serial  file:Qemu.log"
+        " -cdrom SynapseOS.iso -fdb fdb.img -hda ata.vhd -serial  file:Qemu.log -rtc base=localtime"
         
     os.system(qemu_command)
 
 
 def run_kvm():
     " Это помогает запускать SynapseOS быстрее, по сравнению с обычным режимом"
+    " Paimon is not emergency food... "
     if not os.path.exists("ata.vhd"):
         os.system("qemu-img create -f raw ata.vhd 32M")
     
     qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32" \
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
-        " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log -accel kvm"
+        " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log -accel kvm -rtc base=localtime"
         
     os.system(qemu_command)
 
@@ -190,7 +191,7 @@ def run_qemu_debug():
     
     qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32" \
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
-        " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log" 
+        " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log -rtc base=localtime" 
     print("gdb kernel.elf -ex target remote localhost:1234")
     os.system(
         qemu_command + """ -s -S"""
