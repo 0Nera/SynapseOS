@@ -3,13 +3,13 @@
 #include <stdint.h>
 
 struct synapse_time {
-	int seconds;
-	int minutes;
-	int hours;
-	int day;
-	int month;
-	int year;
-	int century;
+	unsigned int seconds;
+	unsigned int minutes;
+	unsigned int hours;
+	unsigned int day;
+	unsigned int month;
+	unsigned int year;
+	unsigned int century;
 };
 
 void init_task_manager();

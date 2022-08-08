@@ -21,7 +21,6 @@ unsigned char last_year;
 unsigned char last_century;
 unsigned char registerB;
 
- 
 enum {
     cmos_address = 0x70,
     cmos_data    = 0x71
@@ -35,13 +34,6 @@ int32_t get_update_in_progress_flag() {
 unsigned char get_RTC_register(int32_t reg) {
     outb(cmos_address, reg);
     return inb(cmos_data);
-}
-
-struct synapse_time get_time() {
-	struct synapse_time time = {
-		second, minute, hour, day, month, year, century
-	};
-	return time;
 }
  
 void read_rtc() {
@@ -114,4 +106,16 @@ void read_rtc() {
         year += (CURRENT_YEAR / 100) * 100;
         if(year < CURRENT_YEAR) year += 100;
     }
+}
+
+int isleap(int year) {
+    return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+}
+
+struct synapse_time get_time() {
+    read_rtc();
+	struct synapse_time time = {
+		second, minute, hour, day, month, year, century
+	};
+	return time;
 }

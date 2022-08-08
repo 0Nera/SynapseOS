@@ -60,6 +60,9 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
 
     pci_init();                             // Установка драйвера PCI
 
+    struct synapse_time TIME = get_time();
+    tty_printf("Current datetime is: %d/%d/%d %d:%d:%d\n", TIME.day, TIME.month, TIME.year, TIME.hours, TIME.minutes, TIME.seconds);
+
     //ata_init();                             // Установка драйвера ATA
 
     unit_test(RTL8139_init());              // Тестируем драйвер RTL8139
@@ -74,7 +77,7 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     //create_STFS(0);
 
     //tui();
-    tty_puts("ANSI Escape sequence test: \033[31mHei\033[32m, \033[33mmaa\033[34mil\033[35mma\033[36m!\033[0m\n");
+    //tty_puts("ANSI Escape sequence test: \033[31mHei\033[32m, \033[33mmaa\033[34mil\033[35mma\033[36m!\033[0m\n");
     if (floppy_install()){
         
     } else {

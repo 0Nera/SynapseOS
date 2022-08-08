@@ -2,6 +2,7 @@
 #include <libk/string.h>
 #include <io/imaging.h>
 
+//#define PIM_DEBUG
 
 char current_dir[256] = "/initrd/apps/";
 
@@ -15,6 +16,7 @@ void shell() {
     tty_printf("\nUse \"help\" command to get info about commands.\n");
 
     tty_setcolor(COLOR_TEXT);
+    #ifdef PIM_DEBUG
     // Задаем путь
     char * filename = "/initrd/chip.txt";
     // Открываем файл (режим работы пока не важно, так как особо не проверяется)
@@ -45,7 +47,7 @@ void shell() {
         // Выводим текст
         tty_printf("Debug stdio.c:\n\tPath: %s\n\tSize: %d\n\tText: %s\n",filename2,lSize2,buffer2);
     }
-
+    #endif
 
     while (1) {
         tty_setcolor(COLOR_SYS_TEXT);
