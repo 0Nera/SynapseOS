@@ -6,6 +6,7 @@ CC = "clang -target i386-pc-none-elf"
 CFLAGS = " -Wno-unused-command-line-argument -mno-sse -mno-avx -O0 -ffreestanding -I include/ -c"
 
 BUILD_BASIC = False # Change this to enable or disable BASIC build.
+BUILD_ZLIB  = True
 
 CC = f"{CC} {CFLAGS}"
 LD = f"{LD} {LDFLAGS}"
@@ -127,7 +128,15 @@ def build_all():
         cmd = f"{LD} basic {files} {O_LIBC}"
         print(f"[\x1b[33;1mNOTICE\x1b[0m] Running command: {cmd}")
         subprocess.call(cmd, shell=True)
-
+    
+    if BUILD_ZLIB:
+        print("Building Zlib")
+        os.chdir("zlib-1.1.0")
+        ecode = subprocess.call("make", shell = True)
+        if ecode:
+            print("[\033[31;1mFAIL\033[0m] Failed to build Zlib 1.1.0...")
+        else:
+            print("[\033[32;1mSUCCESS\033[0m] Successfully built Zlib 1.1.0!!!")
     
 if __name__ == "__main__":
     try:
