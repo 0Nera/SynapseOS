@@ -10,6 +10,7 @@
         "syscalls.h": "c",
         "stdfile.h": "c",
         "stdio.h": "c",
-        "sb16.h": "c"
+        "sb16.h": "c",
+        "assert.h": "c"
     }
 }

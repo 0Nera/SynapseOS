@@ -76,6 +76,8 @@ void shell() {
             tty_printf("SHUTDOWN NOW!\n");
             sleep(10);
             shutdown();
+        } else if (strcmp(cmd, "tui") == 0) {
+            tui();
         } else if (strcmp(cmd, "cls") == 0) {
             clean_screen();
         } else if (strcmp(cmd, "cpuinfo") == 0) {
@@ -94,6 +96,7 @@ void shell() {
                         "\t\t->cpuinfo             |info cpu\n" \
                         "\t\t->reboot              |reboot device\n" \
                         "\t\t->shutdown            |shutdown device\n" \
+                        "\t\t->tui                 |enable tui\n" \
                         "\t\t->view   <filename>   |shows an image\n" \
                         "\n" 
                         );
