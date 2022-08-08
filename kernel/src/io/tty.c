@@ -371,7 +371,7 @@ void tty_puts(const char str[]) {
     for (size_t i = 0; i < strlen(str); i++) {
         if (str[i] == '\033') {
             i++;
-            if(c[i] =='[') {
+            if(str[i] =='[') {
                 char* num = kheap_malloc(4);
                 char idx = 0;
                 i++;
@@ -406,7 +406,7 @@ void tty_puts(const char str[]) {
                 kheap_free(num);
             }
         }
-        tty_putchar(c[i]);
+        tty_putchar(str[i]);
     }
 }
 
