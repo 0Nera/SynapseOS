@@ -5,7 +5,10 @@
 
 char current_dir[256] = "/initrd/apps/";
 
-
+/**
+ * @brief Входная точка консоли
+ * 
+ */
 void shell() {
     changeStageKeyboard(1);
     tty_setcolor(COLOR_ALERT);
@@ -211,6 +214,11 @@ void shell() {
 }
 
 
+/**
+ * @brief Открытие папки
+ * 
+ * @param dname - имя папки
+ */
 void cd(char *dname) {
     if (dname[0] != '/') {
         char temp[256];
@@ -241,6 +249,11 @@ void cd(char *dname) {
 }
 
 
+/**
+ * @brief Вывод содержимого файла
+ * 
+ * @param fname - имя файла
+ */
 void cat(char *fname) {
     if (fname[0] != '/') {
         char temp[256];
@@ -274,6 +287,10 @@ void cat(char *fname) {
 }
 
 
+/**
+ * @brief Вывод информации о системе
+ * 
+ */
 void sysinfo(){
     tty_printf("                       ........--........        SynapseOS by Aren Elchinyan\n");
     tty_printf("                       ....+***:**+*....         Arch %s\n", ARCH_TYPE);
@@ -304,6 +321,11 @@ void sysinfo(){
 }
 
 
+/**
+ * @brief Интерпритация языка SBF
+ * 
+ * @param src - код
+ */
 void sbf(char *src){
     char buffer[30000] = {0};
     int32_t cursor = 0, loop = 0, current_char = 0;
