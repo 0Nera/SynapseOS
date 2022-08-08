@@ -36,6 +36,13 @@ unsigned char get_RTC_register(int32_t reg) {
     outb(cmos_address, reg);
     return inb(cmos_data);
 }
+
+struct synapse_time get_time() {
+	struct synapse_time time = {
+		second, minute, hour, day, month, year, century
+	};
+	return time;
+}
  
 void read_rtc() {
 
