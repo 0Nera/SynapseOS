@@ -1,10 +1,14 @@
-/*
- * TUI для SynapseOS
- * Автор: Пиминов Никита
- * VK: @piminov_remont
- * GitHub: github.com/pimnik98
- * piminoff.ru
+/**
+ * @file tui.c
+ * @author Пиминов Никита (piminoff.ru, github.com/pimnik98, vk.com/piminov_remont)
+ * @brief TUI для SynapseOS
+ * @version 0.1.0
+ * @date 2022-08-08
+ * 
+ * @copyright Copyright Пиминов Никита (c) 2022
+ * 
  */
+
 #include <kernel.h>
 
 int32_t bgColor = VESA_BLUE;        // Фон на экране
@@ -22,6 +26,13 @@ int32_t oldPosX = 0;                // Последние местоположе
 int32_t oldPosY = 0;                // Последние местоположение символа по Y (место печати)
 char* Display;                      // Название расширения монитора
 
+
+/**
+ * @brief 
+ * 
+ * @param w 
+ * @param h 
+ */
 void testDisplay(int w, int h){
     int32_t pixels = w*h;
     int32_t tDsize = w/h;
@@ -383,13 +394,15 @@ void testDisplay(int w, int h){
     tty_printf("[testDisplay] %dx%d - %d pixels | %d | %s \n",w,h,pixels,typeDisplay,Display);
 }
 
-/*
- * Рисуем прямоугольник
- * x - Начальная координата X
- * y - Начальная координата y
- * w - Длина
- * h - Высота
- * color - цвет заливки
+
+/**
+ * @brief Рисуем прямоугольник
+ * 
+ * @param x - Начальная координата X
+ * @param y - Начальная координата y
+ * @param w - Длина
+ * @param h - Высота
+ * @param color - цвет заливки
  */
 void drawRect(int x,int y,int w, int h,int color){
     for (int _x = x; _x < x+w ; _x++){
@@ -399,6 +412,18 @@ void drawRect(int x,int y,int w, int h,int color){
     }
 }
 
+
+/**
+ * @brief 
+ * 
+ * @param x 
+ * @param y 
+ * @param w 
+ * @param h 
+ * @param color 
+ * @param color2 
+ * @param c 
+ */
 void drawRectLine(int x,int y,int w, int h,int color,int color2, int c){
     for (int _x = x; _x < x+w ; _x += 8){
         draw_vga_character(c, _x, y, color, color2, true);
@@ -410,6 +435,12 @@ void drawRectLine(int x,int y,int w, int h,int color,int color2, int c){
     }
 }
 
+
+/**
+ * @brief 
+ * 
+ * @param fast 
+ */
 void cleanScreen(bool fast){
     if (fast){
         drawRect(0,0,w,h,bgColor);
@@ -463,6 +494,12 @@ void headBar(){
     tty_puts_color(infoDisplay,txColor, bgColor);
 }
 
+
+/**
+ * @brief 
+ * 
+ * @param text 
+ */
 void footBar(char* text){
     drawRect(0,h-16,1024,h,VESA_LIGHT_GREY);
     setPosX(0);
@@ -470,10 +507,17 @@ void footBar(char* text){
     tty_puts_color(text,VESA_BLACK, VESA_LIGHT_GREY);
 }
 
+
+/**
+ * @brief 
+ * 
+ * @param color 
+ */
 void cleanWorkSpace(int color){
     drawRect(8,128,ww,wh,color);
 
 }
+
 
 /**
  * Выводит фатальный красный блок
@@ -533,6 +577,11 @@ void createErrorBox(char* title,char* text){
     }
 }
 
+
+/**
+ * @brief 
+ * 
+ */
 void updateLoop(){
     // Получаем последнию позицию курсора
     oldPosX = getPosX();
@@ -552,6 +601,13 @@ void updateLoop(){
     setPosY(oldPosY);
 }
 
+
+/**
+ * @brief 
+ * 
+ * @return true 
+ * @return false 
+ */
 bool tui(){
     int32_t i = 0;
     w = getWidthScreen();
