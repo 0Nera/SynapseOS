@@ -1,7 +1,7 @@
 import os, shutil, sys, tarfile, os.path, subprocess
 
 LD = "ld.lld"
-LDFLAGS = " -nostdlib -e main -o"
+LDFLAGS = " -nostdlib -T link.ld -o"
 CC = "clang -target i386-pc-none-elf"
 CFLAGS = " -Wno-unused-command-line-argument -mno-sse -mno-avx -O0 -ffreestanding -I include/ -c"
 
