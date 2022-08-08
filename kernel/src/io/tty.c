@@ -1,6 +1,6 @@
 /**
  * @file tty.c
- * @author Арен Елчинян (a2.dev@yandex.com)
+ * @authors Арен Елчинян (a2.dev@yandex.com), <>
  * @brief Прослойка для работы с текстовым терминалом и графикой VESA
  * @version 0.2.0
  * @date 2022-08-08
