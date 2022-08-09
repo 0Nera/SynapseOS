@@ -61,7 +61,9 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     pci_init();                             // Установка драйвера PCI
 
     struct synapse_time TIME = get_time();
-    tty_printf("Current datetime is: %d/%d/%d %d:%d:%d\n", TIME.day, TIME.month, TIME.year, TIME.hours, TIME.minutes, TIME.seconds);
+    tty_printf("Current datetime is: %d/%d/%d %d:%d:%d (unix:%d)\n", TIME.day, TIME.month,
+    							TIME.year, TIME.hours, TIME.minutes, TIME.seconds,
+    							synapse_time_to_unix(TIME));
 
     //ata_init();                             // Установка драйвера ATA
 

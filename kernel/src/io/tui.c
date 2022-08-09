@@ -478,7 +478,7 @@ void headBar(){
     setPosX(16);
     setPosY(16*5);
     char infoRAM[512];
-    substr(infoRAM, strcat(format_string("RAM: %d",(getInstalledRam()))," kb"), 0, (maxStrLine/2)-2);
+    substr(infoRAM, strcat(format_string("RAM: %d",(getInstalledRam()/1024))," kb"), 0, (maxStrLine/2)-2);
     tty_puts_color(infoRAM,txColor, bgColor);
 
     setPosX(16);
