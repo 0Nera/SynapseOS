@@ -1,14 +1,10 @@
-/**
- * @file tui.c
- * @author Пиминов Никита (piminoff.ru, github.com/pimnik98, vk.com/piminov_remont)
- * @brief TUI для SynapseOS
- * @version 0.1.0
- * @date 2022-08-08
- * 
- * @copyright Copyright Пиминов Никита (c) 2022
- * 
+/*
+ * TUI для SynapseOS
+ * Автор: Пиминов Никита
+ * VK: @piminov_remont
+ * GitHub: github.com/pimnik98
+ * piminoff.ru
  */
-
 #include <kernel.h>
 
 int32_t bgColor = VESA_BLUE;        // Фон на экране
@@ -25,14 +21,14 @@ int32_t maxHeightLine = 0;          // Максимальное количест
 int32_t oldPosX = 0;                // Последние местоположение символа по X (место печати)
 int32_t oldPosY = 0;                // Последние местоположение символа по Y (место печати)
 char* Display;                      // Название расширения монитора
+int32_t currentMenu = 0;            // Текущие меню
+int32_t currentList = 0;            // Текущая позиция на экране
+char* listMenu[128];                 // Сам список меню
+int32_t maxListMenu = 0;            // Максимальное количество элементов
+uint32_t maxItemScreen = 0;         // Максимальное количество объектов на экране
+uint32_t pageMenuCurrent = 0;        // Текущая страница
+uint32_t pageMenuMax = 0;           // Максимальная страница
 
-
-/**
- * @brief 
- * 
- * @param w 
- * @param h 
- */
 void testDisplay(int w, int h){
     int32_t pixels = w*h;
     int32_t tDsize = w/h;
@@ -394,15 +390,13 @@ void testDisplay(int w, int h){
     tty_printf("[testDisplay] %dx%d - %d pixels | %d | %s \n",w,h,pixels,typeDisplay,Display);
 }
 
-
-/**
- * @brief Рисуем прямоугольник
- * 
- * @param x - Начальная координата X
- * @param y - Начальная координата y
- * @param w - Длина
- * @param h - Высота
- * @param color - цвет заливки
+/*
+ * Рисуем прямоугольник
+ * x - Начальная координата X
+ * y - Начальная координата y
+ * w - Длина
+ * h - Высота
+ * color - цвет заливки
  */
 void drawRect(int x,int y,int w, int h,int color){
     for (int _x = x; _x < x+w ; _x++){
@@ -412,18 +406,6 @@ void drawRect(int x,int y,int w, int h,int color){
     }
 }
 
-
-/**
- * @brief 
- * 
- * @param x 
- * @param y 
- * @param w 
- * @param h 
- * @param color 
- * @param color2 
- * @param c 
- */
 void drawRectLine(int x,int y,int w, int h,int color,int color2, int c){
     for (int _x = x; _x < x+w ; _x += 8){
         draw_vga_character(c, _x, y, color, color2, true);
@@ -435,12 +417,12 @@ void drawRectLine(int x,int y,int w, int h,int color,int color2, int c){
     }
 }
 
+void drawLine(int y,int color){
+    for (int _x = 0; _x < w ; _x += 8){
+        draw_vga_character(0, _x, y*16, color, color, true);
+    }
+}
 
-/**
- * @brief 
- * 
- * @param fast 
- */
 void cleanScreen(bool fast){
     if (fast){
         drawRect(0,0,w,h,bgColor);
@@ -454,14 +436,37 @@ void cleanScreen(bool fast){
 }
 
 void headBar(){
-    char* OSNAME = "SynapseOS v0.2.12 (Dev)";
-    int32_t l_OSNAME = (w/2)-(strlen(OSNAME)*4);
-    setPosX(l_OSNAME);
+    drawLine(1,TUI_BASE_COLOR_HEAD);
+    char* OSNAME = " SynapseOS v0.2.12 (Dev)";
+    setPosX(0);
     setPosY(16*1);
-    tty_puts_color(OSNAME,VESA_WHITE, VESA_LIGHT_GREY);
+    tty_puts_color(OSNAME,txColor, TUI_BASE_COLOR_HEAD);
+
+    tty_setcolor(txColor);
+    struct synapse_time TIME = get_time();
+    //char* TIME = "10/10/2022 12:23";
+    setPosX((maxStrLine-18)*8);
+    setPosY(16*1);
+    drawRect((maxStrLine-18)*8,16,18*8, 16,TUI_BASE_COLOR_HEAD);
+    tty_printf("%d/%d/%d %d:%d:%d", TIME.day, TIME.month, TIME.year, TIME.hours, TIME.minutes, TIME.seconds);
+    //tty_puts_color(TIME,txColor, TUI_BASE_COLOR_HEAD);
+}
+
+void headBarOld(){
+    drawLine(1,TUI_BASE_COLOR_HEAD);
+    char* OSNAME = " SynapseOS v0.2.12 (Dev)";
+    setPosX(0);
+    setPosY(16*1);
+    tty_puts_color(OSNAME,txColor, TUI_BASE_COLOR_HEAD);
+
+    char* TIME = "10/10/2022 12:23";
+    setPosX((maxStrLine-15)*8);
+    setPosY(16*1);
+    tty_puts_color(TIME,txColor, TUI_BASE_COLOR_HEAD);
     // Рисуем треугольник для параметров
     drawRectLine(8,32,w/2,112,txColor,VESA_LIGHT_GREY,176);
     drawRectLine(w/2,32,(w/2)-8,112,txColor,VESA_LIGHT_GREY,176);
+
 
     setPosX(16);
     setPosY(16*3);
@@ -478,7 +483,7 @@ void headBar(){
     setPosX(16);
     setPosY(16*5);
     char infoRAM[512];
-    substr(infoRAM, strcat(format_string("RAM: %d",(getInstalledRam()/1024))," kb"), 0, (maxStrLine/2)-2);
+    substr(infoRAM, strcat(format_string("RAM: %d",(getInstalledRam()))," kb"), 0, (maxStrLine/2)-2);
     tty_puts_color(infoRAM,txColor, bgColor);
 
     setPosX(16);
@@ -494,12 +499,6 @@ void headBar(){
     tty_puts_color(infoDisplay,txColor, bgColor);
 }
 
-
-/**
- * @brief 
- * 
- * @param text 
- */
 void footBar(char* text){
     drawRect(0,h-16,1024,h,VESA_LIGHT_GREY);
     setPosX(0);
@@ -507,17 +506,59 @@ void footBar(char* text){
     tty_puts_color(text,VESA_BLACK, VESA_LIGHT_GREY);
 }
 
-
-/**
- * @brief 
- * 
- * @param color 
- */
 void cleanWorkSpace(int color){
-    drawRect(8,128,ww,wh,color);
-
+    drawRect(8,16*(3),ww,wh,color);
 }
 
+void createMenuBox(char* title){
+    TUIMode = TUI_MENU_BOX;
+    // Установка отступа экрана в длину (left/right)
+    uint32_t padding_w = maxStrLine/4; // 320 - 10 символа; 1024 - 32 символа
+    // Установка отступа экрана в высоту (up)
+    uint32_t padding_h = maxHeightLine/4;
+    // Получаем размеры коробки
+    uint32_t boxWidth = ww-((padding_w*8)*2);
+    uint32_t boxHeight = wh-((padding_h*16));      // ? Реализовал а зачем, забыл :)
+    uint32_t maxListBox = boxHeight;
+    // Получаем максимальное количество символов на строку в коробке
+    uint32_t maxStrLineBox = (boxWidth/8)-4; // 60 - символов при 1024
+
+    // Высота бокса для меню
+    maxItemScreen = (maxListMenu >10?10:maxListMenu);
+
+    // Установка максимальных страниц навигаций
+    if (maxListMenu > 0){
+        pageMenuMax = (maxListMenu/maxItemScreen)+1;
+    } else {
+        pageMenuMax = 1;
+    }
+
+    // Обрезаем заголовок
+    substr(title, title, 0, maxStrLineBox);
+
+    // Рисуем бокс и узорчики
+    drawRect(8+(padding_w*8),16*(8+padding_h),boxWidth,16*(6+maxItemScreen),TUI_BASE_COLOR_MAIN);
+    drawRectLine(8+(padding_w*8),16*(8+padding_h),boxWidth,16*(6+maxItemScreen),TUI_TEXT_COLOR_BODY,TUI_BASE_COLOR_MAIN,15);
+
+    // Отображаем титл
+    setPosX(((3+padding_w)*8));
+    setPosY(16*((10)+padding_h));
+    tty_puts_color(title,TUI_TEXT_COLOR_BODY,TUI_BASE_COLOR_MAIN);
+
+    // Рисуем пункты меню
+    for (int x = pageMenuCurrent*maxItemScreen; x < maxItemScreen; x++){
+        setPosX(((3+padding_w)*8));
+        setPosY(16*((12+x)+padding_h));
+        substr(listMenu[x], listMenu[x], 0, maxStrLineBox);
+        if (currentList == x){
+            drawRect(((3+padding_w)*8),16*((12+x)+padding_h),maxStrLineBox*8, 16,TUI_BASE_COLOR_ITEM);
+            tty_puts_color(listMenu[x],TUI_TEXT_COLOR_ITEM,TUI_BASE_COLOR_ITEM);
+            // Помечаем что, он является текущим
+        } else {
+            tty_puts_color(listMenu[x],TUI_TEXT_COLOR_BODY,TUI_BASE_COLOR_MAIN);
+        }
+    }
+}
 
 /**
  * Выводит фатальный красный блок
@@ -555,14 +596,14 @@ void createErrorBox(char* title,char* text){
         }
     }
     // Рисуем коробку
-    drawRect(8+(padding_w*8),16*(8+padding_h),boxWidth,16*(6+lineHeight),VESA_RED);
-    drawRectLine(8+(padding_w*8),16*(8+padding_h),boxWidth,16*(6+lineHeight),VESA_WHITE,VESA_RED,19);
+    drawRect(8+(padding_w*8),16*(8+padding_h),boxWidth,16*(6+lineHeight),TUI_BASE_COLOR_ERROR);
+    drawRectLine(8+(padding_w*8),16*(8+padding_h),boxWidth,16*(6+lineHeight),TUI_TEXT_COLOR_ERROR,TUI_BASE_COLOR_ERROR,19);
     // Показываем титл и считаем равнение по центру
     uint32_t centerTitle = (maxStrLineBox/2)-(strlen(title)/2);
 
     setPosX(((3+centerTitle+padding_w)*8));
     setPosY(16*((10)+padding_h));
-    tty_puts_color(title,VESA_WHITE,VESA_RED);
+    tty_puts_color(title,TUI_TEXT_COLOR_ERROR,TUI_BASE_COLOR_ERROR);
 
     // Рисуем буковки
     if (strlen(text) > maxStrLineBox){
@@ -573,60 +614,101 @@ void createErrorBox(char* title,char* text){
     } else {
         setPosX(((3+padding_w)*8));
         setPosY(16*((12)+padding_h));
-        tty_puts_color(text,VESA_WHITE,VESA_RED);
+        tty_puts_color(text,TUI_TEXT_COLOR_ERROR,TUI_BASE_COLOR_ERROR);
     }
 }
 
-
-/**
- * @brief 
- * 
- */
 void updateLoop(){
     // Получаем последнию позицию курсора
     oldPosX = getPosX();
     oldPosY = getPosY();
 
     // Выводим нажатую кнопку во второй колонке в шапке
-    setPosX(((maxStrLine/2)*8)+(8*2));
-    setPosY(32);
-    draw_vga_character(0, ((maxStrLine/2)*8)+(8*2), 32, txColor, bgColor, true);
-    draw_vga_character(0, ((maxStrLine/2)*8)+(8*3), 32, txColor, bgColor, true);
-    draw_vga_character(0, ((maxStrLine/2)*8)+(8*4), 32, txColor, bgColor, true);
-    draw_vga_character(0, ((maxStrLine/2)*8)+(8*5), 32, txColor, bgColor, true);
-    tty_printf("%d",keyLastInset());
 
+     struct synapse_time TIME = get_time();
+    //char* TIME = "10/10/2022 12:23";
+    setPosX((maxStrLine-18)*8);
+    setPosY(0);
+    tty_setcolor(txColor);
+    drawRect((maxStrLine-18)*8,0,20*8, 15,TUI_BASE_COLOR_HEAD);
+    tty_printf("%d/%d/%d %d:%d:%d", TIME.day, TIME.month, TIME.year, TIME.hours, TIME.minutes, TIME.seconds);
+
+    //tty_printf("%d",keyLastInset());
+    if (keyLastInset() != 0){
+        qemu_log("Last key ID: %d",keyLastInset());
+    }
     // Возращаем указатель обратно
     setPosX(oldPosX);
     setPosY(oldPosY);
 }
 
-
-/**
- * @brief 
- * 
- * @return true 
- * @return false 
- */
 bool tui(){
     int32_t i = 0;
     w = getWidthScreen();
     h = getHeightScreen();
     ww = w-16;
-    wh = h-(16*9);
+    wh = h-(80);
     maxHeightLine = wh/16;
     maxStrLine = (w/8)-2;
     changeStageKeyboard(2); // Блокируем нажатие и отображение кнопок
     testDisplay(w,h);       // Тестируем монитор на валидность (Скорее всего останеться только для детекта, когда резина будет готова)
+    bgColor = TUI_BASE_COLOR_BODY;
+    txColor = TUI_TEXT_COLOR_BODY;
     tty_printf("TUI Starting...\n");
+    TUIMode = TUI_DEFAULT;
+    lastUpdate = timer_get_ticks()+3;
     while(1){
         if (timer_get_ticks() < lastUpdate){
             // Просто игнорируем работу цикла
-        } else if (TUIMode == TUI_ERROR_BOX){
+            continue;
+        }
+        // Выполняем цикл
+        updateLoop();
+        if (TUIMode == TUI_ERROR_BOX){
             // Режим обработки фатального окна
-        } else if (keyLastInset() == 68){
-            createErrorBox("Error","Test Fatal Screen");
-            sleep(100);
+        } else if (TUIMode == TUI_MENU_BOX){
+             changeStageKeyboard(0);
+            if (keyLastInset() == 72){
+                currentList--;
+                // Нажата клавиша вверх
+                if (currentList < 0){
+                    currentList = maxListMenu-1;
+                }
+                createMenuBox("Base menu:");
+            } else if (keyLastInset() == 80){
+                // Нажата клавиша вниз
+                currentList++;
+                if (currentList >= maxListMenu){
+                    currentList = 0;
+                }
+                createMenuBox("Base menu:");
+            } else if (keyLastInset() == 1){
+                // Нажата клавиша ESC
+                cleanWorkSpace(TUI_BASE_COLOR_BODY);
+                TUIMode = TUI_DEFAULT;
+            }
+            lastUpdate = timer_get_ticks()+5;
+            continue;
+        } else if (keyLastInset() == 91){
+            cleanWorkSpace(TUI_BASE_COLOR_BODY);
+            listMenu[0] = "Info PC";
+            listMenu[1] = "List PCI-Devices";
+            listMenu[2] = "Show ErrorBox";
+            listMenu[3] = "Exit to Console";
+            listMenu[4] = "Reboot";
+            listMenu[5] = "Shutdown";
+            listMenu[6] = "6Info PC";
+            listMenu[7] = "7List PCI-Devices";
+            listMenu[8] = "8Show ErrorBox";
+            listMenu[9] = "9Exit to Console";
+            listMenu[10] = "10Reboot";
+            listMenu[11] = "11Shutdown";
+            maxListMenu = 12;
+            createMenuBox("Base menu:");
+            qemu_log("PAGE -> Items: %d/%d -> ScreenMax: %d",currentList,maxListMenu,maxItemScreen);
+            //createErrorBox("Error","Test Fatal Screen");
+            //sleep(100);
+            //cleanWorkSpace(TUI_BASE_COLOR_BODY);
             //break;
         } else if (keyLastInset() == 88){
             // Нажата клавиша F12 - закроем TUI и вернем управление shell()
@@ -641,18 +723,19 @@ bool tui(){
                 // Чистим экран
                 cleanScreen(true);
                 // Рисуем обводку
-                drawRectLine(0,0,w,h,txColor,VESA_LIGHT_GREY,178);
+                //drawRectLine(0,0,w,h,txColor,VESA_LIGHT_GREY,178);
                 // Выводим шапку
                 headBar();
+                cleanWorkSpace(TUI_BASE_COLOR_BODY);
+
                 // Выводим ноги
-                footBar("Press 'Start' to open menu");
+                footBar(" Press 'Start' to open menu");
                 // Установка позиции для печати
                 setPosX(8);
                 setPosY(16*8);
                 changeStageKeyboard(1);
             }
-            // Выполняем цикл
-            updateLoop();
+
             // Обновляем таймер, для переотображения
             lastUpdate = timer_get_ticks()+3;
         }
