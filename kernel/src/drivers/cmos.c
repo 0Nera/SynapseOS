@@ -123,21 +123,6 @@ struct synapse_time get_time() {
 	return time;
 }
 
-/*
-def unx():
-    t = time.localtime()
-    mn = [31, 29 if is_leap(t.tm_year) else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    total = 0
-    total += t.tm_sec
-    total += t.tm_min*60
-    total += t.tm_hour*60*60
-    total += t.tm_mday*60*60*24
-    total += t.tm_mon*60*60*24*mn[t.tm_mon-1]
-    total -= 33555600
-    total += (t.tm_year-1970)*60*60*24*mn[t.tm_mon-1]*12
-    return total
-*/
-
 unsigned int synapse_time_to_unix(struct synapse_time ktime) {
 	unsigned int t = 0;
 	unsigned char cmdt = (isleap(ktime.year)?synapse_months_leap[ktime.month-1]:synapse_months[ktime.month-1]);
