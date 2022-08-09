@@ -140,7 +140,7 @@ def unx():
 
 unsigned int synapse_time_to_unix(struct synapse_time ktime) {
 	unsigned int t = 0;
-	unsigned char cmdt = (isleap(ktime.year)?synapse_months_leap[ktime.month]:synapse_months[ktime.month]);
+	unsigned char cmdt = (isleap(ktime.year)?synapse_months_leap[ktime.month-1]:synapse_months[ktime.month-1]);
 
 	t += ktime.seconds;
 	t += ktime.minutes*60;
