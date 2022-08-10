@@ -139,6 +139,7 @@ def build_all():
             print("[\033[31;1mFAIL\033[0m] Failed to build Zlib 1.1.0...")
         else:
             print("[\033[32;1mSUCCESS\033[0m] Successfully built Zlib 1.1.0!!!")
+        
     
 if __name__ == "__main__":
     try:
