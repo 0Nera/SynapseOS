@@ -13,6 +13,9 @@ uint8_t mouse_b3 = 0;
 uint8_t mouse_b4 = 0;
 uint8_t mouse_b5 = 0;
 
+unsigned int xmax;
+unsigned int ymax;
+
 int mouse_wheel = 0;
 
 // This shouldn't be used outside of mouse driver.
@@ -84,16 +87,18 @@ void mouse_handler(__attribute__((unused)) struct regs *r) {
 
         if (mouse_x < 0) mouse_x = 0;
         if (mouse_y < 0) mouse_y = 0;
+        if (mouse_x > xmax) mouse_x = xmax;
+        if (mouse_y > ymax) mouse_y = ymax;
     }
 }
 
-int mouse_getx() {
-	return mouse_x;
-}
-
-int mouse_gety() {
-	return mouse_y;
-}
+int mouse_getx() { return mouse_x; }
+int mouse_gety() { return mouse_y; }
+int mouse_getb1() { return mouse_b1; }
+int mouse_getb2() { return mouse_b2; }
+int mouse_getb3() { return mouse_b3; }
+int mouse_getb4() { return mouse_b4; }
+int mouse_getb5() { return mouse_b5; }
 
 void mouse_wait(uint8_t a_type) {
     uint32_t _time_out = 100000;
