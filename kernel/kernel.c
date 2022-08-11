@@ -64,6 +64,11 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     tty_printf("Current datetime is: %d/%d/%d %d:%d:%d (unix:%d)\n", TIME.day, TIME.month,
     							TIME.year, TIME.hours, TIME.minutes, TIME.seconds,
     							synapse_time_to_unix(TIME));
+    tty_puts("Experimental font demo: \xFF\x01 \xFF\x02 \xFF\x03 \xFF\x04 \xFF\x05 \xFF\x06 \xFF\x07 \xFF\x08 \xFF\x09 \xFF\x0A \xFF\x0B \xFF\x0C\n");
+    tty_puts("Colors: \xFF\x0D\xFF\x0E\xFF\x0F\n");
+
+    // tty_printf("%s", "\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\n");
+    // ^--- Без %s не работает. Только так или используйте tty_puts()
 
     //ata_init();                             // Установка драйвера ATA
 

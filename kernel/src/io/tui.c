@@ -7,6 +7,8 @@
  */
 #include <kernel.h>
 
+#define CLOCK_FORMAT 2
+
 int32_t bgColor = VESA_BLUE;        // Фон на экране
 int32_t txColor = VESA_WHITE;       // Основной текст для печати на экране
 int32_t TUIMode = TUI_DEFAULT;      // Режим TUI
@@ -631,8 +633,13 @@ void updateLoop(){
     setPosY(0);
     tty_setcolor(txColor);
     drawRect((maxStrLine-18)*8,0,20*8, 15,TUI_BASE_COLOR_HEAD);
+    //#if CLOCK_FORMAT==1
     tty_printf("%d/%d/%d %d:%d:%d", TIME.day, TIME.month, TIME.year, TIME.hours, TIME.minutes, TIME.seconds);
-
+    /* CAUSES PageFault
+    #elif CLOCK_FORMAT==2
+    tty_printf("%d %s %d %d:%d:%d", TIME.day, months_list[TIME.month-1], TIME.year, TIME.hours, TIME.minutes, TIME.seconds);
+    #endif
+    */
     //tty_printf("%d",keyLastInset());
     if (keyLastInset() != 0){
         qemu_log("Last key ID: %d",keyLastInset());

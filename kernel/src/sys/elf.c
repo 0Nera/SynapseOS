@@ -216,7 +216,6 @@ int32_t run_elf_file(const char *name/*, char **argv, char **env __attribute__((
     int(*entry_point)() = (void*) (hdr->entry);
     qemu_log("ELF entry point: %x", hdr->entry);
 
-
     qemu_log("Executing");
     int _result = entry_point();
     
