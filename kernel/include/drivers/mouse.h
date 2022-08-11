@@ -1,6 +1,7 @@
 #ifndef _MOUSE_H_
 #define _MOUSE_H_
 
+#include <kernel.h>
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -21,14 +22,9 @@
 // Mouse answers
 #define MOUSE_ACK             0xFA
 
-void mouse_erase();
-void mouse_draw();
-
 void mouse_wait(uint8_t a_type);
-
 void mouse_write(uint8_t a_write);
 uint8_t mouse_read();
-
 void mouse_install();
 
 extern uint8_t mouse_ready;
@@ -43,5 +39,13 @@ extern uint8_t mouse_b4;
 extern uint8_t mouse_b5;
 
 extern int mouse_wheel;
+
+int mouse_getx();
+int mouse_gety();
+int mouse_getb1();
+int mouse_getb2();
+int mouse_getb3();
+int mouse_getb4();
+int mouse_getb5();
 
 #endif // _MOUSE_H_

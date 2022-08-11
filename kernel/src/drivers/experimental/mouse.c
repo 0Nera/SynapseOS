@@ -71,14 +71,14 @@ void mouse_parse_packet(const char *buf, uint8_t has_wheel, uint8_t has_5_button
     }
 }
 
-void mouse_handler(__attribute__((unused)) struct regs *r) { 
+void mouse_handler(__attribute__((unused)) struct regs *r) {
     uint8_t status = inb(0x64);
     if ((status & 1) == 0 || (status >> 5 & 1) == 0) {
         return;
     }
 
     static int recbyte = 0;
-    static char mousebuf[5];
+    static char mousebuf[16];
 
     mousebuf[recbyte++] = inb(0x60);
     if (recbyte == 3) {

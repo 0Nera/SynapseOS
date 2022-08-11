@@ -1,6 +1,10 @@
-// Image Drawing library by Andrey(David) Pavlenko aka NDRAEY ~2022~
-
-// It parses Duke Image and draws it on screen
+/**
+ * @brief Встраиваемая библиотека рисования изображений формата Duke
+ * @author Андрей(Давид) Павленко
+ * @license GNU GPL 3.0
+ * @version 1.0
+ * @date 26.07.2022
+*/
 
 #include <drivers/vfs.h>
 #include <mem/kheap.h>
@@ -14,7 +18,13 @@ struct DukeImageMeta* get_image_metadata(char *filename) {
     }else{ return (struct DukeImageMeta*)0; }
 }
 
-// Returns 0 if OK, 1 if ERR
+/**
+ * @brief Функция отрисовки изображения
+ * @param filename - Имя файла
+ * @param sx - Координата x
+ * @param sy - Координата y
+ * @return 0 - OK, 1 - ERROR
+ */
 char draw_from_file(char *filename, int sx, int sy) {
     char meta[9];
     if(vfs_exists(filename)) {
@@ -49,6 +59,13 @@ char draw_from_file(char *filename, int sx, int sy) {
     return 0;
 }
 
+/**
+ * @brief Функция вычисления позиции по координатам
+ * @param filename - Имя файла
+ * @param sx - Координата x
+ * @param sy - Координата y
+ * @return 0 - OK, 1 - ERROR
+ */
 int pixidx(int width, int x, int y) {
     return width*y + x;
 }
