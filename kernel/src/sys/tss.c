@@ -90,7 +90,7 @@ int32_t kill_task(uint32_t pid) {
 /*
     Переключает задачу
 */
-void task_switch(void) {
+void task_switch() {
 	asm volatile ("pushf ");
 	asm volatile ("cli");
 	asm volatile ("mov %%esp, %0":"=a"(current_thread->esp));

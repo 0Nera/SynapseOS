@@ -464,6 +464,10 @@ void tty_puts_color(const char str[], uint32_t txColor, uint32_t bgColor) {
  */
 void tty_putint(const int32_t i) {
     char res[32];
+    
+    if (i < 0) {
+        //tty_putchar('-');
+    }
 
     itoa(i, res);
     tty_puts(res);

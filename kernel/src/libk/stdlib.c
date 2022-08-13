@@ -1,5 +1,13 @@
 #include <kernel.h>
 
+
+/**
+ * @brief 
+ * 
+ * @param nmemb 
+ * @param size 
+ * @return void* 
+ */
 void* calloc(size_t nmemb, size_t size) {
 	void* ptr = kheap_malloc(nmemb * size);
 	if (!ptr) {
@@ -9,6 +17,12 @@ void* calloc(size_t nmemb, size_t size) {
 	return ptr;
 }
 
+
+/**
+ * @brief 
+ * 
+ * @param str 
+ */
 void strver(char *str) {
     char c;
     int32_t j = strlen(str) - 1;
@@ -22,21 +36,35 @@ void strver(char *str) {
 }
 
 
+/**
+ * @brief 
+ * 
+ * @param n 
+ * @param buffer 
+ * @return int32_t 
+ */
 int32_t itoa(int32_t n, char *buffer) {
-    int32_t length = n < 0;
-    
-    if (length) {
-        n = -n;
-        *buffer = '-';
-    }
-    
-    do {
-        buffer[length++] = (n % 10) + '0';
-        n /= 10;
-    } while (n > 0);
+    char const digits[] = "0123456789";
+    char* p = buffer;
 
-    buffer[length] = '\0';
-    strver(buffer);
-    
-    return length;
+    if (n < 0){
+        *p++ = '-';
+        n *= -1;
+    }
+
+    int s = n;
+
+    do {
+        ++p;
+        s = s / 10;
+    } while(s);
+
+    *p = '\0';
+
+    do { 
+        *--p = digits[n % 10];
+        n = n / 10;
+    } while(n);
+
+    return strlen(buffer);
 }

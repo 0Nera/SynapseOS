@@ -1,22 +1,36 @@
+/**
+ * @file kernel.c
+ * @author Арен Елчинян (a2.dev@yandex.com)
+ * @brief Входная точка ядра, инициализация драйверов
+ * @version 0.1.13
+ * @date 2022-08-13
+ * @copyright Copyright Арен Елчинян (c) 2022
+ */
+
 /*
     Ядро SynapseOS
 
-    Ядро является главным модулем операционной системы, без него невозможна работа SynapseOS.
+    
 */
 
 #include <kernel.h>
 #include <drivers/ata.h>
 
-int32_t os_mode = 1; // 0 - мало ОЗУ, 1 - обычный режим, 2 - режим повышенной производительности, 3 - сервер
+
+uint32_t os_mode = 1; // 0 - мало ОЗУ, 1 - обычный режим, 2 - режим повышенной производительности, 3 - сервер
+
 
 /*!
 	\brief Входная точка ядра SynapseOS
 	\warning Отсутствует проверка multiboot!
 */
 void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
-    qemu_log("magic_number = %x", magic_number);
+    if (magic_number != MULTIBOOT_BOOTLOADER_MAGIC) {
+        qemu_log("Invalid magic number: %x, valid = %x", magic_number, MULTIBOOT_BOOTLOADER_MAGIC);
+    }
+
     tty_init(mboot_info);   // Настройка графики
-    
+
     // Вывод информации о ядре
     tty_printf("\t\tSynapseOS kernel version: %d.%d.%d, Built: %s\n", 
         VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH,    // Версия ядра 
@@ -65,6 +79,7 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     							synapse_time_to_unix(TIME));
     tty_puts("Experimental font demo: \xFF\x01 \xFF\x02 \xFF\x03 \xFF\x04 \xFF\x05 \xFF\x06 \xFF\x07 \xFF\x08 \xFF\x09 \xFF\x0A \xFF\x0B \xFF\x0C\n");
     tty_puts("Colors: \xFF\x0D\xFF\x0E\xFF\x0F\n");
+    tty_printf("Test: -1=[%d]  \n", -1);
 
     // tty_printf("%s", "\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\n");
     // ^--- Без %s не работает. Только так или используйте tty_puts()

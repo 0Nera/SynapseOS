@@ -45,7 +45,7 @@
 #define VERSION_MAJOR   0       // Версия ядра
 #define VERSION_MINOR   2       // Пре-релиз 
 #define VERSION_PATCH   12       // Патч
-#define ARCH_TYPE       "x86"   // Архитектура
+#define ARCH_TYPE       "i386"   // Архитектура
 
 #define COLOR_TEXT      VESA_LIGHT_GREY
 #define COLOR_SYS_TEXT  VESA_LIGHT_CYAN
@@ -59,8 +59,9 @@
 #define dVERSION_MINOR  0   // Пре-релиз дистрибутива
 #define dVERSION_PATCH  0   // Патч дистрибутива
 
+#define MULTIBOOT_BOOTLOADER_MAGIC              0x2BADB002
 
-extern int32_t os_mode;
+extern uint32_t os_mode;
 extern bool multi_task;
 
 void shell();
