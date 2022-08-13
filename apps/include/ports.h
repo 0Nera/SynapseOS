@@ -39,5 +39,6 @@ void qemu_puts(char log_data[]);
 void qemu_printf(char *text, ...);
 void io_wait();
 void play_sound(unsigned int nFrequence);
-void sleep(uint16_t delay);
+void sleep(uint32_t delay);
+void sleep_ms(uint32_t delay);
 void nosound();
