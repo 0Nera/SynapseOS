@@ -63,8 +63,8 @@ void sleep_ticks(uint32_t delay)
     }
 }
 
-void sleep(uint32_t delay) {
-    sleep_ticks(delay);
+void sleep(uint32_t _d) {
+    sleep_ms(_d);
 }
 
 void sleep_ms(uint32_t milliseconds) {
