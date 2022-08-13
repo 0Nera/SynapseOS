@@ -4,7 +4,7 @@ from reprlib import recursive_repr
 
 _CC = "clang -target i386-pc-none-elf"
 LD = "ld.lld"
-CFLAGS = "  -nostdlib -mno-sse -mno-avx -g -O0 -ffreestanding -I kernel/include/ -c"
+CFLAGS = " -nostdlib -mno-sse -mno-avx -ggdb -O0 -ffreestanding -I kernel/include/ -c"
 
 CC = f"{_CC} {CFLAGS}"
 

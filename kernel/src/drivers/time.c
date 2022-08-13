@@ -9,7 +9,7 @@
 
 #define TICKS_PER_SECOND 20
 
-
+uint64_t current_freq = 0;
 uint64_t timer_ticks = 0;
 extern void task_switch(void);
 
@@ -20,6 +20,11 @@ void timer_set_frequency(int32_t hz) {
     outb(TIMER_DATA, divisor & 0xFF); // Set low byte of divisor
     outb(TIMER_DATA, divisor >> 8); // Set high byte of divisor
     //outb(TIMER_DATA, (divisor >> 8) & 0xFF);
+    current_freq = hz;
+}
+
+uint64_t timer_get_frequency() {
+    return current_freq;
 }
 
 
@@ -34,7 +39,7 @@ void timer_handler(struct regs *r) {
 }
 
 
-int32_t timer_get_ticks() {
+uint32_t timer_get_ticks() {
     return timer_ticks;
 }
 
@@ -47,7 +52,7 @@ void timer_install() {
     qemu_log("Timer installed");
 }
 
-void sleep(uint16_t delay)
+void sleep_ticks(uint32_t delay)
 {
     uint64_t current_ticks = timer_get_ticks();
     while (1)
@@ -58,3 +63,11 @@ void sleep(uint16_t delay)
     }
 }
 
+void sleep(uint32_t delay) {
+    sleep_ticks(delay);
+}
+
+void sleep_ms(uint32_t milliseconds) {
+    uint32_t needticks = milliseconds*timer_get_frequency();
+    sleep_ticks(needticks/1000);
+}

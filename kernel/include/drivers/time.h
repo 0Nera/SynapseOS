@@ -25,8 +25,9 @@ static const char **weekday_list_short = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sa
 
 void init_task_manager();
 void timer_install();
-void timer_set_frequency();
-int32_t timer_get_ticks();
-void sleep(uint16_t delay);
+void timer_set_frequency(int32_t hz);
+uint32_t timer_get_ticks();
+void sleep(uint32_t delay);
+void sleep_ms(uint32_t delay);
 struct synapse_time get_time();
 unsigned int synapse_time_to_unix(struct synapse_time ktime);

@@ -714,13 +714,13 @@ bool tui(){
             createMenuBox("Base menu:");
             qemu_log("PAGE -> Items: %d/%d -> ScreenMax: %d",currentList,maxListMenu,maxItemScreen);
             //createErrorBox("Error","Test Fatal Screen");
-            //sleep(100);
+            //sleep_ms(100);
             //cleanWorkSpace(TUI_BASE_COLOR_BODY);
             //break;
         } else if (keyLastInset() == 88){
             // Нажата клавиша F12 - закроем TUI и вернем управление shell()
             createErrorBox("Error in TUI module. ","You will be returned to the console in 1 seconds.");
-            sleep(100);
+            sleep_ms(1000);
             bgColor = VESA_BLACK;
             cleanScreen(true);
             break;

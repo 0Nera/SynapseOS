@@ -72,11 +72,11 @@ void shell() {
             tty_printf("SynapseOS is a simple x86 C operating system with a well-documented kernel.");
         } else if (strcmp(cmd, "reboot") == 0) {
             tty_printf("REBOOT NOW!\n");
-            sleep(10);
+            sleep_ms(100);
             reboot();
         } else if (strcmp(cmd, "shutdown") == 0) {
             tty_printf("SHUTDOWN NOW!\n");
-            sleep(10);
+            sleep_ms(100);
             shutdown();
         } else if (strcmp(cmd, "tui") == 0) {
             tui();
