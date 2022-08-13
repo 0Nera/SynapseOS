@@ -106,6 +106,9 @@ void syscall_handler(struct regs *r) {
         case SC_CODE_ticks: 
             r->eax = timer_get_ticks();
             break;
+        case SC_CODE_getfreq:
+        	r->eax = timer_get_frequency();
+        	break;
         default:
             qemu_log("Invalid syscall #%x", r->eax);
             qemu_log("r->idt_index = %x eax = %x  ebx = %x  "

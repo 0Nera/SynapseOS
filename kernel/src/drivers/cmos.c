@@ -21,9 +21,6 @@ unsigned char last_year;
 unsigned char last_century;
 unsigned char registerB;
 
-static const unsigned char synapse_months[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-static const unsigned char synapse_months_leap[] = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
 enum {
     cmos_address = 0x70,
     cmos_data    = 0x71
@@ -132,7 +129,7 @@ unsigned int synapse_time_to_unix(struct synapse_time ktime) {
 	t += ktime.hours*60*60;
 	t += ktime.day*60*60*24;
 	t += ktime.month*60*60*24*cmdt;
-	t -= 33555600;
+	t -= 33555600; // WHAT A MAGIC???
 	t += (ktime.year-1970)*60*60*24*cmdt*12;
     return t;
 }

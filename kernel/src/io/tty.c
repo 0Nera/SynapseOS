@@ -9,6 +9,11 @@
  * 
  */
 
+#define EXPERIMENTAL_FONT
+
+#ifdef  EXPERIMENTAL_FONT
+#include "../fonts/font_Experimental_Font.h"
+#endif
 
 #include <kernel.h>
 uint8_t *framebuffer_addr;
@@ -28,7 +33,6 @@ int32_t tty_pos_x;
 int32_t tty_pos_y;
 
 uint32_t tty_text_color;
-
 
 /**
  * @brief Слияние символа и цвета, для вывода
@@ -344,6 +348,22 @@ void draw_vga_character(uint8_t c, int32_t x, int32_t y, int32_t fg, int32_t bg,
     }
 }
 
+void external_draw_grapheme(int* glyphs, int width, int height, unsigned char grapheme) {
+    uint32_t cx, cy;
+    unsigned int glyph_len = width*height;
+
+    qemu_log("GOT TO GRAPHEMES! Grapheme: %d", grapheme);
+    qemu_log("Len: %d, Position: %d", glyph_len, glyph_len*grapheme);
+
+    for(cy = 0; cy<height; cy++) {
+        for(cx = 0; cx<width; cx++) {
+            int px = cx + cy*width;
+            set_pixel(cx+tty_pos_x, cy+tty_pos_y, glyphs[glyph_len*grapheme + px]);
+        }
+    }
+
+    tty_pos_x += width;
+}
 
 /**
  * @brief Удаление последнего символа
@@ -406,7 +426,19 @@ void tty_puts(const char str[]) {
                 kheap_free(num);
             }
         }
+        #ifdef EXPERIMENTAL_FONT
+
+        if(str[i]=='\xFF' && i+1<=strlen(str)) {
+            char extch = str[i+1];
+            external_draw_grapheme(Experimental_Font_data, Experimental_Font_width,
+                                   Experimental_Font_height, extch);
+            i++;
+        }else{
+            tty_putchar(str[i]);
+        }
+        #else
         tty_putchar(str[i]);
+        #endif
     }
 }
 

@@ -254,7 +254,7 @@ int is_com_port(int port) {
 
 
 
-void sleep(uint16_t delay) {
+void sleep(uint32_t delay) {
     uint64_t current_ticks = timer_get_ticks();
     
     while (1) {
@@ -264,6 +264,11 @@ void sleep(uint16_t delay) {
     }
 }
 
+void sleep_ms(uint32_t millis) {
+    uint32_t w = timer_get_frequency()*millis;
+
+    sleep(w/1000);
+}
 
 
 //Play sound using built in speaker 

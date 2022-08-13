@@ -178,7 +178,7 @@ int main(void) {
             snake.direction = (vector_t){1, 0};
         }
 
-        sleep(2000);
+        sleep_ms(500);
     }
 
     return 0;

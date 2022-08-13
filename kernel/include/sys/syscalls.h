@@ -19,6 +19,7 @@
 #define SC_CODE_version         40
 #define SC_CODE_newtask         41
 #define SC_CODE_ticks           42
+#define SC_CODE_getfreq         43
 
 void syscall_init();
 void syscall_handler(struct regs *r);

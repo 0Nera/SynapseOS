@@ -1,5 +1,5 @@
-#ifndef SYNAPSE
-#define SYNAPSE
+#ifndef SYNAPSE_PORTAGE
+#define SYNAPSE_PORTAGE
 
 #define strnicmp(str1, str2, count) strncmp(str1, str2, count)
 #define stricmp(str1, str2) strcmp(str1, str2)
