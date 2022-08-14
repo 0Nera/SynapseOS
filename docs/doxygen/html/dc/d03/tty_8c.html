@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.4"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>SynapseOS: Файл kernel/src/io/tty.c</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
@@ -23,9 +23,10 @@
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
- <tr id="projectrow">
-  <td id="projectalign">
-   <div id="projectname">SynapseOS<span id="projectnumber">&#160;0.2.12</span>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">SynapseOS
+   &#160;<span id="projectnumber">0.2.12</span>
    </div>
   </td>
  </tr>
@@ -33,22 +34,21 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Создано системой Doxygen 1.9.4 -->
+<!-- Создано системой Doxygen 1.8.17 -->
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-var searchBox = new SearchBox("searchBox", "../../search",'Поиск','.html');
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "../../search",false,'Поиск');
 /* @license-end */
 </script>
 <script type="text/javascript" src="../../menudata.js"></script>
 <script type="text/javascript" src="../../menu.js"></script>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
 $(function() {
   initMenu('../../',true,false,'search.php','Поиск');
   $(document).ready(function() { init_search(); });
 });
-/* @license-end */
-</script>
+/* @license-end */</script>
 <div id="main-nav"></div>
 </div><!-- top -->
 <div id="side-nav" class="ui-resizable side-nav-resizable">
@@ -62,7 +62,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
 $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initResizable(); });
 /* @license-end */
 </script>
@@ -86,7 +86,8 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 <a href="#define-members">Макросы</a> &#124;
 <a href="#func-members">Функции</a> &#124;
 <a href="#var-members">Переменные</a>  </div>
-  <div class="headertitle"><div class="title">Файл tty.c</div></div>
+  <div class="headertitle">
+<div class="title">Файл tty.c</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -97,7 +98,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 </div>
 <p><a href="../../dc/d03/tty_8c_source.html">См. исходные тексты.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Функции</h2></td></tr>
 <tr class="memitem:ac3fd406df8ed388f03d8b94a340660b9"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d03/tty_8c.html#ac3fd406df8ed388f03d8b94a340660b9">vga_entry</a> (uint8_t c, uint8_t tty_color)</td></tr>
 <tr class="memdesc:ac3fd406df8ed388f03d8b94a340660b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Слияние символа и цвета, для вывода  <a href="../../dc/d03/tty_8c.html#ac3fd406df8ed388f03d8b94a340660b9">Подробнее...</a><br /></td></tr>
@@ -153,7 +154,8 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 <tr class="memitem:ac656691800d9bd94b6c49832866015fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d03/tty_8c.html#ac656691800d9bd94b6c49832866015fc">draw_vga_character</a> (uint8_t c, int32_t x, int32_t y, int32_t fg, int32_t bg, bool bgon)</td></tr>
 <tr class="memdesc:ac656691800d9bd94b6c49832866015fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вывод символа на экран с учетом позиции, цвета текста и фона  <a href="../../dc/d03/tty_8c.html#ac656691800d9bd94b6c49832866015fc">Подробнее...</a><br /></td></tr>
 <tr class="separator:ac656691800d9bd94b6c49832866015fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaebf7ce4da8c693406b5e8f556666b98"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d03/tty_8c.html#aaebf7ce4da8c693406b5e8f556666b98">external_draw_grapheme</a> (int *glyphs, int width, int height, unsigned char grapheme)</td></tr>
+<tr class="memitem:aaebf7ce4da8c693406b5e8f556666b98"><td class="memItemLeft" align="right" valign="top"><a id="aaebf7ce4da8c693406b5e8f556666b98"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>external_draw_grapheme</b> (int *glyphs, int width, int height, unsigned char grapheme)</td></tr>
 <tr class="separator:aaebf7ce4da8c693406b5e8f556666b98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8900ce14898a55f9340b642731f8cf38"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d03/tty_8c.html#a8900ce14898a55f9340b642731f8cf38">tty_backspace</a> ()</td></tr>
 <tr class="memdesc:a8900ce14898a55f9340b642731f8cf38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Удаление последнего символа  <a href="../../dc/d03/tty_8c.html#a8900ce14898a55f9340b642731f8cf38">Подробнее...</a><br /></td></tr>
@@ -180,60 +182,55 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 <tr class="memdesc:a3a9ec5bcc1f8f7ca830e80c491e4512f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вывод форматированной строки на экран (аналог printf)  <a href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">Подробнее...</a><br /></td></tr>
 <tr class="separator:a3a9ec5bcc1f8f7ca830e80c491e4512f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Переменные</h2></td></tr>
-<tr class="memitem:a98c34b1a510f31f40df46abe8966b8f8"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d03/tty_8c.html#a98c34b1a510f31f40df46abe8966b8f8">framebuffer_addr</a></td></tr>
+<tr class="memitem:a98c34b1a510f31f40df46abe8966b8f8"><td class="memItemLeft" align="right" valign="top"><a id="a98c34b1a510f31f40df46abe8966b8f8"></a>
+uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><b>framebuffer_addr</b></td></tr>
 <tr class="separator:a98c34b1a510f31f40df46abe8966b8f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae578eeb5d5e715c190499f66316214c5"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d03/tty_8c.html#ae578eeb5d5e715c190499f66316214c5">framebuffer_pitch</a></td></tr>
+<tr class="memitem:ae578eeb5d5e715c190499f66316214c5"><td class="memItemLeft" align="right" valign="top"><a id="ae578eeb5d5e715c190499f66316214c5"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>framebuffer_pitch</b></td></tr>
 <tr class="separator:ae578eeb5d5e715c190499f66316214c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d30e4f24d237445dfc51efb15c4a2b0"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d03/tty_8c.html#a6d30e4f24d237445dfc51efb15c4a2b0">framebuffer_bpp</a></td></tr>
+<tr class="memitem:a6d30e4f24d237445dfc51efb15c4a2b0"><td class="memItemLeft" align="right" valign="top"><a id="a6d30e4f24d237445dfc51efb15c4a2b0"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>framebuffer_bpp</b></td></tr>
 <tr class="separator:a6d30e4f24d237445dfc51efb15c4a2b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabd7ddad0265df34738e9b2344dc8037"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d03/tty_8c.html#aabd7ddad0265df34738e9b2344dc8037">framebuffer_width</a></td></tr>
+<tr class="memitem:aabd7ddad0265df34738e9b2344dc8037"><td class="memItemLeft" align="right" valign="top"><a id="aabd7ddad0265df34738e9b2344dc8037"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>framebuffer_width</b></td></tr>
 <tr class="separator:aabd7ddad0265df34738e9b2344dc8037"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef3b56cec684e22a1a8d1cf51582f3d3"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d03/tty_8c.html#aef3b56cec684e22a1a8d1cf51582f3d3">framebuffer_height</a></td></tr>
+<tr class="memitem:aef3b56cec684e22a1a8d1cf51582f3d3"><td class="memItemLeft" align="right" valign="top"><a id="aef3b56cec684e22a1a8d1cf51582f3d3"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>framebuffer_height</b></td></tr>
 <tr class="separator:aef3b56cec684e22a1a8d1cf51582f3d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1afecc1a6b1c406d4b5a7ad5102f10c7"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d03/tty_8c.html#a1afecc1a6b1c406d4b5a7ad5102f10c7">framebuffer_size</a></td></tr>
+<tr class="memitem:a1afecc1a6b1c406d4b5a7ad5102f10c7"><td class="memItemLeft" align="right" valign="top"><a id="a1afecc1a6b1c406d4b5a7ad5102f10c7"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>framebuffer_size</b></td></tr>
 <tr class="separator:a1afecc1a6b1c406d4b5a7ad5102f10c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a9cc00ee0c9eac1bdc60e3ba10b1fe4"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d03/tty_8c.html#a1a9cc00ee0c9eac1bdc60e3ba10b1fe4">back_framebuffer_addr</a></td></tr>
+<tr class="memitem:a1a9cc00ee0c9eac1bdc60e3ba10b1fe4"><td class="memItemLeft" align="right" valign="top"><a id="a1a9cc00ee0c9eac1bdc60e3ba10b1fe4"></a>
+uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><b>back_framebuffer_addr</b></td></tr>
 <tr class="separator:a1a9cc00ee0c9eac1bdc60e3ba10b1fe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f49fd0df0949e48330eacd8a8958d1f"><td class="memItemLeft" align="right" valign="top">volatile uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d03/tty_8c.html#a5f49fd0df0949e48330eacd8a8958d1f">tty_feedback</a> = 1</td></tr>
+<tr class="memitem:a5f49fd0df0949e48330eacd8a8958d1f"><td class="memItemLeft" align="right" valign="top"><a id="a5f49fd0df0949e48330eacd8a8958d1f"></a>
+volatile uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>tty_feedback</b> = 1</td></tr>
 <tr class="separator:a5f49fd0df0949e48330eacd8a8958d1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12dcdc96e3d01e5894e7fe2a9d3fa03e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d03/tty_8c.html#a12dcdc96e3d01e5894e7fe2a9d3fa03e">tty_line_fill</a> [1024]</td></tr>
+<tr class="memitem:a12dcdc96e3d01e5894e7fe2a9d3fa03e"><td class="memItemLeft" align="right" valign="top"><a id="a12dcdc96e3d01e5894e7fe2a9d3fa03e"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>tty_line_fill</b> [1024]</td></tr>
 <tr class="separator:a12dcdc96e3d01e5894e7fe2a9d3fa03e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f3718b7ef5ae359dc9b0175a535d366"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d03/tty_8c.html#a1f3718b7ef5ae359dc9b0175a535d366">tty_pos_x</a></td></tr>
+<tr class="memitem:a1f3718b7ef5ae359dc9b0175a535d366"><td class="memItemLeft" align="right" valign="top"><a id="a1f3718b7ef5ae359dc9b0175a535d366"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>tty_pos_x</b></td></tr>
 <tr class="separator:a1f3718b7ef5ae359dc9b0175a535d366"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4f71eae31d42b8e169d2b890ab560d2"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d03/tty_8c.html#ae4f71eae31d42b8e169d2b890ab560d2">tty_pos_y</a></td></tr>
+<tr class="memitem:ae4f71eae31d42b8e169d2b890ab560d2"><td class="memItemLeft" align="right" valign="top"><a id="ae4f71eae31d42b8e169d2b890ab560d2"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>tty_pos_y</b></td></tr>
 <tr class="separator:ae4f71eae31d42b8e169d2b890ab560d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae538acc0445eac7b4788082e65643f82"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d03/tty_8c.html#ae538acc0445eac7b4788082e65643f82">tty_text_color</a></td></tr>
+<tr class="memitem:ae538acc0445eac7b4788082e65643f82"><td class="memItemLeft" align="right" valign="top"><a id="ae538acc0445eac7b4788082e65643f82"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>tty_text_color</b></td></tr>
 <tr class="separator:ae538acc0445eac7b4788082e65643f82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
-<div class="textblock"><p >Прослойка для работы с текстовым терминалом и графикой VESA. </p>
-<dl class="section author"><dt>Авторы</dt><dd>Арен Елчинян (<a href="#" onclick="location.href='mai'+'lto:'+'a2.'+'de'+'v@y'+'an'+'dex'+'.c'+'om'; return false;">a2.de<span class="obfuscator">.nosp@m.</span>v@ya<span class="obfuscator">.nosp@m.</span>ndex.<span class="obfuscator">.nosp@m.</span>com</a>), &lt;&gt; </dd></dl>
+<div class="textblock"><p>Прослойка для работы с текстовым терминалом и графикой VESA. </p>
+<dl class="section author"><dt>Авторы</dt><dd>Арен Елчинян (<a href="#" onclick="location.href='mai'+'lto:'+'a2.'+'de'+'v@y'+'an'+'dex'+'.c'+'om'; return false;">a2.de<span style="display: none;">.nosp@m.</span>v@ya<span style="display: none;">.nosp@m.</span>ndex.<span style="display: none;">.nosp@m.</span>com</a>), &lt;&gt; </dd></dl>
 <dl class="section version"><dt>Версия</dt><dd>0.2.0 </dd></dl>
 <dl class="section date"><dt>Дата</dt><dd>2022-08-08</dd></dl>
 <dl class="section copyright"><dt>Авторство</dt><dd>Copyright Арен Елчинян (c) 2022 </dd></dl>
 
 <p class="definition">См. определение в файле <a class="el" href="../../dc/d03/tty_8c_source.html">tty.c</a></p>
-</div><h2 class="groupheader">Макросы</h2>
-<a id="a6ed161eb05366ec38b42719ad6aaec64" name="a6ed161eb05366ec38b42719ad6aaec64"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ed161eb05366ec38b42719ad6aaec64">&#9670;&nbsp;</a></span>EXPERIMENTAL_FONT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define EXPERIMENTAL_FONT</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">См. определение в файле <a class="el" href="../../dc/d03/tty_8c_source.html">tty.c</a> строка <a class="el" href="../../dc/d03/tty_8c_source.html#l00012">12</a></p>
-
-</div>
-</div>
-<h2 class="groupheader">Функции</h2>
-<a id="a0d199b5702695c4d7b78ef83759c32d5" name="a0d199b5702695c4d7b78ef83759c32d5"></a>
+</div><h2 class="groupheader">Функции</h2>
+<a id="a0d199b5702695c4d7b78ef83759c32d5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0d199b5702695c4d7b78ef83759c32d5">&#9670;&nbsp;</a></span>clean_screen()</h2>
 
 <div class="memitem">
@@ -254,7 +251,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="aca7637cf8ec1ea90a95d8fd4a2cce7fe" name="aca7637cf8ec1ea90a95d8fd4a2cce7fe"></a>
+<a id="aca7637cf8ec1ea90a95d8fd4a2cce7fe"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aca7637cf8ec1ea90a95d8fd4a2cce7fe">&#9670;&nbsp;</a></span>create_back_framebuffer()</h2>
 
 <div class="memitem">
@@ -275,7 +272,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="ac656691800d9bd94b6c49832866015fc" name="ac656691800d9bd94b6c49832866015fc"></a>
+<a id="ac656691800d9bd94b6c49832866015fc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac656691800d9bd94b6c49832866015fc">&#9670;&nbsp;</a></span>draw_vga_character()</h2>
 
 <div class="memitem">
@@ -342,49 +339,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="aaebf7ce4da8c693406b5e8f556666b98" name="aaebf7ce4da8c693406b5e8f556666b98"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaebf7ce4da8c693406b5e8f556666b98">&#9670;&nbsp;</a></span>external_draw_grapheme()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void external_draw_grapheme </td>
-          <td>(</td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>glyphs</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>width</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>height</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned char&#160;</td>
-          <td class="paramname"><em>grapheme</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">См. определение в файле <a class="el" href="../../dc/d03/tty_8c_source.html">tty.c</a> строка <a class="el" href="../../dc/d03/tty_8c_source.html#l00351">351</a></p>
-
-</div>
-</div>
-<a id="adccb23d81da461b513fcc1a8d27b94a5" name="adccb23d81da461b513fcc1a8d27b94a5"></a>
+<a id="adccb23d81da461b513fcc1a8d27b94a5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adccb23d81da461b513fcc1a8d27b94a5">&#9670;&nbsp;</a></span>getHeightScreen()</h2>
 
 <div class="memitem">
@@ -406,7 +361,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="aa977f3cede0783956a8d0fda37f2cec9" name="aa977f3cede0783956a8d0fda37f2cec9"></a>
+<a id="aa977f3cede0783956a8d0fda37f2cec9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa977f3cede0783956a8d0fda37f2cec9">&#9670;&nbsp;</a></span>getPosX()</h2>
 
 <div class="memitem">
@@ -428,7 +383,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="ac823a1a13537c4794216969563dbb88b" name="ac823a1a13537c4794216969563dbb88b"></a>
+<a id="ac823a1a13537c4794216969563dbb88b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac823a1a13537c4794216969563dbb88b">&#9670;&nbsp;</a></span>getPosY()</h2>
 
 <div class="memitem">
@@ -450,7 +405,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="a28a3f902f557e9cf9c3dddd7cad609f0" name="a28a3f902f557e9cf9c3dddd7cad609f0"></a>
+<a id="a28a3f902f557e9cf9c3dddd7cad609f0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a28a3f902f557e9cf9c3dddd7cad609f0">&#9670;&nbsp;</a></span>getWidthScreen()</h2>
 
 <div class="memitem">
@@ -472,7 +427,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="a4043472936c19169c7bd56ea50a6a99c" name="a4043472936c19169c7bd56ea50a6a99c"></a>
+<a id="a4043472936c19169c7bd56ea50a6a99c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4043472936c19169c7bd56ea50a6a99c">&#9670;&nbsp;</a></span>init_vbe()</h2>
 
 <div class="memitem">
@@ -500,7 +455,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="afb32d6323928e94c7c8f61953a4e1a72" name="afb32d6323928e94c7c8f61953a4e1a72"></a>
+<a id="afb32d6323928e94c7c8f61953a4e1a72"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afb32d6323928e94c7c8f61953a4e1a72">&#9670;&nbsp;</a></span>set_line()</h2>
 
 <div class="memitem">
@@ -560,7 +515,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="a68d5b7fc5eb1355c7a4c626d30207c29" name="a68d5b7fc5eb1355c7a4c626d30207c29"></a>
+<a id="a68d5b7fc5eb1355c7a4c626d30207c29"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a68d5b7fc5eb1355c7a4c626d30207c29">&#9670;&nbsp;</a></span>set_pixel()</h2>
 
 <div class="memitem">
@@ -606,7 +561,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="a5f33f1945627909dccc422eeb74e131d" name="a5f33f1945627909dccc422eeb74e131d"></a>
+<a id="a5f33f1945627909dccc422eeb74e131d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5f33f1945627909dccc422eeb74e131d">&#9670;&nbsp;</a></span>setPosX()</h2>
 
 <div class="memitem">
@@ -634,7 +589,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="abebc6971cdcd819d860931e3eba72209" name="abebc6971cdcd819d860931e3eba72209"></a>
+<a id="abebc6971cdcd819d860931e3eba72209"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abebc6971cdcd819d860931e3eba72209">&#9670;&nbsp;</a></span>setPosY()</h2>
 
 <div class="memitem">
@@ -662,7 +617,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="a8900ce14898a55f9340b642731f8cf38" name="a8900ce14898a55f9340b642731f8cf38"></a>
+<a id="a8900ce14898a55f9340b642731f8cf38"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8900ce14898a55f9340b642731f8cf38">&#9670;&nbsp;</a></span>tty_backspace()</h2>
 
 <div class="memitem">
@@ -683,7 +638,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="a4728be463d9da03606ddd49379b14ec1" name="a4728be463d9da03606ddd49379b14ec1"></a>
+<a id="a4728be463d9da03606ddd49379b14ec1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4728be463d9da03606ddd49379b14ec1">&#9670;&nbsp;</a></span>tty_init()</h2>
 
 <div class="memitem">
@@ -711,7 +666,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="a7530bec958a350d9b4708eedb734e2bf" name="a7530bec958a350d9b4708eedb734e2bf"></a>
+<a id="a7530bec958a350d9b4708eedb734e2bf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7530bec958a350d9b4708eedb734e2bf">&#9670;&nbsp;</a></span>tty_print()</h2>
 
 <div class="memitem">
@@ -750,7 +705,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="a3a9ec5bcc1f8f7ca830e80c491e4512f" name="a3a9ec5bcc1f8f7ca830e80c491e4512f"></a>
+<a id="a3a9ec5bcc1f8f7ca830e80c491e4512f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3a9ec5bcc1f8f7ca830e80c491e4512f">&#9670;&nbsp;</a></span>tty_printf()</h2>
 
 <div class="memitem">
@@ -789,7 +744,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="a5ceb7bcc18bfa52de2d1ce3b69d7ef8f" name="a5ceb7bcc18bfa52de2d1ce3b69d7ef8f"></a>
+<a id="a5ceb7bcc18bfa52de2d1ce3b69d7ef8f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5ceb7bcc18bfa52de2d1ce3b69d7ef8f">&#9670;&nbsp;</a></span>tty_putchar()</h2>
 
 <div class="memitem">
@@ -817,7 +772,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="a29ba69633eb3a24106a2c48244931903" name="a29ba69633eb3a24106a2c48244931903"></a>
+<a id="a29ba69633eb3a24106a2c48244931903"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a29ba69633eb3a24106a2c48244931903">&#9670;&nbsp;</a></span>tty_putchar_color()</h2>
 
 <div class="memitem">
@@ -863,7 +818,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="a7bf58c8f2f39fdd109e2837d1791f840" name="a7bf58c8f2f39fdd109e2837d1791f840"></a>
+<a id="a7bf58c8f2f39fdd109e2837d1791f840"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7bf58c8f2f39fdd109e2837d1791f840">&#9670;&nbsp;</a></span>tty_puthex()</h2>
 
 <div class="memitem">
@@ -891,7 +846,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="a0ae358a7d381f81426d4f4181626952a" name="a0ae358a7d381f81426d4f4181626952a"></a>
+<a id="a0ae358a7d381f81426d4f4181626952a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0ae358a7d381f81426d4f4181626952a">&#9670;&nbsp;</a></span>tty_puthex_v()</h2>
 
 <div class="memitem">
@@ -919,7 +874,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="a882c18173bd1801a00fd6911f3272b7d" name="a882c18173bd1801a00fd6911f3272b7d"></a>
+<a id="a882c18173bd1801a00fd6911f3272b7d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a882c18173bd1801a00fd6911f3272b7d">&#9670;&nbsp;</a></span>tty_putint()</h2>
 
 <div class="memitem">
@@ -947,7 +902,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="a79782800e3f61983c15af255ad5a8758" name="a79782800e3f61983c15af255ad5a8758"></a>
+<a id="a79782800e3f61983c15af255ad5a8758"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a79782800e3f61983c15af255ad5a8758">&#9670;&nbsp;</a></span>tty_puts()</h2>
 
 <div class="memitem">
@@ -975,7 +930,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="abf4e64692ae612697f663edf8629505b" name="abf4e64692ae612697f663edf8629505b"></a>
+<a id="abf4e64692ae612697f663edf8629505b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abf4e64692ae612697f663edf8629505b">&#9670;&nbsp;</a></span>tty_puts_color()</h2>
 
 <div class="memitem">
@@ -1021,7 +976,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="ac9271ceddd74126f7673e98bbd87309b" name="ac9271ceddd74126f7673e98bbd87309b"></a>
+<a id="ac9271ceddd74126f7673e98bbd87309b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac9271ceddd74126f7673e98bbd87309b">&#9670;&nbsp;</a></span>tty_scroll()</h2>
 
 <div class="memitem">
@@ -1042,7 +997,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="a9d34baa3dbc9bf7228a036f9b4dad57a" name="a9d34baa3dbc9bf7228a036f9b4dad57a"></a>
+<a id="a9d34baa3dbc9bf7228a036f9b4dad57a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9d34baa3dbc9bf7228a036f9b4dad57a">&#9670;&nbsp;</a></span>tty_setcolor()</h2>
 
 <div class="memitem">
@@ -1070,7 +1025,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<a id="ac3fd406df8ed388f03d8b94a340660b9" name="ac3fd406df8ed388f03d8b94a340660b9"></a>
+<a id="ac3fd406df8ed388f03d8b94a340660b9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac3fd406df8ed388f03d8b94a340660b9">&#9670;&nbsp;</a></span>vga_entry()</h2>
 
 <div class="memitem">
@@ -1102,206 +1057,15 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c.html','../../'); initRes
 
 </div>
 </div>
-<h2 class="groupheader">Переменные</h2>
-<a id="a1a9cc00ee0c9eac1bdc60e3ba10b1fe4" name="a1a9cc00ee0c9eac1bdc60e3ba10b1fe4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1a9cc00ee0c9eac1bdc60e3ba10b1fe4">&#9670;&nbsp;</a></span>back_framebuffer_addr</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t* back_framebuffer_addr</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">См. определение в файле <a class="el" href="../../dc/d03/tty_8c_source.html">tty.c</a> строка <a class="el" href="../../dc/d03/tty_8c_source.html#l00026">26</a></p>
-
-</div>
-</div>
-<a id="a98c34b1a510f31f40df46abe8966b8f8" name="a98c34b1a510f31f40df46abe8966b8f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98c34b1a510f31f40df46abe8966b8f8">&#9670;&nbsp;</a></span>framebuffer_addr</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t* framebuffer_addr</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">См. определение в файле <a class="el" href="../../dc/d03/tty_8c_source.html">tty.c</a> строка <a class="el" href="../../dc/d03/tty_8c_source.html#l00019">19</a></p>
-
-</div>
-</div>
-<a id="a6d30e4f24d237445dfc51efb15c4a2b0" name="a6d30e4f24d237445dfc51efb15c4a2b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d30e4f24d237445dfc51efb15c4a2b0">&#9670;&nbsp;</a></span>framebuffer_bpp</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t framebuffer_bpp</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">См. определение в файле <a class="el" href="../../dc/d03/tty_8c_source.html">tty.c</a> строка <a class="el" href="../../dc/d03/tty_8c_source.html#l00021">21</a></p>
-
-</div>
-</div>
-<a id="aef3b56cec684e22a1a8d1cf51582f3d3" name="aef3b56cec684e22a1a8d1cf51582f3d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aef3b56cec684e22a1a8d1cf51582f3d3">&#9670;&nbsp;</a></span>framebuffer_height</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t framebuffer_height</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">См. определение в файле <a class="el" href="../../dc/d03/tty_8c_source.html">tty.c</a> строка <a class="el" href="../../dc/d03/tty_8c_source.html#l00023">23</a></p>
-
-</div>
-</div>
-<a id="ae578eeb5d5e715c190499f66316214c5" name="ae578eeb5d5e715c190499f66316214c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae578eeb5d5e715c190499f66316214c5">&#9670;&nbsp;</a></span>framebuffer_pitch</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t framebuffer_pitch</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">См. определение в файле <a class="el" href="../../dc/d03/tty_8c_source.html">tty.c</a> строка <a class="el" href="../../dc/d03/tty_8c_source.html#l00020">20</a></p>
-
-</div>
-</div>
-<a id="a1afecc1a6b1c406d4b5a7ad5102f10c7" name="a1afecc1a6b1c406d4b5a7ad5102f10c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1afecc1a6b1c406d4b5a7ad5102f10c7">&#9670;&nbsp;</a></span>framebuffer_size</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t framebuffer_size</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">См. определение в файле <a class="el" href="../../dc/d03/tty_8c_source.html">tty.c</a> строка <a class="el" href="../../dc/d03/tty_8c_source.html#l00024">24</a></p>
-
-</div>
-</div>
-<a id="aabd7ddad0265df34738e9b2344dc8037" name="aabd7ddad0265df34738e9b2344dc8037"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aabd7ddad0265df34738e9b2344dc8037">&#9670;&nbsp;</a></span>framebuffer_width</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t framebuffer_width</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">См. определение в файле <a class="el" href="../../dc/d03/tty_8c_source.html">tty.c</a> строка <a class="el" href="../../dc/d03/tty_8c_source.html#l00022">22</a></p>
-
-</div>
-</div>
-<a id="a5f49fd0df0949e48330eacd8a8958d1f" name="a5f49fd0df0949e48330eacd8a8958d1f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f49fd0df0949e48330eacd8a8958d1f">&#9670;&nbsp;</a></span>tty_feedback</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">volatile uint8_t tty_feedback = 1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">См. определение в файле <a class="el" href="../../dc/d03/tty_8c_source.html">tty.c</a> строка <a class="el" href="../../dc/d03/tty_8c_source.html#l00028">28</a></p>
-
-</div>
-</div>
-<a id="a12dcdc96e3d01e5894e7fe2a9d3fa03e" name="a12dcdc96e3d01e5894e7fe2a9d3fa03e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12dcdc96e3d01e5894e7fe2a9d3fa03e">&#9670;&nbsp;</a></span>tty_line_fill</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t tty_line_fill[1024]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">См. определение в файле <a class="el" href="../../dc/d03/tty_8c_source.html">tty.c</a> строка <a class="el" href="../../dc/d03/tty_8c_source.html#l00030">30</a></p>
-
-</div>
-</div>
-<a id="a1f3718b7ef5ae359dc9b0175a535d366" name="a1f3718b7ef5ae359dc9b0175a535d366"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f3718b7ef5ae359dc9b0175a535d366">&#9670;&nbsp;</a></span>tty_pos_x</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int32_t tty_pos_x</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">См. определение в файле <a class="el" href="../../dc/d03/tty_8c_source.html">tty.c</a> строка <a class="el" href="../../dc/d03/tty_8c_source.html#l00032">32</a></p>
-
-</div>
-</div>
-<a id="ae4f71eae31d42b8e169d2b890ab560d2" name="ae4f71eae31d42b8e169d2b890ab560d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae4f71eae31d42b8e169d2b890ab560d2">&#9670;&nbsp;</a></span>tty_pos_y</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int32_t tty_pos_y</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">См. определение в файле <a class="el" href="../../dc/d03/tty_8c_source.html">tty.c</a> строка <a class="el" href="../../dc/d03/tty_8c_source.html#l00033">33</a></p>
-
-</div>
-</div>
-<a id="ae538acc0445eac7b4788082e65643f82" name="ae538acc0445eac7b4788082e65643f82"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae538acc0445eac7b4788082e65643f82">&#9670;&nbsp;</a></span>tty_text_color</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t tty_text_color</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">См. определение в файле <a class="el" href="../../dc/d03/tty_8c_source.html">tty.c</a> строка <a class="el" href="../../dc/d03/tty_8c_source.html#l00035">35</a></p>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_3dd30a497388ee684638f120a124721c.html">src</a></li><li class="navelem"><a class="el" href="../../dir_f684e8e1ebea567db7f673c0b997cee3.html">io</a></li><li class="navelem"><a class="el" href="../../dc/d03/tty_8c.html">tty.c</a></li>
-    <li class="footer">Документация по SynapseOS. Последние изменения: Вс 14 Авг 2022 22:55:08. Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Документация по SynapseOS. Последние изменения: Вс 14 Авг 2022 13:59:42. Создано системой
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
 </div>
 </body>

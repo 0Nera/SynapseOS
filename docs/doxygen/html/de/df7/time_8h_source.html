@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.4"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>SynapseOS: Исходный файл kernel/include/drivers/time.h</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
@@ -23,9 +23,10 @@
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
- <tr id="projectrow">
-  <td id="projectalign">
-   <div id="projectname">SynapseOS<span id="projectnumber">&#160;0.2.12</span>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">SynapseOS
+   &#160;<span id="projectnumber">0.2.12</span>
    </div>
   </td>
  </tr>
@@ -33,22 +34,21 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Создано системой Doxygen 1.9.4 -->
+<!-- Создано системой Doxygen 1.8.17 -->
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-var searchBox = new SearchBox("searchBox", "../../search",'Поиск','.html');
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "../../search",false,'Поиск');
 /* @license-end */
 </script>
 <script type="text/javascript" src="../../menudata.js"></script>
 <script type="text/javascript" src="../../menu.js"></script>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
 $(function() {
   initMenu('../../',true,false,'search.php','Поиск');
   $(document).ready(function() { init_search(); });
 });
-/* @license-end */
-</script>
+/* @license-end */</script>
 <div id="main-nav"></div>
 </div><!-- top -->
 <div id="side-nav" class="ui-resizable side-nav-resizable">
@@ -62,7 +62,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
 $(document).ready(function(){initNavTree('de/df7/time_8h_source.html','../../'); initResizable(); });
 /* @license-end */
 </script>
@@ -82,50 +82,53 @@ $(document).ready(function(){initNavTree('de/df7/time_8h_source.html','../../');
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">time.h</div></div>
+  <div class="headertitle">
+<div class="title">time.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="../../dd/d67/structsynapse__time.html">    5</a></span><span class="keyword">struct </span><a class="code hl_struct" href="../../dd/d67/structsynapse__time.html">synapse_time</a> {</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> seconds;</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> minutes;</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> hours;</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> day;</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> month;</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> year;</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> century;</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>};</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> synapse_months[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> synapse_months_leap[] = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> **months_list = {<span class="stringliteral">&quot;January&quot;</span>, <span class="stringliteral">&quot;February&quot;</span>, <span class="stringliteral">&quot;March&quot;</span>, <span class="stringliteral">&quot;April&quot;</span>, <span class="stringliteral">&quot;May&quot;</span>, <span class="stringliteral">&quot;June&quot;</span>, <span class="stringliteral">&quot;July&quot;</span>,</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>                            <span class="stringliteral">&quot;August&quot;</span>, <span class="stringliteral">&quot;September&quot;</span>, <span class="stringliteral">&quot;October&quot;</span>, <span class="stringliteral">&quot;November&quot;</span>, <span class="stringliteral">&quot;December&quot;</span>};</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> **months_list_short = {<span class="stringliteral">&quot;Jan&quot;</span>, <span class="stringliteral">&quot;Feb&quot;</span>, <span class="stringliteral">&quot;Mar&quot;</span>, <span class="stringliteral">&quot;Apr&quot;</span>, <span class="stringliteral">&quot;May&quot;</span>, <span class="stringliteral">&quot;Jun&quot;</span>, <span class="stringliteral">&quot;Jul&quot;</span>, <span class="stringliteral">&quot;Aug&quot;</span>,</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                                  <span class="stringliteral">&quot;Sep&quot;</span>, <span class="stringliteral">&quot;Oct&quot;</span>, <span class="stringliteral">&quot;Nov&quot;</span>, <span class="stringliteral">&quot;Dec&quot;</span>};</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> **weekday_list = {<span class="stringliteral">&quot;Monday&quot;</span>, <span class="stringliteral">&quot;Tuesday&quot;</span>, <span class="stringliteral">&quot;Wednesday&quot;</span>, <span class="stringliteral">&quot;Thursday&quot;</span>, <span class="stringliteral">&quot;Friday&quot;</span>, <span class="stringliteral">&quot;Saturday&quot;</span>, <span class="stringliteral">&quot;Sunday&quot;</span>};</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> **weekday_list_short = {<span class="stringliteral">&quot;Mon&quot;</span>, <span class="stringliteral">&quot;Tue&quot;</span>, <span class="stringliteral">&quot;Wed&quot;</span>, <span class="stringliteral">&quot;Thu&quot;</span>, <span class="stringliteral">&quot;Fri&quot;</span>, <span class="stringliteral">&quot;Sat&quot;</span>, <span class="stringliteral">&quot;Sun&quot;</span>};</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keywordtype">void</span> init_task_manager();</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keywordtype">void</span> timer_install();</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keywordtype">void</span> timer_set_frequency(int32_t hz);</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>uint32_t timer_get_ticks();</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keywordtype">void</span> sleep(uint32_t delay);</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keywordtype">void</span> sleep_ms(uint32_t delay);</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="keyword">struct </span><a class="code hl_struct" href="../../dd/d67/structsynapse__time.html">synapse_time</a> get_time();</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> synapse_time_to_unix(<span class="keyword">struct</span> <a class="code hl_struct" href="../../dd/d67/structsynapse__time.html">synapse_time</a> ktime);</div>
-<div class="ttc" id="astructsynapse__time_html"><div class="ttname"><a href="../../dd/d67/structsynapse__time.html">synapse_time</a></div><div class="ttdef"><b>Definition:</b> <a href="../../de/df7/time_8h_source.html#l00005">time.h:5</a></div></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
+<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="../../dd/d67/structsynapse__time.html">    5</a></span>&#160;<span class="keyword">struct </span><a class="code" href="../../dd/d67/structsynapse__time.html">synapse_time</a> {</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> seconds;</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> minutes;</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> hours;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> day;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> month;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> year;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> century;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;};</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> synapse_months[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> synapse_months_leap[] = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> **months_list = {<span class="stringliteral">&quot;January&quot;</span>, <span class="stringliteral">&quot;February&quot;</span>, <span class="stringliteral">&quot;March&quot;</span>, <span class="stringliteral">&quot;April&quot;</span>, <span class="stringliteral">&quot;May&quot;</span>, <span class="stringliteral">&quot;June&quot;</span>, <span class="stringliteral">&quot;July&quot;</span>,</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;                            <span class="stringliteral">&quot;August&quot;</span>, <span class="stringliteral">&quot;September&quot;</span>, <span class="stringliteral">&quot;October&quot;</span>, <span class="stringliteral">&quot;November&quot;</span>, <span class="stringliteral">&quot;December&quot;</span>};</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> **months_list_short = {<span class="stringliteral">&quot;Jan&quot;</span>, <span class="stringliteral">&quot;Feb&quot;</span>, <span class="stringliteral">&quot;Mar&quot;</span>, <span class="stringliteral">&quot;Apr&quot;</span>, <span class="stringliteral">&quot;May&quot;</span>, <span class="stringliteral">&quot;Jun&quot;</span>, <span class="stringliteral">&quot;Jul&quot;</span>, <span class="stringliteral">&quot;Aug&quot;</span>,</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;                                  <span class="stringliteral">&quot;Sep&quot;</span>, <span class="stringliteral">&quot;Oct&quot;</span>, <span class="stringliteral">&quot;Nov&quot;</span>, <span class="stringliteral">&quot;Dec&quot;</span>};</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> **weekday_list = {<span class="stringliteral">&quot;Monday&quot;</span>, <span class="stringliteral">&quot;Tuesday&quot;</span>, <span class="stringliteral">&quot;Wednesday&quot;</span>, <span class="stringliteral">&quot;Thursday&quot;</span>, <span class="stringliteral">&quot;Friday&quot;</span>, <span class="stringliteral">&quot;Saturday&quot;</span>, <span class="stringliteral">&quot;Sunday&quot;</span>};</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> **weekday_list_short = {<span class="stringliteral">&quot;Mon&quot;</span>, <span class="stringliteral">&quot;Tue&quot;</span>, <span class="stringliteral">&quot;Wed&quot;</span>, <span class="stringliteral">&quot;Thu&quot;</span>, <span class="stringliteral">&quot;Fri&quot;</span>, <span class="stringliteral">&quot;Sat&quot;</span>, <span class="stringliteral">&quot;Sun&quot;</span>};</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">void</span> init_task_manager();</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">void</span> timer_install();</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">void</span> timer_set_frequency(int32_t hz);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;uint32_t timer_get_ticks();</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keywordtype">void</span> sleep(uint32_t delay);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keywordtype">void</span> sleep_ms(uint32_t delay);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">struct </span><a class="code" href="../../dd/d67/structsynapse__time.html">synapse_time</a> get_time();</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> synapse_time_to_unix(<span class="keyword">struct</span> <a class="code" href="../../dd/d67/structsynapse__time.html">synapse_time</a> ktime);</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="astructsynapse__time_html"><div class="ttname"><a href="../../dd/d67/structsynapse__time.html">synapse_time</a></div><div class="ttdef"><b>Definition:</b> <a href="../../de/df7/time_8h_source.html#l00005">time.h:5</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_009f605b833ac4622acd6c3c0c26c0f0.html">include</a></li><li class="navelem"><a class="el" href="../../dir_c8660ea649945092ffc9f7148865f24e.html">drivers</a></li><li class="navelem"><b>time.h</b></li>
-    <li class="footer">Документация по SynapseOS. Последние изменения: Вс 14 Авг 2022 22:55:07. Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Документация по SynapseOS. Последние изменения: Вс 14 Авг 2022 13:59:42. Создано системой
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
 </div>
 </body>

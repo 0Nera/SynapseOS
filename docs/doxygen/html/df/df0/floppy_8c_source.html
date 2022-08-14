@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.4"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>SynapseOS: Исходный файл kernel/src/drivers/experimental/floppy.c</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
@@ -23,9 +23,10 @@
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
- <tr id="projectrow">
-  <td id="projectalign">
-   <div id="projectname">SynapseOS<span id="projectnumber">&#160;0.2.12</span>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">SynapseOS
+   &#160;<span id="projectnumber">0.2.12</span>
    </div>
   </td>
  </tr>
@@ -33,22 +34,21 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Создано системой Doxygen 1.9.4 -->
+<!-- Создано системой Doxygen 1.8.17 -->
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-var searchBox = new SearchBox("searchBox", "../../search",'Поиск','.html');
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "../../search",false,'Поиск');
 /* @license-end */
 </script>
 <script type="text/javascript" src="../../menudata.js"></script>
 <script type="text/javascript" src="../../menu.js"></script>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
 $(function() {
   initMenu('../../',true,false,'search.php','Поиск');
   $(document).ready(function() { init_search(); });
 });
-/* @license-end */
-</script>
+/* @license-end */</script>
 <div id="main-nav"></div>
 </div><!-- top -->
 <div id="side-nav" class="ui-resizable side-nav-resizable">
@@ -62,7 +62,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
 $(document).ready(function(){initNavTree('df/df0/floppy_8c_source.html','../../'); initResizable(); });
 /* @license-end */
 </script>
@@ -82,123 +82,126 @@ $(document).ready(function(){initNavTree('df/df0/floppy_8c_source.html','../../'
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">floppy.c</div></div>
+  <div class="headertitle">
+<div class="title">floppy.c</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;kernel.h&gt;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">static</span> <span class="keyword">volatile</span> <span class="keywordtype">bool</span> done = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">static</span> <span class="keywordtype">bool</span> dchange = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">static</span> <span class="keywordtype">bool</span> motor = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">static</span> <span class="keywordtype">int</span> mtick = 0;</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">static</span> <span class="keyword">volatile</span> <span class="keywordtype">int</span> tmout = 0;</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">static</span> uint8_t status[7] = { 0 };</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">static</span> uint8_t statsz = 0;</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">static</span> uint8_t sr0 = 0;</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">static</span> uint8_t fdc_track = 0xff;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="../../d1/d4b/structfloppy__info.html">   21</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="../../d1/d4b/structfloppy__info.html">floppy_info</a>{</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    int8_t *type_name;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    int8_t heads;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    int8_t tracks;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    int8_t sectors;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    uint16_t sector_size;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    int8_t gap_len;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>} <a class="code hl_struct" href="../../d1/d4b/structfloppy__info.html">floppy_info_t</a>;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">static</span> <a class="code hl_struct" href="../../d1/d4b/structfloppy__info.html">floppy_info_t</a> floppy_drive_types[] = {</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    {<span class="stringliteral">&quot;NONE&quot;</span>,            0,  0,  0,   0,    0},</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    {<span class="stringliteral">&quot;360KB 5.25\&quot;&quot;</span>,    2, 40,  9, 512, 0x2A},</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    {<span class="stringliteral">&quot;1.2MB 5.25\&quot;&quot;</span>,    2, 80, 15, 512, 0x2A},</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    {<span class="stringliteral">&quot;720KB 3.5\&quot;&quot;</span>,     2, 80,  9, 512, 0x1B},</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    {<span class="stringliteral">&quot;1.44MB 3.5\&quot;&quot;</span>,    2, 80, 18, 512, 0x1B},</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    {<span class="stringliteral">&quot;2.88MB 3.5\&quot;&quot;</span>,    2, 80, 36, 512, 0x1B}</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>};</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keywordtype">void</span> floppy_handler(<a class="code hl_struct" href="../../d3/da0/structregs.html">regs_t</a> *r) {</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <a class="code hl_function" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;\nInterrupt!\n&quot;</span>);</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    done = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>}</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="keywordtype">bool</span> floppy_wait(<span class="keywordtype">bool</span> sensei) {</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordflow">while</span> (!done) {</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <span class="keyword">asm</span> <span class="keyword">volatile</span>(<span class="stringliteral">&quot;hlt&quot;</span>);</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    }</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>}</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="keywordtype">void</span> floppy_reset() {</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    qemu_log(<span class="stringliteral">&quot;FDC_DOR 0&quot;</span>);</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="comment">// Останавливаем мотор и выключаем IRQ/DMA</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <a class="code hl_function" href="../../d0/d6e/ports_8c.html#a8bf7a9af91c08e6f876aaffeccd48ff3">outb</a>(FDC_DOR,0);</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>   </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    mtick = 0;</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    motor = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    qemu_log(<span class="stringliteral">&quot;FDC_DRS 0&quot;</span>);</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="comment">// Cкорость передачи данных программы (500K/s) </span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <a class="code hl_function" href="../../d0/d6e/ports_8c.html#a8bf7a9af91c08e6f876aaffeccd48ff3">outb</a>(FDC_DRS,0);</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    qemu_log(<span class="stringliteral">&quot;FDC_DOR 0x0c&quot;</span>);</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="comment">// Снова разрешаем прерывания</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="comment">//outb(FDC_DOR, 0x0C);</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="comment">// Ждем пока получим прерывание</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    done = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    qemu_log(<span class="stringliteral">&quot;floppy_wait 1&quot;</span>);</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    floppy_wait(<span class="keyword">true</span>);</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>}</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="keywordtype">bool</span> floppy_install() {</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    qemu_log(<span class="stringliteral">&quot;Installing Floppy driver...&quot;</span>);</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="comment">/* </span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="comment">        Получаем информацию о контроллерах Floppy через CMOS, </span></div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="comment">        Номер порта = 0x70, 0x71, </span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="comment">        Регистр = 0x10 </span></div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="comment">    */</span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <a class="code hl_function" href="../../d0/d6e/ports_8c.html#a8bf7a9af91c08e6f876aaffeccd48ff3">outb</a>(0x70, 0x10);</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    uint8_t drives = <a class="code hl_function" href="../../d0/d6e/ports_8c.html#a2e1e8e2c5724c1e8fd2dff2eada06479">inb</a>(0x71);</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <a class="code hl_function" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;Floppy drives:\n&quot;</span>);</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="keywordflow">if</span> ((drives &gt;&gt; 4) &gt; 0) {</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        <a class="code hl_function" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;\t-A: [%s]\n&quot;</span>, floppy_drive_types[drives &gt;&gt; 4].type_name);</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    }</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keywordflow">if</span> ((drives &amp; 0xf) &gt; 0) {</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        <a class="code hl_function" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;\t-B: [%s]\n&quot;</span>, floppy_drive_types[drives &amp; 0xf].type_name);</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    }</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    qemu_log(<span class="stringliteral">&quot;Setup interrupts&quot;</span>);</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="comment">// Так как floppy имеет IRQ - 6, а IRQ начинаются с 33(клавиатура), то прерывание будет 32 + 6 = 38</span></div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    register_interrupt_handler(32 + 6, &amp;floppy_handler);</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    qemu_log(<span class="stringliteral">&quot;IRQ_clear_mask&quot;</span>);</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <span class="comment">// Чтобы принимать прерывания контроллера, очистим маску IRQ</span></div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    IRQ_clear_mask(6);</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    qemu_log(<span class="stringliteral">&quot;floppy_reset&quot;</span>);</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="comment">//floppy_reset();</span></div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>}</div>
-<div class="ttc" id="aports_8c_html_a2e1e8e2c5724c1e8fd2dff2eada06479"><div class="ttname"><a href="../../d0/d6e/ports_8c.html#a2e1e8e2c5724c1e8fd2dff2eada06479">inb</a></div><div class="ttdeci">uint8_t inb(uint16_t port)</div><div class="ttdoc">Получение одного байта из порта</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d6e/ports_8c_source.html#l00031">ports.c:31</a></div></div>
-<div class="ttc" id="aports_8c_html_a8bf7a9af91c08e6f876aaffeccd48ff3"><div class="ttname"><a href="../../d0/d6e/ports_8c.html#a8bf7a9af91c08e6f876aaffeccd48ff3">outb</a></div><div class="ttdeci">void outb(uint16_t port, uint8_t val)</div><div class="ttdoc">Запись одного байта в порт</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d6e/ports_8c_source.html#l00020">ports.c:20</a></div></div>
-<div class="ttc" id="astructfloppy__info_html"><div class="ttname"><a href="../../d1/d4b/structfloppy__info.html">floppy_info</a></div><div class="ttdef"><b>Definition:</b> <a href="../../df/df0/floppy_8c_source.html#l00021">floppy.c:21</a></div></div>
-<div class="ttc" id="astructregs_html"><div class="ttname"><a href="../../d3/da0/structregs.html">regs</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d35/idt_8h_source.html#l00040">idt.h:40</a></div></div>
-<div class="ttc" id="atty_8c_html_a3a9ec5bcc1f8f7ca830e80c491e4512f"><div class="ttname"><a href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a></div><div class="ttdeci">void tty_printf(char *text,...)</div><div class="ttdoc">Вывод форматированной строки на экран (аналог printf)</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d03/tty_8c_source.html#l00593">tty.c:593</a></div></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;kernel.h&gt;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">static</span> <span class="keyword">volatile</span> <span class="keywordtype">bool</span> done = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">static</span> <span class="keywordtype">bool</span> dchange = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">static</span> <span class="keywordtype">bool</span> motor = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">static</span> <span class="keywordtype">int</span> mtick = 0;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">static</span> <span class="keyword">volatile</span> <span class="keywordtype">int</span> tmout = 0;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">static</span> uint8_t status[7] = { 0 };</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">static</span> uint8_t statsz = 0;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">static</span> uint8_t sr0 = 0;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">static</span> uint8_t fdc_track = 0xff;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="../../d1/d4b/structfloppy__info.html">   21</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="../../d1/d4b/structfloppy__info.html">floppy_info</a>{</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    int8_t *type_name;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    int8_t heads;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    int8_t tracks;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    int8_t sectors;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    uint16_t sector_size;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    int8_t gap_len;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;} <a class="code" href="../../d1/d4b/structfloppy__info.html">floppy_info_t</a>;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">static</span> <a class="code" href="../../d1/d4b/structfloppy__info.html">floppy_info_t</a> floppy_drive_types[] = {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    {<span class="stringliteral">&quot;NONE&quot;</span>,            0,  0,  0,   0,    0},</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    {<span class="stringliteral">&quot;360KB 5.25\&quot;&quot;</span>,    2, 40,  9, 512, 0x2A},</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    {<span class="stringliteral">&quot;1.2MB 5.25\&quot;&quot;</span>,    2, 80, 15, 512, 0x2A},</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    {<span class="stringliteral">&quot;720KB 3.5\&quot;&quot;</span>,     2, 80,  9, 512, 0x1B},</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    {<span class="stringliteral">&quot;1.44MB 3.5\&quot;&quot;</span>,    2, 80, 18, 512, 0x1B},</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    {<span class="stringliteral">&quot;2.88MB 3.5\&quot;&quot;</span>,    2, 80, 36, 512, 0x1B}</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;};</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keywordtype">void</span> floppy_handler(<a class="code" href="../../d3/da0/structregs.html">regs_t</a> *r) {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;\nInterrupt!\n&quot;</span>);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    done = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keywordtype">bool</span> floppy_wait(<span class="keywordtype">bool</span> sensei) {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordflow">while</span> (!done) {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keyword">asm</span> <span class="keyword">volatile</span>(<span class="stringliteral">&quot;hlt&quot;</span>);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keywordtype">void</span> floppy_reset() {</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    qemu_log(<span class="stringliteral">&quot;FDC_DOR 0&quot;</span>);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="comment">// Останавливаем мотор и выключаем IRQ/DMA</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="../../d0/d6e/ports_8c.html#a8bf7a9af91c08e6f876aaffeccd48ff3">outb</a>(FDC_DOR,0);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;   </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    mtick = 0;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    motor = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    qemu_log(<span class="stringliteral">&quot;FDC_DRS 0&quot;</span>);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="comment">// Cкорость передачи данных программы (500K/s) </span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <a class="code" href="../../d0/d6e/ports_8c.html#a8bf7a9af91c08e6f876aaffeccd48ff3">outb</a>(FDC_DRS,0);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    qemu_log(<span class="stringliteral">&quot;FDC_DOR 0x0c&quot;</span>);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="comment">// Снова разрешаем прерывания</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="comment">//outb(FDC_DOR, 0x0C);</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="comment">// Ждем пока получим прерывание</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    done = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    qemu_log(<span class="stringliteral">&quot;floppy_wait 1&quot;</span>);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    floppy_wait(<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;}</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keywordtype">bool</span> floppy_install() {</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    qemu_log(<span class="stringliteral">&quot;Installing Floppy driver...&quot;</span>);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="comment">/* </span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">        Получаем информацию о контроллерах Floppy через CMOS, </span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">        Номер порта = 0x70, 0x71, </span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment">        Регистр = 0x10 </span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <a class="code" href="../../d0/d6e/ports_8c.html#a8bf7a9af91c08e6f876aaffeccd48ff3">outb</a>(0x70, 0x10);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    uint8_t drives = <a class="code" href="../../d0/d6e/ports_8c.html#a2e1e8e2c5724c1e8fd2dff2eada06479">inb</a>(0x71);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <a class="code" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;Floppy drives:\n&quot;</span>);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordflow">if</span> ((drives &gt;&gt; 4) &gt; 0) {</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <a class="code" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;\t-A: [%s]\n&quot;</span>, floppy_drive_types[drives &gt;&gt; 4].type_name);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    }</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keywordflow">if</span> ((drives &amp; 0xf) &gt; 0) {</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <a class="code" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;\t-B: [%s]\n&quot;</span>, floppy_drive_types[drives &amp; 0xf].type_name);</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    }</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    qemu_log(<span class="stringliteral">&quot;Setup interrupts&quot;</span>);</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="comment">// Так как floppy имеет IRQ - 6, а IRQ начинаются с 33(клавиатура), то прерывание будет 32 + 6 = 38</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    register_interrupt_handler(32 + 6, &amp;floppy_handler);</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    qemu_log(<span class="stringliteral">&quot;IRQ_clear_mask&quot;</span>);</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="comment">// Чтобы принимать прерывания контроллера, очистим маску IRQ</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    IRQ_clear_mask(6);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    qemu_log(<span class="stringliteral">&quot;floppy_reset&quot;</span>);</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="comment">//floppy_reset();</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="astructregs_html"><div class="ttname"><a href="../../d3/da0/structregs.html">regs</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d35/idt_8h_source.html#l00040">idt.h:40</a></div></div>
+<div class="ttc" id="astructfloppy__info_html"><div class="ttname"><a href="../../d1/d4b/structfloppy__info.html">floppy_info</a></div><div class="ttdef"><b>Definition:</b> <a href="../../df/df0/floppy_8c_source.html#l00021">floppy.c:21</a></div></div>
+<div class="ttc" id="aports_8c_html_a8bf7a9af91c08e6f876aaffeccd48ff3"><div class="ttname"><a href="../../d0/d6e/ports_8c.html#a8bf7a9af91c08e6f876aaffeccd48ff3">outb</a></div><div class="ttdeci">void outb(uint16_t port, uint8_t val)</div><div class="ttdoc">Запись одного байта в порт</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d6e/ports_8c_source.html#l00020">ports.c:20</a></div></div>
+<div class="ttc" id="aports_8c_html_a2e1e8e2c5724c1e8fd2dff2eada06479"><div class="ttname"><a href="../../d0/d6e/ports_8c.html#a2e1e8e2c5724c1e8fd2dff2eada06479">inb</a></div><div class="ttdeci">uint8_t inb(uint16_t port)</div><div class="ttdoc">Получение одного байта из порта</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d6e/ports_8c_source.html#l00031">ports.c:31</a></div></div>
+<div class="ttc" id="atty_8c_html_a3a9ec5bcc1f8f7ca830e80c491e4512f"><div class="ttname"><a href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a></div><div class="ttdeci">void tty_printf(char *text,...)</div><div class="ttdoc">Вывод форматированной строки на экран (аналог printf)</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d03/tty_8c_source.html#l00593">tty.c:593</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_3dd30a497388ee684638f120a124721c.html">src</a></li><li class="navelem"><a class="el" href="../../dir_79cdf04718782f286da113044bf76c98.html">drivers</a></li><li class="navelem"><a class="el" href="../../dir_c108db53b18c5112568898801b6e8f35.html">experimental</a></li><li class="navelem"><b>floppy.c</b></li>
-    <li class="footer">Документация по SynapseOS. Последние изменения: Вс 14 Авг 2022 22:55:08. Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Документация по SynapseOS. Последние изменения: Вс 14 Авг 2022 13:59:42. Создано системой
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
 </div>
 </body>

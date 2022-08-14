@@ -1,8 +1,10 @@
 var tty_8c =
 [
+    [ "EXPERIMENTAL_FONT", "dc/d03/tty_8c.html#a6ed161eb05366ec38b42719ad6aaec64", null ],
     [ "clean_screen", "dc/d03/tty_8c.html#a0d199b5702695c4d7b78ef83759c32d5", null ],
     [ "create_back_framebuffer", "dc/d03/tty_8c.html#aca7637cf8ec1ea90a95d8fd4a2cce7fe", null ],
     [ "draw_vga_character", "dc/d03/tty_8c.html#ac656691800d9bd94b6c49832866015fc", null ],
+    [ "external_draw_grapheme", "dc/d03/tty_8c.html#aaebf7ce4da8c693406b5e8f556666b98", null ],
     [ "getHeightScreen", "dc/d03/tty_8c.html#adccb23d81da461b513fcc1a8d27b94a5", null ],
     [ "getPosX", "dc/d03/tty_8c.html#aa977f3cede0783956a8d0fda37f2cec9", null ],
     [ "getPosY", "dc/d03/tty_8c.html#ac823a1a13537c4794216969563dbb88b", null ],
@@ -25,5 +27,17 @@ var tty_8c =
     [ "tty_puts_color", "dc/d03/tty_8c.html#abf4e64692ae612697f663edf8629505b", null ],
     [ "tty_scroll", "dc/d03/tty_8c.html#ac9271ceddd74126f7673e98bbd87309b", null ],
     [ "tty_setcolor", "dc/d03/tty_8c.html#a9d34baa3dbc9bf7228a036f9b4dad57a", null ],
-    [ "vga_entry", "dc/d03/tty_8c.html#ac3fd406df8ed388f03d8b94a340660b9", null ]
+    [ "vga_entry", "dc/d03/tty_8c.html#ac3fd406df8ed388f03d8b94a340660b9", null ],
+    [ "back_framebuffer_addr", "dc/d03/tty_8c.html#a1a9cc00ee0c9eac1bdc60e3ba10b1fe4", null ],
+    [ "framebuffer_addr", "dc/d03/tty_8c.html#a98c34b1a510f31f40df46abe8966b8f8", null ],
+    [ "framebuffer_bpp", "dc/d03/tty_8c.html#a6d30e4f24d237445dfc51efb15c4a2b0", null ],
+    [ "framebuffer_height", "dc/d03/tty_8c.html#aef3b56cec684e22a1a8d1cf51582f3d3", null ],
+    [ "framebuffer_pitch", "dc/d03/tty_8c.html#ae578eeb5d5e715c190499f66316214c5", null ],
+    [ "framebuffer_size", "dc/d03/tty_8c.html#a1afecc1a6b1c406d4b5a7ad5102f10c7", null ],
+    [ "framebuffer_width", "dc/d03/tty_8c.html#aabd7ddad0265df34738e9b2344dc8037", null ],
+    [ "tty_feedback", "dc/d03/tty_8c.html#a5f49fd0df0949e48330eacd8a8958d1f", null ],
+    [ "tty_line_fill", "dc/d03/tty_8c.html#a12dcdc96e3d01e5894e7fe2a9d3fa03e", null ],
+    [ "tty_pos_x", "dc/d03/tty_8c.html#a1f3718b7ef5ae359dc9b0175a535d366", null ],
+    [ "tty_pos_y", "dc/d03/tty_8c.html#ae4f71eae31d42b8e169d2b890ab560d2", null ],
+    [ "tty_text_color", "dc/d03/tty_8c.html#ae538acc0445eac7b4788082e65643f82", null ]
 ];
