@@ -61,11 +61,13 @@ jobs:
           git clone https://github.com/0nera/SynapseOS.git -b site
           cp -a ./docs/doxygen/html/* ./SynapseOS/
           cd ./SynapseOS/
-          git config user.name SynapseOS-autobuild
-          git config user.email github-actions@github.com
-          git add .
-          git commit -m "Deploy doxygen"
-          git push
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: Github
+          author_email: github@example.com
+          message: 'Deploy doxygen'
+          add: '*'
 
       # Публикация релиза
       - uses: "marvinpinto/action-automatic-releases@latest"
