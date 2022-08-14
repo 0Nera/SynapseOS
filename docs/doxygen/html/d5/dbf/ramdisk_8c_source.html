@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.17"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>SynapseOS: Исходный файл kernel/src/drivers/ramdisk.c</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">SynapseOS
+   &#160;<span id="projectnumber">0.2.12</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.17 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "../../search",false,'Поиск');
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('../../',true,false,'search.php','Поиск');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('d5/dbf/ramdisk_8c_source.html','../../'); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">ramdisk.c</div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &lt;kernel.h&gt;</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;uint32_t initrd_begin = 0;</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;uint32_t initrd_end = 0;</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;uint32_t initrd_size;</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;int32_t oct2bin(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *str, int32_t size) {</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    int32_t n = 0;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *c = str;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keywordflow">while</span> (size-- &gt; 0) {</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        n *= 8;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        n += *c - <span class="charliteral">&#39;0&#39;</span>;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        c++;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    }</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordflow">return</span> n;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;}</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;uint32_t tar_getsize(<span class="keyword">const</span> <span class="keywordtype">char</span> *in) {</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    uint32_t size = 0;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    uint32_t j;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    uint32_t count = 1;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordflow">for</span> (j = 11; j &gt; 0; j--, count *= 8) {</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        size += ((in[j - 1] - <span class="charliteral">&#39;0&#39;</span>) * count);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    }</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordflow">return</span> size;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">/* Returns pointer to file data */</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;int32_t tar_lookup(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *archive, <span class="keywordtype">char</span> *filename) {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *ptr = archive;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordflow">while</span> (!memcmp(ptr + 257, <span class="stringliteral">&quot;ustar&quot;</span>, 5)) </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        int32_t filesize = oct2bin(ptr + 0x7c, 11);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keywordflow">if</span> (!memcmp(ptr, filename, strlen(filename) + 1)) {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <span class="keywordflow">return</span> ptr + 512;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        }</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        ptr += (((filesize + 511) / 512) + 1) * 512;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keywordflow">if</span> (ptr == initrd_end) {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        }</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordflow">if</span> (ptr &gt;  initrd_end) {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        }</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    }</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;uint32_t initrd_read(<span class="keywordtype">char</span> *filename, int32_t offset, int32_t size, <a class="code" href="../../d0/dad/structvfs__filesystem__t.html">vfs_filesystem_t</a> *fs, <span class="keywordtype">void</span> *buffer) {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    int32_t read_size = 0;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordflow">if</span> (!filename) <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">if</span> (!size) <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    int32_t file_addr = tar_lookup(initrd_begin, filename);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">if</span> (!file_addr) { <span class="comment">// File not found</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    }</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    file_addr -= 512;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    ustar_file_t *file = (<span class="keyword">struct </span>ustar_file_t*) file_addr;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    file_addr += 512;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">if</span> (size &gt; oct2bin(file-&gt;size, 11)) {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        read_size = oct2bin(file-&gt;size, 11);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        read_size = size;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    memcpy(buffer, file_addr + offset, size);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordflow">return</span> read_size;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;uint32_t initrd_file_exists(<span class="keywordtype">char</span> *filename, <a class="code" href="../../d0/dad/structvfs__filesystem__t.html">vfs_filesystem_t</a> *fs) {</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordflow">if</span> (!filename) {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    }</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    int32_t file_addr = tar_lookup(initrd_begin, filename);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordflow">if</span> (!file_addr) { <span class="comment">// file not found</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keywordflow">return</span> file_addr;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    }</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;}</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;uint32_t initrd_get_filesize(<span class="keywordtype">char</span> *filename) {</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordflow">if</span> (!filename) <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    int32_t file_addr = tar_lookup(initrd_begin, filename);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordflow">if</span> (!file_addr) { <span class="comment">// file not found</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        file_addr -= 512;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        ustar_file_t *file = (<span class="keyword">struct </span>ustar_file_t*) file_addr;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keywordflow">return</span> oct2bin(file-&gt;size, 11);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    }</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;}</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;uint32_t initrd_is_dir(<span class="keywordtype">char</span> *filename) {</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keywordflow">if</span> (!filename) <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    int32_t file_addr = tar_lookup(initrd_begin, filename);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keywordflow">if</span> (!file_addr) { <span class="comment">// file not found</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        ustar_file_t *file = (<span class="keyword">struct </span>ustar_file_t*) file_addr;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordflow">return</span> file-&gt;type; <span class="comment">//(file-&gt;type == USTAR_DIRECTORY); // TODO why this comparison doenst work?? why for files file-&gt;type is 0 and for dirs id 48 aka &#39;0&#39; ????</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    }</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;}</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="keywordtype">void</span> initrd_list(int32_t argc, <span class="keywordtype">char</span> **arg) {</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    int32_t addr = initrd_begin;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keywordflow">while</span> (!memcmp(addr + 257, <span class="stringliteral">&quot;ustar&quot;</span>, 5)) {</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        int32_t filesize = oct2bin(addr + 0x7c, 11);</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        ustar_file_t *file = (<span class="keyword">struct </span>ustar_file_t*) addr;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <span class="keywordflow">if</span> (file-&gt;type == USTAR_DIRECTORY) {</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            <a class="code" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;\n    &lt;dir&gt;       /initrd/%s&quot;</span>, file-&gt;fname);</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (file-&gt;type == USTAR_NORMAL_FILE) {</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            <a class="code" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;\n     &lt;file&gt; %d   /initrd/%s &quot;</span>, filesize, file-&gt;fname);</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        }</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        addr += (((filesize + 511) / 512) + 1) * 512;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        </div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        <span class="comment">/*if (addr == initrd_end) {</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment">            break;</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="comment">        if (addr &gt; initrd_end ) {</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="comment">            break;</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="comment">        }*/</span> <span class="comment">// Warning: These if blocks can be collapsed into -----|</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        <span class="keywordflow">if</span>(addr&gt;=initrd_end) <span class="keywordflow">break</span>; <span class="comment">//  &lt;--------------------------|</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    }</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <a class="code" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;\n&quot;</span>);</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;}</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160; </div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="keywordtype">void</span> initrd_init(uint32_t phys_begin, uint32_t phys_end) {</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <span class="comment">// TODO: map initrd image to virtual memory</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160; </div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    qemu_log(<span class="stringliteral">&quot;initrd phys begin = %x initrd phys end = %x&quot;</span>, phys_begin, phys_end);</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; </div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    initrd_size = phys_end - phys_begin;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    initrd_begin = kheap_malloc(initrd_size + 4 * PAGE_SIZE);</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    physical_addres_t frame;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    virtual_addr_t virt;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordflow">for</span> (frame = PAGE_ALIGN_DOWN(phys_begin), virt = PAGE_ALIGN_DOWN(initrd_begin) + PAGE_SIZE;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;         frame &lt;= (PAGE_ALIGN_DOWN(phys_end));</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;         frame += PAGE_SIZE, virt += PAGE_SIZE) {</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        vmm_map_page(frame, virt);</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    }</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    initrd_begin = PAGE_ALIGN_DOWN(initrd_begin) + PAGE_SIZE + phys_begin % PAGE_SIZE;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    initrd_end = initrd_begin + initrd_size;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <a class="code" href="../../da/deb/structvfs__storage__dev__t.html">vfs_storage_dev_t</a> *dev = kheap_malloc(<span class="keyword">sizeof</span>(<a class="code" href="../../da/deb/structvfs__storage__dev__t.html">vfs_storage_dev_t</a>));</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    dev-&gt;type = 4;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    strcpy(dev-&gt;name, <span class="stringliteral">&quot;initrd&quot;</span>);</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <a class="code" href="../../d1/daa/structvfs__filesystem__handles__t.html">vfs_filesystem_handles_t</a> *fs_handles = kheap_malloc(<span class="keyword">sizeof</span>(<a class="code" href="../../d1/daa/structvfs__filesystem__handles__t.html">vfs_filesystem_handles_t</a>));</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    fs_handles-&gt;read = &amp;initrd_read;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    fs_handles-&gt;exists = &amp;initrd_file_exists;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    fs_handles-&gt;get_size = &amp;initrd_get_filesize;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    fs_handles-&gt;is_dir = &amp;initrd_is_dir;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    fs_handles-&gt;write = 0;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    fs_handles-&gt;readdir = 0;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    fs_handles-&gt;mkfile = 0;</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    fs_handles-&gt;mkdir = 0;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    fs_handles-&gt;rm = 0;</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    vfs_mount(dev, fs_handles, 0, <span class="stringliteral">&quot;/initrd/&quot;</span>, 0);</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;}</div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<div class="ttc" id="astructvfs__filesystem__handles__t_html"><div class="ttname"><a href="../../d1/daa/structvfs__filesystem__handles__t.html">vfs_filesystem_handles_t</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d5/dfa/vfs_8h_source.html#l00037">vfs.h:37</a></div></div>
+<div class="ttc" id="atty_8c_html_a3a9ec5bcc1f8f7ca830e80c491e4512f"><div class="ttname"><a href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a></div><div class="ttdeci">void tty_printf(char *text,...)</div><div class="ttdoc">Вывод форматированной строки на экран (аналог printf)</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d03/tty_8c_source.html#l00593">tty.c:593</a></div></div>
+<div class="ttc" id="astructvfs__storage__dev__t_html"><div class="ttname"><a href="../../da/deb/structvfs__storage__dev__t.html">vfs_storage_dev_t</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d5/dfa/vfs_8h_source.html#l00013">vfs.h:13</a></div></div>
+<div class="ttc" id="astructvfs__filesystem__t_html"><div class="ttname"><a href="../../d0/dad/structvfs__filesystem__t.html">vfs_filesystem_t</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d5/dfa/vfs_8h_source.html#l00029">vfs.h:29</a></div></div>
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_3dd30a497388ee684638f120a124721c.html">src</a></li><li class="navelem"><a class="el" href="../../dir_79cdf04718782f286da113044bf76c98.html">drivers</a></li><li class="navelem"><b>ramdisk.c</b></li>
+    <li class="footer">Документация по SynapseOS. Последние изменения: Вс 14 Авг 2022 13:15:31. Создано системой
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
+  </ul>
+</div>
+</body>
+</html>

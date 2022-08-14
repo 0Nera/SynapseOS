@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.17"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>SynapseOS: Структура STFS_file</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">SynapseOS
+   &#160;<span id="projectnumber">0.2.12</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.17 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "../../search",false,'Поиск');
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('../../',true,false,'search.php','Поиск');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('df/d16/struct_s_t_f_s__file.html','../../'); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-attribs">Поля данных</a>  </div>
+  <div class="headertitle">
+<div class="title">Структура STFS_file</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Поля данных</h2></td></tr>
+<tr class="memitem:aef1d4fb03a1954c6dd3f96b61eadc084"><td class="memItemLeft" align="right" valign="top"><a id="aef1d4fb03a1954c6dd3f96b61eadc084"></a>
+blockinfo_t&#160;</td><td class="memItemRight" valign="bottom"><b>block</b></td></tr>
+<tr class="separator:aef1d4fb03a1954c6dd3f96b61eadc084"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0be2c4e17f1375a30dc9fdd59122e7eb"><td class="memItemLeft" align="right" valign="top"><a id="a0be2c4e17f1375a30dc9fdd59122e7eb"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>magic</b></td></tr>
+<tr class="separator:a0be2c4e17f1375a30dc9fdd59122e7eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3562fa684a8b53193f09bda63f712be7"><td class="memItemLeft" align="right" valign="top"><a id="a3562fa684a8b53193f09bda63f712be7"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>creator_id</b></td></tr>
+<tr class="separator:a3562fa684a8b53193f09bda63f712be7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a930c7ce4ac6ce83014aca0347f726f53"><td class="memItemLeft" align="right" valign="top"><a id="a930c7ce4ac6ce83014aca0347f726f53"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>editor_id</b></td></tr>
+<tr class="separator:a930c7ce4ac6ce83014aca0347f726f53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2585d779da0ab21273a8d92de9a0ebe"><td class="memItemLeft" align="right" valign="top"><a id="aa2585d779da0ab21273a8d92de9a0ebe"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>flags</b></td></tr>
+<tr class="separator:aa2585d779da0ab21273a8d92de9a0ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab54ab3d0d8d837633745fd85b716612f"><td class="memItemLeft" align="right" valign="top"><a id="ab54ab3d0d8d837633745fd85b716612f"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>folder_id</b></td></tr>
+<tr class="separator:ab54ab3d0d8d837633745fd85b716612f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0da3961ecab7f199780558dd55e73fea"><td class="memItemLeft" align="right" valign="top"><a id="a0da3961ecab7f199780558dd55e73fea"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>filename</b> [256]</td></tr>
+<tr class="separator:a0da3961ecab7f199780558dd55e73fea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a446767341138e5705897a61ed21c3afe"><td class="memItemLeft" align="right" valign="top"><a id="a446767341138e5705897a61ed21c3afe"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>create_time</b></td></tr>
+<tr class="separator:a446767341138e5705897a61ed21c3afe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8723123e2e3b416aa9fb6ad3ac70b6c9"><td class="memItemLeft" align="right" valign="top"><a id="a8723123e2e3b416aa9fb6ad3ac70b6c9"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>edit_time</b></td></tr>
+<tr class="separator:a8723123e2e3b416aa9fb6ad3ac70b6c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cc4fca267dba817a3f875b37ed9be7b"><td class="memItemLeft" align="right" valign="top"><a id="a0cc4fca267dba817a3f875b37ed9be7b"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>description</b> [3820]</td></tr>
+<tr class="separator:a0cc4fca267dba817a3f875b37ed9be7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
+<div class="textblock">
+<p class="definition">См. определение в файле <a class="el" href="../../d8/d7e/_s_t_f_s_8h_source.html">STFS.h</a> строка <a class="el" href="../../d8/d7e/_s_t_f_s_8h_source.html#l00018">18</a></p>
+</div><hr/>Объявления и описания членов структуры находятся в файле:<ul>
+<li>kernel/include/fs/<a class="el" href="../../d8/d7e/_s_t_f_s_8h_source.html">STFS.h</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../df/d16/struct_s_t_f_s__file.html">STFS_file</a></li>
+    <li class="footer">Документация по SynapseOS. Последние изменения: Вс 14 Авг 2022 13:15:31. Создано системой
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
+  </ul>
+</div>
+</body>
+</html>
