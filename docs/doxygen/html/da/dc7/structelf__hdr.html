@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<meta name="generator" content="Doxygen 1.8.17"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.4"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>SynapseOS: Структура elf_hdr</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
@@ -23,10 +23,9 @@
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
- <tr style="height: 56px;">
-  <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">SynapseOS
-   &#160;<span id="projectnumber">0.2.12</span>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">SynapseOS<span id="projectnumber">&#160;0.2.12</span>
    </div>
   </td>
  </tr>
@@ -34,21 +33,22 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Создано системой Doxygen 1.8.17 -->
+<!-- Создано системой Doxygen 1.9.4 -->
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-var searchBox = new SearchBox("searchBox", "../../search",false,'Поиск');
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search",'Поиск','.html');
 /* @license-end */
 </script>
 <script type="text/javascript" src="../../menudata.js"></script>
 <script type="text/javascript" src="../../menu.js"></script>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
   initMenu('../../',true,false,'search.php','Поиск');
   $(document).ready(function() { init_search(); });
 });
-/* @license-end */</script>
+/* @license-end */
+</script>
 <div id="main-nav"></div>
 </div><!-- top -->
 <div id="side-nav" class="ui-resizable side-nav-resizable">
@@ -62,7 +62,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(document).ready(function(){initNavTree('da/dc7/structelf__hdr.html','../../'); initResizable(); });
 /* @license-end */
 </script>
@@ -84,78 +84,378 @@ $(document).ready(function(){initNavTree('da/dc7/structelf__hdr.html','../../');
 <div class="header">
   <div class="summary">
 <a href="#pub-attribs">Поля данных</a>  </div>
-  <div class="headertitle">
-<div class="title">Структура elf_hdr</div>  </div>
+  <div class="headertitle"><div class="title">Структура elf_hdr</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Поля данных</h2></td></tr>
-<tr class="memitem:a71a1419309138540000362f96d84a5e0"><td class="memItemLeft" align="right" valign="top"><a id="a71a1419309138540000362f96d84a5e0"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>mag_num</b> [4]</td></tr>
+<tr class="memitem:a71a1419309138540000362f96d84a5e0"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dc7/structelf__hdr.html#a71a1419309138540000362f96d84a5e0">mag_num</a> [4]</td></tr>
 <tr class="separator:a71a1419309138540000362f96d84a5e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55cc4eda00a0177973d7ce6b44882537"><td class="memItemLeft" align="right" valign="top"><a id="a55cc4eda00a0177973d7ce6b44882537"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>arch</b></td></tr>
+<tr class="memitem:a55cc4eda00a0177973d7ce6b44882537"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dc7/structelf__hdr.html#a55cc4eda00a0177973d7ce6b44882537">arch</a></td></tr>
 <tr class="separator:a55cc4eda00a0177973d7ce6b44882537"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a771972bd0134f00af2d9ba343e914c37"><td class="memItemLeft" align="right" valign="top"><a id="a771972bd0134f00af2d9ba343e914c37"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>byte_order</b></td></tr>
+<tr class="memitem:a771972bd0134f00af2d9ba343e914c37"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dc7/structelf__hdr.html#a771972bd0134f00af2d9ba343e914c37">byte_order</a></td></tr>
 <tr class="separator:a771972bd0134f00af2d9ba343e914c37"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8700c5d95428b0f4146e593516feb96"><td class="memItemLeft" align="right" valign="top"><a id="af8700c5d95428b0f4146e593516feb96"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>elf_ver</b></td></tr>
+<tr class="memitem:af8700c5d95428b0f4146e593516feb96"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dc7/structelf__hdr.html#af8700c5d95428b0f4146e593516feb96">elf_ver</a></td></tr>
 <tr class="separator:af8700c5d95428b0f4146e593516feb96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade4a498b8d38dd255a271b341f8c3496"><td class="memItemLeft" align="right" valign="top"><a id="ade4a498b8d38dd255a271b341f8c3496"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>os_abi</b></td></tr>
+<tr class="memitem:ade4a498b8d38dd255a271b341f8c3496"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dc7/structelf__hdr.html#ade4a498b8d38dd255a271b341f8c3496">os_abi</a></td></tr>
 <tr class="separator:ade4a498b8d38dd255a271b341f8c3496"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31bdbc2910dbf450845cd4f270916b2c"><td class="memItemLeft" align="right" valign="top"><a id="a31bdbc2910dbf450845cd4f270916b2c"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>abi_ver</b></td></tr>
+<tr class="memitem:a31bdbc2910dbf450845cd4f270916b2c"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dc7/structelf__hdr.html#a31bdbc2910dbf450845cd4f270916b2c">abi_ver</a></td></tr>
 <tr class="separator:a31bdbc2910dbf450845cd4f270916b2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad066fffff442976846e8c6028775ee44"><td class="memItemLeft" align="right" valign="top"><a id="ad066fffff442976846e8c6028775ee44"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>unused</b> [7]</td></tr>
+<tr class="memitem:ad066fffff442976846e8c6028775ee44"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dc7/structelf__hdr.html#ad066fffff442976846e8c6028775ee44">unused</a> [7]</td></tr>
 <tr class="separator:ad066fffff442976846e8c6028775ee44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5a78e4f6e8489d756f13809e3b5a7bf"><td class="memItemLeft" align="right" valign="top"><a id="ad5a78e4f6e8489d756f13809e3b5a7bf"></a>
-uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>file_type</b></td></tr>
+<tr class="memitem:ad5a78e4f6e8489d756f13809e3b5a7bf"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dc7/structelf__hdr.html#ad5a78e4f6e8489d756f13809e3b5a7bf">file_type</a></td></tr>
 <tr class="separator:ad5a78e4f6e8489d756f13809e3b5a7bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ddefb78020e9dd399d269d24330b51b"><td class="memItemLeft" align="right" valign="top"><a id="a5ddefb78020e9dd399d269d24330b51b"></a>
-uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>machine</b></td></tr>
+<tr class="memitem:a5ddefb78020e9dd399d269d24330b51b"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dc7/structelf__hdr.html#a5ddefb78020e9dd399d269d24330b51b">machine</a></td></tr>
 <tr class="separator:a5ddefb78020e9dd399d269d24330b51b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd99bb05ca015e7d74448acb1deba7ca"><td class="memItemLeft" align="right" valign="top"><a id="acd99bb05ca015e7d74448acb1deba7ca"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>version</b></td></tr>
+<tr class="memitem:acd99bb05ca015e7d74448acb1deba7ca"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dc7/structelf__hdr.html#acd99bb05ca015e7d74448acb1deba7ca">version</a></td></tr>
 <tr class="separator:acd99bb05ca015e7d74448acb1deba7ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d04866d0587f0cf002663029ac1637c"><td class="memItemLeft" align="right" valign="top"><a id="a9d04866d0587f0cf002663029ac1637c"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>entry</b></td></tr>
+<tr class="memitem:a9d04866d0587f0cf002663029ac1637c"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dc7/structelf__hdr.html#a9d04866d0587f0cf002663029ac1637c">entry</a></td></tr>
 <tr class="separator:a9d04866d0587f0cf002663029ac1637c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef52d77ee759f2bcec512330a6e0ec1d"><td class="memItemLeft" align="right" valign="top"><a id="aef52d77ee759f2bcec512330a6e0ec1d"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>phoff</b></td></tr>
+<tr class="memitem:aef52d77ee759f2bcec512330a6e0ec1d"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dc7/structelf__hdr.html#aef52d77ee759f2bcec512330a6e0ec1d">phoff</a></td></tr>
 <tr class="separator:aef52d77ee759f2bcec512330a6e0ec1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e5dd8b4fe8ca37fa91f377e23e66ae5"><td class="memItemLeft" align="right" valign="top"><a id="a3e5dd8b4fe8ca37fa91f377e23e66ae5"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>shoff</b></td></tr>
+<tr class="memitem:a3e5dd8b4fe8ca37fa91f377e23e66ae5"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dc7/structelf__hdr.html#a3e5dd8b4fe8ca37fa91f377e23e66ae5">shoff</a></td></tr>
 <tr class="separator:a3e5dd8b4fe8ca37fa91f377e23e66ae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a773b39d480759f67926cb18ae2219281"><td class="memItemLeft" align="right" valign="top"><a id="a773b39d480759f67926cb18ae2219281"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>flags</b></td></tr>
+<tr class="memitem:a773b39d480759f67926cb18ae2219281"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dc7/structelf__hdr.html#a773b39d480759f67926cb18ae2219281">flags</a></td></tr>
 <tr class="separator:a773b39d480759f67926cb18ae2219281"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51241b5c39cb8e0b7f10c003c74df545"><td class="memItemLeft" align="right" valign="top"><a id="a51241b5c39cb8e0b7f10c003c74df545"></a>
-uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>hsize</b></td></tr>
+<tr class="memitem:a51241b5c39cb8e0b7f10c003c74df545"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dc7/structelf__hdr.html#a51241b5c39cb8e0b7f10c003c74df545">hsize</a></td></tr>
 <tr class="separator:a51241b5c39cb8e0b7f10c003c74df545"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a374a82ad3d9b079055e8cacee5a2f036"><td class="memItemLeft" align="right" valign="top"><a id="a374a82ad3d9b079055e8cacee5a2f036"></a>
-uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>ph_ent_size</b></td></tr>
+<tr class="memitem:a374a82ad3d9b079055e8cacee5a2f036"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dc7/structelf__hdr.html#a374a82ad3d9b079055e8cacee5a2f036">ph_ent_size</a></td></tr>
 <tr class="separator:a374a82ad3d9b079055e8cacee5a2f036"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac264bf116a043f0acc816f00368b3ee3"><td class="memItemLeft" align="right" valign="top"><a id="ac264bf116a043f0acc816f00368b3ee3"></a>
-uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>ph_ent_cnt</b></td></tr>
+<tr class="memitem:ac264bf116a043f0acc816f00368b3ee3"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dc7/structelf__hdr.html#ac264bf116a043f0acc816f00368b3ee3">ph_ent_cnt</a></td></tr>
 <tr class="separator:ac264bf116a043f0acc816f00368b3ee3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a711dd680801309c66ee067032543dcc5"><td class="memItemLeft" align="right" valign="top"><a id="a711dd680801309c66ee067032543dcc5"></a>
-uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>sh_ent_size</b></td></tr>
+<tr class="memitem:a711dd680801309c66ee067032543dcc5"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dc7/structelf__hdr.html#a711dd680801309c66ee067032543dcc5">sh_ent_size</a></td></tr>
 <tr class="separator:a711dd680801309c66ee067032543dcc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a331ad990783116c07918d5c9e4fe7a4d"><td class="memItemLeft" align="right" valign="top"><a id="a331ad990783116c07918d5c9e4fe7a4d"></a>
-uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>sh_ent_cnt</b></td></tr>
+<tr class="memitem:a331ad990783116c07918d5c9e4fe7a4d"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dc7/structelf__hdr.html#a331ad990783116c07918d5c9e4fe7a4d">sh_ent_cnt</a></td></tr>
 <tr class="separator:a331ad990783116c07918d5c9e4fe7a4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afde0b5b8b8ff662f19f38f9b8cafb3a0"><td class="memItemLeft" align="right" valign="top"><a id="afde0b5b8b8ff662f19f38f9b8cafb3a0"></a>
-uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>sh_name_index</b></td></tr>
+<tr class="memitem:afde0b5b8b8ff662f19f38f9b8cafb3a0"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dc7/structelf__hdr.html#afde0b5b8b8ff662f19f38f9b8cafb3a0">sh_name_index</a></td></tr>
 <tr class="separator:afde0b5b8b8ff662f19f38f9b8cafb3a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
 <div class="textblock">
 <p class="definition">См. определение в файле <a class="el" href="../../d1/d9e/elf_8h_source.html">elf.h</a> строка <a class="el" href="../../d1/d9e/elf_8h_source.html#l00021">21</a></p>
-</div><hr/>Объявления и описания членов структуры находятся в файле:<ul>
+</div><h2 class="groupheader">Поля</h2>
+<a id="a31bdbc2910dbf450845cd4f270916b2c" name="a31bdbc2910dbf450845cd4f270916b2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31bdbc2910dbf450845cd4f270916b2c">&#9670;&nbsp;</a></span>abi_ver</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t abi_ver</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d1/d9e/elf_8h_source.html">elf.h</a> строка <a class="el" href="../../d1/d9e/elf_8h_source.html#l00027">27</a></p>
+
+</div>
+</div>
+<a id="a55cc4eda00a0177973d7ce6b44882537" name="a55cc4eda00a0177973d7ce6b44882537"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55cc4eda00a0177973d7ce6b44882537">&#9670;&nbsp;</a></span>arch</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t arch</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d1/d9e/elf_8h_source.html">elf.h</a> строка <a class="el" href="../../d1/d9e/elf_8h_source.html#l00023">23</a></p>
+
+</div>
+</div>
+<a id="a771972bd0134f00af2d9ba343e914c37" name="a771972bd0134f00af2d9ba343e914c37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a771972bd0134f00af2d9ba343e914c37">&#9670;&nbsp;</a></span>byte_order</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t byte_order</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d1/d9e/elf_8h_source.html">elf.h</a> строка <a class="el" href="../../d1/d9e/elf_8h_source.html#l00024">24</a></p>
+
+</div>
+</div>
+<a id="af8700c5d95428b0f4146e593516feb96" name="af8700c5d95428b0f4146e593516feb96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8700c5d95428b0f4146e593516feb96">&#9670;&nbsp;</a></span>elf_ver</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t elf_ver</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d1/d9e/elf_8h_source.html">elf.h</a> строка <a class="el" href="../../d1/d9e/elf_8h_source.html#l00025">25</a></p>
+
+</div>
+</div>
+<a id="a9d04866d0587f0cf002663029ac1637c" name="a9d04866d0587f0cf002663029ac1637c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d04866d0587f0cf002663029ac1637c">&#9670;&nbsp;</a></span>entry</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t entry</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d1/d9e/elf_8h_source.html">elf.h</a> строка <a class="el" href="../../d1/d9e/elf_8h_source.html#l00032">32</a></p>
+
+</div>
+</div>
+<a id="ad5a78e4f6e8489d756f13809e3b5a7bf" name="ad5a78e4f6e8489d756f13809e3b5a7bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5a78e4f6e8489d756f13809e3b5a7bf">&#9670;&nbsp;</a></span>file_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t file_type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d1/d9e/elf_8h_source.html">elf.h</a> строка <a class="el" href="../../d1/d9e/elf_8h_source.html#l00029">29</a></p>
+
+</div>
+</div>
+<a id="a773b39d480759f67926cb18ae2219281" name="a773b39d480759f67926cb18ae2219281"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a773b39d480759f67926cb18ae2219281">&#9670;&nbsp;</a></span>flags</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t flags</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d1/d9e/elf_8h_source.html">elf.h</a> строка <a class="el" href="../../d1/d9e/elf_8h_source.html#l00035">35</a></p>
+
+</div>
+</div>
+<a id="a51241b5c39cb8e0b7f10c003c74df545" name="a51241b5c39cb8e0b7f10c003c74df545"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51241b5c39cb8e0b7f10c003c74df545">&#9670;&nbsp;</a></span>hsize</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t hsize</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d1/d9e/elf_8h_source.html">elf.h</a> строка <a class="el" href="../../d1/d9e/elf_8h_source.html#l00036">36</a></p>
+
+</div>
+</div>
+<a id="a5ddefb78020e9dd399d269d24330b51b" name="a5ddefb78020e9dd399d269d24330b51b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ddefb78020e9dd399d269d24330b51b">&#9670;&nbsp;</a></span>machine</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t machine</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d1/d9e/elf_8h_source.html">elf.h</a> строка <a class="el" href="../../d1/d9e/elf_8h_source.html#l00030">30</a></p>
+
+</div>
+</div>
+<a id="a71a1419309138540000362f96d84a5e0" name="a71a1419309138540000362f96d84a5e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71a1419309138540000362f96d84a5e0">&#9670;&nbsp;</a></span>mag_num</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t mag_num[4]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d1/d9e/elf_8h_source.html">elf.h</a> строка <a class="el" href="../../d1/d9e/elf_8h_source.html#l00022">22</a></p>
+
+</div>
+</div>
+<a id="ade4a498b8d38dd255a271b341f8c3496" name="ade4a498b8d38dd255a271b341f8c3496"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade4a498b8d38dd255a271b341f8c3496">&#9670;&nbsp;</a></span>os_abi</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t os_abi</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d1/d9e/elf_8h_source.html">elf.h</a> строка <a class="el" href="../../d1/d9e/elf_8h_source.html#l00026">26</a></p>
+
+</div>
+</div>
+<a id="ac264bf116a043f0acc816f00368b3ee3" name="ac264bf116a043f0acc816f00368b3ee3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac264bf116a043f0acc816f00368b3ee3">&#9670;&nbsp;</a></span>ph_ent_cnt</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t ph_ent_cnt</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d1/d9e/elf_8h_source.html">elf.h</a> строка <a class="el" href="../../d1/d9e/elf_8h_source.html#l00038">38</a></p>
+
+</div>
+</div>
+<a id="a374a82ad3d9b079055e8cacee5a2f036" name="a374a82ad3d9b079055e8cacee5a2f036"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a374a82ad3d9b079055e8cacee5a2f036">&#9670;&nbsp;</a></span>ph_ent_size</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t ph_ent_size</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d1/d9e/elf_8h_source.html">elf.h</a> строка <a class="el" href="../../d1/d9e/elf_8h_source.html#l00037">37</a></p>
+
+</div>
+</div>
+<a id="aef52d77ee759f2bcec512330a6e0ec1d" name="aef52d77ee759f2bcec512330a6e0ec1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef52d77ee759f2bcec512330a6e0ec1d">&#9670;&nbsp;</a></span>phoff</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t phoff</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d1/d9e/elf_8h_source.html">elf.h</a> строка <a class="el" href="../../d1/d9e/elf_8h_source.html#l00033">33</a></p>
+
+</div>
+</div>
+<a id="a331ad990783116c07918d5c9e4fe7a4d" name="a331ad990783116c07918d5c9e4fe7a4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a331ad990783116c07918d5c9e4fe7a4d">&#9670;&nbsp;</a></span>sh_ent_cnt</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t sh_ent_cnt</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d1/d9e/elf_8h_source.html">elf.h</a> строка <a class="el" href="../../d1/d9e/elf_8h_source.html#l00040">40</a></p>
+
+</div>
+</div>
+<a id="a711dd680801309c66ee067032543dcc5" name="a711dd680801309c66ee067032543dcc5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a711dd680801309c66ee067032543dcc5">&#9670;&nbsp;</a></span>sh_ent_size</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t sh_ent_size</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d1/d9e/elf_8h_source.html">elf.h</a> строка <a class="el" href="../../d1/d9e/elf_8h_source.html#l00039">39</a></p>
+
+</div>
+</div>
+<a id="afde0b5b8b8ff662f19f38f9b8cafb3a0" name="afde0b5b8b8ff662f19f38f9b8cafb3a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afde0b5b8b8ff662f19f38f9b8cafb3a0">&#9670;&nbsp;</a></span>sh_name_index</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t sh_name_index</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d1/d9e/elf_8h_source.html">elf.h</a> строка <a class="el" href="../../d1/d9e/elf_8h_source.html#l00041">41</a></p>
+
+</div>
+</div>
+<a id="a3e5dd8b4fe8ca37fa91f377e23e66ae5" name="a3e5dd8b4fe8ca37fa91f377e23e66ae5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e5dd8b4fe8ca37fa91f377e23e66ae5">&#9670;&nbsp;</a></span>shoff</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t shoff</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d1/d9e/elf_8h_source.html">elf.h</a> строка <a class="el" href="../../d1/d9e/elf_8h_source.html#l00034">34</a></p>
+
+</div>
+</div>
+<a id="ad066fffff442976846e8c6028775ee44" name="ad066fffff442976846e8c6028775ee44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad066fffff442976846e8c6028775ee44">&#9670;&nbsp;</a></span>unused</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t unused[7]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d1/d9e/elf_8h_source.html">elf.h</a> строка <a class="el" href="../../d1/d9e/elf_8h_source.html#l00028">28</a></p>
+
+</div>
+</div>
+<a id="acd99bb05ca015e7d74448acb1deba7ca" name="acd99bb05ca015e7d74448acb1deba7ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd99bb05ca015e7d74448acb1deba7ca">&#9670;&nbsp;</a></span>version</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t version</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../d1/d9e/elf_8h_source.html">elf.h</a> строка <a class="el" href="../../d1/d9e/elf_8h_source.html#l00031">31</a></p>
+
+</div>
+</div>
+<hr/>Объявления и описания членов структуры находятся в файле:<ul>
 <li>kernel/include/sys/<a class="el" href="../../d1/d9e/elf_8h_source.html">elf.h</a></li>
 </ul>
 </div><!-- contents -->
@@ -164,9 +464,7 @@ uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>sh_name_index</b>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../da/dc7/structelf__hdr.html">elf_hdr</a></li>
-    <li class="footer">Документация по SynapseOS. Последние изменения: Вс 14 Авг 2022 13:17:15. Создано системой
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
+    <li class="footer">Документация по SynapseOS. Последние изменения: Вс 14 Авг 2022 22:55:08. Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

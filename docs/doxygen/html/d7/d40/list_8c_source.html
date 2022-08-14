@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<meta name="generator" content="Doxygen 1.8.17"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.4"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>SynapseOS: Исходный файл kernel/src/libk/list.c</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
@@ -23,10 +23,9 @@
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
- <tr style="height: 56px;">
-  <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">SynapseOS
-   &#160;<span id="projectnumber">0.2.12</span>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">SynapseOS<span id="projectnumber">&#160;0.2.12</span>
    </div>
   </td>
  </tr>
@@ -34,21 +33,22 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Создано системой Doxygen 1.8.17 -->
+<!-- Создано системой Doxygen 1.9.4 -->
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-var searchBox = new SearchBox("searchBox", "../../search",false,'Поиск');
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search",'Поиск','.html');
 /* @license-end */
 </script>
 <script type="text/javascript" src="../../menudata.js"></script>
 <script type="text/javascript" src="../../menu.js"></script>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
   initMenu('../../',true,false,'search.php','Поиск');
   $(document).ready(function() { init_search(); });
 });
-/* @license-end */</script>
+/* @license-end */
+</script>
 <div id="main-nav"></div>
 </div><!-- top -->
 <div id="side-nav" class="ui-resizable side-nav-resizable">
@@ -62,7 +62,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(document).ready(function(){initNavTree('d7/d40/list_8c_source.html','../../'); initResizable(); });
 /* @license-end */
 </script>
@@ -82,71 +82,68 @@ $(document).ready(function(){initNavTree('d7/d40/list_8c_source.html','../../');
 </div>
 
 <div class="header">
-  <div class="headertitle">
-<div class="title">list.c</div>  </div>
+  <div class="headertitle"><div class="title">list.c</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &lt;kernel.h&gt;</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// Инициализация списка</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keywordtype">void</span> list_init(<a class="code" href="../../d7/d6c/structlist__t.html">list_t</a>* list) {</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    list-&gt;first = NULL; <span class="comment">// Первого элемента пока нет </span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    list-&gt;count = 0;    <span class="comment">// В списке нет элементов </span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;}</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// Добавить элемент в список</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keywordtype">void</span> list_add(<a class="code" href="../../d7/d6c/structlist__t.html">list_t</a>* list, <a class="code" href="../../d4/d22/structlist__item.html">list_item_t</a>* item) {</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keywordflow">if</span> (item-&gt;list == NULL) { <span class="comment">// Если элемент не принадлежит никакому списку </span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;       </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        <span class="comment">// Если в списке есть первый элемент </span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="keywordflow">if</span> (list-&gt;first){</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            item-&gt;list = list; <span class="comment">// Помечаем элемент как принадлежащий данному списку </span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            item-&gt;next = list-&gt;first; <span class="comment">// Следующий за ним элемент - это первый элемент </span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            item-&gt;prev = list-&gt;first-&gt;prev; <span class="comment">// Делаем предыдущим элемент идущий перед первым </span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            item-&gt;prev-&gt;next = item; <span class="comment">// Наш новый элемент - следующий для идущего перед первым </span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            item-&gt;next-&gt;prev = item; <span class="comment">// и предыдущий для следующего за ним </span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        } <span class="keywordflow">else</span> { <span class="comment">// Если список пуст - новый элемент первый в списке </span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            item-&gt;list = list;  <span class="comment">// Этот элемент в данном списке </span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            item-&gt;next = item;  <span class="comment">// Он и следующий </span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            item-&gt;prev = item;  <span class="comment">// и предыдущий для себя самого </span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            list-&gt;first = item; <span class="comment">// а также первый в списке </span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        }</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        list-&gt;count++; <span class="comment">// Увеличиваем число элементов списка </span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    }</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;}</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">// Удалить элемент из списка</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keywordtype">void</span> list_remove(<a class="code" href="../../d4/d22/structlist__item.html">list_item_t</a>* item) {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="comment">// Если данный элемент - первый в списке </span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordflow">if</span> (item-&gt;list-&gt;first == item) {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        item-&gt;list-&gt;first = item-&gt;next; <span class="comment">// Первым будет следующий элемент </span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="comment">// Если следующий опять наш элемент, тогда он был единственным в списке </span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordflow">if</span> (item-&gt;list-&gt;first == item) {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            item-&gt;list-&gt;first = NULL; <span class="comment">// и теперь список пуст </span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        }</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    }</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    item-&gt;next-&gt;prev = item-&gt;prev; <span class="comment">// Предыдущий для данного элемента будет предыдущим для следующего  за ним </span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    item-&gt;prev-&gt;next = item-&gt;next; <span class="comment">// а следующим за предыдущим будет следующий для удаляемого элемента </span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    item-&gt;list-&gt;count--;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &lt;kernel.h&gt;</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">// Инициализация списка</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keywordtype">void</span> list_init(<a class="code hl_struct" href="../../d7/d6c/structlist__t.html">list_t</a>* list) {</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>    list-&gt;first = NULL; <span class="comment">// Первого элемента пока нет </span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    list-&gt;count = 0;    <span class="comment">// В списке нет элементов </span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>}</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">// Добавить элемент в список</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keywordtype">void</span> list_add(<a class="code hl_struct" href="../../d7/d6c/structlist__t.html">list_t</a>* list, <a class="code hl_struct" href="../../d4/d22/structlist__item.html">list_item_t</a>* item) {</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keywordflow">if</span> (item-&gt;list == NULL) { <span class="comment">// Если элемент не принадлежит никакому списку </span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>       </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        <span class="comment">// Если в списке есть первый элемент </span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        <span class="keywordflow">if</span> (list-&gt;first){</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>            item-&gt;list = list; <span class="comment">// Помечаем элемент как принадлежащий данному списку </span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>            item-&gt;next = list-&gt;first; <span class="comment">// Следующий за ним элемент - это первый элемент </span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>            item-&gt;prev = list-&gt;first-&gt;prev; <span class="comment">// Делаем предыдущим элемент идущий перед первым </span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>            item-&gt;prev-&gt;next = item; <span class="comment">// Наш новый элемент - следующий для идущего перед первым </span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>            item-&gt;next-&gt;prev = item; <span class="comment">// и предыдущий для следующего за ним </span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        } <span class="keywordflow">else</span> { <span class="comment">// Если список пуст - новый элемент первый в списке </span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>            item-&gt;list = list;  <span class="comment">// Этот элемент в данном списке </span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>            item-&gt;next = item;  <span class="comment">// Он и следующий </span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>            item-&gt;prev = item;  <span class="comment">// и предыдущий для себя самого </span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>            list-&gt;first = item; <span class="comment">// а также первый в списке </span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        }</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        list-&gt;count++; <span class="comment">// Увеличиваем число элементов списка </span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    }</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>}</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">// Удалить элемент из списка</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keywordtype">void</span> list_remove(<a class="code hl_struct" href="../../d4/d22/structlist__item.html">list_item_t</a>* item) {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="comment">// Если данный элемент - первый в списке </span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordflow">if</span> (item-&gt;list-&gt;first == item) {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        item-&gt;list-&gt;first = item-&gt;next; <span class="comment">// Первым будет следующий элемент </span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        <span class="comment">// Если следующий опять наш элемент, тогда он был единственным в списке </span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        <span class="keywordflow">if</span> (item-&gt;list-&gt;first == item) {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>            item-&gt;list-&gt;first = NULL; <span class="comment">// и теперь список пуст </span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        }</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    }</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    item-&gt;next-&gt;prev = item-&gt;prev; <span class="comment">// Предыдущий для данного элемента будет предыдущим для следующего  за ним </span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    item-&gt;prev-&gt;next = item-&gt;next; <span class="comment">// а следующим за предыдущим будет следующий для удаляемого элемента </span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    item-&gt;list-&gt;count--;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>}</div>
+<div class="ttc" id="astructlist__item_html"><div class="ttname"><a href="../../d4/d22/structlist__item.html">list_item</a></div><div class="ttdef"><b>Definition:</b> <a href="../../da/d23/list_8h_source.html#l00016">list.h:16</a></div></div>
+<div class="ttc" id="astructlist__t_html"><div class="ttname"><a href="../../d7/d6c/structlist__t.html">list_t</a></div><div class="ttdef"><b>Definition:</b> <a href="../../da/d23/list_8h_source.html#l00010">list.h:10</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="astructlist__t_html"><div class="ttname"><a href="../../d7/d6c/structlist__t.html">list_t</a></div><div class="ttdef"><b>Definition:</b> <a href="../../da/d23/list_8h_source.html#l00010">list.h:10</a></div></div>
-<div class="ttc" id="astructlist__item_html"><div class="ttname"><a href="../../d4/d22/structlist__item.html">list_item</a></div><div class="ttdef"><b>Definition:</b> <a href="../../da/d23/list_8h_source.html#l00016">list.h:16</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_3dd30a497388ee684638f120a124721c.html">src</a></li><li class="navelem"><a class="el" href="../../dir_1a5b85ea993c03033d57d06b4ba138d9.html">libk</a></li><li class="navelem"><b>list.c</b></li>
-    <li class="footer">Документация по SynapseOS. Последние изменения: Вс 14 Авг 2022 13:17:15. Создано системой
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
+    <li class="footer">Документация по SynapseOS. Последние изменения: Вс 14 Авг 2022 22:55:08. Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['blockinfo_96',['blockinfo',['../dd/d55/structblockinfo.html',1,'']]]
+  ['blockinfo_0',['blockinfo',['../dd/d55/structblockinfo.html',1,'']]]
 ];

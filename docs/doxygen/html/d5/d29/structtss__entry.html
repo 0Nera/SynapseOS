@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<meta name="generator" content="Doxygen 1.8.17"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.4"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>SynapseOS: Структура tss_entry</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
@@ -23,10 +23,9 @@
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
- <tr style="height: 56px;">
-  <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">SynapseOS
-   &#160;<span id="projectnumber">0.2.12</span>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">SynapseOS<span id="projectnumber">&#160;0.2.12</span>
    </div>
   </td>
  </tr>
@@ -34,21 +33,22 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Создано системой Doxygen 1.8.17 -->
+<!-- Создано системой Doxygen 1.9.4 -->
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-var searchBox = new SearchBox("searchBox", "../../search",false,'Поиск');
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search",'Поиск','.html');
 /* @license-end */
 </script>
 <script type="text/javascript" src="../../menudata.js"></script>
 <script type="text/javascript" src="../../menu.js"></script>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
   initMenu('../../',true,false,'search.php','Поиск');
   $(document).ready(function() { init_search(); });
 });
-/* @license-end */</script>
+/* @license-end */
+</script>
 <div id="main-nav"></div>
 </div><!-- top -->
 <div id="side-nav" class="ui-resizable side-nav-resizable">
@@ -62,7 +62,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(document).ready(function(){initNavTree('d5/d29/structtss__entry.html','../../'); initResizable(); });
 /* @license-end */
 </script>
@@ -84,99 +84,504 @@ $(document).ready(function(){initNavTree('d5/d29/structtss__entry.html','../../'
 <div class="header">
   <div class="summary">
 <a href="#pub-attribs">Поля данных</a>  </div>
-  <div class="headertitle">
-<div class="title">Структура tss_entry</div>  </div>
+  <div class="headertitle"><div class="title">Структура tss_entry</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Поля данных</h2></td></tr>
-<tr class="memitem:a162f247adf800620ad2b69b1e9ea07f4"><td class="memItemLeft" align="right" valign="top"><a id="a162f247adf800620ad2b69b1e9ea07f4"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>prev_tss</b></td></tr>
+<tr class="memitem:a162f247adf800620ad2b69b1e9ea07f4"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#a162f247adf800620ad2b69b1e9ea07f4">prev_tss</a></td></tr>
 <tr class="separator:a162f247adf800620ad2b69b1e9ea07f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8a56bd35e5f4765a5f6736fdd829a2f"><td class="memItemLeft" align="right" valign="top"><a id="ab8a56bd35e5f4765a5f6736fdd829a2f"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>esp0</b></td></tr>
+<tr class="memitem:ab8a56bd35e5f4765a5f6736fdd829a2f"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#ab8a56bd35e5f4765a5f6736fdd829a2f">esp0</a></td></tr>
 <tr class="separator:ab8a56bd35e5f4765a5f6736fdd829a2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7874b70fa3a93da1588513500cbdf1a8"><td class="memItemLeft" align="right" valign="top"><a id="a7874b70fa3a93da1588513500cbdf1a8"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>ss0</b></td></tr>
+<tr class="memitem:a7874b70fa3a93da1588513500cbdf1a8"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#a7874b70fa3a93da1588513500cbdf1a8">ss0</a></td></tr>
 <tr class="separator:a7874b70fa3a93da1588513500cbdf1a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92a8ac30e06c41b14fe2eb5f69f9ade6"><td class="memItemLeft" align="right" valign="top"><a id="a92a8ac30e06c41b14fe2eb5f69f9ade6"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>esp1</b></td></tr>
+<tr class="memitem:a92a8ac30e06c41b14fe2eb5f69f9ade6"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#a92a8ac30e06c41b14fe2eb5f69f9ade6">esp1</a></td></tr>
 <tr class="separator:a92a8ac30e06c41b14fe2eb5f69f9ade6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a954b751e620c509ef5538e6cd434ea4e"><td class="memItemLeft" align="right" valign="top"><a id="a954b751e620c509ef5538e6cd434ea4e"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>ss1</b></td></tr>
+<tr class="memitem:a954b751e620c509ef5538e6cd434ea4e"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#a954b751e620c509ef5538e6cd434ea4e">ss1</a></td></tr>
 <tr class="separator:a954b751e620c509ef5538e6cd434ea4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17c64abe1958f7f481d0fbef826ad21f"><td class="memItemLeft" align="right" valign="top"><a id="a17c64abe1958f7f481d0fbef826ad21f"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>esp2</b></td></tr>
+<tr class="memitem:a17c64abe1958f7f481d0fbef826ad21f"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#a17c64abe1958f7f481d0fbef826ad21f">esp2</a></td></tr>
 <tr class="separator:a17c64abe1958f7f481d0fbef826ad21f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac96ed21da44a3e051bf3cd7d4f186c1e"><td class="memItemLeft" align="right" valign="top"><a id="ac96ed21da44a3e051bf3cd7d4f186c1e"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>ss2</b></td></tr>
+<tr class="memitem:ac96ed21da44a3e051bf3cd7d4f186c1e"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#ac96ed21da44a3e051bf3cd7d4f186c1e">ss2</a></td></tr>
 <tr class="separator:ac96ed21da44a3e051bf3cd7d4f186c1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9166a91c5e8b2b51b0a9677f9ba56a0"><td class="memItemLeft" align="right" valign="top"><a id="aa9166a91c5e8b2b51b0a9677f9ba56a0"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>cr3</b></td></tr>
+<tr class="memitem:aa9166a91c5e8b2b51b0a9677f9ba56a0"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#aa9166a91c5e8b2b51b0a9677f9ba56a0">cr3</a></td></tr>
 <tr class="separator:aa9166a91c5e8b2b51b0a9677f9ba56a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1588906901fc3015e0865574669a56a6"><td class="memItemLeft" align="right" valign="top"><a id="a1588906901fc3015e0865574669a56a6"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>eip</b></td></tr>
+<tr class="memitem:a1588906901fc3015e0865574669a56a6"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#a1588906901fc3015e0865574669a56a6">eip</a></td></tr>
 <tr class="separator:a1588906901fc3015e0865574669a56a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeedfc39703ec8e0a1f052a832e74acd3"><td class="memItemLeft" align="right" valign="top"><a id="aeedfc39703ec8e0a1f052a832e74acd3"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>eflags</b></td></tr>
+<tr class="memitem:aeedfc39703ec8e0a1f052a832e74acd3"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#aeedfc39703ec8e0a1f052a832e74acd3">eflags</a></td></tr>
 <tr class="separator:aeedfc39703ec8e0a1f052a832e74acd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93d929ad1fc57af9d4f1793c361fb4f2"><td class="memItemLeft" align="right" valign="top"><a id="a93d929ad1fc57af9d4f1793c361fb4f2"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>eax</b></td></tr>
+<tr class="memitem:a93d929ad1fc57af9d4f1793c361fb4f2"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#a93d929ad1fc57af9d4f1793c361fb4f2">eax</a></td></tr>
 <tr class="separator:a93d929ad1fc57af9d4f1793c361fb4f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2b16bef95c844028dd145264d1d3875"><td class="memItemLeft" align="right" valign="top"><a id="af2b16bef95c844028dd145264d1d3875"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>ecx</b></td></tr>
+<tr class="memitem:af2b16bef95c844028dd145264d1d3875"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#af2b16bef95c844028dd145264d1d3875">ecx</a></td></tr>
 <tr class="separator:af2b16bef95c844028dd145264d1d3875"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6db045cebe7b4cf979120dccdee0d01"><td class="memItemLeft" align="right" valign="top"><a id="ae6db045cebe7b4cf979120dccdee0d01"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>edx</b></td></tr>
+<tr class="memitem:ae6db045cebe7b4cf979120dccdee0d01"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#ae6db045cebe7b4cf979120dccdee0d01">edx</a></td></tr>
 <tr class="separator:ae6db045cebe7b4cf979120dccdee0d01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7c1e3339e4dead200cab41010e9127c"><td class="memItemLeft" align="right" valign="top"><a id="ae7c1e3339e4dead200cab41010e9127c"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>ebx</b></td></tr>
+<tr class="memitem:ae7c1e3339e4dead200cab41010e9127c"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#ae7c1e3339e4dead200cab41010e9127c">ebx</a></td></tr>
 <tr class="separator:ae7c1e3339e4dead200cab41010e9127c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7534a179bc9cc0ef26f0468e0959ee5c"><td class="memItemLeft" align="right" valign="top"><a id="a7534a179bc9cc0ef26f0468e0959ee5c"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>esp</b></td></tr>
+<tr class="memitem:a7534a179bc9cc0ef26f0468e0959ee5c"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#a7534a179bc9cc0ef26f0468e0959ee5c">esp</a></td></tr>
 <tr class="separator:a7534a179bc9cc0ef26f0468e0959ee5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaba2ad0ff8ba480934feabfdab02b1e7"><td class="memItemLeft" align="right" valign="top"><a id="aaba2ad0ff8ba480934feabfdab02b1e7"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>ebp</b></td></tr>
+<tr class="memitem:aaba2ad0ff8ba480934feabfdab02b1e7"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#aaba2ad0ff8ba480934feabfdab02b1e7">ebp</a></td></tr>
 <tr class="separator:aaba2ad0ff8ba480934feabfdab02b1e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada78e3124de6adf5a5d212f9ebc4bbe0"><td class="memItemLeft" align="right" valign="top"><a id="ada78e3124de6adf5a5d212f9ebc4bbe0"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>esi</b></td></tr>
+<tr class="memitem:ada78e3124de6adf5a5d212f9ebc4bbe0"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#ada78e3124de6adf5a5d212f9ebc4bbe0">esi</a></td></tr>
 <tr class="separator:ada78e3124de6adf5a5d212f9ebc4bbe0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36ffab8d34c6c411a7e5205ddb95eaf9"><td class="memItemLeft" align="right" valign="top"><a id="a36ffab8d34c6c411a7e5205ddb95eaf9"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>edi</b></td></tr>
+<tr class="memitem:a36ffab8d34c6c411a7e5205ddb95eaf9"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#a36ffab8d34c6c411a7e5205ddb95eaf9">edi</a></td></tr>
 <tr class="separator:a36ffab8d34c6c411a7e5205ddb95eaf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0dacdc927bbcc6457b629ad88119cdc2"><td class="memItemLeft" align="right" valign="top"><a id="a0dacdc927bbcc6457b629ad88119cdc2"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>es</b></td></tr>
+<tr class="memitem:a0dacdc927bbcc6457b629ad88119cdc2"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#a0dacdc927bbcc6457b629ad88119cdc2">es</a></td></tr>
 <tr class="separator:a0dacdc927bbcc6457b629ad88119cdc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8519dc239502dfcbac171b3128dc7054"><td class="memItemLeft" align="right" valign="top"><a id="a8519dc239502dfcbac171b3128dc7054"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>cs</b></td></tr>
+<tr class="memitem:a8519dc239502dfcbac171b3128dc7054"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#a8519dc239502dfcbac171b3128dc7054">cs</a></td></tr>
 <tr class="separator:a8519dc239502dfcbac171b3128dc7054"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c59346dd338708c94ca75cf21b78195"><td class="memItemLeft" align="right" valign="top"><a id="a3c59346dd338708c94ca75cf21b78195"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>ss</b></td></tr>
+<tr class="memitem:a3c59346dd338708c94ca75cf21b78195"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#a3c59346dd338708c94ca75cf21b78195">ss</a></td></tr>
 <tr class="separator:a3c59346dd338708c94ca75cf21b78195"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6fe20edd854a1a653ae71ccf541a6b8b"><td class="memItemLeft" align="right" valign="top"><a id="a6fe20edd854a1a653ae71ccf541a6b8b"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>ds</b></td></tr>
+<tr class="memitem:a6fe20edd854a1a653ae71ccf541a6b8b"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#a6fe20edd854a1a653ae71ccf541a6b8b">ds</a></td></tr>
 <tr class="separator:a6fe20edd854a1a653ae71ccf541a6b8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ffb5cf275c124e8f8ff30e1d4449f80"><td class="memItemLeft" align="right" valign="top"><a id="a2ffb5cf275c124e8f8ff30e1d4449f80"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>fs</b></td></tr>
+<tr class="memitem:a2ffb5cf275c124e8f8ff30e1d4449f80"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#a2ffb5cf275c124e8f8ff30e1d4449f80">fs</a></td></tr>
 <tr class="separator:a2ffb5cf275c124e8f8ff30e1d4449f80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85904ecbf7b717abe738645b4ff2f4ff"><td class="memItemLeft" align="right" valign="top"><a id="a85904ecbf7b717abe738645b4ff2f4ff"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>gs</b></td></tr>
+<tr class="memitem:a85904ecbf7b717abe738645b4ff2f4ff"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#a85904ecbf7b717abe738645b4ff2f4ff">gs</a></td></tr>
 <tr class="separator:a85904ecbf7b717abe738645b4ff2f4ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa12b05931ab0b08974e1e8bf627c8790"><td class="memItemLeft" align="right" valign="top"><a id="aa12b05931ab0b08974e1e8bf627c8790"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>ldt</b></td></tr>
+<tr class="memitem:aa12b05931ab0b08974e1e8bf627c8790"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#aa12b05931ab0b08974e1e8bf627c8790">ldt</a></td></tr>
 <tr class="separator:aa12b05931ab0b08974e1e8bf627c8790"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9375f4a9360efc8d2a1805b676967567"><td class="memItemLeft" align="right" valign="top"><a id="a9375f4a9360efc8d2a1805b676967567"></a>
-uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>trap</b></td></tr>
+<tr class="memitem:a9375f4a9360efc8d2a1805b676967567"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#a9375f4a9360efc8d2a1805b676967567">trap</a></td></tr>
 <tr class="separator:a9375f4a9360efc8d2a1805b676967567"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1e0bbc09ee0c9741324f810edee3ba8"><td class="memItemLeft" align="right" valign="top"><a id="aa1e0bbc09ee0c9741324f810edee3ba8"></a>
-uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>iomap_base</b></td></tr>
+<tr class="memitem:aa1e0bbc09ee0c9741324f810edee3ba8"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d29/structtss__entry.html#aa1e0bbc09ee0c9741324f810edee3ba8">iomap_base</a></td></tr>
 <tr class="separator:aa1e0bbc09ee0c9741324f810edee3ba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
 <div class="textblock">
 <p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00008">8</a></p>
-</div><hr/>Объявления и описания членов структуры находятся в файле:<ul>
+</div><h2 class="groupheader">Поля</h2>
+<a id="aa9166a91c5e8b2b51b0a9677f9ba56a0" name="aa9166a91c5e8b2b51b0a9677f9ba56a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9166a91c5e8b2b51b0a9677f9ba56a0">&#9670;&nbsp;</a></span>cr3</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t cr3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00017">17</a></p>
+
+</div>
+</div>
+<a id="a8519dc239502dfcbac171b3128dc7054" name="a8519dc239502dfcbac171b3128dc7054"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8519dc239502dfcbac171b3128dc7054">&#9670;&nbsp;</a></span>cs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t cs</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00033">33</a></p>
+
+</div>
+</div>
+<a id="a6fe20edd854a1a653ae71ccf541a6b8b" name="a6fe20edd854a1a653ae71ccf541a6b8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fe20edd854a1a653ae71ccf541a6b8b">&#9670;&nbsp;</a></span>ds</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t ds</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00035">35</a></p>
+
+</div>
+</div>
+<a id="a93d929ad1fc57af9d4f1793c361fb4f2" name="a93d929ad1fc57af9d4f1793c361fb4f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93d929ad1fc57af9d4f1793c361fb4f2">&#9670;&nbsp;</a></span>eax</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t eax</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00022">22</a></p>
+
+</div>
+</div>
+<a id="aaba2ad0ff8ba480934feabfdab02b1e7" name="aaba2ad0ff8ba480934feabfdab02b1e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaba2ad0ff8ba480934feabfdab02b1e7">&#9670;&nbsp;</a></span>ebp</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t ebp</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00027">27</a></p>
+
+</div>
+</div>
+<a id="ae7c1e3339e4dead200cab41010e9127c" name="ae7c1e3339e4dead200cab41010e9127c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7c1e3339e4dead200cab41010e9127c">&#9670;&nbsp;</a></span>ebx</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t ebx</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00025">25</a></p>
+
+</div>
+</div>
+<a id="af2b16bef95c844028dd145264d1d3875" name="af2b16bef95c844028dd145264d1d3875"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2b16bef95c844028dd145264d1d3875">&#9670;&nbsp;</a></span>ecx</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t ecx</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00023">23</a></p>
+
+</div>
+</div>
+<a id="a36ffab8d34c6c411a7e5205ddb95eaf9" name="a36ffab8d34c6c411a7e5205ddb95eaf9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36ffab8d34c6c411a7e5205ddb95eaf9">&#9670;&nbsp;</a></span>edi</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t edi</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00030">30</a></p>
+
+</div>
+</div>
+<a id="ae6db045cebe7b4cf979120dccdee0d01" name="ae6db045cebe7b4cf979120dccdee0d01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6db045cebe7b4cf979120dccdee0d01">&#9670;&nbsp;</a></span>edx</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t edx</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00024">24</a></p>
+
+</div>
+</div>
+<a id="aeedfc39703ec8e0a1f052a832e74acd3" name="aeedfc39703ec8e0a1f052a832e74acd3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeedfc39703ec8e0a1f052a832e74acd3">&#9670;&nbsp;</a></span>eflags</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t eflags</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00020">20</a></p>
+
+</div>
+</div>
+<a id="a1588906901fc3015e0865574669a56a6" name="a1588906901fc3015e0865574669a56a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1588906901fc3015e0865574669a56a6">&#9670;&nbsp;</a></span>eip</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t eip</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00019">19</a></p>
+
+</div>
+</div>
+<a id="a0dacdc927bbcc6457b629ad88119cdc2" name="a0dacdc927bbcc6457b629ad88119cdc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0dacdc927bbcc6457b629ad88119cdc2">&#9670;&nbsp;</a></span>es</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t es</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00032">32</a></p>
+
+</div>
+</div>
+<a id="ada78e3124de6adf5a5d212f9ebc4bbe0" name="ada78e3124de6adf5a5d212f9ebc4bbe0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada78e3124de6adf5a5d212f9ebc4bbe0">&#9670;&nbsp;</a></span>esi</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t esi</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00029">29</a></p>
+
+</div>
+</div>
+<a id="a7534a179bc9cc0ef26f0468e0959ee5c" name="a7534a179bc9cc0ef26f0468e0959ee5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7534a179bc9cc0ef26f0468e0959ee5c">&#9670;&nbsp;</a></span>esp</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t esp</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00026">26</a></p>
+
+</div>
+</div>
+<a id="ab8a56bd35e5f4765a5f6736fdd829a2f" name="ab8a56bd35e5f4765a5f6736fdd829a2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8a56bd35e5f4765a5f6736fdd829a2f">&#9670;&nbsp;</a></span>esp0</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t esp0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00011">11</a></p>
+
+</div>
+</div>
+<a id="a92a8ac30e06c41b14fe2eb5f69f9ade6" name="a92a8ac30e06c41b14fe2eb5f69f9ade6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92a8ac30e06c41b14fe2eb5f69f9ade6">&#9670;&nbsp;</a></span>esp1</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t esp1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00013">13</a></p>
+
+</div>
+</div>
+<a id="a17c64abe1958f7f481d0fbef826ad21f" name="a17c64abe1958f7f481d0fbef826ad21f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17c64abe1958f7f481d0fbef826ad21f">&#9670;&nbsp;</a></span>esp2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t esp2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00015">15</a></p>
+
+</div>
+</div>
+<a id="a2ffb5cf275c124e8f8ff30e1d4449f80" name="a2ffb5cf275c124e8f8ff30e1d4449f80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ffb5cf275c124e8f8ff30e1d4449f80">&#9670;&nbsp;</a></span>fs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t fs</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00036">36</a></p>
+
+</div>
+</div>
+<a id="a85904ecbf7b717abe738645b4ff2f4ff" name="a85904ecbf7b717abe738645b4ff2f4ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85904ecbf7b717abe738645b4ff2f4ff">&#9670;&nbsp;</a></span>gs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t gs</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00037">37</a></p>
+
+</div>
+</div>
+<a id="aa1e0bbc09ee0c9741324f810edee3ba8" name="aa1e0bbc09ee0c9741324f810edee3ba8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1e0bbc09ee0c9741324f810edee3ba8">&#9670;&nbsp;</a></span>iomap_base</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t iomap_base</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00041">41</a></p>
+
+</div>
+</div>
+<a id="aa12b05931ab0b08974e1e8bf627c8790" name="aa12b05931ab0b08974e1e8bf627c8790"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa12b05931ab0b08974e1e8bf627c8790">&#9670;&nbsp;</a></span>ldt</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t ldt</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00039">39</a></p>
+
+</div>
+</div>
+<a id="a162f247adf800620ad2b69b1e9ea07f4" name="a162f247adf800620ad2b69b1e9ea07f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a162f247adf800620ad2b69b1e9ea07f4">&#9670;&nbsp;</a></span>prev_tss</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t prev_tss</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00009">9</a></p>
+
+</div>
+</div>
+<a id="a3c59346dd338708c94ca75cf21b78195" name="a3c59346dd338708c94ca75cf21b78195"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c59346dd338708c94ca75cf21b78195">&#9670;&nbsp;</a></span>ss</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t ss</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00034">34</a></p>
+
+</div>
+</div>
+<a id="a7874b70fa3a93da1588513500cbdf1a8" name="a7874b70fa3a93da1588513500cbdf1a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7874b70fa3a93da1588513500cbdf1a8">&#9670;&nbsp;</a></span>ss0</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t ss0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00012">12</a></p>
+
+</div>
+</div>
+<a id="a954b751e620c509ef5538e6cd434ea4e" name="a954b751e620c509ef5538e6cd434ea4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a954b751e620c509ef5538e6cd434ea4e">&#9670;&nbsp;</a></span>ss1</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t ss1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00014">14</a></p>
+
+</div>
+</div>
+<a id="ac96ed21da44a3e051bf3cd7d4f186c1e" name="ac96ed21da44a3e051bf3cd7d4f186c1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac96ed21da44a3e051bf3cd7d4f186c1e">&#9670;&nbsp;</a></span>ss2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t ss2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00016">16</a></p>
+
+</div>
+</div>
+<a id="a9375f4a9360efc8d2a1805b676967567" name="a9375f4a9360efc8d2a1805b676967567"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9375f4a9360efc8d2a1805b676967567">&#9670;&nbsp;</a></span>trap</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t trap</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a> строка <a class="el" href="../../de/d9a/tss_8h_source.html#l00040">40</a></p>
+
+</div>
+</div>
+<hr/>Объявления и описания членов структуры находятся в файле:<ul>
 <li>kernel/include/sys/<a class="el" href="../../de/d9a/tss_8h_source.html">tss.h</a></li>
 </ul>
 </div><!-- contents -->
@@ -185,9 +590,7 @@ uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>iomap_base</b></t
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d5/d29/structtss__entry.html">tss_entry</a></li>
-    <li class="footer">Документация по SynapseOS. Последние изменения: Вс 14 Авг 2022 13:17:15. Создано системой
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
+    <li class="footer">Документация по SynapseOS. Последние изменения: Вс 14 Авг 2022 22:55:08. Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>
