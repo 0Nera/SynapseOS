@@ -97,8 +97,6 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     //init_task_manager();
     //create_STFS(0);
 
-    //tui();
-    //tty_puts("ANSI Escape sequence test: \033[31mHei\033[32m, \033[33mmaa\033[34mil\033[35mma\033[36m!\033[0m\n");
     if (floppy_install()){
         
     } else {

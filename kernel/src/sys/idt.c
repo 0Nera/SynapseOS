@@ -6,7 +6,6 @@ idt_ptr_t idtp;
 
 extern void idt_load(struct idt_ptr *idt_ptr_addr);
 
-
 void pic_send_eoi(uint8_t irq) {
 	if(irq >= 8)
 		outb(PIC_SLAVE_CMD, PIC_CMD_EOI);
@@ -261,6 +260,10 @@ static const char *exception_strs[] = {
 
 
 void fault_handler(struct regs *r) {
+    /*
+        ДЕБАГ: Stacktrace выводит адреса не просто так.
+        При помощи GDB и команды: "info line *адрес" можно найти строку с которой связан этот адрес
+    */
     multi_task = false;
     uint32_t adr;
     asm volatile("movl %%cr2, %0" : "=r" (adr));
@@ -288,6 +291,20 @@ void fault_handler(struct regs *r) {
         adr, r->idt_index, r->eax, r->ebx, 
         r->ecx, r->edx, r->esp, r->ebp, r->eip);
     
+    struct stackframe {
+        struct stackframe* ebp;
+        uint32_t eip;
+    };
+
+    struct stackframe *stk;
+    asm("movl %%ebp, %0" : "=r"(stk) ::);
+    tty_printf("Stack trace (Addresses only):\n");
+    for(unsigned int frame = 0; stk && frame < 16; ++frame) {
+        tty_printf("    %d. %x\n", 16-frame, stk->eip);
+        stk = stk->ebp;
+    }
+    tty_printf("======[End of stack trace]======\n");
+
     while(1){
         asm volatile("hlt");
     }

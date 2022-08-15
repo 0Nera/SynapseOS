@@ -1,8 +1,7 @@
-/*
- * TUI для SynapseOS
- * Автор: Пиминов Никита
- * VK: @piminov_remont
- * GitHub: github.com/pimnik98
+/**
+ * @file tui.c
+ * @brief TUI для SynapseOS
+ * @author Пиминов Никита (@piminov_remont) (github.com/pimnik98)
  * piminoff.ru
  */
 #include <kernel.h>
@@ -392,7 +391,7 @@ void testDisplay(int w, int h){
     tty_printf("[testDisplay] %dx%d - %d pixels | %d | %s \n",w,h,pixels,typeDisplay,Display);
 }
 
-/*
+/**
  * Рисуем прямоугольник
  * x - Начальная координата X
  * y - Начальная координата y
@@ -563,7 +562,7 @@ void createMenuBox(char* title){
 }
 
 /**
- * Выводит фатальный красный блок
+ * @brief Выводит фатальный красный блок
  */
 void createErrorBox(char* title,char* text){
     // Переводим TUI в режим ERRORBOX

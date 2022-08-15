@@ -95,9 +95,10 @@ void init_vbe(multiboot_info *mboot) {
         frame += PAGE_SIZE, virt += PAGE_SIZE) {
         vmm_map_page(frame, virt);
     }
-    qemu_log("VBE create_back_framebuffer");
+   qemu_log("VBE create_back_framebuffer");
 
-    create_back_framebuffer();
+    create_back_framebuffer(); // PAGE FAULT CAUSES HERE!!! 
+   qemu_log("^---- OKAY");
 }
 
 
@@ -106,10 +107,10 @@ void init_vbe(multiboot_info *mboot) {
  * 
  */
 void create_back_framebuffer() {
+	qemu_log("^---- 1. Allcoating"); // Я не знаю почему, но это предотвратило падение, но устроило его в другом месте
     back_framebuffer_addr = kheap_malloc(framebuffer_size);
 
     qemu_log("back_framebuffer_addr = %x", back_framebuffer_addr);
-
     memset(back_framebuffer_addr, 0, framebuffer_size); // Должно предотвратить падение
 }
 
