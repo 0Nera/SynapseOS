@@ -3,14 +3,227 @@
 #include <io/imaging.h>
 
 //#define PIM_DEBUG
+typedef struct {
+    char* com;
+    char* text;
+    void (*Function)(char* args);
+
+} Command;
+/**
+ * @brief Открытие папки
+ * 
+ * @param dname - имя папки
+ */
 
 char current_dir[256] = "/initrd/apps/";
+char current_user[128] = "ROOT";
+int commands_len = 0;
+Command commands[] = {};
+bool check_command_availability(char* command) {
+    for(int i=0; i<=commands_len; i++) {
+        if (strcmp(commands[i].com, command) == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+void add_command(char* command, char* text, void (*function)(char* args)) {
+    Command com={command, text, function};
+    commands[commands_len+1] = com;
+    commands_len++;
+    }
+void help(char* args) {};
+void clean_screen_shell(char* args) {
+    clean_screen();
+};
+void ls(char* args){
+    tty_printf("Files list \n");
+    initrd_list(0,0);
+}
+void shell_shutdown(char* args) {
+    tty_printf("SHUTDOWN...");
+    sleep_ms(100);
+    shutdown();
+}
+void view_image(char* args) {
+            char fname[256] = {0};
+            char *tok = (char *)strtok(args, " ");
+            tok = (char *)strtok(0, " "); // tok - имя файла
+            
+            if (fname[0] == 0) {
+                struct DukeImageMeta* data = get_image_metadata(tok);
+                if(data!=0) {
+                    draw_from_file(tok, getWidthScreen() - data->width - 8, 0);
+                }
+            } else {
+                tty_setcolor(COLOR_ERROR);
+                tty_printf("view: incorrect argument\n");
+            }
+}
+void shell_tui(char* args) {
+    tui();
+}
+void sysinfo(char* args){
+    tty_printf("                       ........--........        SynapseOS by Aren Elchinyan\n");
+    tty_printf("                       ....+***:**+*....         Arch %s\n", ARCH_TYPE);
+    tty_printf("                         .**.......**....        Ticks: %d\n", timer_get_ticks());
+    tty_printf("                       ...**.......**...                        \n");
+    tty_printf("                        ..:**.....-**....                       \n");
+    tty_printf("                       . ...+******.....                        \n");
+    tty_printf("                        .  ...***...                            \n");
+    tty_printf("                           ...:**..                             \n");
+    tty_printf("                            ..+**...... .                       \n");
+    tty_printf("                            ..+*+.......                        \n");
+    tty_printf("                    . ........-******:.. ...                    \n");
+    tty_printf("                    ....**..........+**-... .                   \n");
+    tty_printf("                     .-**....:***+....***....                   \n");
+    tty_printf("                    ..**....********...**...                    \n");
+    tty_printf("                   ...**...+********...**-.                     \n");
+    tty_printf("                    ..+*-...*******:...**...                    \n");
+    tty_printf(".  ...........  ......***-....+**-....***-.... ....... ......   \n");
+    tty_printf("  ................-*****+**-........***-+***:.....*****:....    \n");
+    tty_printf("....********...:****......+*********+......+*****+:....+*+..    \n");
+    tty_printf("..***......***+*-...  . . ............  ......:**........*+.    \n");
+    tty_printf(".**.. . .. .-**.         ..   .  .    ...  ...**.... ....**.    \n");
+    tty_printf("**+.    . ...**..                           . .+*.......-*+..   \n");
+    tty_printf(".+*..........**.                            ....+**:..****..    \n");
+    tty_printf(".***.......-**..                            .......-+*.......   \n");
+    tty_printf("...+********+...                            ..  .  .   .        \n");
+    tty_printf("................                                                  ");
+}
+
+void pcilist(char* args) {
+    tty_printf("PCI devices:\n");
+    checkAllBuses();
+}
+void cpuinfo(char* args) {
+    detect_cpu(0);
+}
+void shell_reboot(char* args){
+    tty_printf("REBOOT NOW!\n");
+    sleep_ms(100);
+    reboot();
+}
+void run_elf(char* args) {
+    char fname[256] = {0};
+
+    char *tok = (char *)strtok(args, "/");
+
+    tok = (char *)strtok(0, "/"); // tok - имя файла
+
+    if (fname[0] == 0) {
+        char temp[256] = {0};
+        strcpy(temp, current_dir);
+        strcat(temp, tok);
+        //elf_info(temp);                
+        run_elf_file(temp);
+
+    } else {
+        tty_setcolor(COLOR_ERROR);
+        tty_printf("run: incorrect argument\n");
+    }
+}
+
+
+void cd(char* args) {
+    char xfname[256] = {0};
+    char *dname = (char *)strtok(args, " ");
+    dname = (char *)strtok(0, " ");
+    if (dname[0] != 0) {
+
+    if (dname[0] != '/') {
+        char temp[256];
+
+        strcpy(temp, current_dir);
+
+        temp[strlen(temp) - 1] = 0;
+
+        strcat(temp, dname);
+
+        temp[strlen(temp) - 1] = 0;
+        temp[strlen(temp) - 1] = 0;
+
+        strcpy(dname, temp);
+    }
+
+
+    if (dname[strlen(dname) - 1] != '/') {
+        strcat(dname, "/");
+    }
+
+    if (vfs_exists(dname) && vfs_is_dir(dname)) {
+        strcpy(current_dir, dname);
+    } else {
+        tty_setcolor(COLOR_ERROR);
+        tty_printf("cd: no such directory\n");
+    }
+} else {
+    tty_setcolor(COLOR_ERROR);
+    tty_printf("cd: incorrect argument");
+}
+}
+
+void cat(char *args) {
+    char xfname[256] = {0};
+    char *fname = (char *)strtok(args, " ");
+            
+    fname = (char *)strtok(0, " "); // tok - имя файла
+
+    if (xfname[0] == 0) {
+        
+    if (fname[0] != '/') {
+        char temp[256];
+
+        strcpy(temp, current_dir);
+        temp[strlen(temp) - 1] = 0;
+
+        strcat(temp, fname);
+
+        temp[strlen(temp) - 1] = 0;
+        temp[strlen(temp) - 1] = 0;
+
+        strcpy(fname, temp);
+    }
+
+    char *buf = (char*) kheap_malloc(2048);
+
+    if (!vfs_exists(fname)) {
+        tty_setcolor(COLOR_ERROR);
+        tty_printf("cat: error file not found\n");
+    } else {
+        uint32_t fsize = vfs_get_size(fname);
+        vfs_read(fname, 0, fsize, buf);
+
+        buf[fsize] = '\0';
+
+        tty_printf("%s:\n\n%s\n", fname, buf);
+
+        kheap_free(buf);
+    }
+} else {
+    tty_setcolor(COLOR_ERROR);
+    tty_printf("cat: incorrect argument \n");
+}
+}
 
 /**
  * @brief Входная точка консоли
  * 
  */
 void shell() {
+    add_command("help", "- output this menu", *help);
+    add_command("sysinfo", "- output systeminfo", *sysinfo);
+    add_command("cls", "- clean screen", *clean_screen_shell);
+    add_command("cat ", " <filename> - open file to read", *cat);
+    add_command("cd ", " <dirname> - open folder", *cd);
+    add_command("pcilist", "- print pcilist", *pcilist);
+    add_command("ls", "- list files", *ls);
+    add_command("./", "<filename> - run programm in current folder", *run_elf);
+    add_command("cpuinfo", "- cpu info", *cpuinfo);
+    add_command("reboot", "- reboot", *shell_reboot);
+    add_command("shutdown", "- shutdown", *shell_reboot);
+    add_command("tui", "- open tui", *shell_tui);
+    add_command("view ", "<image> - show image", *view_image);
     changeStageKeyboard(1);
     tty_setcolor(COLOR_ALERT);
     tty_printf("\nUse \"help\" command to get info about commands.\n");
@@ -48,10 +261,10 @@ void shell() {
         tty_printf("Debug stdio.c:\n\tPath: %s\n\tSize: %d\n\tText: %s\n",filename2,lSize2,buffer2);
     }
     #endif
-
     while (1) {
+        bool comrun = false;
         tty_setcolor(COLOR_SYS_TEXT);
-        tty_printf("\nROOT ");
+        tty_printf("\n %s", current_user);
         tty_setcolor(COLOR_SYS_PATH);
         tty_printf("%s>", current_dir);
 
@@ -67,343 +280,27 @@ void shell() {
         }
 
         tty_printf("\n");
-
-        if (strcmp(cmd, "about") == 0) {
-            tty_printf("SynapseOS is a simple x86 C operating system with a well-documented kernel.");
-        } else if (strcmp(cmd, "reboot") == 0) {
-            tty_printf("REBOOT NOW!\n");
-            sleep_ms(100);
-            reboot();
-        } else if (strcmp(cmd, "shutdown") == 0) {
-            tty_printf("SHUTDOWN NOW!\n");
-            sleep_ms(100);
-            shutdown();
-        } else if (strcmp(cmd, "tui") == 0) {
-            tui();
-        } else if (strcmp(cmd, "cls") == 0) {
-            clean_screen();
-        } else if (strcmp(cmd, "cpuinfo") == 0) {
-            detect_cpu(0);
-        } else if (strcmp(cmd, "help") == 0) {
-            tty_printf("Commands:\n" \
-                        "\t\t->help                |get list of commands\n" \
-                        "\t\t->cls                 |clean screen\n" \
-                        "\t\t->cat   <filename>    |open file to read\n" \
-                        "\t\t->cd    <folder>      |open folder\n" \
-                        "\t\t->./<file>            |run programm in current folder\n" \
-                        "\t\t->sbf   <code>        |run sbf programm\n" \
-                        "\t\t->ls                  |list of files\n" \
-                        "\t\t->sysinfo             |information about system\n" \
-                        "\t\t->pcilist             |list of pci devices\n" \
-                        "\t\t->cpuinfo             |info cpu\n" \
-                        "\t\t->reboot              |reboot device\n" \
-                        "\t\t->shutdown            |shutdown device\n" \
-                        "\t\t->tui                 |enable tui\n" \
-                        "\t\t->view   <filename>   |shows an image\n" \
-                        "\n" 
-                        );
-        } else if (strlen(cmd) > 4 && strncmp(cmd, "cat ", 4) == 0) {
-            char fname[256] = {0};
-
-            char *tok = (char *)strtok(cmd, " ");
-            
-            tok = (char *)strtok(0, " "); // tok - имя файла
-
-            if (fname[0] == 0) {
-                cat(tok);
-            } else {
-                tty_setcolor(COLOR_ERROR);
-                tty_printf("cat: incorrect argument\n");
+        if (strcmp(cmd, "help") == 0) {
+            comrun=true;
+            tty_printf("Commands\n");
+            for(int i=0; i<=commands_len; i++) {
+                tty_printf("\t\t->%s", commands[i].com);
+                tty_printf(" %s", commands[i].text);
+                tty_printf("\n");
             }
-        } else if (strlen(cmd) > 3 && strncmp(cmd, "cd ", 3) == 0) {
-            char dname[256] = {0};
-            char *tok = (char *)strtok(cmd, " ");
-            tok = (char *)strtok(0, " "); // tok - now is dirname
-
-            if (dname[0] != 0) {
-                cd(tok);
-            } else {
-                tty_setcolor(COLOR_ERROR);
-                tty_printf("\ncd: incorrect argument\n");
-            }
-        } else if (strcmp(cmd, "pcilist") == 0) {
-            tty_printf("PCI devices:\n");
-	        checkAllBuses();
-        } else if (strcmp(cmd, "sysinfo") == 0) {
-            sysinfo();
-        } else if (strcmp(cmd, "ls") == 0) {
-            initrd_list(0, 0);
-        } else if (strlen(cmd) > 5 && strncmp(cmd, "view ", 5) == 0) {
-            char fname[256] = {0};
-            char *tok = (char *)strtok(cmd, " ");
-            tok = (char *)strtok(0, " "); // tok - имя файла
-            
-            if (fname[0] == 0) {
-                struct DukeImageMeta* data = get_image_metadata(tok);
-                if(data!=0) {
-                    draw_from_file(tok, getWidthScreen() - data->width - 8, 0);
-                }
-            } else {
-                tty_setcolor(COLOR_ERROR);
-                tty_printf("view: incorrect argument\n");
-            }
-        } else if (strlen(cmd) > 4 && strncmp(cmd, "sbf  ", 4) == 0) {
-            char fname[256] = {0};
-
-            char *tok = (char *)strtok(cmd, " ");
-
-            tok = (char *)strtok(0, " "); // tok - имя файла
-
-            if (fname[0] == 0) {
-                sbf(tok);
-            } else {
-                tty_setcolor(COLOR_ERROR);
-                tty_printf("sbf: incorrect argument\n");
-            }
-        } else if (strlen(cmd) > 2 && strncmp(cmd, "./", 2) == 0) {
-            char fname[256] = {0};
-
-            char *tok = (char *)strtok(cmd, "/");
-
-            tok = (char *)strtok(0, "/"); // tok - имя файла
-
-            if (fname[0] == 0) {
-                char temp[256] = {0};
-                strcpy(temp, current_dir);
-                strcat(temp, tok);
-                //elf_info(temp);                
-                run_elf_file(temp);
-
-            } else {
-                tty_setcolor(COLOR_ERROR);
-                tty_printf("run: incorrect argument\n");
-            }
-        } else if (strlen(cmd) > 2 && strncmp(cmd, "d/", 2) == 0) {
-            char fname[256] = {0};
-
-            char *tok = (char *)strtok(cmd, "/");
-
-            tok = (char *)strtok(0, "/"); // tok - имя файла
-
-            if (fname[0] == 0) {
-                char temp[256] = {0};
-                strcpy(temp, current_dir);
-                strcat(temp, tok);
-                elf_info(temp);                
-                run_elf_file(temp);
-
-            } else {
-                tty_setcolor(COLOR_ERROR);
-                tty_printf("run: incorrect argument\n");
-            }
-        } else {
-            char fname[256] = {0};
-
-            char *tok = (char *)strtok(cmd, "/");
-
-            tok = (char *)strtok(0, "/"); // tok - имя файла
-
-            if (fname[0] == 0) {
-                char temp[256] = {0};
-                strcpy(temp, current_dir);
-                strcat(temp, tok);
-                //elf_info(temp);                
-                run_elf_file(temp);
-
-            } else {
-                tty_setcolor(COLOR_ERROR);
-                tty_printf("run: incorrect argument\n");
+            continue;
+        }
+        for(int i=0; i<=commands_len; i++) {
+            if (strncmp(cmd, commands[i].com, strlen(commands[i].com)) == 0) {
+                commands[i].Function(cmd);
+                comrun=true;
+                break;
             }
         }
-    }
-}
 
 
-/**
- * @brief Открытие папки
- * 
- * @param dname - имя папки
- */
-void cd(char *dname) {
-    if (dname[0] != '/') {
-        char temp[256];
-
-        strcpy(temp, current_dir);
-
-        temp[strlen(temp) - 1] = 0;
-
-        strcat(temp, dname);
-
-        temp[strlen(temp) - 1] = 0;
-        temp[strlen(temp) - 1] = 0;
-
-        strcpy(dname, temp);
-    }
-
-
-    if (dname[strlen(dname) - 1] != '/') {
-        strcat(dname, "/");
-    }
-
-    if (vfs_exists(dname) && vfs_is_dir(dname)) {
-        strcpy(current_dir, dname);
-    } else {
-        tty_setcolor(COLOR_ERROR);
-        tty_printf("cd: no such directory\n");
-    }
-}
-
-
-/**
- * @brief Вывод содержимого файла
- * 
- * @param fname - имя файла
- */
-void cat(char *fname) {
-    if (fname[0] != '/') {
-        char temp[256];
-
-        strcpy(temp, current_dir);
-        temp[strlen(temp) - 1] = 0;
-
-        strcat(temp, fname);
-
-        temp[strlen(temp) - 1] = 0;
-        temp[strlen(temp) - 1] = 0;
-
-        strcpy(fname, temp);
-    }
-
-    char *buf = (char*) kheap_malloc(2048);
-
-    if (!vfs_exists(fname)) {
-        tty_setcolor(COLOR_ERROR);
-        tty_printf("cat: error file not found\n");
-    } else {
-        uint32_t fsize = vfs_get_size(fname);
-        vfs_read(fname, 0, fsize, buf);
-
-        buf[fsize] = '\0';
-
-        tty_printf("%s:\n\n%s\n", fname, buf);
-
-        kheap_free(buf);
-    }
-}
-
-
-/**
- * @brief Вывод информации о системе
- * 
- */
-void sysinfo(){
-    tty_printf("                       ........--........        SynapseOS by Aren Elchinyan\n");
-    tty_printf("                       ....+***:**+*....         Arch %s\n", ARCH_TYPE);
-    tty_printf("                         .**.......**....        Ticks: %d\n", timer_get_ticks());
-    tty_printf("                       ...**.......**...                        \n");
-    tty_printf("                        ..:**.....-**....                       \n");
-    tty_printf("                       . ...+******.....                        \n");
-    tty_printf("                        .  ...***...                            \n");
-    tty_printf("                           ...:**..                             \n");
-    tty_printf("                            ..+**...... .                       \n");
-    tty_printf("                            ..+*+.......                        \n");
-    tty_printf("                    . ........-******:.. ...                    \n");
-    tty_printf("                    ....**..........+**-... .                   \n");
-    tty_printf("                     .-**....:***+....***....                   \n");
-    tty_printf("                    ..**....********...**...                    \n");
-    tty_printf("                   ...**...+********...**-.                     \n");
-    tty_printf("                    ..+*-...*******:...**...                    \n");
-    tty_printf(".  ...........  ......***-....+**-....***-.... ....... ......   \n");
-    tty_printf("  ................-*****+**-........***-+***:.....*****:....    \n");
-    tty_printf("....********...:****......+*********+......+*****+:....+*+..    \n");
-    tty_printf("..***......***+*-...  . . ............  ......:**........*+.    \n");
-    tty_printf(".**.. . .. .-**.         ..   .  .    ...  ...**.... ....**.    \n");
-    tty_printf("**+.    . ...**..                           . .+*.......-*+..   \n");
-    tty_printf(".+*..........**.                            ....+**:..****..    \n");
-    tty_printf(".***.......-**..                            .......-+*.......   \n");
-    tty_printf("...+********+...                            ..  .  .   .        \n");
-    tty_printf("................                                                  ");
-}
-
-
-/**
- * @brief Интерпритация языка SBF
- * 
- * @param src - код
- */
-void sbf(char *src){
-    char buffer[30000] = {0};
-    int32_t cursor = 0, loop = 0, current_char = 0;
-
-    for (int32_t i = 0; src[i] != 0; i++) {
-        switch (src[i]) {
-            case '+':
-                buffer[cursor]++;
-                break;
-            case '-':
-                buffer[cursor]--;
-                break;
-            case '>':
-                cursor++;
-                break;
-            case '<':
-                cursor--;
-                break;
-            case '.':
-                tty_putchar(buffer[cursor]);
-                break;
-            case ',':
-                buffer[cursor] = keyboard_getchar();
-                break;
-            case '[':
-                break;
-            case ']':
-                if (buffer[cursor]) {
-                    loop = 1;
-
-                    while ( loop > 0){
-                        current_char = src[--i];
-                        if (current_char == '['){
-                            loop--;
-                        } else if (current_char == ']'){
-                            loop++;
-                        }
-                    }
-                }
-                break;
-            case '0':
-                buffer[cursor] = 0;
-                break;
-            case '1':
-                buffer[cursor] = 1;
-                break;
-            case '2':
-                buffer[cursor] += 2;
-                break;
-            case '3':
-                buffer[cursor] += 3;
-                break;
-            case '4':
-                buffer[cursor] += 4;
-                break;
-            case '5':
-                buffer[cursor] += 5;
-                break;
-            case '6':
-                buffer[cursor] += 6;
-                break;
-            case '7':
-                buffer[cursor] += 7;
-                break;
-            case '8':
-                buffer[cursor] += 8;
-                break;
-            case '9':
-                buffer[cursor] += 9;
-                break;
-            
-            default:
-                break;
-        }
+    if (!comrun) {
+        run_elf(cmd);
+    }        
     }
 }
