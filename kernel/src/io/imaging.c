@@ -1,7 +1,7 @@
 /**
+ * @file imaging.c
  * @brief Встраиваемая библиотека рисования изображений формата Duke
- * @author Андрей(Давид) Павленко
- * @license GNU GPL 3.0
+ * @author Андрей(Давид) Павленко (andrejpavlenko666@gmail.com)
  * @version 1.0
  * @date 26.07.2022
 */
@@ -9,6 +9,13 @@
 #include <drivers/vfs.h>
 #include <mem/kheap.h>
 #include <io/imaging.h>
+
+/**
+ * @brief Получает метаданные изображения Duke.
+ * @param filename - Имя файла
+ * @return Структуру с метаданными при успехе
+ * @return 0 При ошибке
+ */
 
 struct DukeImageMeta* get_image_metadata(char *filename) {
     char meta[9];
@@ -23,7 +30,8 @@ struct DukeImageMeta* get_image_metadata(char *filename) {
  * @param filename - Имя файла
  * @param sx - Координата x
  * @param sy - Координата y
- * @return 0 - OK, 1 - ERROR
+ * @return 0 - OK
+ * @return 1 - ERROR
  */
 char draw_from_file(char *filename, int sx, int sy) {
     char meta[9];

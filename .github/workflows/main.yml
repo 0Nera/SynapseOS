@@ -27,26 +27,47 @@ jobs:
       # Установка зависимостей
       - name: Installing
         run: |
-          sudo apt install python3 grub-pc-bin xorriso mtools llvm lld fasm
-
+          sudo apt install python3 build-essential xorriso grub-pc-bin mtools llvm lld fasm zip doxygen
           
-      # Запуск сборки
+      # Запуск сборки ядра
       - name: Building  kernel
         run: python3 build.py kernel
 
+      # Запуск сборки ПО
       - name: Building  apps
         run: python3 build.py apps
 
+      # Создание дистрибутива
       - name: Building  iso
         run: python3 build.py iso isol
+      
+      # Запуск Doxygen
+      - name: Doxygen
+        run: |
+          sudo doxygen Doxyfile
+          ls docs/doxygen/
+          ls
 
-      # Публикация релиза
-      - name: Publish
+      # Проверка релиза
+      - name: Check publish
         run: |
           echo "done!"
           ls isodir/boot/
           ls
+        
+      # Публикация документации
+      - name: Publish docs
+        run: |
+          git clone https://github.com/0nera/SynapseOS.git -b site
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: Github
+          author_email: github@example.com
+          message: 'Deploy doxygen'
+          add: 'docs/doxygen/html/*'
 
+      # Публикация релиза
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -59,3 +80,4 @@ jobs:
             SynapseOS-limine.iso
             isodir/boot/initrd.tar
             isodir/boot/kernel.elf
+            docs/doxygen/rtf/refman.rtf

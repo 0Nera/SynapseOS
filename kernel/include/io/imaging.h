@@ -1,5 +1,19 @@
+/**
+ * @file imaging.h
+ * @brief Описания функций imaging.h
+ * @author Андрей(Давид) Павленко (andrejpavlenko666@gmail.com)
+ */
+
 #ifndef IMAGING_H
 #define IMAGING_H
+
+/**
+ * @brief Структура изображения Duke.
+ * @param width - ширина
+ * @param height - высота
+ * @param data_length - длина всех "сырых" пикселей
+ * @param alpha - указывает на наличие альфа слоя
+ */
 
 struct DukeImageMeta {
     short width;
