@@ -58,14 +58,12 @@ jobs:
         
       # Публикация документации
       - name: Publish docs
-        run: |
-          git clone https://github.com/0nera/SynapseOS.git -b site
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
           author_name: Github
           author_email: github@example.com
-          message: 'Deploy doxygen'
+          message: 'документация: Обновление документации с помощью doxygen [Автосборка]'
           add: 'docs/doxygen/html/*'
 
       # Публикация релиза
@@ -74,7 +72,8 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest-unstable"
           prerelease: true
-          title: "Автосборка, нестабильный релиз"
+          title: "[Автосборка] Нестабильный релиз"
+          description: "Внимание! Данный релиз собран из последних изменений в ядре! Это не окончательная версия содержит ошибки и не рекомендуется к запуску без проверки на виртуальной машине."
           files: |
             LICENSE
             SynapseOS.iso
