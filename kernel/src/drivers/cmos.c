@@ -1,3 +1,9 @@
+/**
+ * @file cmos.c
+ * @brief Драйвер CMOS
+ * @author Арен Елчинян (a2.dev@yandex.com), Андрей(Давид) Павленко (andrejpavlenko666@gmail.com)
+ */
+ 
 #include <kernel.h>
 
 #define CURRENT_YEAR        2022    // Change this each year!
@@ -25,23 +31,28 @@ enum {
     cmos_address = 0x70,
     cmos_data    = 0x71
 };
- 
+
+/**
+ * @brief Проверяет CMOS на обновление
+ */
 int32_t get_update_in_progress_flag() {
     outb(cmos_address, 0x0A);
     return (inb(cmos_data) & 0x80);
 }
- 
+
+/**
+ * @brief Получает регистр CMOS
+ */
 unsigned char get_RTC_register(int32_t reg) {
     outb(cmos_address, reg);
     return inb(cmos_data);
 }
+
+/**
+ * @brief Считывает время с CMOS
+ */
  
 void read_rtc() {
-
- 
-    // Note: This uses the "read registers until you get the same values twice in a row" technique
-    //     to avoid getting dodgy/inconsistent values due to RTC updates
- 
     while (get_update_in_progress_flag());          // Make sure an update isn't in progress
     second = get_RTC_register(0x00);
     minute = get_RTC_register(0x02);
@@ -108,10 +119,16 @@ void read_rtc() {
     }
 }
 
+/**
+ * @brief Это високосный год?
+ */
 int isleap(int year) {
     return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
 }
 
+/**
+ * @brief Считывает время и передает в удобной структуре
+ */
 struct synapse_time get_time() {
     read_rtc();
 	struct synapse_time time = {
@@ -120,6 +137,10 @@ struct synapse_time get_time() {
 	return time;
 }
 
+/**
+ * @brief Вычисляет время UNIX
+ * @warning Через каждые 1.78 лет время отстаеь на 33555600 секунд
+ */
 unsigned int synapse_time_to_unix(struct synapse_time ktime) {
 	unsigned int t = 0;
 	unsigned char cmdt = (isleap(ktime.year)?synapse_months_leap[ktime.month-1]:synapse_months[ktime.month-1]);
