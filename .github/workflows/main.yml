@@ -57,7 +57,6 @@ jobs:
           ls
         
       # Публикация документации
-      - name: Publish docs
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
@@ -67,7 +66,8 @@ jobs:
           add: 'docs/doxygen/html/*'
 
       # Публикация релиза
-      - uses: "marvinpinto/action-automatic-releases@latest"
+      - name: Publish release
+        uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest-unstable"
