@@ -6,9 +6,10 @@
  * @date 26.07.2022
 */
 
-#include <drivers/vfs.h>
-#include <mem/kheap.h>
+// #include <drivers/vfs.h>
+// #include <mem/kheap.h>
 #include <io/imaging.h>
+#include <kernel.h>
 
 /**
  * @brief Получает метаданные изображения Duke.
@@ -39,6 +40,7 @@ char draw_from_file(char *filename, int sx, int sy) {
         vfs_read(filename, 0, 9, meta);
         struct DukeImageMeta* realmeta = (struct DukeImageMeta*)meta;
 
+        qemu_log("Allocating %d bytes for image", realmeta->data_length); // Это тоже пофиксило падение, но ПОЧЕМУ??? (llvm-10)
         char *imagedata = kheap_malloc(realmeta->data_length);
         
         vfs_read(filename, 8, realmeta->data_length, imagedata);
@@ -63,6 +65,7 @@ char draw_from_file(char *filename, int sx, int sy) {
         }
 
         kheap_free(imagedata);
+        qemu_log("Freeing memory...");
     }else{ return 1; }
     return 0;
 }

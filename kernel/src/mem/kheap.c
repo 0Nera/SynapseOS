@@ -25,9 +25,9 @@ void *kheap_morecore(uint32_t size) {
     }
 
     void *first_kheap_end = (void*)kheap_end; // Установка адреса возврата
-    
+
     // Создание страниц
-    for (int32_t pages = (size / PAGE_SIZE) + 1; pages-- > 0; kheap_end += PAGE_SIZE) {
+    for (uint32_t pages = (size / PAGE_SIZE) + 1; pages-- > 0; kheap_end += PAGE_SIZE) {
         vmm_alloc_page(kheap_end);
         memset((void*)kheap_end, 0x00, PAGE_SIZE);
     }
