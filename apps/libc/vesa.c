@@ -1,5 +1,22 @@
 #include <vesa.h>
 
+/**
+ * @brief Очистка экрана
+ * 
+ */
+void clean_screen(){
+    for (int32_t x = 0; x < VESA_WIDTH; x++){
+        for (int32_t y = 0; y < VESA_HEIGHT; y++){
+            set_pixel(x, y, VESA_BLACK);
+        }
+    }
+
+    tty_pos_x = 0;
+    tty_pos_y = -17;
+
+    qemu_log("Screan cleaned!");
+}
+
 
 
 long abs(long l) {
