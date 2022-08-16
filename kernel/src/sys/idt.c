@@ -299,8 +299,10 @@ void fault_handler(struct regs *r) {
     struct stackframe *stk;
     asm("movl %%ebp, %0" : "=r"(stk) ::);
     tty_printf("Stack trace (Addresses only):\n");
+    qemu_log("Stack trace (Addresses only):\n");
     for(unsigned int frame = 0; stk && frame < 16; ++frame) {
         tty_printf("    %d. %x\n", 16-frame, stk->eip);
+        qemu_log("    %d. %x\n", 16-frame, stk->eip);
         stk = stk->ebp;
     }
     tty_printf("======[End of stack trace]======\n");
