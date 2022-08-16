@@ -387,53 +387,55 @@ $(document).ready(function(){initNavTree('d5/d05/idt_8c_source.html','../../'); 
 <div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    <span class="keyword">struct </span>stackframe *stk;</div>
 <div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    <span class="keyword">asm</span>(<span class="stringliteral">&quot;movl %%ebp, %0&quot;</span> : <span class="stringliteral">&quot;=r&quot;</span>(stk) ::);</div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    <a class="code" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;Stack trace (Addresses only):\n&quot;</span>);</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="keywordflow">for</span>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> frame = 0; stk &amp;&amp; frame &lt; 16; ++frame) {</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        <a class="code" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;    %d. %x\n&quot;</span>, 16-frame, stk-&gt;eip);</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        stk = stk-&gt;ebp;</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    }</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    <a class="code" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;======[End of stack trace]======\n&quot;</span>);</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160; </div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <span class="keywordflow">while</span>(1){</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;        <span class="keyword">asm</span> <span class="keyword">volatile</span>(<span class="stringliteral">&quot;hlt&quot;</span>);</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    }</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;}</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160; </div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;<span class="keywordtype">void</span> irq_handler(<span class="keyword">struct</span> <a class="code" href="../../d3/da0/structregs.html">regs</a> *r) {</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    <span class="comment">// Blank function pointer</span></div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    void (*handler)(<span class="keyword">struct </span><a class="code" href="../../d3/da0/structregs.html">regs</a> *r);</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160; </div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <span class="comment">// If there&#39;s a custom handler to handle the IRQ, handle it</span></div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    handler = interrupt_handlers[r-&gt;idt_index];</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <span class="keywordflow">if</span> (handler) {</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        handler(r);</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    }</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160; </div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    <span class="comment">// If the IDT entry that was invoked was greater than 40, sends an EOI</span></div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    <span class="comment">// to the slave controller</span></div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    <span class="keywordflow">if</span> (r-&gt;idt_index &gt;= 40) {</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        <a class="code" href="../../d0/d6e/ports_8c.html#a8bf7a9af91c08e6f876aaffeccd48ff3">outb</a>(0xA0, 0x20);</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    }</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160; </div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    <span class="comment">// Sends an EOI to the master interrupt controller</span></div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    <a class="code" href="../../d0/d6e/ports_8c.html#a8bf7a9af91c08e6f876aaffeccd48ff3">outb</a>(0x20, 0x20);</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;}</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160; </div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;<span class="keywordtype">void</span> run_interrupt_handler(<span class="keyword">struct</span> <a class="code" href="../../d3/da0/structregs.html">regs</a>* r) {</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    <span class="keywordtype">size_t</span> idt_index = r-&gt;idt_index;</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    <span class="keywordflow">if</span> (idt_index &lt; 32) {</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        fault_handler(r);</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    }</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160; </div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;    <span class="keywordflow">if</span> (idt_index &gt;= 32 &amp;&amp; idt_index &lt;= 47) {</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;        irq_handler(r);</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    }</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160; </div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    <span class="keywordflow">if</span> (interrupt_handlers[r-&gt;idt_index] != NULL) {</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;        interrupt_handlers[r-&gt;idt_index](r);</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    }</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;}</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    qemu_log(<span class="stringliteral">&quot;Stack trace (Addresses only):\n&quot;</span>);</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    <span class="keywordflow">for</span>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> frame = 0; stk &amp;&amp; frame &lt; 16; ++frame) {</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        <a class="code" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;    %d. %x\n&quot;</span>, 16-frame, stk-&gt;eip);</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        qemu_log(<span class="stringliteral">&quot;    %d. %x\n&quot;</span>, 16-frame, stk-&gt;eip);</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        stk = stk-&gt;ebp;</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    }</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <a class="code" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;======[End of stack trace]======\n&quot;</span>);</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160; </div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    <span class="keywordflow">while</span>(1){</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        <span class="keyword">asm</span> <span class="keyword">volatile</span>(<span class="stringliteral">&quot;hlt&quot;</span>);</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    }</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;}</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160; </div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;<span class="keywordtype">void</span> irq_handler(<span class="keyword">struct</span> <a class="code" href="../../d3/da0/structregs.html">regs</a> *r) {</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    <span class="comment">// Blank function pointer</span></div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    void (*handler)(<span class="keyword">struct </span><a class="code" href="../../d3/da0/structregs.html">regs</a> *r);</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160; </div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <span class="comment">// If there&#39;s a custom handler to handle the IRQ, handle it</span></div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    handler = interrupt_handlers[r-&gt;idt_index];</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    <span class="keywordflow">if</span> (handler) {</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        handler(r);</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    }</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160; </div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    <span class="comment">// If the IDT entry that was invoked was greater than 40, sends an EOI</span></div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    <span class="comment">// to the slave controller</span></div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    <span class="keywordflow">if</span> (r-&gt;idt_index &gt;= 40) {</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        <a class="code" href="../../d0/d6e/ports_8c.html#a8bf7a9af91c08e6f876aaffeccd48ff3">outb</a>(0xA0, 0x20);</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    }</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160; </div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    <span class="comment">// Sends an EOI to the master interrupt controller</span></div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    <a class="code" href="../../d0/d6e/ports_8c.html#a8bf7a9af91c08e6f876aaffeccd48ff3">outb</a>(0x20, 0x20);</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;}</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160; </div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;<span class="keywordtype">void</span> run_interrupt_handler(<span class="keyword">struct</span> <a class="code" href="../../d3/da0/structregs.html">regs</a>* r) {</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    <span class="keywordtype">size_t</span> idt_index = r-&gt;idt_index;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    <span class="keywordflow">if</span> (idt_index &lt; 32) {</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        fault_handler(r);</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;    }</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160; </div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    <span class="keywordflow">if</span> (idt_index &gt;= 32 &amp;&amp; idt_index &lt;= 47) {</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        irq_handler(r);</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    }</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160; </div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    <span class="keywordflow">if</span> (interrupt_handlers[r-&gt;idt_index] != NULL) {</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;        interrupt_handlers[r-&gt;idt_index](r);</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    }</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="astructregs_html"><div class="ttname"><a href="../../d3/da0/structregs.html">regs</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d35/idt_8h_source.html#l00040">idt.h:40</a></div></div>
@@ -446,7 +448,7 @@ $(document).ready(function(){initNavTree('d5/d05/idt_8c_source.html','../../'); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_3dd30a497388ee684638f120a124721c.html">src</a></li><li class="navelem"><a class="el" href="../../dir_6a36b0b389513c9a28150157f1e6f252.html">sys</a></li><li class="navelem"><b>idt.c</b></li>
-    <li class="footer">Документация по SynapseOS. Последние изменения: Вт 16 Авг 2022 01:44:15. Создано системой
+    <li class="footer">Документация по SynapseOS. Последние изменения: Вт 16 Авг 2022 05:11:34. Создано системой
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
