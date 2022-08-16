@@ -26,3 +26,4 @@ enum colors  {
 };
 
 void draw_pixel(int x, int y, unsigned int color);
+void clean_screen();
