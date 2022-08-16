@@ -70,6 +70,7 @@ def build_all():
     build("compile", "examples/C/char.c", "./bin/char.o")
     build("compile", "apps/0Nera/NeraMath/main.c", "./bin/NeraMath.o")
     build("compile", "apps/0Nera/VGGI/main.c", "./bin/VGGI.o")
+    build("compile", "apps/Noverdo/snake-paint/snake-paint.c", "./bin/snakepaint.o")
     build("compile", "games/kernelmode_power/snake/snake.c", "./bin/snake.o")
     build("compile", "examples/C/test.c", "./bin/test.o")
     build("compile", "apps/NDRAEY/ImageView/imageview.c", "./bin/imageview.o")
@@ -105,6 +106,7 @@ def build_all():
     build("link", "./bin/imageview.o" + O_LIBC, "../bin/apps/imageview")
     build("link", "./bin/melody.o" + O_LIBC, "../bin/apps/melody")
     build("link", "./bin/chronicles.o" + O_LIBC, "../bin/apps/chronicles")
+    build("link", "./bin/snakepaint.o" + O_LIBC, "../bin/apps/snakepaint")
 
     try:
         if shutil.which("fasm"):
