@@ -36,6 +36,7 @@ var annotated_dup =
     [ "STFS_folder", "d3/d49/struct_s_t_f_s__folder.html", "d3/d49/struct_s_t_f_s__folder" ],
     [ "svga_mode_info", "d2/dfd/structsvga__mode__info.html", "d2/dfd/structsvga__mode__info" ],
     [ "synapse_time", "dd/d67/structsynapse__time.html", "dd/d67/structsynapse__time" ],
+    [ "SynapseTTYInfo", "d0/da1/struct_synapse_t_t_y_info.html", "d0/da1/struct_synapse_t_t_y_info" ],
     [ "tss_entry", "d5/d29/structtss__entry.html", "d5/d29/structtss__entry" ],
     [ "udp_packet", "df/def/structudp__packet.html", "df/def/structudp__packet" ],
     [ "vfs_filesystem_handles_t", "d1/daa/structvfs__filesystem__handles__t.html", "d1/daa/structvfs__filesystem__handles__t" ],
