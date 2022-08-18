@@ -18,7 +18,7 @@ print("[\x1b[32;1mCONFIGURATION\x1b[0m] Using linker:", LD)
 AR = "llvm-ar"
 _O_LIBC = ["./bin/libc/stdio.o", "./bin/libc/math.o", "./bin/libc/ctype.o",
           "./bin/libc/ports.o","./bin/libc/stdlib.o","./bin/libc/string.o",
-          "./bin/libc/learntask.o","./bin/libc/vesa.o","./bin/libc/scancodes.o"]
+          "./bin/libc/learntask.o","./bin/libc/vesa.o","./bin/libc/scancodes.o", "./bin/libc/time.o"]
 O_LIBC = ' ' + ' '.join(_O_LIBC)
 data = []
 files = []
@@ -76,6 +76,7 @@ def build_all():
     build("compile", "apps/NDRAEY/ImageView/imageview.c", "./bin/imageview.o")
     build("compile", "apps/NDRAEY/Melody/melody.c", "./bin/melody.o")
     build("compile", "examples/gas/chronicles.asm", "./bin/chronicles.o")
+    build("compile", "examples/C/memory.c", "./bin/memtest.o")
 
     print("[\x1b[33;1mNOTICE\x1b[0m] Building libc")
     '''
@@ -91,9 +92,10 @@ def build_all():
     build("compile", "libc/vesa.c", "./bin/libc/vesa.o")
     build("compile", "libc/scancodes.c", "./bin/libc/scancodes.o")
     build("compile", "libc/ctype.c", "./bin/libc/ctype.o")
+    build("compile", "libc/time.c", "./bin/libc/time.o")
 
     print("[\x1b[33;1mNOTICE\x1b[0m] Linking apps")
-    # There we should swap the second and third arguments (acctording to original code)
+    # There we should swap the second and third arguments (according to original code)
     build("link", "./bin/HelloWorld.o" + O_LIBC, "../bin/apps/hi")
     build("link", "./bin/popsort_int_test.o" + O_LIBC, "../bin/apps/sort")
     build("link", "./bin/vesa_Russia.o" + O_LIBC, "../bin/apps/Russia", )
@@ -107,6 +109,7 @@ def build_all():
     build("link", "./bin/melody.o" + O_LIBC, "../bin/apps/melody")
     build("link", "./bin/chronicles.o" + O_LIBC, "../bin/apps/chronicles")
     build("link", "./bin/snakepaint.o" + O_LIBC, "../bin/apps/snakepaint")
+    build("link", "./bin/memtest.o" + O_LIBC, "../bin/apps/memtest")
 
     try:
         if shutil.which("fasm"):

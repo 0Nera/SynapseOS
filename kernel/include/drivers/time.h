@@ -30,4 +30,5 @@ uint32_t timer_get_ticks();
 void sleep(uint32_t delay);
 void sleep_ms(uint32_t delay);
 struct synapse_time get_time();
+struct synapse_time* get_time_pointer();
 unsigned int synapse_time_to_unix(struct synapse_time ktime);

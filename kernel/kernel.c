@@ -103,7 +103,9 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
         tty_printf("\nFloppy: ERROR\n");
     }
     //tty_printf("\n%d\n%s\n", 101/10, format_string("Hello! %d, %x, %c, %s", 120, 0x90, 'H', "Hi!"));
-    draw_from_file("/initrd/res/SynapseOSLogo.duke", getWidthScreen()-106, 36);
+    
+    //duke_draw_scaled("/initrd/res/Sovrum/Carol_Tea_Theme.duke", getWidthScreen()-1, getHeightScreen()-1, 0, 0);
+    duke_draw_from_file("/initrd/res/SynapseOSLogo.duke", getWidthScreen()-106, 36);
 
     shell();                                // Активация терминала
     // Работает, но надо доделать 

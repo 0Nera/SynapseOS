@@ -34,6 +34,15 @@ int32_t tty_pos_y;
 
 uint32_t tty_text_color;
 
+SynapseTTYInfo* get_tty_info() {
+    SynapseTTYInfo* ty;
+    ty->width = framebuffer_width;
+    ty->height = framebuffer_height;
+    ty->x = tty_pos_x;
+    ty->y = tty_pos_y;
+    return ty;
+}
+
 /**
  * @brief Слияние символа и цвета, для вывода
  * 

@@ -139,9 +139,12 @@ void shell() {
             tok = (char *)strtok(0, " "); // tok - имя файла
             
             if (fname[0] == 0) {
-                struct DukeImageMeta* data = get_image_metadata(tok);
+                struct DukeImageMeta* data = duke_get_image_metadata(tok);
                 if(data!=0) {
-                    draw_from_file(tok, getWidthScreen() - data->width - 8, 0);
+                    duke_draw_from_file(tok, getWidthScreen() - data->width - 8, 0);
+                }else{
+                    tty_setcolor(COLOR_ERROR);
+                    tty_printf("view: failed to read an Duke image!\n");
                 }
             } else {
                 tty_setcolor(COLOR_ERROR);
