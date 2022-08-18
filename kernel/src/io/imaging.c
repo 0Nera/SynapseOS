@@ -43,7 +43,7 @@ char draw_from_file(char *filename, int sx, int sy) {
         qemu_log("Allocating %d bytes for image", realmeta->data_length); // Это тоже пофиксило падение, но ПОЧЕМУ??? (llvm-10)
         char *imagedata = kheap_malloc(realmeta->data_length);
         
-        vfs_read(filename, 8, realmeta->data_length, imagedata);
+        vfs_read(filename, 9, realmeta->data_length, imagedata);
 
         int x = 0, y = 0;
         char mod = realmeta->alpha?4:3;
@@ -68,6 +68,19 @@ char draw_from_file(char *filename, int sx, int sy) {
         qemu_log("Freeing memory...");
     }else{ return 1; }
     return 0;
+}
+
+void duke_scale(int* pixels, unsigned int w1, unsigned int h1, int w2, int h2, int* out) {
+    int x_ratio = (int)((w1<<16)/w2)+1;
+    int y_ratio = (int)((h1<<16)/h2)+1;
+    int x2, y2;
+    for (int i=0;i<h2;i++) {
+          for (int j=0;j<w2;j++) {
+              x2 = ((j*x_ratio)>>16);
+              y2 = ((i*y_ratio)>>16);
+              out[(i*w2)+j] = pixels[(y2*w1)+x2];
+          }                
+    }
 }
 
 /**
