@@ -695,7 +695,7 @@ bool tui(){
             }
             lastUpdate = timer_get_ticks()+5;
             continue;
-        } else if (keyLastInset() == 91){
+        } else if (keyLastInset() == 91 || keyLastInset()==59){ // Win key!
             cleanWorkSpace(TUI_BASE_COLOR_BODY);
             listMenu[0] = "Info PC";
             listMenu[1] = "List PCI-Devices";
