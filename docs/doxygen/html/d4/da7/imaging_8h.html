@@ -104,12 +104,27 @@ $(document).ready(function(){initNavTree('d4/da7/imaging_8h.html','../../'); ini
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Функции</h2></td></tr>
-<tr class="memitem:a94162b71ba9ea38a9b6c53cff178b792"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/da7/imaging_8h.html#a94162b71ba9ea38a9b6c53cff178b792">draw_from_file</a> (char *filename, int sx, int sy)</td></tr>
-<tr class="memdesc:a94162b71ba9ea38a9b6c53cff178b792"><td class="mdescLeft">&#160;</td><td class="mdescRight">Функция отрисовки изображения  <a href="../../d4/da7/imaging_8h.html#a94162b71ba9ea38a9b6c53cff178b792">Подробнее...</a><br /></td></tr>
-<tr class="separator:a94162b71ba9ea38a9b6c53cff178b792"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a372bdbdcfe4dbee62bd3a20884fd6f9e"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="../../d0/d76/struct_duke_image_meta.html">DukeImageMeta</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/da7/imaging_8h.html#a372bdbdcfe4dbee62bd3a20884fd6f9e">get_image_metadata</a> (char *filename)</td></tr>
-<tr class="memdesc:a372bdbdcfe4dbee62bd3a20884fd6f9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Получает метаданные изображения Duke.  <a href="../../d4/da7/imaging_8h.html#a372bdbdcfe4dbee62bd3a20884fd6f9e">Подробнее...</a><br /></td></tr>
-<tr class="separator:a372bdbdcfe4dbee62bd3a20884fd6f9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac43168fd2c97f024521f901f29cd7de2"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/da7/imaging_8h.html#ac43168fd2c97f024521f901f29cd7de2">duke_draw_from_file</a> (char *filename, int sx, int sy)</td></tr>
+<tr class="memdesc:ac43168fd2c97f024521f901f29cd7de2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Функция отрисовки изображения  <a href="../../d4/da7/imaging_8h.html#ac43168fd2c97f024521f901f29cd7de2">Подробнее...</a><br /></td></tr>
+<tr class="separator:ac43168fd2c97f024521f901f29cd7de2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4625875c5ef6feb5c4772c08cbab3070"><td class="memItemLeft" align="right" valign="top">struct DukeImageMetadata *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/da7/imaging_8h.html#a4625875c5ef6feb5c4772c08cbab3070">duke_get_image_metadata</a> (char *filename)</td></tr>
+<tr class="memdesc:a4625875c5ef6feb5c4772c08cbab3070"><td class="mdescLeft">&#160;</td><td class="mdescRight">Получает метаданные изображения Duke.  <a href="../../d4/da7/imaging_8h.html#a4625875c5ef6feb5c4772c08cbab3070">Подробнее...</a><br /></td></tr>
+<tr class="separator:a4625875c5ef6feb5c4772c08cbab3070"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a152368e41326c80549c795874292f399"><td class="memItemLeft" align="right" valign="top"><a id="a152368e41326c80549c795874292f399"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>duke_get_image_data</b> (char *filename, struct <a class="el" href="../../d0/d76/struct_duke_image_meta.html">DukeImageMeta</a> meta, char *out)</td></tr>
+<tr class="separator:a152368e41326c80549c795874292f399"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe73e6b32826b5fad72c85b5b9785b06"><td class="memItemLeft" align="right" valign="top"><a id="afe73e6b32826b5fad72c85b5b9785b06"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>duke_calculate_bufsize</b> (unsigned int width, unsigned int height, unsigned int alpha)</td></tr>
+<tr class="separator:afe73e6b32826b5fad72c85b5b9785b06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd74b6ac175d1edbae62bb5dd3387aa9"><td class="memItemLeft" align="right" valign="top"><a id="abd74b6ac175d1edbae62bb5dd3387aa9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>duke_rawdraw</b> (char *data, struct <a class="el" href="../../d0/d76/struct_duke_image_meta.html">DukeImageMeta</a> *meta, int sx, int sy)</td></tr>
+<tr class="separator:abd74b6ac175d1edbae62bb5dd3387aa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb7c0ec51e3e084542fa585eb82861ea"><td class="memItemLeft" align="right" valign="top"><a id="adb7c0ec51e3e084542fa585eb82861ea"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>duke_scale</b> (char *pixels, unsigned int w1, unsigned int h1, int w2, int h2, char alpha, char *out)</td></tr>
+<tr class="separator:adb7c0ec51e3e084542fa585eb82861ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf7fda803c46c30ce2eb44390e8283ae"><td class="memItemLeft" align="right" valign="top"><a id="abf7fda803c46c30ce2eb44390e8283ae"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>duke_draw_scaled</b> (char *filename, int width, int height, int x, int y)</td></tr>
+<tr class="separator:abf7fda803c46c30ce2eb44390e8283ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Переменные</h2></td></tr>
@@ -123,14 +138,14 @@ struct <a class="el" href="../../d0/d76/struct_duke_image_meta.html">DukeImageMe
 
 <p class="definition">См. определение в файле <a class="el" href="../../d4/da7/imaging_8h_source.html">imaging.h</a></p>
 </div><h2 class="groupheader">Функции</h2>
-<a id="a94162b71ba9ea38a9b6c53cff178b792"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a94162b71ba9ea38a9b6c53cff178b792">&#9670;&nbsp;</a></span>draw_from_file()</h2>
+<a id="ac43168fd2c97f024521f901f29cd7de2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac43168fd2c97f024521f901f29cd7de2">&#9670;&nbsp;</a></span>duke_draw_from_file()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">char draw_from_file </td>
+          <td class="memname">char duke_draw_from_file </td>
           <td>(</td>
           <td class="paramtype">char *&#160;</td>
           <td class="paramname"><em>filename</em>, </td>
@@ -168,18 +183,18 @@ struct <a class="el" href="../../d0/d76/struct_duke_image_meta.html">DukeImageMe
 <dd>
 1 - ERROR </dd></dl>
 
-<p class="definition">См. определение в файле <a class="el" href="../../d8/d6d/imaging_8c_source.html">imaging.c</a> строка <a class="el" href="../../d8/d6d/imaging_8c_source.html#l00037">37</a></p>
+<p class="definition">См. определение в файле <a class="el" href="../../d8/d6d/imaging_8c_source.html">imaging.c</a> строка <a class="el" href="../../d8/d6d/imaging_8c_source.html#l00042">42</a></p>
 
 </div>
 </div>
-<a id="a372bdbdcfe4dbee62bd3a20884fd6f9e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a372bdbdcfe4dbee62bd3a20884fd6f9e">&#9670;&nbsp;</a></span>get_image_metadata()</h2>
+<a id="a4625875c5ef6feb5c4772c08cbab3070"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4625875c5ef6feb5c4772c08cbab3070">&#9670;&nbsp;</a></span>duke_get_image_metadata()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="../../d0/d76/struct_duke_image_meta.html">DukeImageMeta</a>* get_image_metadata </td>
+          <td class="memname">struct DukeImageMetadata* duke_get_image_metadata </td>
           <td>(</td>
           <td class="paramtype">char *&#160;</td>
           <td class="paramname"><em>filename</em></td><td>)</td>
@@ -199,7 +214,7 @@ struct <a class="el" href="../../d0/d76/struct_duke_image_meta.html">DukeImageMe
 <dd>
 0 При ошибке </dd></dl>
 
-<p class="definition">См. определение в файле <a class="el" href="../../d8/d6d/imaging_8c_source.html">imaging.c</a> строка <a class="el" href="../../d8/d6d/imaging_8c_source.html#l00021">21</a></p>
+<p class="definition">См. определение в файле <a class="el" href="../../d8/d6d/imaging_8c_source.html">imaging.c</a> строка <a class="el" href="../../d8/d6d/imaging_8c_source.html#l00019">19</a></p>
 
 </div>
 </div>
@@ -209,7 +224,7 @@ struct <a class="el" href="../../d0/d76/struct_duke_image_meta.html">DukeImageMe
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_009f605b833ac4622acd6c3c0c26c0f0.html">include</a></li><li class="navelem"><a class="el" href="../../dir_0ce41d1bfbdf4ab9b4258a3465401108.html">io</a></li><li class="navelem"><a class="el" href="../../d4/da7/imaging_8h.html">imaging.h</a></li>
-    <li class="footer">Документация по SynapseOS. Последние изменения: Вт 16 Авг 2022 15:59:30. Создано системой
+    <li class="footer">Документация по SynapseOS. Последние изменения: Чт 18 Авг 2022 12:09:01. Создано системой
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

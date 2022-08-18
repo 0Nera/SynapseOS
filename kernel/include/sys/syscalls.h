@@ -16,10 +16,12 @@
 #define SC_CODE_srand           21
 #define SC_CODE_putpixel        32
 #define SC_CODE_drawline        33
+#define SC_CODE_getttyinfo      34
 #define SC_CODE_version         40
 #define SC_CODE_newtask         41
 #define SC_CODE_ticks           42
 #define SC_CODE_getfreq         43
+#define SC_CODE_get_time        44
 
 void syscall_init();
 void syscall_handler(struct regs *r);

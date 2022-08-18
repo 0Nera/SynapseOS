@@ -24,6 +24,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Just lists all version of clang
+        run: sudo apt list "clang-*"
+
       # Установка зависимостей
       - name: Installing
         run: |

@@ -53,6 +53,10 @@ void printf(char *text, ...);
 uint32_t timer_get_ticks();
 uint32_t timer_get_freq();
 
+int vfs_read(const char *filename, int32_t offset, int32_t size, void *buf);
+int vfs_exists(const char* filename);
+int vfs_get_size(const char* filename);
+
 #define EOF -1
 #define SEEK_SET 1
 #define SEEK_CUR 2

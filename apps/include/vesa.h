@@ -2,8 +2,16 @@
 
 #include <stdint.h>
 
+typedef struct SynapseTTYInfo {
+    int x;
+    int y;
+    int width;
+    int height;
+} SynapseTTYInfo;
+
 #define SC_CODE_putpixel        32
 #define SC_CODE_drawline        33
+#define SC_CODE_getttyinfo      34
 #define SC_CODE_version         40
 
 enum colors  {
@@ -27,3 +35,4 @@ enum colors  {
 
 void draw_pixel(int x, int y, unsigned int color);
 void clean_screen();
+SynapseTTYInfo* get_tty_info();

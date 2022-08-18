@@ -5,6 +5,7 @@ var cmos_8c =
     [ "cmos_data", "df/d49/cmos_8c.html#abed82baf7f470b522273a3e37c24c600a8b6b21b2bbac8354a3c59c1c500ace50", null ],
     [ "get_RTC_register", "df/d49/cmos_8c.html#ad63adf5763a9bd203619a00f9ae4acd4", null ],
     [ "get_time", "df/d49/cmos_8c.html#a1e5f798ee4fd32e25464ff06fda11093", null ],
+    [ "get_time_pointer", "df/d49/cmos_8c.html#aea55b3847c288586e4a0350d92427369", null ],
     [ "get_update_in_progress_flag", "df/d49/cmos_8c.html#aebccc42f394adc52cab13340c36a9b08", null ],
     [ "isleap", "df/d49/cmos_8c.html#a19efe316ef878d9aaaa70e28b4b2c670", null ],
     [ "read_rtc", "df/d49/cmos_8c.html#aaad79a36175239b5f312059932b105dd", null ],

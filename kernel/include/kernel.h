@@ -33,6 +33,7 @@
 #include <io/tty.h>
 #include <io/vgafnt.h>
 #include <io/ports.h>
+#include <io/imaging.h>
 
 #include <sys/cpuinfo.h>
 #include <sys/system.h>

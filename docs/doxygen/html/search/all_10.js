@@ -9,5 +9,6 @@ var searchData=
   ['stfs_5ffolder_81',['STFS_folder',['../d3/d49/struct_s_t_f_s__folder.html',1,'']]],
   ['svga_5fmode_5finfo_82',['svga_mode_info',['../d2/dfd/structsvga__mode__info.html',1,'']]],
   ['synapse_5ftime_83',['synapse_time',['../dd/d67/structsynapse__time.html',1,'']]],
-  ['synapse_5ftime_5fto_5funix_84',['synapse_time_to_unix',['../df/d49/cmos_8c.html#a161db75293babc3da2ce46612cd858f5',1,'cmos.c']]]
+  ['synapse_5ftime_5fto_5funix_84',['synapse_time_to_unix',['../df/d49/cmos_8c.html#a161db75293babc3da2ce46612cd858f5',1,'cmos.c']]],
+  ['synapsettyinfo_85',['SynapseTTYInfo',['../d0/da1/struct_synapse_t_t_y_info.html',1,'']]]
 ];

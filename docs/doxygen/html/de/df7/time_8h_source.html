@@ -118,17 +118,18 @@ $(document).ready(function(){initNavTree('de/df7/time_8h_source.html','../../');
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keywordtype">void</span> sleep(uint32_t delay);</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keywordtype">void</span> sleep_ms(uint32_t delay);</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">struct </span><a class="code" href="../../dd/d67/structsynapse__time.html">synapse_time</a> <a class="code" href="../../df/d49/cmos_8c.html#a1e5f798ee4fd32e25464ff06fda11093">get_time</a>();</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="../../df/d49/cmos_8c.html#a161db75293babc3da2ce46612cd858f5">synapse_time_to_unix</a>(<span class="keyword">struct</span> <a class="code" href="../../dd/d67/structsynapse__time.html">synapse_time</a> ktime);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">struct </span><a class="code" href="../../dd/d67/structsynapse__time.html">synapse_time</a>* get_time_pointer();</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="../../df/d49/cmos_8c.html#a161db75293babc3da2ce46612cd858f5">synapse_time_to_unix</a>(<span class="keyword">struct</span> <a class="code" href="../../dd/d67/structsynapse__time.html">synapse_time</a> ktime);</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="astructsynapse__time_html"><div class="ttname"><a href="../../dd/d67/structsynapse__time.html">synapse_time</a></div><div class="ttdef"><b>Definition:</b> <a href="../../de/df7/time_8h_source.html#l00005">time.h:5</a></div></div>
-<div class="ttc" id="acmos_8c_html_a161db75293babc3da2ce46612cd858f5"><div class="ttname"><a href="../../df/d49/cmos_8c.html#a161db75293babc3da2ce46612cd858f5">synapse_time_to_unix</a></div><div class="ttdeci">unsigned int synapse_time_to_unix(struct synapse_time ktime)</div><div class="ttdoc">Вычисляет время UNIX.</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d49/cmos_8c_source.html#l00144">cmos.c:144</a></div></div>
+<div class="ttc" id="acmos_8c_html_a161db75293babc3da2ce46612cd858f5"><div class="ttname"><a href="../../df/d49/cmos_8c.html#a161db75293babc3da2ce46612cd858f5">synapse_time_to_unix</a></div><div class="ttdeci">unsigned int synapse_time_to_unix(struct synapse_time ktime)</div><div class="ttdoc">Вычисляет время UNIX.</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d49/cmos_8c_source.html#l00157">cmos.c:157</a></div></div>
 <div class="ttc" id="acmos_8c_html_a1e5f798ee4fd32e25464ff06fda11093"><div class="ttname"><a href="../../df/d49/cmos_8c.html#a1e5f798ee4fd32e25464ff06fda11093">get_time</a></div><div class="ttdeci">struct synapse_time get_time()</div><div class="ttdoc">Считывает время и передает в удобной структуре</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d49/cmos_8c_source.html#l00132">cmos.c:132</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_009f605b833ac4622acd6c3c0c26c0f0.html">include</a></li><li class="navelem"><a class="el" href="../../dir_c8660ea649945092ffc9f7148865f24e.html">drivers</a></li><li class="navelem"><b>time.h</b></li>
-    <li class="footer">Документация по SynapseOS. Последние изменения: Вт 16 Авг 2022 15:59:30. Создано системой
+    <li class="footer">Документация по SynapseOS. Последние изменения: Чт 18 Авг 2022 12:09:01. Создано системой
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

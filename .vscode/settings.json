@@ -1,6 +1,5 @@
 {
     "makefile.extensionOutputFolder": "./.vscode",
-    "C_Cpp.errorSquiggles": "Disabled",
     "files.associations": {
         "stdint.h": "c",
         "stdbool.h": "c",
@@ -12,5 +11,6 @@
         "stdio.h": "c",
         "sb16.h": "c",
         "assert.h": "c"
-    }
+    },
+    "C_Cpp.errorSquiggles": "Enabled"
 }
