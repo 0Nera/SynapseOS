@@ -172,7 +172,8 @@ void putchar(unsigned char ch) {
 
 void print(char *format, va_list args) {
     int i = 0;
-    char temp[2] = {0};
+	char temp[2] = {0};
+    //char *temp = malloc(2);
 
     while (format[i]) {
         if (format[i] == '%') {
@@ -207,6 +208,7 @@ void print(char *format, va_list args) {
         }
         i++;
     }
+	//free(temp);
 }
 
 

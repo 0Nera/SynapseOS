@@ -1,10 +1,16 @@
 import os, shutil, sys, tarfile, time, glob
 from reprlib import recursive_repr
 
+GCC = False # Switch this bool if you want to build with GCC (increases stability)
 
 _CC = "clang -target i386-pc-none-elf"
 LD = "ld.lld"
 CFLAGS = " -nostdlib -mno-sse -mno-avx -ggdb -O0 -ffreestanding -I kernel/include/ -c"
+
+if GCC:
+    _CC = "i686-linux-gnu-gcc-10"
+    LD = "i686-linux-gnu-ld"
+    CFLAGS = " -nostdlib -mno-sse -mno-avx -ggdb -O0 -ffreestanding -I kernel/include/ -c"
 
 CC = f"{_CC} {CFLAGS}"
 
@@ -162,9 +168,9 @@ def run_qemu():
         print("111")
     os.system("qemu-img create -f raw fdb.img 1440K")
     
-    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32" \
+    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32M" \
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
-        " -cdrom SynapseOS.iso -fdb fdb.img -hda ata.vhd -serial  file:Qemu.log -rtc base=localtime"
+        " -cdrom SynapseOS.iso -fdb fdb.img -hda ata.vhd -serial  file:Qemu.log -d guest_errors -rtc base=localtime"
         
     os.system(qemu_command)
 
@@ -175,9 +181,9 @@ def run_kvm():
     if not os.path.exists("ata.vhd"):
         os.system("qemu-img create -f raw ata.vhd 32M")
     
-    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32" \
+    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32M" \
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
-        " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log -accel kvm -rtc base=localtime"
+        " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log -accel kvm -d guest_errors -rtc base=localtime"
         
     os.system(qemu_command)
 
@@ -191,7 +197,7 @@ def run_qemu_debug():
     
     qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32" \
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
-        " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log -rtc base=localtime" 
+        " -d guest_errors -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log -rtc base=localtime" 
     print("gdb kernel.elf -ex target remote localhost:1234")
     os.system(
         qemu_command + """ -s -S"""

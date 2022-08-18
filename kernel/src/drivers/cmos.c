@@ -137,6 +137,19 @@ struct synapse_time get_time() {
 	return time;
 }
 
+struct synapse_time* get_time_pointer() {
+    read_rtc();
+	struct synapse_time* time;
+	time->seconds = second;
+    time->minutes = minute;
+    time->hours = hour;
+    time->day = day;
+    time->month = month;
+    time->year = year;
+    time->century = century;
+	return time;
+}
+
 /**
  * @brief Вычисляет время UNIX
  * @warning Через каждые 1.78 лет время отстаеь на 33555600 секунд

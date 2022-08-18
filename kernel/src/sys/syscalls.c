@@ -61,13 +61,16 @@ void syscall_handler(struct regs *r) {
         case SC_CODE_gets:
             r->eax = (uint32_t)keyboard_gets();
             break;
-        case SC_CODE_malloc:
-            r->eax = (uint32_t)kheap_malloc((int32_t)arg1);
+        case SC_CODE_malloc: {
+            r->eax = (uint32_t)kheap_malloc((uint32_t)arg1);
+            //tty_printf("Now memory (%d) in: %x\n", arg1, r->eax);
             break;
-        case SC_CODE_free:
-            kheap_free((void *)arg1);
+        }
+        case SC_CODE_free: {
+            kheap_free((void*)arg1);
             r->eax = (uint32_t)1;
             break;
+        }
         case SC_CODE_setdev: // Хранилище
             r->eax = (uint32_t)-1;
             break;
@@ -80,8 +83,6 @@ void syscall_handler(struct regs *r) {
         case SC_CODE_filesize:
         	r->eax = (uint32_t)vfs_get_size((char*)arg1);
         	break;
-        //case SC_CODE_get_time:
-        //	r->eax = (uint32_t)
         case SC_CODE_rand:
             r->eax = (uint64_t)rand();
             break;
@@ -109,6 +110,12 @@ void syscall_handler(struct regs *r) {
         case SC_CODE_getfreq:
         	r->eax = timer_get_frequency();
         	break;
+        case SC_CODE_getttyinfo:
+        	r->eax = get_tty_info();
+        	break;
+        case SC_CODE_get_time:
+            r->eax = get_time_pointer();
+            break;
         default:
             qemu_log("Invalid syscall #%x", r->eax);
             qemu_log("r->idt_index = %x eax = %x  ebx = %x  "

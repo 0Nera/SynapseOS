@@ -30,6 +30,13 @@ enum colors  {
     VESA_WHITE = 0xFFFFFF,
 };
 
+typedef struct SynapseTTYInfo {
+    int x;
+    int y;
+    int width;
+    int height;
+} SynapseTTYInfo;
+
 typedef struct svga_mode_info {
     uint16_t attributes;
     uint8_t windowA, windowB;
@@ -76,3 +83,4 @@ int32_t getPosX();
 int32_t getPosY();
 uint32_t getWidthScreen();
 uint32_t getHeightScreen();
+SynapseTTYInfo* get_tty_info();

@@ -1,9 +1,17 @@
 #include <vesa.h>
 
+SynapseTTYInfo* get_tty_info() {
+    SynapseTTYInfo* ty;
+        asm volatile("int $0x80" 
+                :"=a"(ty) : "a"(SC_CODE_getttyinfo));
+    return ty;
+}
+
 /**
  * @brief Очистка экрана
  * 
  */
+/*
 void clean_screen(){
     for (int32_t x = 0; x < VESA_WIDTH; x++){
         for (int32_t y = 0; y < VESA_HEIGHT; y++){
@@ -15,7 +23,7 @@ void clean_screen(){
     tty_pos_y = -17;
 
     qemu_log("Screan cleaned!");
-}
+}*/
 
 
 

@@ -18,12 +18,17 @@
 struct DukeImageMeta {
     short width;
     short height;
-    int   data_length;
-    char  alpha;
+    int data_length;
+    char alpha;
 };
 
 // Returns 0 if OK, 1 if ERR
-char draw_from_file(char *filename, int sx, int sy);
-struct DukeImageMeta* get_image_metadata(char *filename);
+char duke_draw_from_file(char *filename, int sx, int sy);
+struct DukeImageMetadata* duke_get_image_metadata(char *filename);
+void duke_get_image_data(char* filename, struct DukeImageMeta meta, char* out);
+unsigned int duke_calculate_bufsize(unsigned int width, unsigned int height, unsigned int alpha);
+void duke_rawdraw(char* data, struct DukeImageMeta* meta, int sx, int sy);
+void duke_scale(char* pixels, unsigned int w1, unsigned int h1, int w2, int h2, char alpha, char* out);
+char duke_draw_scaled(char* filename, int width, int height, int x, int y);
 
 #endif

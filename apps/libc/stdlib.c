@@ -1,5 +1,6 @@
 #include <string.h>
 #include "../include/stdlib.h"
+#include "../include/stdint.h"
 
 void strver(char *str) {
     char c;
@@ -14,7 +15,7 @@ void strver(char *str) {
 }
 
 
-int itoa(int n, char *buffer) {
+/*int itoa(int n, char *buffer) {
     int length = n < 0;
     
     if (length) {
@@ -31,13 +32,39 @@ int itoa(int n, char *buffer) {
     strver(buffer);
     
     return length;
+}*/
+
+int32_t itoa(int32_t n, char *buffer) {
+    char const digits[] = "0123456789";
+    char* p = buffer;
+
+    if (n < 0){
+        *p++ = '-';
+        n *= -1;
+    }
+
+    int s = n;
+
+    do {
+        ++p;
+        s = s / 10;
+    } while(s);
+
+    *p = '\0';
+
+    do { 
+        *--p = digits[n % 10];
+        n = n / 10;
+    } while(n);
+
+    return strlen(buffer);
 }
 
 void* malloc(int value) {
-	void *mem;
-    asm volatile("mov %%eax, %0" : "=a"(mem) : "a"(SC_CODE_malloc), "b"(value));
-    asm volatile("int $0x80");
-	return mem;
+	uint32_t address = 0;
+    asm volatile("int $0x80" : "=a"(address) : "a"(SC_CODE_malloc), "b"(value));
+
+	return (void*)address;
 }
 
 void free(void* memory) {
@@ -46,8 +73,10 @@ void free(void* memory) {
                 : "a"(SC_CODE_free),
                   "b"(memory)
     );
+    /*
     asm volatile("mov %%eax, %0" : : "a"(SC_CODE_free), "b"(memory));
     asm volatile("int $0x80");
+    */
 }
 
 void *calloc(size_t number, size_t size) {
