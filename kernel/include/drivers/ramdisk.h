@@ -16,6 +16,10 @@
 #define USTAR_DIRECTORY        '5'
 #define USTAR_NAMED_PIPE       '6'
 
+/**
+ * @brief Структура файла
+ * 
+ */
 typedef struct {
     char fname[100];
     char fmode[8];
