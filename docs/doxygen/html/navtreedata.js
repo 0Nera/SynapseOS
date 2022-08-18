@@ -41,7 +41,7 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "d6/d2b/_r_t_l8139_8h_source.html",
-"dc/d03/tty_8c.html#ac9271ceddd74126f7673e98bbd87309b"
+"dc/d03/tty_8c.html#ac823a1a13537c4794216969563dbb88b"
 ];
 
 var SYNCONMSG = 'нажмите на выключить для синхронизации панелей';

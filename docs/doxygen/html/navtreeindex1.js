@@ -93,9 +93,10 @@ var NAVTREEINDEX1 =
 "d7/dfa/unionpci__dev.html#afeda3c90a255fe7e4b1e99b4308cce2c":[0,0,27,1],
 "d8/d58/ata_8c_source.html":[1,0,0,2,0,2],
 "d8/d6d/imaging_8c.html":[1,0,0,2,2,0],
-"d8/d6d/imaging_8c.html#a372bdbdcfe4dbee62bd3a20884fd6f9e":[1,0,0,2,2,0,1],
+"d8/d6d/imaging_8c.html#a372bdbdcfe4dbee62bd3a20884fd6f9e":[1,0,0,2,2,0,2],
+"d8/d6d/imaging_8c.html#a57f800b6eede095080c04bf1ec12645d":[1,0,0,2,2,0,1],
 "d8/d6d/imaging_8c.html#a94162b71ba9ea38a9b6c53cff178b792":[1,0,0,2,2,0,0],
-"d8/d6d/imaging_8c.html#ad63a4f5885a51dd5b1d104c22e18d91f":[1,0,0,2,2,0,2],
+"d8/d6d/imaging_8c.html#ad63a4f5885a51dd5b1d104c22e18d91f":[1,0,0,2,2,0,3],
 "d8/d6d/imaging_8c_source.html":[1,0,0,2,2,0],
 "d8/d7e/_s_t_f_s_8h_source.html":[1,0,0,1,1,0],
 "d8/dc9/structgdt__entry.html":[0,0,15],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "dc/d03/tty_8c.html#abebc6971cdcd819d860931e3eba72209":[1,0,0,2,2,3,13],
 "dc/d03/tty_8c.html#abf4e64692ae612697f663edf8629505b":[1,0,0,2,2,3,24],
 "dc/d03/tty_8c.html#ac3fd406df8ed388f03d8b94a340660b9":[1,0,0,2,2,3,27],
-"dc/d03/tty_8c.html#ac656691800d9bd94b6c49832866015fc":[1,0,0,2,2,3,3],
-"dc/d03/tty_8c.html#ac823a1a13537c4794216969563dbb88b":[1,0,0,2,2,3,7]
+"dc/d03/tty_8c.html#ac656691800d9bd94b6c49832866015fc":[1,0,0,2,2,3,3]
 };

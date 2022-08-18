@@ -109,7 +109,7 @@ $(document).ready(function(){initNavTree('d8/d6d/imaging_8c_source.html','../../
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        qemu_log(<span class="stringliteral">&quot;Allocating %d bytes for image&quot;</span>, realmeta-&gt;data_length); <span class="comment">// Это тоже пофиксило падение, но ПОЧЕМУ??? (llvm-10)</span></div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keywordtype">char</span> *imagedata = kheap_malloc(realmeta-&gt;data_length);</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        vfs_read(filename, 8, realmeta-&gt;data_length, imagedata);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        vfs_read(filename, 9, realmeta-&gt;data_length, imagedata);</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordtype">int</span> x = 0, y = 0;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keywordtype">char</span> mod = realmeta-&gt;alpha?4:3;</div>
@@ -136,12 +136,25 @@ $(document).ready(function(){initNavTree('d8/d6d/imaging_8c_source.html','../../
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="../../d8/d6d/imaging_8c.html#ad63a4f5885a51dd5b1d104c22e18d91f">   80</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="../../d8/d6d/imaging_8c.html#ad63a4f5885a51dd5b1d104c22e18d91f">pixidx</a>(<span class="keywordtype">int</span> width, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y) {</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordflow">return</span> width*y + x;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;}</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keywordtype">void</span> duke_scale(<span class="keywordtype">int</span>* pixels, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> w1, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> h1, <span class="keywordtype">int</span> w2, <span class="keywordtype">int</span> h2, <span class="keywordtype">int</span>* out) {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">int</span> x_ratio = (int)((w1&lt;&lt;16)/w2)+1;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">int</span> y_ratio = (int)((h1&lt;&lt;16)/h2)+1;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">int</span> x2, y2;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0;i&lt;h2;i++) {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;          <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j=0;j&lt;w2;j++) {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;              x2 = ((j*x_ratio)&gt;&gt;16);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;              y2 = ((i*y_ratio)&gt;&gt;16);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;              out[(i*w2)+j] = pixels[(y2*w1)+x2];</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;          }                </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    }</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="../../d8/d6d/imaging_8c.html#ad63a4f5885a51dd5b1d104c22e18d91f">   93</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="../../d8/d6d/imaging_8c.html#ad63a4f5885a51dd5b1d104c22e18d91f">pixidx</a>(<span class="keywordtype">int</span> width, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y) {</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordflow">return</span> width*y + x;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aimaging_8c_html_ad63a4f5885a51dd5b1d104c22e18d91f"><div class="ttname"><a href="../../d8/d6d/imaging_8c.html#ad63a4f5885a51dd5b1d104c22e18d91f">pixidx</a></div><div class="ttdeci">int pixidx(int width, int x, int y)</div><div class="ttdoc">Функция вычисления позиции по координатам</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d6d/imaging_8c_source.html#l00080">imaging.c:80</a></div></div>
+<div class="ttc" id="aimaging_8c_html_ad63a4f5885a51dd5b1d104c22e18d91f"><div class="ttname"><a href="../../d8/d6d/imaging_8c.html#ad63a4f5885a51dd5b1d104c22e18d91f">pixidx</a></div><div class="ttdeci">int pixidx(int width, int x, int y)</div><div class="ttdoc">Функция вычисления позиции по координатам</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d6d/imaging_8c_source.html#l00093">imaging.c:93</a></div></div>
 <div class="ttc" id="aimaging_8h_html"><div class="ttname"><a href="../../d4/da7/imaging_8h.html">imaging.h</a></div><div class="ttdoc">Описания функций imaging.h.</div></div>
 <div class="ttc" id="astruct_duke_image_meta_html"><div class="ttname"><a href="../../d0/d76/struct_duke_image_meta.html">DukeImageMeta</a></div><div class="ttdoc">Структура изображения Duke.</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/da7/imaging_8h_source.html#l00018">imaging.h:18</a></div></div>
 <div class="ttc" id="atty_8c_html_a68d5b7fc5eb1355c7a4c626d30207c29"><div class="ttname"><a href="../../dc/d03/tty_8c.html#a68d5b7fc5eb1355c7a4c626d30207c29">set_pixel</a></div><div class="ttdeci">void set_pixel(int32_t x, int32_t y, uint32_t color)</div><div class="ttdoc">Вывод одного пикселя на экран</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d03/tty_8c_source.html#l00172">tty.c:172</a></div></div>
@@ -151,7 +164,7 @@ $(document).ready(function(){initNavTree('d8/d6d/imaging_8c_source.html','../../
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_3dd30a497388ee684638f120a124721c.html">src</a></li><li class="navelem"><a class="el" href="../../dir_f684e8e1ebea567db7f673c0b997cee3.html">io</a></li><li class="navelem"><a class="el" href="../../d8/d6d/imaging_8c.html">imaging.c</a></li>
-    <li class="footer">Документация по SynapseOS. Последние изменения: Чт 18 Авг 2022 03:35:34. Создано системой
+    <li class="footer">Документация по SynapseOS. Последние изменения: Чт 18 Авг 2022 04:28:44. Создано системой
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

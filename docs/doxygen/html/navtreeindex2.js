@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"dc/d03/tty_8c.html#ac823a1a13537c4794216969563dbb88b":[1,0,0,2,2,3,7],
 "dc/d03/tty_8c.html#ac9271ceddd74126f7673e98bbd87309b":[1,0,0,2,2,3,25],
 "dc/d03/tty_8c.html#aca7637cf8ec1ea90a95d8fd4a2cce7fe":[1,0,0,2,2,3,2],
 "dc/d03/tty_8c.html#adccb23d81da461b513fcc1a8d27b94a5":[1,0,0,2,2,3,5],
