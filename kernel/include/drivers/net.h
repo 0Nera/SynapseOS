@@ -65,6 +65,11 @@ typedef struct dhcp_packet {
     uint8_t options[64];
 } __attribute__ ((packed)) dhcp_packet_t;
 
+
+/**
+ * @brief Структура пакета ARP
+ * 
+ */
 typedef struct arp_packet {
     uint16_t hardware_type;
     uint16_t protocol;
@@ -77,6 +82,11 @@ typedef struct arp_packet {
     uint8_t dst_protocol_addr[4];
 } __attribute__((packed)) arp_packet_t;
 
+
+/**
+ * @brief Структура точки входа ARP
+ * 
+ */
 typedef struct arp_table_entry {
     uint32_t ip_addr;
     uint64_t mac_addr;
@@ -91,7 +101,10 @@ typedef struct ethernet_frame {
 } __attribute__((packed)) ethernet_frame_t;
 
 
-
+/**
+ * @brief Структура для работы с RTL8139
+ * 
+ */
 typedef struct RTL8139_dev {
     uint8_t bar_type;
     uint16_t io_base;
@@ -102,6 +115,11 @@ typedef struct RTL8139_dev {
     int tx_cur;
 }RTL8139_dev_t;
 
+
+/**
+ * @brief Структура UDP пакета
+ * 
+ */
 typedef struct udp_packet {
     uint16_t src_port;
     uint16_t dst_port;

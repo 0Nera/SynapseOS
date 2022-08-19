@@ -10,6 +10,11 @@
 #define STDIO_ERR_SIZE			3	// Размер файла имеет недопустимый размер
 #define STDIO_ERR_NO_OPEN		4	// Файл не был открыт
 
+
+/**
+ * @brief Структура файла. Требуется для работы с VFS
+ * 
+ */
 typedef struct {
 	char* path;
     int32_t size;
@@ -20,6 +25,7 @@ typedef struct {
 	int64_t pos;
 	uint32_t err;
 } FILE;
+
 // Определение принтов
 void print_str(char str[]);
 void putint(const int i);
@@ -27,6 +33,7 @@ void puthex(unsigned int i);
 void putchar(unsigned char ch);
 void print(char *format, va_list args);
 void prinf(char *text, ...);
+
 // Типы открытого файла, тип флагов rw и т.д.
 enum FileOpenMode {
 	O_READ = 1,

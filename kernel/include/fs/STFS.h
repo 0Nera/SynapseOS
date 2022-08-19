@@ -9,12 +9,21 @@
 
 #include <stdint.h>
 
+
+/**
+ * @brief Метаданные блока
+ * 
+ */
 typedef struct blockinfo {
-    uint16_t    id;
-    uint32_t    next_block;
+    uint16_t    id;         // 2 байтв
+    uint32_t    next_block; // 4 байта
 } blockinfo_t __attribute__((packed));
 
 
+/**
+ * @brief Структура файла
+ * 
+ */
 typedef struct STFS_file {
     blockinfo_t block;
     uint8_t     magic;
@@ -28,6 +37,11 @@ typedef struct STFS_file {
     uint8_t     description[3820];
 } STFS_file_t __attribute__((packed));
 
+
+/**
+ * @brief Структура папки
+ * 
+ */
 typedef struct STFS_folder {
     blockinfo_t block;
     uint8_t     magic;
@@ -42,6 +56,11 @@ typedef struct STFS_folder {
     uint8_t     description[170];
 } STFS_folder_t __attribute__((packed));
 
+
+/**
+ * @brief Структура блока
+ * 
+ */
 typedef struct STFS_block {
     blockinfo_t block;
     uint8_t     data[4090];
@@ -109,7 +128,3 @@ typedef struct STFS_block {
     > Блок/Файл/Папка имеющие id 0 - удалены
     > Если адрес следующего блока - 0, то это последний блок
 */
-34 - базовая настройка
-/ - 8
-/bin/ - 8
-/bin/HelloWorld.sea - 8 + 8

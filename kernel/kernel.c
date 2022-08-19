@@ -7,16 +7,12 @@
  * @copyright Copyright Арен Елчинян (c) 2022
  */
 
-/*
-    Ядро SynapseOS
-
-    
-*/
 
 #include <kernel.h>
 #include <drivers/ata.h>
 
 
+int32_t errno = 0;
 uint32_t os_mode = 1; // 0 - мало ОЗУ, 1 - обычный режим, 2 - режим повышенной производительности, 3 - сервер
 
 
@@ -81,30 +77,14 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     tty_puts("Colors: \xFF\x0D\xFF\x0E\xFF\x0F\n");
     tty_printf("Test: -1=[%d]  \n", -1);
 
-    // tty_printf("%s", "\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\xFF\x0C\n");
-    // ^--- Без %s не работает. Только так или используйте tty_puts()
-
-    //ata_init();                             // Установка драйвера ATA
-
     unit_test(RTL8139_init());              // Тестируем драйвер RTL8139
 
     vfs_mount_list();                       // Выводим список корня VFS
     detect_cpu(1);
-    // while(1){
-    //     asm volatile("hlt");
-    // }
-    //qemu_log("task: %d", create_task());
-    //init_task_manager();
-    //create_STFS(0);
 
-    if (floppy_install()){
-        
-    } else {
-        tty_printf("\nFloppy: ERROR\n");
-    }
-    //tty_printf("\n%d\n%s\n", 101/10, format_string("Hello! %d, %x, %c, %s", 120, 0x90, 'H', "Hi!"));
-    
-    //duke_draw_scaled("/initrd/res/Sovrum/Carol_Tea_Theme.duke", getWidthScreen()-1, getHeightScreen()-1, 0, 0);
+    //ATA_Drive_t *drive;
+    //ATA_Detect(&drive);
+
     duke_draw_from_file("/initrd/res/SynapseOSLogo.duke", getWidthScreen()-106, 36);
 
     shell();                                // Активация терминала

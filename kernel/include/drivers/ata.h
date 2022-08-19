@@ -2,6 +2,11 @@
 
 #include <stdint.h>
 #include <drivers/vfs.h>
+
+/**
+ * @brief Структура для каналов IDE
+ * 
+ */
 typedef struct {
     uint16_t base;  // i/o base port
     uint16_t control;  // control port
@@ -9,6 +14,11 @@ typedef struct {
     uint16_t no_intr; // no interrupt port
 } IDE_CHANNELS;
 
+
+/**
+ * @brief Структура для девайса ATA
+ * 
+ */
 typedef struct {
     uint8_t reserved; // 0 or 1 if drive exists or not
     uint8_t channel; // primary(0) or secondary(1)
