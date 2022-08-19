@@ -17,6 +17,9 @@ void kheap_init() {
     qemu_log("KHEAP installed");
 }
 
+uint32_t kheap_getused() {
+	return kheap_memory_used;
+}
 
 // Увеличение кучи ядра на некоторый размер, он будет округлен до размера страницы
 void *kheap_morecore(uint32_t size) {

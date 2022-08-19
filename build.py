@@ -21,7 +21,6 @@ BINFLDR = "bin\\" if not (sys.platform == "linux" or sys.platform == "linux2") e
 def warn(message):
     print(f"[\x1b[33;1mWARNING\x1b[0m]: {message}")
 
-
 def compile(binary, source, cur="--", total="--", warnings=False):
     print(f"[\x1b[32;1mBUILD\x1b[0m] [{cur}/{total}]: Compiling: {source}")
     os.system(f"{CC}  {'' if warnings else ' -w '}  -o ./{binary} {source}")
@@ -45,12 +44,13 @@ def compile_kernel(warnings=False):
             if os.path.getmtime(srcf)>os.path.getmtime(objf):
                 updated.append(srcf)
         else:
-            #print("*", objf, "doesn't exist")
             updated.append(srcf)
 
+    '''
     print("*** *** *** *** *** *** *** ***")
     print("Makefile tactics: Updated only ->", updated)
     print("*** *** *** *** *** *** *** ***")
+    '''
 
     filescount = len(updated)
 
@@ -81,11 +81,12 @@ def compile_kernel(warnings=False):
 
 def link_kernel():
     print("Linking...")
-    print(f"BIN_TARGETS = {BIN_TARGETS}")
+    # print(f"BIN_TARGETS = {BIN_TARGETS}")
     os.system(f"{LD} -T kernel/link.ld -nostdlib -o isodir/boot/kernel.elf " + ''.join(BIN_TARGETS))
 
 def build_kernel(warnings=False):
-    print("Building kernel", os.getcwd(), os.listdir())
+    # print("Building kernel", os.getcwd(), os.listdir())
+    print("Building kernel at ", os.getcwd())
     start_time = time.time()
 
     files = glob.glob("kernel/**/*.c", recursive=True) + glob.glob("kernel/**/*.s", recursive=True)
