@@ -164,64 +164,65 @@ $(document).ready(function(){initNavTree('d5/d87/syscalls_8c_source.html','../..
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keywordflow">case</span> SC_CODE_readfile:</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            r-&gt;eax = (uint32_t)vfs_read((<span class="keywordtype">char</span> *)arg1, (int32_t)arg2, (int32_t)arg3, (<span class="keywordtype">void</span> *)arg4);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordflow">case</span> SC_CODE_exists:</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            r-&gt;eax = (uint32_t)vfs_exists((<span class="keywordtype">char</span> *)arg1);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordflow">case</span> SC_CODE_filesize:</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            r-&gt;eax = (uint32_t)vfs_get_size((<span class="keywordtype">char</span>*)arg1);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordflow">case</span> SC_CODE_rand:</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            r-&gt;eax = (uint64_t)rand();</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">case</span> SC_CODE_srand:</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            srand((uint64_t)(arg1));</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            r-&gt;eax = (uint64_t)rand();</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keywordflow">case</span> SC_CODE_putpixel: <span class="comment">// Графика</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <a class="code" href="../../dc/d03/tty_8c.html#a68d5b7fc5eb1355c7a4c626d30207c29">set_pixel</a>((int32_t)(arg1), (int32_t)(arg2), (uint32_t)(arg3));</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            r-&gt;eax = (uint32_t)1;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keywordflow">case</span> SC_CODE_drawline:</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <a class="code" href="../../dc/d03/tty_8c.html#afb32d6323928e94c7c8f61953a4e1a72">set_line</a>((int32_t)(arg1), (int32_t)(arg2), (int32_t)(arg3), (int32_t)(arg4), (uint32_t)(arg5));</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            r-&gt;eax = (uint32_t)1;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keywordflow">case</span> SC_CODE_version: <span class="comment">// Система</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            r-&gt;eax = (uint32_t)(VERSION_MAJOR * 100 + VERSION_MINOR);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <span class="keywordflow">case</span> SC_CODE_newtask: </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            r-&gt;eax = add_task(&amp;r);</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <span class="keywordflow">case</span> SC_CODE_ticks: </div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            r-&gt;eax = timer_get_ticks();</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keywordflow">case</span> SC_CODE_getfreq:</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            r-&gt;eax = timer_get_frequency();</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordflow">case</span> SC_CODE_getttyinfo:</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            r-&gt;eax = get_tty_info();</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <span class="keywordflow">case</span> SC_CODE_get_time:</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            r-&gt;eax = get_time_pointer();</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="keywordflow">default</span>:</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            qemu_log(<span class="stringliteral">&quot;Invalid syscall #%x&quot;</span>, r-&gt;eax);</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            qemu_log(<span class="stringliteral">&quot;r-&gt;idt_index = %x eax = %x  ebx = %x  &quot;</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                <span class="stringliteral">&quot;ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x&quot;</span>,</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                r-&gt;idt_index, r-&gt;eax, r-&gt;ebx,</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                r-&gt;ecx, r-&gt;edx, r-&gt;esp, r-&gt;ebp, r-&gt;eip);</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            <a class="code" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;Invalid syscall %x\n&quot;</span>, r-&gt;eax);</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;            <a class="code" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;Invalid syscall %d\n&quot;</span>, r-&gt;eax);</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            <a class="code" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;r-&gt;idt_index = %x eax = %x  ebx = %x  &quot;</span></div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                    <span class="stringliteral">&quot;ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x&quot;</span>,</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;                    r-&gt;idt_index, r-&gt;eax, r-&gt;ebx,</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                    r-&gt;ecx, r-&gt;edx, r-&gt;esp, r-&gt;ebp, r-&gt;eip);</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            <a class="code" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;r-&gt;idt_index = %d eax = %d  ebx = %d  &quot;</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                    <span class="stringliteral">&quot;ecx = %d  edx = %d  esp = %d  ebp = %d  eip = %d&quot;</span>,</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                    r-&gt;idt_index, r-&gt;eax, r-&gt;ebx,</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;                    r-&gt;ecx, r-&gt;edx, r-&gt;esp, r-&gt;ebp, r-&gt;eip);</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    }</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;}</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="comment">//tty_printf(&quot;readfile(): got arguments: %s, %d, %d, %x\n&quot;, arg1, arg2, arg3, arg4);</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordflow">case</span> SC_CODE_exists:</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            r-&gt;eax = (uint32_t)vfs_exists((<span class="keywordtype">char</span> *)arg1);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordflow">case</span> SC_CODE_filesize:</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            r-&gt;eax = (uint32_t)vfs_get_size((<span class="keywordtype">char</span>*)arg1);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keywordflow">case</span> SC_CODE_rand:</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            r-&gt;eax = (uint64_t)rand();</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordflow">case</span> SC_CODE_srand:</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            srand((uint64_t)(arg1));</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            r-&gt;eax = (uint64_t)rand();</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keywordflow">case</span> SC_CODE_putpixel: <span class="comment">// Графика</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <a class="code" href="../../dc/d03/tty_8c.html#a68d5b7fc5eb1355c7a4c626d30207c29">set_pixel</a>((int32_t)(arg1), (int32_t)(arg2), (uint32_t)(arg3));</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            r-&gt;eax = (uint32_t)1;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keywordflow">case</span> SC_CODE_drawline:</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <a class="code" href="../../dc/d03/tty_8c.html#afb32d6323928e94c7c8f61953a4e1a72">set_line</a>((int32_t)(arg1), (int32_t)(arg2), (int32_t)(arg3), (int32_t)(arg4), (uint32_t)(arg5));</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            r-&gt;eax = (uint32_t)1;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keywordflow">case</span> SC_CODE_version: <span class="comment">// Система</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            r-&gt;eax = (uint32_t)(VERSION_MAJOR * 100 + VERSION_MINOR);</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keywordflow">case</span> SC_CODE_newtask: </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            r-&gt;eax = add_task(&amp;r);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keywordflow">case</span> SC_CODE_ticks: </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            r-&gt;eax = timer_get_ticks();</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="keywordflow">case</span> SC_CODE_getfreq:</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            r-&gt;eax = timer_get_frequency();</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keywordflow">case</span> SC_CODE_getttyinfo:</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            r-&gt;eax = get_tty_info();</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <span class="keywordflow">case</span> SC_CODE_get_time:</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            r-&gt;eax = get_time_pointer();</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="keywordflow">default</span>:</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            qemu_log(<span class="stringliteral">&quot;Invalid syscall #%x&quot;</span>, r-&gt;eax);</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            qemu_log(<span class="stringliteral">&quot;r-&gt;idt_index = %x eax = %x  ebx = %x  &quot;</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                <span class="stringliteral">&quot;ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x&quot;</span>,</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                r-&gt;idt_index, r-&gt;eax, r-&gt;ebx,</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                r-&gt;ecx, r-&gt;edx, r-&gt;esp, r-&gt;ebp, r-&gt;eip);</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;            <a class="code" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;Invalid syscall %x\n&quot;</span>, r-&gt;eax);</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            <a class="code" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;Invalid syscall %d\n&quot;</span>, r-&gt;eax);</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;            <a class="code" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;r-&gt;idt_index = %x eax = %x  ebx = %x  &quot;</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;                    <span class="stringliteral">&quot;ecx = %x  edx = %x  esp = %x  ebp = %x  eip = %x&quot;</span>,</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                    r-&gt;idt_index, r-&gt;eax, r-&gt;ebx,</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                    r-&gt;ecx, r-&gt;edx, r-&gt;esp, r-&gt;ebp, r-&gt;eip);</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;            <a class="code" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;r-&gt;idt_index = %d eax = %d  ebx = %d  &quot;</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                    <span class="stringliteral">&quot;ecx = %d  edx = %d  esp = %d  ebp = %d  eip = %d&quot;</span>,</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;                    r-&gt;idt_index, r-&gt;eax, r-&gt;ebx,</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                    r-&gt;ecx, r-&gt;edx, r-&gt;esp, r-&gt;ebp, r-&gt;eip);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    }</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="astructregs_html"><div class="ttname"><a href="../../d3/da0/structregs.html">regs</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d35/idt_8h_source.html#l00040">idt.h:40</a></div></div>
@@ -232,7 +233,7 @@ $(document).ready(function(){initNavTree('d5/d87/syscalls_8c_source.html','../..
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_3dd30a497388ee684638f120a124721c.html">src</a></li><li class="navelem"><a class="el" href="../../dir_6a36b0b389513c9a28150157f1e6f252.html">sys</a></li><li class="navelem"><b>syscalls.c</b></li>
-    <li class="footer">Документация по SynapseOS. Последние изменения: Пт 19 Авг 2022 04:26:10. Создано системой
+    <li class="footer">Документация по SynapseOS. Последние изменения: Сб 20 Авг 2022 10:03:04. Создано системой
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

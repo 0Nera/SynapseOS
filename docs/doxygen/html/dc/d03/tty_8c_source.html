@@ -221,15 +221,15 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c_source.html','../../'); 
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; </div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="keywordtype">unsigned</span> where = x * (framebuffer_bpp / 8) + y * framebuffer_pitch;</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    framebuffer_addr[where] = color;</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    framebuffer_addr[where + 1] = color &gt;&gt; 8;</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    framebuffer_addr[where + 2] = color &gt;&gt; 16;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; </div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    back_framebuffer_addr[where] = color &amp; 255;</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    back_framebuffer_addr[where + 1] = (color &gt;&gt; 8) &amp; 255;</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    back_framebuffer_addr[where + 2] = (color &gt;&gt; 16) &amp; 255;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160; </div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    </div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    framebuffer_addr[where] = color;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    framebuffer_addr[where + 1] = color &gt;&gt; 8;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    framebuffer_addr[where + 2] = color &gt;&gt; 16;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    </div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="comment">//WE&#39;RE NOT USING IT! WHYYYYYY???</span></div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    back_framebuffer_addr[where] = color &amp; 255;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    back_framebuffer_addr[where + 1] = (color &gt;&gt; 8) &amp; 255;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    back_framebuffer_addr[where + 2] = (color &gt;&gt; 16) &amp; 255;</div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;}</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160; </div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
@@ -575,7 +575,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c_source.html','../../'); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_3dd30a497388ee684638f120a124721c.html">src</a></li><li class="navelem"><a class="el" href="../../dir_f684e8e1ebea567db7f673c0b997cee3.html">io</a></li><li class="navelem"><a class="el" href="../../dc/d03/tty_8c.html">tty.c</a></li>
-    <li class="footer">Документация по SynapseOS. Последние изменения: Пт 19 Авг 2022 04:26:10. Создано системой
+    <li class="footer">Документация по SynapseOS. Последние изменения: Сб 20 Авг 2022 10:03:04. Создано системой
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
