@@ -202,15 +202,18 @@ void shell() {
                 tty_printf("run: incorrect argument\n");
             }
         } else if(strncmp(cmd, "mh", 2)==0) {
-			char* progname = kheap_malloc(256);
-
 			char* procmd = cmd+3; // Shift it!
 			tty_printf("Parsing: [%s]\n", procmd);
 
+			char* progname;
 			char* tok = strtok(procmd, " ");
+			progname = tok;
 			tty_printf("Parsing 2: [%s]\n", tok);
+
+			while((tok = strtok(0, " "))) {
+				tty_printf("Argument: [%s]\n", tok);
+			}
 			
-			kheap_free(progname);
         } else {
             char fname[256] = {0};
 
