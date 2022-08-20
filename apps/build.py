@@ -6,8 +6,13 @@ LDFLAGS = " -nostdlib -T link.ld -o"
 CC = "clang -target i386-pc-none-elf"
 CFLAGS = " -Wno-unused-command-line-argument -mno-sse -mno-avx -O0 -ffreestanding -I include/ -c"
 
-BUILD_BASIC = False # Change this to enable or disable BASIC build.
-BUILD_ZLIB  = True
+# BUILD_BASIC = False # Change this to enable or disable BASIC build.
+# BUILD_ZLIB  = True
+
+'''
+    WARNING: Due to kernel ports, I say, I DISABLED ALL PORTS FOR A WHILE!
+                                                                NDRAEY
+'''
 
 CC = f"{CC} {CFLAGS}"
 LD = f"{LD} {LDFLAGS}"
@@ -126,6 +131,8 @@ def build_all():
     except Exception:
         pass
 
+    '''
+
     if BUILD_BASIC:
         print(("="*20)+"[Building BASIC]"+("="*20))
         os.chdir("basic-prog-lang");
@@ -149,7 +156,7 @@ def build_all():
             print("[\033[31;1mFAIL\033[0m] Failed to build Zlib 1.1.0...")
         else:
             print("[\033[32;1mSUCCESS\033[0m] Successfully built Zlib 1.1.0!!!")
-        
+    '''
     
 if __name__ == "__main__":
     try:
