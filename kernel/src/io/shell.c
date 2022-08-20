@@ -208,7 +208,11 @@ void shell() {
 			char* progname;
 			char* tok = strtok(procmd, " ");
 			progname = tok;
-			tty_printf("Parsing 2: [%s]\n", tok);
+			if(progname==0) {
+				printf("Something wrong is happened! Failed to strtok!\n");
+				continue;
+			}
+			tty_printf("Progname: [%s]\n", progname);
 
 			while((tok = strtok(0, " "))) {
 				tty_printf("Argument: [%s]\n", tok);
