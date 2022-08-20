@@ -100,6 +100,7 @@ void shell() {
                         "\t\t->shutdown            |shutdown device\n" \
                         "\t\t->tui                 |enable tui\n" \
                         "\t\t->view   <filename>   |shows an image\n" \
+                        "\t\t->mh <program> <args>\n" \
                         "\n" 
                         );
         } else if (strlen(cmd) > 4 && strncmp(cmd, "cat ", 4) == 0) {
@@ -175,7 +176,7 @@ void shell() {
                 strcpy(temp, current_dir);
                 strcat(temp, tok);
                 //elf_info(temp);                
-                run_elf_file(temp);
+                run_elf_file(temp, 0, 0);
 
             } else {
                 tty_setcolor(COLOR_ERROR);
@@ -192,13 +193,21 @@ void shell() {
                 char temp[256] = {0};
                 strcpy(temp, current_dir);
                 strcat(temp, tok);
-                elf_info(temp);                
-                run_elf_file(temp);
+                elf_info(temp);
+
+                run_elf_file(temp, 0, 0);
 
             } else {
                 tty_setcolor(COLOR_ERROR);
                 tty_printf("run: incorrect argument\n");
             }
+        } else if(strncmp(cmd, "mh", 2)==0) {
+			char* progname = kheap_malloc(256);
+
+			char* procmd = cmd+1; // Shift it!
+			tty_printf("Parsing: [%s]\n", procmd);
+			
+			kheap_free(progname);
         } else {
             char fname[256] = {0};
 
@@ -210,9 +219,8 @@ void shell() {
                 char temp[256] = {0};
                 strcpy(temp, current_dir);
                 strcat(temp, tok);
-                //elf_info(temp);                
-                run_elf_file(temp);
-
+                //elf_info(temp);
+                run_elf_file(temp, 0, 0);
             } else {
                 tty_setcolor(COLOR_ERROR);
                 tty_printf("run: incorrect argument\n");

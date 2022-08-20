@@ -80,4 +80,4 @@ void elf_hdr_info(struct elf_hdr *hdr);
 void *elf_open(const char*);
 void elf_info(const char*);
 void elf_info_short(const char*);
-int32_t run_elf_file(const char*);//, char**, char**, int32_t argc);
+int32_t run_elf_file(const char*, int, char**);//, char**, char**, int32_t argc);
