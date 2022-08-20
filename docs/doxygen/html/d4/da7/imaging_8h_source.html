@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.17"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>SynapseOS: Исходный файл kernel/include/io/imaging.h</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">SynapseOS
+   &#160;<span id="projectnumber">0.2.12</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.17 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "../../search",false,'Поиск');
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('../../',true,false,'search.php','Поиск');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('d4/da7/imaging_8h_source.html','../../'); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">imaging.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d4/da7/imaging_8h.html">См. документацию.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#ifndef IMAGING_H</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#define IMAGING_H</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="../../d0/d76/struct_duke_image_meta.html">   18</a></span>&#160;<span class="keyword">struct </span><a class="code" href="../../d0/d76/struct_duke_image_meta.html">DukeImageMeta</a> {</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordtype">short</span> width;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordtype">short</span> height;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keywordtype">int</span> data_length;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordtype">char</span> alpha;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;};</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// Returns 0 if OK, 1 if ERR</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">char</span> <a class="code" href="../../d4/da7/imaging_8h.html#ac43168fd2c97f024521f901f29cd7de2">duke_draw_from_file</a>(<span class="keywordtype">char</span> *filename, <span class="keywordtype">int</span> sx, <span class="keywordtype">int</span> sy);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">struct </span><a class="code" href="../../d0/d76/struct_duke_image_meta.html">DukeImageMeta</a>* <a class="code" href="../../d4/da7/imaging_8h.html#a04189c5b1bd699efb92812c7dbcbe1db">duke_get_image_metadata</a>(<span class="keywordtype">char</span> *filename);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">void</span> duke_get_image_data(<span class="keywordtype">char</span>* filename, <span class="keyword">struct</span> <a class="code" href="../../d0/d76/struct_duke_image_meta.html">DukeImageMeta</a> meta, <span class="keywordtype">char</span>* out);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> duke_calculate_bufsize(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> width, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> height, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> alpha);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keywordtype">void</span> duke_rawdraw(<span class="keywordtype">char</span>* data, <span class="keyword">struct</span> <a class="code" href="../../d0/d76/struct_duke_image_meta.html">DukeImageMeta</a>* meta, <span class="keywordtype">int</span> sx, <span class="keywordtype">int</span> sy);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keywordtype">void</span> duke_scale(<span class="keywordtype">char</span>* pixels, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> w1, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> h1, <span class="keywordtype">int</span> w2, <span class="keywordtype">int</span> h2, <span class="keywordtype">char</span> alpha, <span class="keywordtype">char</span>* out);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keywordtype">char</span> duke_draw_scaled(<span class="keywordtype">char</span>* filename, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#endif</span></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<div class="ttc" id="aimaging_8h_html_a04189c5b1bd699efb92812c7dbcbe1db"><div class="ttname"><a href="../../d4/da7/imaging_8h.html#a04189c5b1bd699efb92812c7dbcbe1db">duke_get_image_metadata</a></div><div class="ttdeci">struct DukeImageMeta * duke_get_image_metadata(char *filename)</div><div class="ttdoc">Получает метаданные изображения Duke.</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d6d/imaging_8c_source.html#l00019">imaging.c:19</a></div></div>
+<div class="ttc" id="aimaging_8h_html_ac43168fd2c97f024521f901f29cd7de2"><div class="ttname"><a href="../../d4/da7/imaging_8h.html#ac43168fd2c97f024521f901f29cd7de2">duke_draw_from_file</a></div><div class="ttdeci">char duke_draw_from_file(char *filename, int sx, int sy)</div><div class="ttdoc">Функция отрисовки изображения</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d6d/imaging_8c_source.html#l00042">imaging.c:42</a></div></div>
+<div class="ttc" id="astruct_duke_image_meta_html"><div class="ttname"><a href="../../d0/d76/struct_duke_image_meta.html">DukeImageMeta</a></div><div class="ttdoc">Структура изображения Duke.</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/da7/imaging_8h_source.html#l00018">imaging.h:18</a></div></div>
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_009f605b833ac4622acd6c3c0c26c0f0.html">include</a></li><li class="navelem"><a class="el" href="../../dir_0ce41d1bfbdf4ab9b4258a3465401108.html">io</a></li><li class="navelem"><a class="el" href="../../d4/da7/imaging_8h.html">imaging.h</a></li>
+    <li class="footer">Документация по SynapseOS. Последние изменения: Сб 20 Авг 2022 16:48:15. Создано системой
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
+  </ul>
+</div>
+</body>
+</html>
