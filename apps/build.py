@@ -75,6 +75,9 @@ def build_all():
     build("compile", "examples/C/test.c", "./bin/test.o")
     build("compile", "apps/NDRAEY/ImageView/imageview.c", "./bin/imageview.o")
     build("compile", "apps/NDRAEY/Melody/melody.c", "./bin/melody.o")
+    build("compile", "apps/NDRAEY/Carol/main.c", "./bin/carol.o")
+    build("compile", "apps/NDRAEY/Carol/dukelib.c", "./bin/carol_duke.o")
+    build("compile", "apps/NDRAEY/Carol/animator.c", "./bin/carol_david.o")
     build("compile", "examples/gas/chronicles.asm", "./bin/chronicles.o")
     build("compile", "examples/C/memory.c", "./bin/memtest.o")
 
@@ -110,6 +113,7 @@ def build_all():
     build("link", "./bin/chronicles.o" + O_LIBC, "../bin/apps/chronicles")
     build("link", "./bin/snakepaint.o" + O_LIBC, "../bin/apps/snakepaint")
     build("link", "./bin/memtest.o" + O_LIBC, "../bin/apps/memtest")
+    build("link", "./bin/carol.o ./bin/carol_duke.o ./bin/carol_david.o " + O_LIBC, "../bin/apps/carol")
 
     try:
         if shutil.which("fasm"):

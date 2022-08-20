@@ -264,6 +264,10 @@ void sleep(uint32_t delay) {
     }
 }
 
+/*void sleep(uint32_t millis) {
+    sleep_ms(millis);
+}*/
+
 void sleep_ms(uint32_t millis) {
     uint32_t w = timer_get_frequency()*millis;
 

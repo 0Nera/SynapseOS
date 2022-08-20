@@ -76,6 +76,7 @@ void syscall_handler(struct regs *r) {
             break;
         case SC_CODE_readfile:
             r->eax = (uint32_t)vfs_read((char *)arg1, (int32_t)arg2, (int32_t)arg3, (void *)arg4);
+            //tty_printf("readfile(): got arguments: %s, %d, %d, %x\n", arg1, arg2, arg3, arg4);
             break;
         case SC_CODE_exists:
             r->eax = (uint32_t)vfs_exists((char *)arg1);
