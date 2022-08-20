@@ -204,8 +204,11 @@ void shell() {
         } else if(strncmp(cmd, "mh", 2)==0) {
 			char* progname = kheap_malloc(256);
 
-			char* procmd = cmd+1; // Shift it!
+			char* procmd = cmd+3; // Shift it!
 			tty_printf("Parsing: [%s]\n", procmd);
+
+			char* tok = strtok(procmd, " ");
+			tty_printf("Parsing 2: [%s]\n", tok);
 			
 			kheap_free(progname);
         } else {
