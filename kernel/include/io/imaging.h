@@ -24,7 +24,7 @@ struct DukeImageMeta {
 
 // Returns 0 if OK, 1 if ERR
 char duke_draw_from_file(char *filename, int sx, int sy);
-struct DukeImageMetadata* duke_get_image_metadata(char *filename);
+struct DukeImageMeta* duke_get_image_metadata(char *filename);
 void duke_get_image_data(char* filename, struct DukeImageMeta meta, char* out);
 unsigned int duke_calculate_bufsize(unsigned int width, unsigned int height, unsigned int alpha);
 void duke_rawdraw(char* data, struct DukeImageMeta* meta, int sx, int sy);

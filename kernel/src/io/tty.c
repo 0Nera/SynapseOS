@@ -187,15 +187,15 @@ void set_pixel(int32_t x, int32_t y, uint32_t color) {
 
     unsigned where = x * (framebuffer_bpp / 8) + y * framebuffer_pitch;
 
+    
     framebuffer_addr[where] = color;
     framebuffer_addr[where + 1] = color >> 8;
     framebuffer_addr[where + 2] = color >> 16;
-
-
+    
+    //WE'RE NOT USING IT! WHYYYYYY???
     back_framebuffer_addr[where] = color & 255;
     back_framebuffer_addr[where + 1] = (color >> 8) & 255;
     back_framebuffer_addr[where + 2] = (color >> 16) & 255;
-
 }
 
 

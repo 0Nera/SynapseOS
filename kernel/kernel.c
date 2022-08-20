@@ -86,6 +86,7 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     //ATA_Detect(&drive);
 
     duke_draw_from_file("/initrd/res/SynapseOSLogo.duke", getWidthScreen()-106, 36);
+    //duke_draw_scaled("/initrd/res/Sovrum/background.duke", getWidthScreen(), getHeightScreen(), 0, 0);
 
     shell();                                // Активация терминала
     // Работает, но надо доделать 

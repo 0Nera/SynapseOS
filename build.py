@@ -1,6 +1,8 @@
 import os, shutil, sys, tarfile, time, glob
 from reprlib import recursive_repr
 
+MEMORY = "64M"
+
 GCC = False # Switch this bool if you want to build with GCC (increases stability)
 
 _CC = "clang -target i386-pc-none-elf"
@@ -20,7 +22,6 @@ BINFLDR = "bin\\" if not (sys.platform == "linux" or sys.platform == "linux2") e
 
 def warn(message):
     print(f"[\x1b[33;1mWARNING\x1b[0m]: {message}")
-
 
 def compile(binary, source, cur="--", total="--", warnings=False):
     print(f"[\x1b[32;1mBUILD\x1b[0m] [{cur}/{total}]: Compiling: {source}")
@@ -45,12 +46,13 @@ def compile_kernel(warnings=False):
             if os.path.getmtime(srcf)>os.path.getmtime(objf):
                 updated.append(srcf)
         else:
-            #print("*", objf, "doesn't exist")
             updated.append(srcf)
 
+    '''
     print("*** *** *** *** *** *** *** ***")
     print("Makefile tactics: Updated only ->", updated)
     print("*** *** *** *** *** *** *** ***")
+    '''
 
     filescount = len(updated)
 
@@ -81,11 +83,12 @@ def compile_kernel(warnings=False):
 
 def link_kernel():
     print("Linking...")
-    print(f"BIN_TARGETS = {BIN_TARGETS}")
+    # print(f"BIN_TARGETS = {BIN_TARGETS}")
     os.system(f"{LD} -T kernel/link.ld -nostdlib -o isodir/boot/kernel.elf " + ''.join(BIN_TARGETS))
 
 def build_kernel(warnings=False):
-    print("Building kernel", os.getcwd(), os.listdir())
+    # print("Building kernel", os.getcwd(), os.listdir())
+    print("Building kernel at ", os.getcwd())
     start_time = time.time()
 
     files = glob.glob("kernel/**/*.c", recursive=True) + glob.glob("kernel/**/*.s", recursive=True)
@@ -168,7 +171,7 @@ def run_qemu():
         print("111")
     os.system("qemu-img create -f raw fdb.img 1440K")
     
-    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32M" \
+    qemu_command = f"qemu-system-i386 -name SynapseOS -soundhw pcspk -m {MEMORY}" \
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
         " -cdrom SynapseOS.iso -fdb fdb.img -hda ata.vhd -serial  file:Qemu.log -d guest_errors -rtc base=localtime"
         
@@ -181,7 +184,7 @@ def run_kvm():
     if not os.path.exists("ata.vhd"):
         os.system("qemu-img create -f raw ata.vhd 32M")
     
-    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32M" \
+    qemu_command = f"qemu-system-i386 -name SynapseOS -soundhw pcspk -m {MEMORY}" \
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
         " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log -accel kvm -d guest_errors -rtc base=localtime"
         
@@ -195,7 +198,7 @@ def run_qemu_debug():
         os.system("qemu-img create -f raw ata.vhd 32M")
 
     
-    qemu_command = "qemu-system-i386 -name SynapseOS -soundhw pcspk -m 32" \
+    qemu_command = f"qemu-system-i386 -name SynapseOS -soundhw pcspk -m {MEMORY}" \
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
         " -d guest_errors -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log -rtc base=localtime" 
     print("gdb kernel.elf -ex target remote localhost:1234")

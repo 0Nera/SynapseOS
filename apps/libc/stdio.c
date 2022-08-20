@@ -1,5 +1,5 @@
-#include <stdio.h>
-
+#include "../include/stdio.h"
+#include <stdint.h>
 
 /*
     Стандартная библиотека SynapseOS
@@ -145,8 +145,6 @@ void putint(const int i) {
     
 }
 
-
-
 void puthex(unsigned int i) {
     char hex[16]  =  { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
     unsigned int n, d = 0x10000000;
@@ -227,8 +225,8 @@ int vfs_read(const char *filename, int32_t offset, int32_t size, void *buf) {
                 : "=a"(ok)
                 : "a"(SC_CODE_readfile),
                   "b"(filename),
-                  "c"(offset),
-                  "d"(size),
+                  "d"(offset),
+                  "c"(size),
                   "S"(buf)
                 );
      return ok;

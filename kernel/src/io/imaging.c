@@ -16,11 +16,11 @@
  * @return 0 При ошибке
  */
 
-struct DukeImageMetadata* duke_get_image_metadata(char *filename) {
+struct DukeImageMeta* duke_get_image_metadata(char *filename) {
     if(vfs_exists(filename)) {
-        char rmeta = kheap_malloc(9);
+        char* rmeta = kheap_malloc(9);
         vfs_read(filename, 0, 9, rmeta);
-        return (struct DukeImageMetadata*)rmeta;
+        return (struct DukeImageMeta*)rmeta;
     }
     return 0;
 }
