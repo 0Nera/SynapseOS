@@ -201,32 +201,44 @@ void shell() {
                 tty_setcolor(COLOR_ERROR);
                 tty_printf("run: incorrect argument\n");
             }
-        } else if(strncmp(cmd, "mh", 2)==0) {
+        } /*else if(strncmp(cmd, "mh", 2)==0) {
 			char* procmd = cmd+3; // Shift it!
 			tty_printf("Parsing: [%s]\n", procmd);
 
-			char* progname;
-			char* tok = strtok(procmd, " "); // First for program name 
-			progname = tok;
+			char* progname = kheap_malloc(strlen(procmd)+1);
+            strcpy(progname, procmd);
+            unsigned int argcount = 0;
 
-			if(progname==0) {
-				tty_printf("Something wrong is happened! Failed to strtok!\n");
-				continue; // Exit
-			}
-			tty_printf("Program name: [%s]\n", progname);
+            int tmp = 0;
+            while(true) {
+                if(progname[tmp]==' ') { progname[tmp]='\0'; break; }
+                tmp++;
+            }
+            procmd+=tmp+1;
+            tty_printf("Program name: %s\n", progname);
 
-            int argcount = 0;
-            tok = strtok(NULL, " "); // Second for first argument
+            char* args[64];
+            tmp = 0;
 
-			while(tok!=NULL) { // And so on...
-				tty_printf("Argument: [%s]\n", tok);
-		        tok = strtok(NULL, " ");
-                argcount++;
+            tty_printf("PROCMD: %s\n", procmd);
+            while(true) {
+                if(procmd[tmp]==' ') {
+                    procmd[tmp]='\0';
+                    tty_printf("ARG LEN: %d\n", strlen(procmd));
+                    args[argcount] = kheap_malloc(strlen(procmd)+1);
+                    memset(args[argcount], 0, strlen(procmd));
+                    strcpy(args[argcount], procmd);
+                    tty_printf("ARGUMENT: [%s]/[%s]\n", args[argcount], procmd);
+                    argcount++; tmp++;
+                    continue;
+                }
+                if(procmd[tmp]=='\0') break;
+                tmp++;
             }
 
             tty_printf("ARGS COUNT: %d\n", argcount);
-			
-        } else {
+			kheap_free(progname);
+        }*/ else {
             char fname[256] = {0};
 
             char *tok = (char *)strtok(cmd, "/");
