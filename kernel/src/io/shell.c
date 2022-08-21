@@ -206,17 +206,25 @@ void shell() {
 			tty_printf("Parsing: [%s]\n", procmd);
 
 			char* progname;
-			char* tok = strtok(procmd, " ");
+			char* tok = strtok(procmd, " "); // First for program name 
 			progname = tok;
-			if(progname==0) {
-				printf("Something wrong is happened! Failed to strtok!\n");
-				continue;
-			}
-			tty_printf("Progname: [%s]\n", progname);
 
-			while((tok = strtok(0, " "))) {
-				tty_printf("Argument: [%s]\n", tok);
+			if(progname==0) {
+				tty_printf("Something wrong is happened! Failed to strtok!\n");
+				continue; // Exit
 			}
+			tty_printf("Program name: [%s]\n", progname);
+
+            int argcount = 0;
+            tok = strtok(NULL, " "); // Second for first argument
+
+			while(tok!=NULL) { // And so on...
+				tty_printf("Argument: [%s]\n", tok);
+		        tok = strtok(NULL, " ");
+                argcount++;
+            }
+
+            tty_printf("ARGS COUNT: %d\n", argcount);
 			
         } else {
             char fname[256] = {0};

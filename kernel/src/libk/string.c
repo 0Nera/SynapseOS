@@ -130,6 +130,8 @@ char *strtok(char *s, const char *delim){
     }
 
     s += strspn(s, delim);
+    //qemu_log("NOW S IS: %s", s);
+
     if (*s == '\0'){
         olds = s;
         return NULL;
