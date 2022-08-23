@@ -3,16 +3,9 @@ from reprlib import recursive_repr
 
 MEMORY = "64M"
 
-GCC = False # Switch this bool if you want to build with GCC (increases stability)
-
 _CC = "clang -target i386-pc-none-elf"
 LD = "ld.lld"
 CFLAGS = " -nostdlib -mno-sse -mno-avx -ggdb -O0 -ffreestanding -I kernel/include/ -c"
-
-if GCC:
-    _CC = "i686-linux-gnu-gcc-10"
-    LD = "i686-linux-gnu-ld"
-    CFLAGS = " -nostdlib -mno-sse -mno-avx -ggdb -O0 -ffreestanding -I kernel/include/ -c"
 
 CC = f"{_CC} {CFLAGS}"
 
@@ -35,7 +28,6 @@ def compile_kernel(warnings=False):
         os.mkdir(f"bin{os.sep}kernel")
     
     filescount = len(SRC_TARGETS)
-    # TODO: Multithreading
 
     updated = []
     for i in range(filescount):
@@ -48,38 +40,10 @@ def compile_kernel(warnings=False):
         else:
             updated.append(srcf)
 
-    '''
-    print("*** *** *** *** *** *** *** ***")
-    print("Makefile tactics: Updated only ->", updated)
-    print("*** *** *** *** *** *** *** ***")
-    '''
-
     filescount = len(updated)
 
     for i in range(filescount):
-        #BIN_TARGETS.append(os.path.join("bin\\", os.path.basename(SRC_TARGETS[i]) + '.o '  ))
-        #os.system(f"echo {CC} -o {BIN_TARGETS[i]} {SRC_TARGETS[i]} & {CC} -o ./{BIN_TARGETS[i]} {SRC_TARGETS[i]} ")
-        #print(f"[\x1b[32mBUILD\x1b[0m]~[{i}/{filescount}]: Compiling: {SRC_TARGETS[i]}")
-        #compile(BIN_TARGETS[i], updated[i], i+1, filescount, warnings)
         compile(os.path.join("bin\\" if not (sys.platform == "linux" or sys.platform == "linux2") else "bin/", os.path.basename(updated[i]) + '.o '), updated[i], i+1, filescount, warnings)
-
-
-    '''
-    JOBS = 8 # Количество ядер используемых при сборке
-
-    currentfileindex = 0
-    while True:
-        if threading.active_count()<=4:    
-            if currentfileindex<filescount: 
-                BIN_TARGETS.append(os.path.join("bin\\", os.path.basename(SRC_TARGETS[currentfileindex]) + '.o '  ))
-                proc = threading.Thread(target=compile, args=(BIN_TARGETS[currentfileindex], 
-                                                              SRC_TARGETS[currentfileindex],
-                                                              currentfileindex,
-                                                              filescount-1))
-                proc.start()
-                currentfileindex+=1
-            else: break
-    '''
 
 def link_kernel():
     print("Linking...")
@@ -87,7 +51,6 @@ def link_kernel():
     os.system(f"{LD} -T kernel/link.ld -nostdlib -o isodir/boot/kernel.elf " + ''.join(BIN_TARGETS))
 
 def build_kernel(warnings=False):
-    # print("Building kernel", os.getcwd(), os.listdir())
     print("Building kernel at ", os.getcwd())
     start_time = time.time()
 
@@ -119,7 +82,6 @@ def build_apps():
     shutil.copytree("res", "../initrd/res")
 
     os.chdir("../initrd")
-        
 
     with tarfile.open("../isodir/boot/initrd.tar", "w") as tar:
         for i in os.listdir():
@@ -164,11 +126,6 @@ def run_qemu():
         pass
     else:
         os.system("qemu-img create -f raw ata.vhd 32M")
-    
-    if os.path.exists("fdb.img"):
-        pass
-    else:
-        print("111")
     os.system("qemu-img create -f raw fdb.img 1440K")
     
     qemu_command = f"qemu-system-i386 -name SynapseOS -soundhw pcspk -m {MEMORY}" \
@@ -176,7 +133,6 @@ def run_qemu():
         " -cdrom SynapseOS.iso -fdb fdb.img -hda ata.vhd -serial  file:Qemu.log -d guest_errors -rtc base=localtime"
         
     os.system(qemu_command)
-
 
 def run_kvm():
     " Это помогает запускать SynapseOS быстрее, по сравнению с обычным режимом"
@@ -201,11 +157,10 @@ def run_qemu_debug():
     qemu_command = f"qemu-system-i386 -name SynapseOS -soundhw pcspk -m {MEMORY}" \
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
         " -d guest_errors -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log -rtc base=localtime" 
-    print("gdb kernel.elf -ex target remote localhost:1234")
+    print("gdb kernel.elf -ex \"target remote localhost:1234\"")
     os.system(
         qemu_command + """ -s -S"""
         )
-
 
 if __name__ == "__main__":
     try:
@@ -214,7 +169,6 @@ if __name__ == "__main__":
         # Стандартная сборка
 
         warnings = False
-
         args = sys.argv[1:] # Filter out program name (build.py)
 
         i = 0
@@ -229,7 +183,7 @@ if __name__ == "__main__":
 
         if warnings: CFLAGS = CFLAGS[2:]; CC = f"{_CC} {CFLAGS}";
 
-        if not args: # Equivalent to 'if len(args)==0'
+        if not args:
             build_kernel(warnings)
             build_apps()
             create_iso()

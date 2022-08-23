@@ -134,6 +134,13 @@ void elf_hdr_info(struct elf_hdr *hdr) {
 }
 
 
+/* I AM IN MISERY!
+   THERE AIN'T NOBODY WHO CAN COMFORT ME!
+
+   WHY WON'T YOU ANSWER ME?
+   THE SILENCE IS SLOWLY KILLIN' ME
+
+   (Maroon 5 - Misery)*/
 
 void elf_info(const char *name) {
     if (!vfs_exists(name)) {
@@ -171,7 +178,7 @@ void elf_info(const char *name) {
 
 
 
-int32_t run_elf_file(const char *name/*, char **argv, char **env __attribute__((unused)), int32_t argc*/) {
+int32_t run_elf_file(const char *name, int32_t argc, char **argv) {
     if (!vfs_exists(name)) {
         tty_printf("\nrun_elf_file: elf [%s] does not exist\n", name);
         qemu_log("run_elf_file: elf [%s] does not exist", name);
@@ -213,11 +220,11 @@ int32_t run_elf_file(const char *name/*, char **argv, char **env __attribute__((
         qemu_log("Loaded");
     }
 
-    int(*entry_point)() = (void*) (hdr->entry);
+    int(*entry_point)(int argc, char** argv) = (void*) (hdr->entry);
     qemu_log("ELF entry point: %x", hdr->entry);
 
     qemu_log("Executing");
-    int _result = entry_point();
+    int _result = entry_point(argc, argv);
     
     tty_printf("\n[PROGRAMM FINISHED WITH CODE <%d>]", _result);
     qemu_log("[PROGRAMM FINISHED WITH CODE <%d>]", _result);
