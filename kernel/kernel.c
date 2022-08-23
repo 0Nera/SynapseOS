@@ -75,6 +75,7 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     							synapse_time_to_unix(TIME));
     tty_puts("Experimental font demo: \xFF\x01 \xFF\x02 \xFF\x03 \xFF\x04 \xFF\x05 \xFF\x06 \xFF\x07 \xFF\x08 \xFF\x09 \xFF\x0A \xFF\x0B \xFF\x0C\n");
     tty_puts("Colors: \xFF\x0D\xFF\x0E\xFF\x0F\n");
+    tty_puts_color("Circles: [\xFF\x10][\xFF\x11]\n", 0, 0xFF0000);
     tty_printf("Test: -1=[%d]  \n", -1);
 
     unit_test(RTL8139_init());              // Тестируем драйвер RTL8139
