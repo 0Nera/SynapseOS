@@ -126,10 +126,6 @@ def run_qemu():
         pass
     else:
         os.system("qemu-img create -f raw ata.vhd 32M")
-    
-    if os.path.exists("fdb.img"):
-        pass
-    else:
     os.system("qemu-img create -f raw fdb.img 1440K")
     
     qemu_command = f"qemu-system-i386 -name SynapseOS -soundhw pcspk -m {MEMORY}" \
@@ -137,7 +133,6 @@ def run_qemu():
         " -cdrom SynapseOS.iso -fdb fdb.img -hda ata.vhd -serial  file:Qemu.log -d guest_errors -rtc base=localtime"
         
     os.system(qemu_command)
-
 
 def run_kvm():
     " Это помогает запускать SynapseOS быстрее, по сравнению с обычным режимом"
