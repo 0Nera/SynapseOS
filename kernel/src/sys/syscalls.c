@@ -2,7 +2,16 @@
     Взято из https://github.com/rgimad/EOS/tree/d3e2062fc909d8b15d8637950050281f051270d2
     Под лицензией MIT license
 */
-
+/**
+ * @file kernel/src/sys/syscalls.c
+ * @authors Арен Елчинян (a2.dev@yandex.com), Пиминов Никита (github.com/pimnik98 | VK: @piminov_remont)
+ * @brief Прослойка для системных вызовов
+ * @version 0.0.2
+ * @date 2022-08-23
+ *
+ * @copyright Copyright SynapseOS Team (с) 2022
+ *
+ */
 #include <kernel.h>
 
 
@@ -87,6 +96,11 @@ void syscall_handler(struct regs *r) {
             setPosY((int32_t)(arg1));
             r->eax = (uint32_t)1;
             break;
+        case SC_CODE_EXEC:
+            qemu_log("[EXEC] File: %s | AC: %d | AS: %s",(char *)(arg1),(int32_t)(arg2),(char *)(arg3));
+            //run_elf_file((char *)(arg1),0,0);
+            r->eax = (uint32_t)(run_elf_file((char *)(arg1),0,0));
+            break;
         case SC_CODE_TTY_PUT_COLOR:
             tty_putchar_color((char)(arg1),(uint32_t)(arg2),(uint32_t)(arg3));
             r->eax = (uint32_t)1;
@@ -98,7 +112,17 @@ void syscall_handler(struct regs *r) {
         case SC_CODE_TTY_DRAW_VGA:
             draw_vga_character((uint8_t)(arg1), (int32_t)(arg2), (int32_t)(arg3), (int32_t)(arg4), (int32_t)(arg5), true);
             break;
-
+        case SC_CODE_CMOS_GET_TIME:
+            r->eax = (uint32_t)get_time_pointer();
+            break;
+        case SC_CODE_SHUTDOWN:
+            shutdown();
+            r->eax = (uint32_t)1;
+            break;
+        case SC_CODE_REBOOT:
+            reboot();
+            r->eax = (uint32_t)1;
+            break;
         case SC_CODE_getscancode:
             r->eax = (uint32_t)keyboard_getscancode();
             break;

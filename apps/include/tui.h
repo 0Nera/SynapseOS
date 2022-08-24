@@ -20,7 +20,7 @@
 #define TUI_TEXT_COLOR_FOOT     0x000000
 #define TUI_TEXT_COLOR_ERROR    0xEBE7E7
 
-struct TUI_THEME {
+typedef struct s_tui_theme {
     uint32_t BASE_COLOR_HEAD;
     uint32_t BASE_COLOR_BODY;
     uint32_t BASE_COLOR_MAIN;
@@ -32,4 +32,13 @@ struct TUI_THEME {
     uint32_t TEXT_COLOR_ITEM;
     uint32_t TEXT_COLOR_FOOT;
     uint32_t TEXT_COLOR_ERROR;
-};
+} ThemeTUI;
+
+typedef struct s_tui_item {
+    uint32_t id;        // Позиция
+    char* name;         // Наименование пункта
+    bool disabled;      // Выключен ли?
+    char* key;          // Ключ, если требуется
+    char* value;        // Данные, если требуется
+} ItemTUI;
+
