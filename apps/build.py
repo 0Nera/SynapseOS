@@ -23,7 +23,7 @@ print("[\x1b[32;1mCONFIGURATION\x1b[0m] Using linker:", LD)
 AR = "llvm-ar"
 _O_LIBC = ["./bin/libc/stdio.o", "./bin/libc/math.o", "./bin/libc/ctype.o",
           "./bin/libc/ports.o","./bin/libc/stdlib.o","./bin/libc/string.o",
-          "./bin/libc/learntask.o","./bin/libc/vesa.o","./bin/libc/scancodes.o", "./bin/libc/time.o"]
+          "./bin/libc/learntask.o","./bin/libc/vesa.o","./bin/libc/scancodes.o", "./bin/libc/time.o","./bin/libc/sys.o", "./bin/libc/tui.o"]
 O_LIBC = ' ' + ' '.join(_O_LIBC)
 data = []
 files = []
@@ -87,6 +87,7 @@ def build_all():
     build("compile", "examples/gas/chronicles.asm", "./bin/chronicles.o")
     build("compile", "examples/C/memory.c", "./bin/memtest.o")
     build("compile", "examples/C/args.c", "./bin/args.o")
+    build("compile", "apps/pimnik98/tshell/main.c", "./bin/tshell.o")
 
     print("[\x1b[33;1mNOTICE\x1b[0m] Building libc")
     '''
@@ -102,6 +103,8 @@ def build_all():
     build("compile", "libc/vesa.c", "./bin/libc/vesa.o")
     build("compile", "libc/scancodes.c", "./bin/libc/scancodes.o")
     build("compile", "libc/ctype.c", "./bin/libc/ctype.o")
+    build("compile", "libc/sys.c", "./bin/libc/sys.o")              # Прочие дополнительные функции
+    build("compile", "libc/tui.c", "./bin/libc/tui.o")              # Text User-Interface
     build("compile", "libc/time.c", "./bin/libc/time.o")
 
     print("[\x1b[33;1mNOTICE\x1b[0m] Linking apps")
@@ -121,6 +124,7 @@ def build_all():
     build("link", "./bin/snakepaint.o" + O_LIBC, "../bin/apps/snakepaint")
     build("link", "./bin/memtest.o" + O_LIBC, "../bin/apps/memtest")
     build("link", "./bin/args.o" + O_LIBC, "../bin/apps/args")
+    build("link", "./bin/tshell.o" + O_LIBC, "../bin/apps/tshell")
     build("link", "./bin/carol.o ./bin/carol_duke.o ./bin/carol_david.o " + O_LIBC, "../bin/apps/carol")
     build("link", "./bin/carol_2.o ./bin/carol_duke.o ./bin/carol_david.o " + O_LIBC, "../bin/apps/carol_2")
 

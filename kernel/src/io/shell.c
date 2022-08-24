@@ -78,8 +78,6 @@ void shell() {
             tty_printf("SHUTDOWN NOW!\n");
             sleep_ms(100);
             shutdown();
-        } else if (strcmp(cmd, "tui") == 0) {
-            tui();
         } else if (strcmp(cmd, "cls") == 0) {
             clean_screen();
         } else if (strcmp(cmd, "cpuinfo") == 0) {
