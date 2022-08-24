@@ -1,5 +1,4 @@
 #include "../include/stdint.h"
-
 size_t strlen(const char *str) {
 	size_t len = 0;
 	while (str[len] != 0) {
@@ -152,10 +151,23 @@ char *strtok(char *s, const char *delim) {
     return token;
 }
 
+char *strncpy(char *dest, const char *src, size_t n){
+    size_t i;
+    for (i = 0; i < n && src[i] != '\0'; i++)
+        dest[i] = src[i];
+    for (; i < n; i++)
+        dest[i] = '\0';
+    return dest;
+}
 
 char *strcat(char *s, const char *t) {
     strcpy(s + strlen(s), t);
     return s;
+}
+
+void substr(char *dest, char *source, int from, int length){
+    strncpy(dest, source + from, length);
+    dest[length] = 0;
 }
 
 char *strstr(char *str, char *substr)
@@ -177,3 +189,27 @@ char *strchr(const char *_s, int _c){
     }
     return (char *)_s;
 }
+
+void strtolower(char* as)
+{
+	while(*as != 0)
+	{
+		if(*as >= 'A' && *as <= 'Z')
+			*as += ('a' - 'A');
+		as++;
+	}
+}
+
+void strtoupper(char* as)
+{
+	while(*as != 0)
+	{
+		if(*as >= 'a' && *as <= 'z')
+			*as -= ('a' - 'A');
+		as++;
+	}
+}
+
+
+
+

@@ -274,6 +274,23 @@ void set_line(int32_t x, int32_t y, int32_t xe, int32_t ye, uint32_t color){
     }
 }
 
+/**
+ * @brief Рисуем прямоугольник
+ *
+ * @param x - Начальная координата X
+ * @param y - Начальная координата y
+ * @param w - Длина
+ * @param h - Высота
+ * @param color - цвет заливки
+ */
+void drawRect(int x,int y,int w, int h,int color){
+    for (int _x = x; _x < x+w ; _x++){
+        for (int _y = y; _y < y+h; _y++){
+            set_pixel(_x, _y, color);
+        }
+    }
+}
+
 
 /**
  * @brief Вывод одного символа с учетом цвета фона и текста
@@ -375,24 +392,6 @@ void external_draw_grapheme(int* glyphs, int width, int height, unsigned char gr
     tty_pos_x += width;
 }
 
-void external_draw_grapheme_override_black(int* glyphs, int width, int height, unsigned char grapheme, int bgColor) {
-    uint32_t cx, cy;
-    unsigned int glyph_len = width*height;
-
-    for(cy = 0; cy<height; cy++) {
-        for(cx = 0; cx<width; cx++) {
-            int px = cx + cy*width;
-            if(glyphs[glyph_len*grapheme + px]!=0){
-                set_pixel(cx+tty_pos_x, cy+tty_pos_y, glyphs[glyph_len*grapheme + px]);
-            }else{
-                set_pixel(cx+tty_pos_x, cy+tty_pos_y, bgColor);
-            }
-        }
-    }
-
-    tty_pos_x += width;
-}
-
 /**
  * @brief Удаление последнего символа
  * 
@@ -455,6 +454,7 @@ void tty_puts(const char str[]) {
             }
         }
         #ifdef EXPERIMENTAL_FONT
+
         if(str[i]=='\xFF' && i+1<=strlen(str)) {
             char extch = str[i+1];
             external_draw_grapheme(Experimental_Font_data, Experimental_Font_width,
@@ -479,19 +479,7 @@ void tty_puts(const char str[]) {
  */
 void tty_puts_color(const char str[], uint32_t txColor, uint32_t bgColor) {
     for (size_t i = 0; i < strlen(str); i++) {
-    #ifdef EXPERIMENTAL_FONT
-        if(str[i]=='\xFF' && i+1<=strlen(str)) {
-            char extch = str[i+1];
-            external_draw_grapheme_override_black(Experimental_Font_data, Experimental_Font_width,
-                                   Experimental_Font_height, extch, bgColor);
-            i++;
-        }else{
-            tty_putchar_color(str[i], txColor, bgColor);
-        }
-    #else
         tty_putchar_color(str[i], txColor, bgColor);
-    #endif
-        
     }
 }
 

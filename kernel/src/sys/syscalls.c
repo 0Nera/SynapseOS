@@ -52,6 +52,53 @@ void syscall_handler(struct regs *r) {
             tty_printf("%s", (char *)(arg1));
             r->eax = (uint32_t)1;
             break;
+        case SC_CODE_TTY_DRAW_RECT:
+            drawRect((int)(arg1),(int)(arg2),(int)(arg3),(int)(arg4),(int)(arg5));
+            r->eax = (uint32_t)1;
+            break;
+        case SC_CODE_CHANGE_KEYBOARD:
+            changeStageKeyboard((int32_t)(arg1));
+            r->eax = (uint32_t)1;
+            break;
+        case SC_CODE_GET_KEY_LAST:
+            r->eax = (uint32_t)keyLastInset();
+            break;
+        case SC_CODE_TTY_POS_X:
+            r->eax = (uint32_t)getPosX();
+            break;
+        case SC_CODE_TTY_POS_Y:
+            r->eax = (uint32_t)getPosY();
+            break;
+        case SC_CODE_TTY_SCREEN_W:
+            r->eax = (uint32_t)getWidthScreen();
+            break;
+        case SC_CODE_TTY_SCREEN_H:
+            r->eax = (uint32_t)getHeightScreen();
+            break;
+        case SC_CODE_TTY_SET_COLOR:
+            tty_setcolor((int32_t)(arg1));
+            r->eax = (uint32_t)1;
+            break;
+        case SC_CODE_TTY_SET_POS_X:
+            setPosX((int32_t)(arg1));
+            r->eax = (uint32_t)1;
+            break;
+        case SC_CODE_TTY_SET_POS_Y:
+            setPosY((int32_t)(arg1));
+            r->eax = (uint32_t)1;
+            break;
+        case SC_CODE_TTY_PUT_COLOR:
+            tty_putchar_color((char)(arg1),(uint32_t)(arg2),(uint32_t)(arg3));
+            r->eax = (uint32_t)1;
+            break;
+        case SC_CODE_TTY_PUTS_COLOR:
+            tty_puts_color((char *)(arg1),(uint32_t)(arg2),(uint32_t)(arg3));
+            r->eax = (uint32_t)1;
+            break;
+        case SC_CODE_TTY_DRAW_VGA:
+            draw_vga_character((uint8_t)(arg1), (int32_t)(arg2), (int32_t)(arg3), (int32_t)(arg4), (int32_t)(arg5), true);
+            break;
+
         case SC_CODE_getscancode:
             r->eax = (uint32_t)keyboard_getscancode();
             break;

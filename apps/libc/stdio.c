@@ -219,6 +219,173 @@ void printf(char *text, ...) {
     print(text, args);
 }
 
+uint32_t format_string_size(char *text, va_list args){
+    const unsigned char hex[18] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+    uint32_t i = 0;
+    uint32_t size = 0;
+    uint32_t n, d = 0x10000000;
+    while (text[i]){
+        char res[32];
+        int temp_int = 0;
+        char temp_char = '0';
+        if (text[i] == '%'){
+            i++;
+            switch (text[i]){
+            case 's':
+                size += strlen(va_arg(args, char *));
+                break;
+            case 'c':
+                temp_char = va_arg(args, char);
+                size++;
+                break;
+            case 'd':
+                temp_int = va_arg(args, int);
+
+                itoa(temp_int, res);
+                size += strlen(res);
+                break;
+            case 'i':
+                temp_int = va_arg(args, int);
+
+                itoa(temp_int, res);
+                size += strlen(res);
+                break;
+            case 'u':
+                temp_int = va_arg(args, unsigned int);
+
+                itoa(temp_int, res);
+                size += strlen(res);
+                break;
+            case 'x':
+
+                temp_int = va_arg(args, unsigned int);
+                n = 0;
+                d = 0x10000000;
+
+                res[0] = '0';
+                res[1] = 'x';
+
+                while ((temp_int / d == 0) && (d >= 0x10))
+                    d /= 0x10;
+
+                n = temp_int;
+
+                while (d >= 0xF)
+                {
+                    strcpy(res, hex[n / d]);
+                    n = n % d;
+                    d /= 0x10;
+                }
+
+                size += strlen(res);
+                break;
+            case 'v':
+                temp_int = va_arg(args, unsigned int);
+                n = 0;
+                d = 0x10000000;
+
+                while ((temp_int / d == 0) && (d >= 0x10))
+                    d /= 0x10;
+
+                n = temp_int;
+
+                while (d >= 0xF)
+                {
+                    strcpy(res, hex[n / d]);
+                    n = n % d;
+                    d /= 0x10;
+                }
+
+                size += strlen(res);
+                break;
+            default:
+                size++;
+            }
+            // \n
+        }
+        else if (text[i] == 10){
+            size++;
+        }
+        else if (text[i] == 9){
+            size += 4;
+        }
+        else{
+            size++;
+        }
+        i++;
+    }
+    return size;
+}
+
+
+char *format_string(char *text, ...){
+    va_list args;
+    uint32_t i = 0;
+    va_start(args, text);
+    uint32_t size = format_string_size(text, args);
+    char *result = malloc(size);
+    memset(result, 0, strlen(text));
+
+    while (text[i]){
+        char res[32];
+        int temp_int = 0;
+
+        if (text[i] == '%'){
+            i++;
+            switch (text[i]){
+                case 's':
+                    strcat(result, va_arg(args, char*));
+                    break;
+                case 'c': {
+                    //strcat(result, va_arg(args, char)) // Wrong!
+                    result[i] = va_arg(args, char);  // Maybe correct
+                    break;
+                }
+                case 'd':{
+                    temp_int = va_arg(args, int);
+                    itoa(temp_int, res);
+                    strcat(result, res);
+                    break;
+                }
+                case 'i':
+                    //tty_putint(va_arg(args, int));
+                    break;
+                case 'u':
+                    //tty_putint(va_arg(args, unsigned int));
+                    break;
+                case 'x':
+                    result[i]='!';
+                    //tty_puthex(va_arg(args, uint32_t));
+                    break;
+                case 'v':
+                    //tty_puthex_v(va_arg(args, uint32_t));
+                    break;
+                default:
+                    result[i] = text[i];
+            }
+        }
+        else if (text[i] == 10){
+            // tty_line_fill[tty_pos_y] = tty_pos_x;
+            // tty_pos_x = 0;
+
+            // if ((tty_pos_y + 17) >= (int)VESA_HEIGHT) {
+            // tty_scroll();
+            //} else {
+            // tty_pos_y += 17;
+            //}
+        }
+        else if (text[i] == 9){
+            // tty_pos_x += 4 * 17;
+        }
+        else{
+            result[i] = text[i];
+        }
+        i++;
+    }
+    va_end(args);
+    return result;
+}
+
 int vfs_read(const char *filename, int32_t offset, int32_t size, void *buf) {
 	int ok = 0;
         asm volatile("int $0x80" 

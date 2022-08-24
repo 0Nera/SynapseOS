@@ -215,7 +215,7 @@ uint32_t format_string_size(char *text, va_list args){
                 size += strlen(res);
                 break;
             case 'x':
-                
+
                 temp_int = va_arg(args, unsigned int);
                 n = 0;
                 d = 0x10000000;
