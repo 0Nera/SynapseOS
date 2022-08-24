@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
 #include <vesa.h>
 #include <tui.h>
 #include <time.h>
@@ -86,14 +88,46 @@ void updateLoop(){
 
     // Выводим нажатую кнопку во второй колонке в шапке
 
-    //SynTime TIME = get_time();
-    char* TIME = "10/10/2022 12:23";
-    setPosX((getMaxStrLineTUI()-16)*8);
+    struct synapse_time* TIME = get_time();
+    //char* TIME = "10/10/2022 12:23";
+    setPosX((getMaxStrLineTUI()-20)*8);
     setPosY(0);
     setColor(getColorsTUI(false));
-    drawRect((getMaxStrLineTUI()-16)*8,0,20*8, 15,TUI_BASE_COLOR_HEAD);
+    drawRect((getMaxStrLineTUI()-16)*8,0,20*8, 15, TUI_BASE_COLOR_HEAD);
 
-    puts_color(TIME,getColorsTUI(false), TUI_BASE_COLOR_HEAD);
+    char hrw[3];
+    char mnw[3];
+    char scw[3];
+
+    char dw[3];
+    char mw[3];
+    char yw[5];
+    
+    itoa(TIME->hours, hrw);
+    itoa(TIME->minutes, mnw);
+    itoa(TIME->seconds, scw);
+
+    itoa(TIME->day, dw);
+    itoa(TIME->month, mw);
+    itoa(TIME->year, yw);
+
+    char totaltime[48] = {0};
+    strcpy(totaltime, dw);
+    strcat(totaltime, "/");
+    strcat(totaltime, mw);
+    strcat(totaltime, "/");
+    strcat(totaltime, yw);
+    strcat(totaltime, " ");
+    if(TIME->hours<10) strcat(totaltime, "0");
+    strcat(totaltime, hrw);
+    strcat(totaltime, ":");
+    if(TIME->minutes<10) strcat(totaltime, "0");
+    strcat(totaltime, mnw);
+    strcat(totaltime, ":");
+    if(TIME->seconds<10) strcat(totaltime, "0");
+    strcat(totaltime, scw);
+
+    puts_color(totaltime, getColorsTUI(false), TUI_BASE_COLOR_HEAD);
 
     //#if CLOCK_FORMAT==1
     //printf("%d/%d/%d %d:%d:%d", TIME.day, TIME.month, TIME.year, TIME.hours, TIME.minutes, TIME.seconds);
