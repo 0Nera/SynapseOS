@@ -111,8 +111,24 @@ $(document).ready(function(){initNavTree('d2/d6e/syscalls_8h_source.html','../..
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#define SC_CODE_getfreq         43</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#define SC_CODE_get_time        44</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">void</span> syscall_init();</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">void</span> syscall_handler(<span class="keyword">struct</span> <a class="code" href="../../d3/da0/structregs.html">regs</a> *r);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#define SC_CODE_TTY_POS_X       45</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#define SC_CODE_TTY_POS_Y       46</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define SC_CODE_TTY_SCREEN_W    47</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SC_CODE_TTY_SCREEN_H    48</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#define SC_CODE_TTY_SET_COLOR   49</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#define SC_CODE_TTY_SET_POS_X   50</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#define SC_CODE_TTY_SET_POS_Y   51</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#define SC_CODE_TTY_PUT_COLOR   52</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#define SC_CODE_TTY_PUTS_COLOR  53</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#define SC_CODE_TTY_DRAW_VGA    54</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#define SC_CODE_TTY_DRAW_RECT   57</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#define SC_CODE_CHANGE_KEYBOARD 55</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#define SC_CODE_GET_KEY_LAST    56</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keywordtype">void</span> syscall_init();</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keywordtype">void</span> syscall_handler(<span class="keyword">struct</span> <a class="code" href="../../d3/da0/structregs.html">regs</a> *r);</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="astructregs_html"><div class="ttname"><a href="../../d3/da0/structregs.html">regs</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d35/idt_8h_source.html#l00040">idt.h:40</a></div></div>
@@ -120,7 +136,7 @@ $(document).ready(function(){initNavTree('d2/d6e/syscalls_8h_source.html','../..
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_009f605b833ac4622acd6c3c0c26c0f0.html">include</a></li><li class="navelem"><a class="el" href="../../dir_3783a9e4629973085aab7079e437c286.html">sys</a></li><li class="navelem"><b>syscalls.h</b></li>
-    <li class="footer">Документация по SynapseOS. Последние изменения: Ср 24 Авг 2022 07:23:02. Создано системой
+    <li class="footer">Документация по SynapseOS. Последние изменения: Ср 24 Авг 2022 07:29:00. Создано системой
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

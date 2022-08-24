@@ -41,7 +41,7 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "d6/d0c/structip__packet.html#a4d402503271315376ddf4e47674d4965",
-"dc/d03/tty_8c.html#a6ed161eb05366ec38b42719ad6aaec64"
+"dd/d3f/struct____attribute____.html#a1c23a9e19ce89d870cf5500845c554ad"
 ];
 
 var SYNCONMSG = 'нажмите на выключить для синхронизации панелей';
