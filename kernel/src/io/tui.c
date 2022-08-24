@@ -1,155 +1,35 @@
 /**
- * @file apps/tui.c
- * @authors Пиминов Никита (github.com/pimnik98 | VK: @piminov_remont)
- * @brief Прослойка для работы с текстовым графическим редактором
- * @version 0.0.2
- * @date 2022-08-23
- *
- * @copyright Copyright Пиминов Никита (с) 2022
- *
+ * @file tui.c
+ * @brief TUI для SynapseOS
+ * @author Пиминов Никита (@piminov_remont) (github.com/pimnik98)
+ * piminoff.ru
  */
+#include <kernel.h>
 
-#include <tui.h>
+#define CLOCK_FORMAT 2
+
 int32_t bgColor = VESA_BLUE;        // Фон на экране
 int32_t txColor = VESA_WHITE;       // Основной текст для печати на экране
 int32_t TUIMode = TUI_DEFAULT;      // Режим TUI
 int32_t typeDisplay = 0;            // Тип дисплея (?)
 int32_t lastUpdate = 0;             // Последнее обновление экрана
-int32_t w = 0;                      // Длина рабочего места
-int32_t h = 0;                      // Длина рабочего места
+int32_t w = 0;                      // Длина экрана
+int32_t h = 0;                      // Высота экрана
 int32_t ww = 0;                     // Длина рабочего места
 int32_t wh = 0;                     // Высота рабочего места
 int32_t maxStrLine = 0;             // Максимальное количество символов на линии
 int32_t maxHeightLine = 0;          // Максимальное количество линий
+int32_t oldPosX = 0;                // Последние местоположение символа по X (место печати)
+int32_t oldPosY = 0;                // Последние местоположение символа по Y (место печати)
 char* Display;                      // Название расширения монитора
 int32_t currentMenu = 0;            // Текущие меню
 int32_t currentList = 0;            // Текущая позиция на экране
-char* listMenu[128];                // Сам список меню
+char* listMenu[128];                 // Сам список меню
 int32_t maxListMenu = 0;            // Максимальное количество элементов
 uint32_t maxItemScreen = 0;         // Максимальное количество объектов на экране
-uint32_t pageMenuCurrent = 0;       // Текущая страница
+uint32_t pageMenuCurrent = 0;        // Текущая страница
 uint32_t pageMenuMax = 0;           // Максимальная страница
 
-/**
- * @brief Получить цвет TUI
- *
- * @params bool bg - Если true, то фон, в противном случае основной цвет
- */
-int32_t getColorsTUI(bool bg){
-    return (bg?bgColor:txColor);
-}
-
-/**
- * @brief Получить текущий режим меню
- *
- * @return int32_t - Выводит ID статуса
- */
-int32_t getModeTUI(){
-    return TUIMode;
-}
-
-/**
- * @brief Получить длину рабочего пространства
- *
- * @return int32_t - Длина пространства
- */
-int32_t getWorkSpaceWidthTUI(){
-    return ww;
-}
-
-/**
- * @brief Получить высоту рабочего пространств
- *
- * @return int32_t - Высота пространства
- */
-int32_t getWorkSpaceHeightTUI(){
-    return wh;
-}
-
-/**
- * @brief Установить режим работы TUI
- *
- * @param int32_t mode - Режим TUI
- */
-int32_t setModeTUI(int32_t mode){
-    TUIMode = mode;
-}
-
-/**
- * @brief Получить последнее время обновления TUI
- *
- * @return int32_t - Выводит последнее время обновления
- */
-int32_t getLastUpdateTUI(){
-    return lastUpdate;
-}
-
-/**
- * @brief Установить время обновления TUI
- *
- * @param int32_t time - Время (в тиках)
- */
-int32_t setLastUpdateTUI(int32_t time){
-    lastUpdate = time;
-}
-
-/**
- * @brief Получить текущию позицию в меню
- *
- * @return int32_t - Выводит позицию в меню
- */
-int32_t getCurrentItemTUI(){
-    return currentList;
-}
-
-/**
- * @brief Установить позицию в меню
- *
- * @param int32_t item - Позиция в меню
- */
-int32_t setCurrentItemTUI(int32_t item){
-    currentList = item;
-}
-
-/**
- * @brief Установить максимальное количество элементов в меню
- *
- * @param int32_t item - Максимальное кол-во элементов
- */
-int32_t setMaxItemTUI(int32_t item){
-    maxListMenu = item;
-}
-
-/**
- * @brief Получить максимальное количество элементов в меню
- *
- * @return int32_t - Выводит кол-во элементов
- */
-int32_t getMaxListMenuTUI(){
-    return maxListMenu;
-}
-
-/**
- * @brief Получить максимальное символов в одной строке
- *
- * @return int32_t - Выводит кол-во символов на одну строку экрана
- */
-int32_t getMaxStrLineTUI(){
-    return maxStrLine;
-}
-
-/**
- * @brief Выводит фатальный красный блок
- *
- * @return char* - Выводит название текущего расширения экрана
- */
-char* getDisplayName(){
-    return Display;
-}
-
-/**
- * @brief Инициализация параметров дисплея
- */
 void testDisplay(int w, int h){
     int32_t pixels = w*h;
     int32_t tDsize = w/h;
@@ -172,6 +52,8 @@ void testDisplay(int w, int h){
     // 21:9     - 15
     // 25:16    - 16
     // 43:18    - 17
+
+
     switch(pixels){
         case 76800:{
             // 320×240 (4:3)
@@ -505,23 +387,130 @@ void testDisplay(int w, int h){
         }
     }
     //tty_printf("%d",framebuffer_width);
-    //qemu_log("[testDisplay] %dx%d - %d pixels | %d | %s",w,h,pixels,typeDisplay,Display);
-    //tty_printf("[testDisplay] %dx%d - %d pixels | %d | %s \n",w,h,pixels,typeDisplay,Display);
+    qemu_log("[testDisplay] %dx%d - %d pixels | %d | %s",w,h,pixels,typeDisplay,Display);
+    tty_printf("[testDisplay] %dx%d - %d pixels | %d | %s \n",w,h,pixels,typeDisplay,Display);
 }
 
 /**
- * @brief Отчистить пользовательское пространство
- *
- * @param int - Цвет для фона
+ * Рисуем прямоугольник
+ * x - Начальная координата X
+ * y - Начальная координата y
+ * w - Длина
+ * h - Высота
+ * color - цвет заливки
  */
+void drawRect(int x,int y,int w, int h,int color){
+    for (int _x = x; _x < x+w ; _x++){
+        for (int _y = y; _y < y+h; _y++){
+            set_pixel(_x, _y, color);
+        }
+    }
+}
+
+void drawRectLine(int x,int y,int w, int h,int color,int color2, int c){
+    for (int _x = x; _x < x+w ; _x += 8){
+        draw_vga_character(c, _x, y, color, color2, true);
+        draw_vga_character(c, _x, y+h-16, color, color2, true);
+    }
+    for (int _y = y; _y < y+h; _y += 16){
+        draw_vga_character(c, x, _y, color, color2, true);
+        draw_vga_character(c, x+w-8, _y, color, color2, true);
+    }
+}
+
+void drawLine(int y,int color){
+    for (int _x = 0; _x < w ; _x += 8){
+        draw_vga_character(0, _x, y*16, color, color, true);
+    }
+}
+
+void cleanScreen(bool fast){
+    if (fast){
+        drawRect(0,0,w,h,bgColor);
+    } else {
+        for (int x = 0; x != w; x++){
+            for (int y = 0; y != h; y++){
+                set_pixel(x, y, bgColor);
+            }
+        }
+    }
+}
+
+void headBar(){
+    drawLine(1,TUI_BASE_COLOR_HEAD);
+    char* OSNAME = " SynapseOS v0.2.12 (Dev)";
+    setPosX(0);
+    setPosY(16*1);
+    tty_puts_color(OSNAME,txColor, TUI_BASE_COLOR_HEAD);
+
+    tty_setcolor(txColor);
+    struct synapse_time TIME = get_time();
+    //char* TIME = "10/10/2022 12:23";
+    setPosX((maxStrLine-18)*8);
+    setPosY(16*1);
+    drawRect((maxStrLine-18)*8,16,18*8, 16,TUI_BASE_COLOR_HEAD);
+    tty_printf("%d/%d/%d %d:%d:%d", TIME.day, TIME.month, TIME.year, TIME.hours, TIME.minutes, TIME.seconds);
+    //tty_puts_color(TIME,txColor, TUI_BASE_COLOR_HEAD);
+}
+
+void headBarOld(){
+    drawLine(1,TUI_BASE_COLOR_HEAD);
+    char* OSNAME = " SynapseOS v0.2.12 (Dev)";
+    setPosX(0);
+    setPosY(16*1);
+    tty_puts_color(OSNAME,txColor, TUI_BASE_COLOR_HEAD);
+
+    char* TIME = "10/10/2022 12:23";
+    setPosX((maxStrLine-15)*8);
+    setPosY(16*1);
+    tty_puts_color(TIME,txColor, TUI_BASE_COLOR_HEAD);
+    // Рисуем треугольник для параметров
+    drawRectLine(8,32,w/2,112,txColor,VESA_LIGHT_GREY,176);
+    drawRectLine(w/2,32,(w/2)-8,112,txColor,VESA_LIGHT_GREY,176);
+
+
+    setPosX(16);
+    setPosY(16*3);
+    char infoOS[512];
+    substr(infoOS, format_string("OS: %s",OSNAME), 0, (maxStrLine/2)-2);
+    tty_puts_color(infoOS,txColor, bgColor);
+
+    setPosX(16);
+    setPosY(16*4);
+    char infoCPU[512];
+    substr(infoCPU, format_string("CPU: %s",getNameBrand()), 0, (maxStrLine/2)-2);
+    tty_puts_color(infoCPU,txColor, bgColor);
+
+    setPosX(16);
+    setPosY(16*5);
+    char infoRAM[512];
+    substr(infoRAM, strcat(format_string("RAM: %d",(getInstalledRam()))," kb"), 0, (maxStrLine/2)-2);
+    tty_puts_color(infoRAM,txColor, bgColor);
+
+    setPosX(16);
+    setPosY(16*6);
+    char infoVideo[512];
+    substr(infoVideo, "Video: Basic video adapter (Unknown)", 0, (maxStrLine/2)-2);
+    tty_puts_color(infoVideo,txColor, bgColor);
+
+    setPosX(16);
+    setPosY(16*7);
+    char infoDisplay[512];
+    substr(infoDisplay, (format_string("Display: %s",Display,w,h)), 0, (maxStrLine/2)-2);
+    tty_puts_color(infoDisplay,txColor, bgColor);
+}
+
+void footBar(char* text){
+    drawRect(0,h-16,1024,h,VESA_LIGHT_GREY);
+    setPosX(0);
+    setPosY(h-16);
+    tty_puts_color(text,VESA_BLACK, VESA_LIGHT_GREY);
+}
+
 void cleanWorkSpace(int color){
     drawRect(8,16*(3),ww,wh,color);
 }
-/**
- * @brief Выводит список меню
- *
- * @param title - Заголовок
- */
+
 void createMenuBox(char* title){
     TUIMode = TUI_MENU_BOX;
     // Установка отступа экрана в длину (left/right)
@@ -555,7 +544,7 @@ void createMenuBox(char* title){
     // Отображаем титл
     setPosX(((3+padding_w)*8));
     setPosY(16*((10)+padding_h));
-    puts_color(title,TUI_TEXT_COLOR_BODY,TUI_BASE_COLOR_MAIN);
+    tty_puts_color(title,TUI_TEXT_COLOR_BODY,TUI_BASE_COLOR_MAIN);
 
     // Рисуем пункты меню
     for (int x = pageMenuCurrent*maxItemScreen; x < maxItemScreen; x++){
@@ -564,19 +553,16 @@ void createMenuBox(char* title){
         substr(listMenu[x], listMenu[x], 0, maxStrLineBox);
         if (currentList == x){
             drawRect(((3+padding_w)*8),16*((12+x)+padding_h),maxStrLineBox*8, 16,TUI_BASE_COLOR_ITEM);
-            puts_color(listMenu[x],TUI_TEXT_COLOR_ITEM,TUI_BASE_COLOR_ITEM);
+            tty_puts_color(listMenu[x],TUI_TEXT_COLOR_ITEM,TUI_BASE_COLOR_ITEM);
             // Помечаем что, он является текущим
         } else {
-            puts_color(listMenu[x],TUI_TEXT_COLOR_BODY,TUI_BASE_COLOR_MAIN);
+            tty_puts_color(listMenu[x],TUI_TEXT_COLOR_BODY,TUI_BASE_COLOR_MAIN);
         }
     }
 }
 
 /**
  * @brief Выводит фатальный красный блок
- *
- * @param title - Заголовок
- * @param text  - Текст ошибки.
  */
 void createErrorBox(char* title,char* text){
     // Переводим TUI в режим ERRORBOX
@@ -618,7 +604,7 @@ void createErrorBox(char* title,char* text){
 
     setPosX(((3+centerTitle+padding_w)*8));
     setPosY(16*((10)+padding_h));
-    puts_color(title,TUI_TEXT_COLOR_ERROR,TUI_BASE_COLOR_ERROR);
+    tty_puts_color(title,TUI_TEXT_COLOR_ERROR,TUI_BASE_COLOR_ERROR);
 
     // Рисуем буковки
     if (strlen(text) > maxStrLineBox){
@@ -629,39 +615,136 @@ void createErrorBox(char* title,char* text){
     } else {
         setPosX(((3+padding_w)*8));
         setPosY(16*((12)+padding_h));
-        puts_color(text,TUI_TEXT_COLOR_ERROR,TUI_BASE_COLOR_ERROR);
+        tty_puts_color(text,TUI_TEXT_COLOR_ERROR,TUI_BASE_COLOR_ERROR);
     }
 }
 
-/**
- * @brief Инициализация и сброс TUI на стандартное значение
- */
-void tui_configurate(){
-    qemu_printf("%s","TUI Configure");
+void updateLoop(){
+    // Получаем последнию позицию курсора
+    oldPosX = getPosX();
+    oldPosY = getPosY();
+
+    // Выводим нажатую кнопку во второй колонке в шапке
+
+     struct synapse_time TIME = get_time();
+    //char* TIME = "10/10/2022 12:23";
+    setPosX((maxStrLine-18)*8);
+    setPosY(0);
+    tty_setcolor(txColor);
+    drawRect((maxStrLine-18)*8,0,20*8, 15,TUI_BASE_COLOR_HEAD);
+    //#if CLOCK_FORMAT==1
+    tty_printf("%d/%d/%d %d:%d:%d", TIME.day, TIME.month, TIME.year, TIME.hours, TIME.minutes, TIME.seconds);
+    /* CAUSES PageFault
+    #elif CLOCK_FORMAT==2
+    tty_printf("%d %s %d %d:%d:%d", TIME.day, months_list[TIME.month-1], TIME.year, TIME.hours, TIME.minutes, TIME.seconds);
+    #endif
+    */
+    //tty_printf("%d",keyLastInset());
+    if (keyLastInset() != 0){
+        qemu_log("Last key ID: %d",keyLastInset());
+    }
+    // Возращаем указатель обратно
+    setPosX(oldPosX);
+    setPosY(oldPosY);
+}
+
+bool tui(){
+    int32_t i = 0;
     w = getWidthScreen();
     h = getHeightScreen();
     ww = w-16;
     wh = h-(80);
     maxHeightLine = wh/16;
     maxStrLine = (w/8)-2;
-    changeStageKeyboard(1); // Блокируем нажатие и отображение кнопок
+    changeStageKeyboard(2); // Блокируем нажатие и отображение кнопок
     testDisplay(w,h);       // Тестируем монитор на валидность (Скорее всего останеться только для детекта, когда резина будет готова)
     bgColor = TUI_BASE_COLOR_BODY;
     txColor = TUI_TEXT_COLOR_BODY;
+    tty_printf("TUI Starting...\n");
     TUIMode = TUI_DEFAULT;
     lastUpdate = timer_get_ticks()+3;
+    while(1){
+        if (timer_get_ticks() < lastUpdate){
+            // Просто игнорируем работу цикла
+            continue;
+        }
+        // Выполняем цикл
+        updateLoop();
+        if (TUIMode == TUI_ERROR_BOX){
+            // Режим обработки фатального окна
+        } else if (TUIMode == TUI_MENU_BOX){
+             changeStageKeyboard(0);
+            if (keyLastInset() == 72){
+                currentList--;
+                // Нажата клавиша вверх
+                if (currentList < 0){
+                    currentList = maxListMenu-1;
+                }
+                createMenuBox("Base menu:");
+            } else if (keyLastInset() == 80){
+                // Нажата клавиша вниз
+                currentList++;
+                if (currentList >= maxListMenu){
+                    currentList = 0;
+                }
+                createMenuBox("Base menu:");
+            } else if (keyLastInset() == 1){
+                // Нажата клавиша ESC
+                cleanWorkSpace(TUI_BASE_COLOR_BODY);
+                TUIMode = TUI_DEFAULT;
+            }
+            lastUpdate = timer_get_ticks()+5;
+            continue;
+        } else if (keyLastInset() == 91 || keyLastInset()==59){ // Win key!
+            cleanWorkSpace(TUI_BASE_COLOR_BODY);
+            listMenu[0] = "Info PC";
+            listMenu[1] = "List PCI-Devices";
+            listMenu[2] = "Show ErrorBox";
+            listMenu[3] = "Exit to Console";
+            listMenu[4] = "Reboot";
+            listMenu[5] = "Shutdown";
+            listMenu[6] = "6Info PC";
+            listMenu[7] = "7List PCI-Devices";
+            listMenu[8] = "8Show ErrorBox";
+            listMenu[9] = "9Exit to Console";
+            listMenu[10] = "10Reboot";
+            listMenu[11] = "11Shutdown";
+            maxListMenu = 12;
+            createMenuBox("Base menu:");
+            qemu_log("PAGE -> Items: %d/%d -> ScreenMax: %d",currentList,maxListMenu,maxItemScreen);
+            //createErrorBox("Error","Test Fatal Screen");
+            //sleep_ms(100);
+            //cleanWorkSpace(TUI_BASE_COLOR_BODY);
+            //break;
+        } else if (keyLastInset() == 88){
+            // Нажата клавиша F12 - закроем TUI и вернем управление shell()
+            createErrorBox("Error in TUI module. ","You will be returned to the console in 1 seconds.");
+            sleep_ms(1000);
+            bgColor = VESA_BLACK;
+            cleanScreen(true);
+            break;
+        } else {
+            if (i == 0){
+                i = 1;
+                // Чистим экран
+                cleanScreen(true);
+                // Рисуем обводку
+                //drawRectLine(0,0,w,h,txColor,VESA_LIGHT_GREY,178);
+                // Выводим шапку
+                headBar();
+                cleanWorkSpace(TUI_BASE_COLOR_BODY);
 
-    /*
-    th.BASE_COLOR_HEAD  = TUI_BASE_COLOR_HEAD;
-    th.BASE_COLOR_BODY  = TUI_BASE_COLOR_BODY;
-    th.BASE_COLOR_MAIN  = TUI_BASE_COLOR_MAIN;
-    th.BASE_COLOR_ITEM  = TUI_BASE_COLOR_ITEM;
-    th.BASE_COLOR_FOOT  = TUI_BASE_COLOR_FOOT;
-    th.BASE_COLOR_ERROR = TUI_BASE_COLOR_ERROR;
-    th.TEXT_COLOR_HEAD  = TUI_TEXT_COLOR_HEAD;
-    th.TEXT_COLOR_BODY  = TUI_TEXT_COLOR_BODY;
-    th.TEXT_COLOR_ITEM  = TUI_TEXT_COLOR_ITEM;
-    th.TEXT_COLOR_FOOT  = TUI_TEXT_COLOR_FOOT;
-    th.TEXT_COLOR_ERROR = TUI_BASE_COLOR_ERROR;
-    */
+                // Выводим ноги
+                footBar(" Press 'Start' to open menu");
+                // Установка позиции для печати
+                setPosX(8);
+                setPosY(16*8);
+                changeStageKeyboard(1);
+            }
+
+            // Обновляем таймер, для переотображения
+            lastUpdate = timer_get_ticks()+3;
+        }
+    }
+    return true;
 }
