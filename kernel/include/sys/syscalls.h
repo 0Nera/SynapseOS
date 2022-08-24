@@ -37,6 +37,10 @@
 
 #define SC_CODE_CHANGE_KEYBOARD 55
 #define SC_CODE_GET_KEY_LAST    56
+#define SC_CODE_CMOS_GET_TIME   58
+#define SC_CODE_EXEC            59
+#define SC_CODE_SHUTDOWN        60
+#define SC_CODE_REBOOT          61
 
 
 void syscall_init();

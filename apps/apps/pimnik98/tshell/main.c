@@ -1,3 +1,13 @@
+/**
+ * @file apps/apps/pimnik98/tshell/main.c
+ * @authors Пиминов Никита (github.com/pimnik98 | VK: @piminov_remont)
+ * @brief TShell
+ * @version 0.0.3
+ * @date 2022-08-24
+ *
+ * @copyright Copyright Пиминов Никита (с) 2022
+ *
+ */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -6,8 +16,10 @@
 #include <tui.h>
 #include <time.h>
 
-int32_t oldPosX = 0;                // Последние местоположение символа по X (место печати)
-int32_t oldPosY = 0;                // Последние местоположение символа по Y (место печати)
+int32_t oldPosX     = 0;                // Последние местоположение символа по X (место печати)
+int32_t oldPosY     = 0;                // Последние местоположение символа по Y (место печати)
+int32_t curMenu     = 0;                // Текущие меню
+uint32_t bakMenu    = -1;
 
 void headBar(){
     drawLine(2,TUI_BASE_COLOR_HEAD);
@@ -17,38 +29,14 @@ void headBar(){
     puts_color(OSNAME,getColorsTUI(false), TUI_BASE_COLOR_HEAD);
 
     setColor(getColorsTUI(false));
-    //SynTime TIME = get_time();
     char* TIME = "10/10/2022 12:23";
     setPosX((getMaxStrLineTUI()-16)*8);
     setPosY(16*1);
     drawRect((getMaxStrLineTUI()-16)*8,16,18*8, 16,TUI_BASE_COLOR_HEAD);
-    //printf("%d/%d/%d %d:%d:%d", TIME.day, TIME.month, TIME.year, TIME.hours, TIME.minutes, TIME.seconds);
-    //printf("%d/%d/%d %d:%d:%d", get_time()->day, get_time()->month, get_time()->year, get_time()->hours, get_time()->minutes, get_time()->seconds);
     puts_color(TIME,getColorsTUI(false), TUI_BASE_COLOR_HEAD);
 }
 
 void headBarOld(){
-    drawLine(1,TUI_BASE_COLOR_HEAD);
-    char* OSNAME = " SynapseOS v0.2.12 (Dev)";
-    setPosX(0);
-    setPosY(16*1);
-    puts_color(OSNAME,getColorsTUI(false), TUI_BASE_COLOR_HEAD);
-
-    char* TIME = "10/10/2022 12:23";
-    setPosX((getMaxListMenuTUI()-15)*8);
-    setPosY(16*1);
-    puts_color(TIME,getColorsTUI(false), TUI_BASE_COLOR_HEAD);
-    // Рисуем треугольник для параметров
-    drawRectLine(8,32,getWidthScreen()/2,112,getColorsTUI(false),VESA_LIGHT_GREY,176);
-    drawRectLine(getWidthScreen()/2,32,(getWidthScreen()/2)-8,112,getColorsTUI(false),VESA_LIGHT_GREY,176);
-
-
-    setPosX(16);
-    setPosY(16*3);
-    char infoOS[512];
-    substr(infoOS, format_string("OS: %s",OSNAME), 0, (getMaxListMenuTUI()/2)-2);
-    puts_color(infoOS,getColorsTUI(false), getColorsTUI(true));
-
     setPosX(16);
     setPosY(16*4);
     char infoCPU[512];
@@ -87,14 +75,15 @@ void updateLoop(){
     oldPosY = getPosY();
 
     // Выводим нажатую кнопку во второй колонке в шапке
-
-    struct synapse_time* TIME = get_time();
     //char* TIME = "10/10/2022 12:23";
     setPosX((getMaxStrLineTUI()-20)*8);
     setPosY(0);
     setColor(getColorsTUI(false));
     drawRect((getMaxStrLineTUI()-16)*8,0,20*8, 15, TUI_BASE_COLOR_HEAD);
 
+    /* CAUSES PageFault
+     * Оставлю до лучших времен, крашиться, причина не известна
+     struct synapse_time* TIME = get_time();
     char hrw[3];
     char mnw[3];
     char scw[3];
@@ -129,14 +118,6 @@ void updateLoop(){
 
     puts_color(totaltime, getColorsTUI(false), TUI_BASE_COLOR_HEAD);
 
-    //#if CLOCK_FORMAT==1
-    //printf("%d/%d/%d %d:%d:%d", TIME.day, TIME.month, TIME.year, TIME.hours, TIME.minutes, TIME.seconds);
-    //printf("%d/%d/%d %d:%d:%d", get_time()->day, get_time()->month, get_time()->year, get_time()->hours, get_time()->minutes, get_time()->seconds);
-    /* CAUSES PageFault
-    #elif CLOCK_FORMAT==2
-    printf("%d %s %d %d:%d:%d", TIME.day, months_list[TIME.month-1], TIME.year, TIME.hours, TIME.minutes, TIME.seconds);
-    #endif
-
     */
     if (keyLastInset() != 0){
         qemu_printf("Last key ID: %d",keyLastInset());
@@ -144,6 +125,99 @@ void updateLoop(){
     // Возращаем указатель обратно
     setPosX(oldPosX);
     setPosY(oldPosY);
+}
+
+void menu0(bool items){
+    if (items){
+        setCurrentItemTUI(0);
+        cleanItems();
+        addItem("Info PC",true,"","");              // 0
+        addItem("List PCI-Devices",true,"","");     // 1
+        addItem("Application List",true,"","");     // 2
+        addItem("Exit to Console",false,"","");     // 3
+        addItem("Reboot",false,"","");              // 4
+        addItem("Shutdown",false,"","");            // 5
+    }
+    curMenu = 0;
+    bakMenu = -1;
+    createMenuBox("Base menu:");
+
+}
+
+void menu1(bool items){
+    if (items){
+        setCurrentItemTUI(0);
+        cleanItems();
+        addItem("OS: SynapseOS v0.12.2 (Dev)",true,"","");
+        addItem(format_string("CPU: %s","Test CPU"),true,"","");
+        addItem(format_string("RAM: %d kb",12346789),true,"","");
+        addItem((format_string("Display: %s",getDisplayName(),getWidthScreen(),getHeightScreen())),true,"","");     // 2
+        addItem("Video: Basic video adapter (Unknown)",true,"","");
+        addItem("Back",false,"","");
+    }
+    curMenu = 1;
+    bakMenu = 0;
+    createMenuBox("System Info");
+}
+
+void menuExit(){
+    cleanItems();
+    addItem("Yes, close TShell",false,"","");
+    addItem("No, I don't want to log out of TShell",false,"","");
+    curMenu = -2;
+    bakMenu = -1;
+    createMenuBox("Are you sure you want to quit TShell?");
+}
+
+void menuGen(bool items){
+    uint32_t h = curMenu;
+    if (h == 0){
+        menu0(items);
+    } else if (h == 1){
+        menu1(items);
+    } else if (h == -2){
+        menuExit(items);
+    }
+}
+
+uint32_t menuHandler(){
+    uint32_t h = curMenu;
+    uint32_t i = getCurrentItemTUI();
+    qemu_printf("[menuHandler] Handler: %d | Item: %d\n",h,i);
+    if (h == 0 && i == 0){
+        menu1(true);
+        return 0;
+    } else if (h == 0 && i == 1){
+        createErrorBox("Error in TShell. ","This functionality has not yet been implemented.");
+        sleep_ms(3000);
+        cleanWorkSpace(TUI_BASE_COLOR_BODY);
+        curMenu = 0;
+        menuGen(true);
+        return 0;
+    } else if (h == 0 && i == 2){
+        createErrorBox("Error in TShell. ","This functionality has not yet been implemented.");
+        sleep_ms(3000);
+        cleanWorkSpace(TUI_BASE_COLOR_BODY);
+        curMenu = 0;
+        menuGen(true);
+        return 0;
+    } else if ((h == 0 && i == 3) || (h == -2 && i == 0)){
+        return -1;
+    } else if (h == -2 && i == 1){
+        cleanWorkSpace(TUI_BASE_COLOR_BODY);
+        setModeTUI(TUI_DEFAULT);
+        return 0;
+    } else if (h == 0 && i == 4){
+        reboot();
+        return 0;
+    } else if (h == 0 && i == 5){
+        shutdown();
+        return 0;
+    } else if (h == 1 && i == 5){
+        menu0(true);
+        return 0;
+    }
+    return 0;
 }
 
 int main(){
@@ -158,57 +232,64 @@ int main(){
         // Выполняем цикл
         updateLoop();
         if (getModeTUI() == TUI_ERROR_BOX){
-            // Режим обработки фатального окна
+
         } else if (getModeTUI() == TUI_MENU_BOX){
              //changeStageKeyboard(0);
-            if (keyLastInset() == 72){
+            if (keyLastInset() == KEY_ENTER){
+                setLastUpdateTUI(timer_get_ticks()+3);
+                uint32_t handler = menuHandler();
+                if (handler == -1){
+                    cleanScreen();
+                    tui_destroy();
+                    break;
+                }
+                continue;
+            } else if (keyLastInset() == KEY_UP){
                 setCurrentItemTUI(getCurrentItemTUI()-1);
                 // Нажата клавиша вверх
                 if (getCurrentItemTUI() < 0){
                     setCurrentItemTUI(getMaxListMenuTUI()-1);
                 }
-                createMenuBox("Base menu:");
-            } else if (keyLastInset() == 80){
+                menuGen(false);
+            } else if (keyLastInset() == KEY_DOWN){
                 // Нажата клавиша вниз
                 setCurrentItemTUI(getCurrentItemTUI()+1);
                 if (getCurrentItemTUI() >= getMaxListMenuTUI()){
                     setCurrentItemTUI(0);
                 }
-                createMenuBox("Base menu:");
-            } else if (keyLastInset() == 1){
-                // Нажата клавиша ESC
-                cleanWorkSpace(TUI_BASE_COLOR_BODY);
-                setModeTUI(TUI_DEFAULT);
+                menuGen(false);
+            } else if (keyLastInset() == KEY_ESC){
+                if (bakMenu != -1){
+                    curMenu = bakMenu;
+                    menuGen(true);
+                } else {
+                    cleanWorkSpace(TUI_BASE_COLOR_BODY);
+                    setModeTUI(TUI_DEFAULT);
+                }
+                setLastUpdateTUI(timer_get_ticks()+5);
+                continue;
             }
             setLastUpdateTUI(timer_get_ticks()+5);
             continue;
-        } else if (keyLastInset() == 91 || keyLastInset()==59){ // Win key!
-            cleanWorkSpace(TUI_BASE_COLOR_BODY);
-            char* listMenu;
-            listMenu[0] = "Info PC";
-            listMenu[1] = "List PCI-Devices";
-            listMenu[2] = "Show ErrorBox";
-            listMenu[3] = "Exit to Console";
-            listMenu[4] = "Reboot";
-            listMenu[5] = "Shutdown";
-            listMenu[6] = "6Info PC";
-            listMenu[7] = "7List PCI-Devices";
-            listMenu[8] = "8Show ErrorBox";
-            listMenu[9] = "9Exit to Console";
-            listMenu[10] = "10Reboot";
-            listMenu[11] = "11Shutdown";
-            setMaxItemTUI(12);
-            createMenuBox("Base menu:");
-            //createErrorBox("Error","Test Fatal Screen");
-            //sleep_ms(100);
-            //cleanWorkSpace(TUI_BASE_COLOR_BODY);
+
+        } else if (keyLastInset() == KEY_ESC){
+            curMenu = -2;
+            menuGen(true);
+            setLastUpdateTUI(timer_get_ticks()+5);
+            continue;
+        } else if (keyLastInset() == KEY_START || keyLastInset()== KEY_F1){
+            //exec("/initrd/apps/hi",0,"");
+            curMenu = 0;
+            menuGen(true);
+            continue;
             //break;
-        } else if (keyLastInset() == 88){
+        } else if (keyLastInset() == KEY_F12){
             // Нажата клавиша F12 - закроем TUI и вернем управление shell()
             createErrorBox("Error in TUI module. ","You will be returned to the console in 1 seconds.");
             sleep_ms(1000);
             //bgColor = VESA_BLACK;
             cleanScreen();
+            tui_destroy();
             break;
         } else {
             if (i == 0){
