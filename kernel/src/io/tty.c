@@ -649,4 +649,5 @@ void tty_printf(char *text, ...) {
     va_list args;
     va_start(args, text);
     tty_print(text, args);
+    va_end(args);
 }

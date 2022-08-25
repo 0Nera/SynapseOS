@@ -307,6 +307,8 @@ void qemu_printf(char *text, ...) {
     va_start(args, text);
     // pass print32_t the output handle the format text and the first argument
     qemu_print(text, args);
+    
+    va_end(args);
 }
 
 

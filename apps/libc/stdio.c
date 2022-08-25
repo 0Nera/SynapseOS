@@ -217,6 +217,7 @@ void printf(char *text, ...) {
     va_list args;
     va_start(args, text);
     print(text, args);
+    va_end(args);
 }
 
 uint32_t format_string_size(char *text, va_list args){
