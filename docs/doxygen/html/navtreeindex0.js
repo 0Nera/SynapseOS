@@ -229,6 +229,12 @@ var NAVTREEINDEX0 =
 "d5/d4e/structethernet__frame.html#acb5cfd209ba75c853d03f701e7f91679":[0,0,11,3],
 "d5/d4e/structethernet__frame.html#ad2becb511981e64cb6ecbe8a27d4e004":[0,0,11,2],
 "d5/d83/ethernet_8c_source.html":[1,0,0,2,0,1,2],
+"d5/d87/syscalls_8c.html":[1,0,0,2,5,6],
+"d5/d87/syscalls_8c.html#a3456f636be7d6bd7e00fa45790dfd26c":[1,0,0,2,5,6,2],
+"d5/d87/syscalls_8c.html#a581ed37968ead91b6d3a0b3b7a71da9d":[1,0,0,2,5,6,3],
+"d5/d87/syscalls_8c.html#a6ed6a3b74c3eae1733e9cbbe230e0b1e":[1,0,0,2,5,6,4],
+"d5/d87/syscalls_8c.html#a7007cd18163a29b3c12411708f82ac94":[1,0,0,2,5,6,0],
+"d5/d87/syscalls_8c.html#af46ab524338d5ac94367544b085930dd":[1,0,0,2,5,6,1],
 "d5/d87/syscalls_8c_source.html":[1,0,0,2,5,6],
 "d5/da4/structarp__packet.html":[0,0,1],
 "d5/da4/structarp__packet.html#a18c92b51c04c4d12d5f3f7574a99d26a":[0,0,1,1],
@@ -243,11 +249,5 @@ var NAVTREEINDEX0 =
 "d5/dbf/ramdisk_8c_source.html":[1,0,0,2,0,6],
 "d5/dec/vgafnt_8h_source.html":[1,0,0,1,2,4],
 "d5/dfa/vfs_8h_source.html":[1,0,0,1,0,10],
-"d6/d0c/structip__packet.html":[0,0,21],
-"d6/d0c/structip__packet.html#a07bf19836204bcde2b4f843aff82783e":[0,0,21,1],
-"d6/d0c/structip__packet.html#a0c347fcf27daf16ed4801b3688f71399":[0,0,21,4],
-"d6/d0c/structip__packet.html#a1892eba2086d12ac2b09005aeb09ea3b":[0,0,21,9],
-"d6/d0c/structip__packet.html#a3bdbe295d838b7f44e47ad5f4c3fac27":[0,0,21,12],
-"d6/d0c/structip__packet.html#a40d51e3f9b609f60f860859a0cc300a5":[0,0,21,8],
-"d6/d0c/structip__packet.html#a468dda4615d8c0d9e631e02372619dc1":[0,0,21,11]
+"d6/d0c/structip__packet.html":[0,0,21]
 };

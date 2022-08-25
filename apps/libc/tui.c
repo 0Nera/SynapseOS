@@ -2,8 +2,8 @@
  * @file apps/tui.c
  * @authors Пиминов Никита (github.com/pimnik98 | VK: @piminov_remont)
  * @brief Прослойка для работы с текстовым графическим редактором
- * @version 0.0.2
- * @date 2022-08-23
+ * @version 0.0.3
+ * @date 2022-08-24
  *
  * @copyright Copyright Пиминов Никита (с) 2022
  *
@@ -24,12 +24,13 @@ int32_t maxHeightLine = 0;          // Максимальное количест
 char* Display;                      // Название расширения монитора
 int32_t currentMenu = 0;            // Текущие меню
 int32_t currentList = 0;            // Текущая позиция на экране
-char* listMenu[128];                // Сам список меню
+char *listMenu[128];                // Сам список меню
 int32_t maxListMenu = 0;            // Максимальное количество элементов
 uint32_t maxItemScreen = 0;         // Максимальное количество объектов на экране
 uint32_t pageMenuCurrent = 0;       // Текущая страница
 uint32_t pageMenuMax = 0;           // Максимальная страница
-
+uint32_t ItemsMax   = 256;
+uint32_t Items[256];
 /**
  * @brief Получить цвет TUI
  *
@@ -510,6 +511,50 @@ void testDisplay(int w, int h){
 }
 
 /**
+ * @brief Отчищает список элементов
+ */
+void cleanItems(){
+    char listMenu[128];
+    maxListMenu = 0;
+}
+
+uint32_t getMaxStrLineBoxTUI(){
+    return (((ww-(((maxStrLine/4)*8)*2))/8)-4);
+}
+
+/**
+ * @brief Добавляет позицию в список элементов
+ *
+ * @param char* name - Название позиции
+ */
+
+ItemTUI* addItem(char* name,bool disabled, char* key, char* value){
+    if (maxListMenu > ItemsMax){
+        //return false;
+    }
+    uint32_t i = maxListMenu;
+
+    /**
+    Items[i]->id = i;
+    Items[i]->name = (char*) malloc(sizeof(char)*strlen(name));
+    Items[i]->disabled = disabled;
+    Items[i]->key = (char*) malloc(strlen(key));
+    Items[i]->value = (char*) malloc(strlen(value));
+    */
+    if (strlen(name) > getMaxStrLineBoxTUI()){
+        qemu_printf("[Name: %s | size: %d | msl: %d]",name,strlen(name),getMaxStrLineBoxTUI());
+        substr(name, name, 0, getMaxStrLineBoxTUI());
+    }
+    listMenu[i] = name;
+    maxListMenu++;
+    return true;
+}
+
+ItemTUI* getItem(uint32_t id){
+    return Items[id];
+}
+
+/**
  * @brief Отчистить пользовательское пространство
  *
  * @param int - Цвет для фона
@@ -530,7 +575,7 @@ void createMenuBox(char* title){
     uint32_t padding_h = maxHeightLine/4;
     // Получаем размеры коробки
     uint32_t boxWidth = ww-((padding_w*8)*2);
-    uint32_t boxHeight = wh-((padding_h*16));      // ? Реализовал а зачем, забыл :)
+    uint32_t boxHeight = wh-((padding_h*16));
     uint32_t maxListBox = boxHeight;
     // Получаем максимальное количество символов на строку в коробке
     uint32_t maxStrLineBox = (boxWidth/8)-4; // 60 - символов при 1024
@@ -546,8 +591,9 @@ void createMenuBox(char* title){
     }
 
     // Обрезаем заголовок
-    substr(title, title, 0, maxStrLineBox);
-
+    if (strlen(title) > maxStrLineBox){
+        substr(title, title, 0, maxStrLineBox);
+    }
     // Рисуем бокс и узорчики
     drawRect(8+(padding_w*8),16*(8+padding_h),boxWidth,16*(6+maxItemScreen),TUI_BASE_COLOR_MAIN);
     drawRectLine(8+(padding_w*8),16*(8+padding_h),boxWidth,16*(6+maxItemScreen),TUI_TEXT_COLOR_BODY,TUI_BASE_COLOR_MAIN,15);
@@ -561,7 +607,6 @@ void createMenuBox(char* title){
     for (int x = pageMenuCurrent*maxItemScreen; x < maxItemScreen; x++){
         setPosX(((3+padding_w)*8));
         setPosY(16*((12+x)+padding_h));
-        substr(listMenu[x], listMenu[x], 0, maxStrLineBox);
         if (currentList == x){
             drawRect(((3+padding_w)*8),16*((12+x)+padding_h),maxStrLineBox*8, 16,TUI_BASE_COLOR_ITEM);
             puts_color(listMenu[x],TUI_TEXT_COLOR_ITEM,TUI_BASE_COLOR_ITEM);
@@ -633,6 +678,8 @@ void createErrorBox(char* title,char* text){
     }
 }
 
+
+
 /**
  * @brief Инициализация и сброс TUI на стандартное значение
  */
@@ -644,7 +691,7 @@ void tui_configurate(){
     wh = h-(80);
     maxHeightLine = wh/16;
     maxStrLine = (w/8)-2;
-    changeStageKeyboard(1); // Блокируем нажатие и отображение кнопок
+    changeStageKeyboard(0); // Блокируем нажатие и отображение кнопок
     testDisplay(w,h);       // Тестируем монитор на валидность (Скорее всего останеться только для детекта, когда резина будет готова)
     bgColor = TUI_BASE_COLOR_BODY;
     txColor = TUI_TEXT_COLOR_BODY;
@@ -664,4 +711,10 @@ void tui_configurate(){
     th.TEXT_COLOR_FOOT  = TUI_TEXT_COLOR_FOOT;
     th.TEXT_COLOR_ERROR = TUI_BASE_COLOR_ERROR;
     */
+}
+
+void tui_destroy(){
+    changeStageKeyboard(1);
+    setPosX(0);
+    setPosY(0);
 }

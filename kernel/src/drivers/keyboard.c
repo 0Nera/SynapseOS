@@ -1,3 +1,13 @@
+/**
+ * @file kernel/src/drivers/keyboard.c
+ * @authors Арен Елчинян (a2.dev@yandex.com)
+ * @brief Прослойка для работы с текстовым графическим редактором
+ * @version 0.0.2
+ * @date 2022-08-24
+ *
+ * @copyright @copyright Copyright SynapseOS Team (с) 2022
+ *
+ */
 #include <kernel.h>
 /*
   0 - none
@@ -16,6 +26,7 @@ int32_t enabledKeyboard = 0;
 
 // Смена состояния для вывода на экран клавиатуры
 void changeStageKeyboard(int32_t s){
+    qemu_log("changeStageKeyboard: %d",s);
     enabledKeyboard = s;
 }
 int32_t keyLastInset(){
@@ -113,7 +124,12 @@ unsigned  char keyboard_map_shifted[] = {
     0,	/*  All  other  keys are undefined */
 };
 
-
+/**
+ * @brief Отчищает последний ввод клавиатуры
+ */
+void keyboard_clean(){
+    char string_mem[128];
+}
 
 void keyboard_install(void) {
     input_type = 1;
@@ -139,6 +155,9 @@ void keyboard_handler_main(struct regs *r) {
         keycode = inb(KEYBOARD_DATA_PORT);
         lastkey = keycode;
         lastkeyinset = timer_get_ticks();
+        if (enabledKeyboard == 0){
+            return;
+        }
         //qemu_log("KEY %d", keycode);
 
         if (input_type == 0) {

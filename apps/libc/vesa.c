@@ -1,6 +1,6 @@
 /**
  * @file apps/vesa.c
- * @authors Арен Елчинян (a2.dev@yandex.com), <> Пиминов Никита (github.com/pimnik98 | VK: @piminov_remont)
+ * @authors Арен Елчинян (a2.dev@yandex.com), Пиминов Никита (github.com/pimnik98 | VK: @piminov_remont)
  * @brief Прослойка для работы с текстовым терминалом и графикой VESA
  * @version 0.0.2
  * @date 2022-08-23

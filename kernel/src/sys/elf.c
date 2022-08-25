@@ -6,6 +6,7 @@
 
 #include <kernel.h>
 
+uint32_t lastPosition = 0;
 
 // Returns 0 if header is valid, 1 if magic number invalid, 2 and more if file isn't compatible
 uint8_t elf_check_header(struct elf_hdr *hdr) {
@@ -46,7 +47,7 @@ void *elf_open(const char *fname) { // Returns pointer to ELF file.
     int32_t res = vfs_read(fname, 0, fsize, addr);
     
     qemu_log("elf_open res = %d", res);
-
+    qemu_log("elf_open_addr = %d / %x",fsize,addr);
     struct elf_hdr *hdr = addr;
 
 
@@ -62,7 +63,7 @@ elf_section_header_t *elf_get_section_header(void *elf_file, int32_t num) {
 
 elf_program_header_t *elf_get_program_header(void *elf_file, int32_t num) {
     struct elf_hdr *hdr = (struct elf_hdr*) elf_file;
-    return (elf_program_header_t*) (elf_file + hdr->phoff + hdr->ph_ent_size*num);
+    return (elf_program_header_t*) ((elf_file) + hdr->phoff + hdr->ph_ent_size*num);
 }
 
 
@@ -209,15 +210,26 @@ int32_t run_elf_file(const char *name, int32_t argc, char **argv) {
         for (alloc_addr = phdr->load_to;
             alloc_addr < phdr->load_to + phdr->size_in_mem;
             alloc_addr += PAGE_SIZE) {
+
             vmm_alloced[ptr_vmm_alloced] = alloc_addr;
             ptr_vmm_alloced++;
             qemu_log("Alloc %d: %x", ptr_vmm_alloced, alloc_addr);
+
             vmm_alloc_page(alloc_addr);
+            lastPosition = PAGE_SIZE+alloc_addr;
+            qemu_log("lP: %x | a_a(%x) += ps(%x) = %x",lastPosition,alloc_addr,PAGE_SIZE,PAGE_SIZE+alloc_addr);
+            qemu_log("a_a(%x) < lt(%x) + sim(%x) = %x\n",alloc_addr,phdr->load_to,phdr->size_in_mem,phdr->load_to+phdr->size_in_mem);
+
+        }
+        if (i+1 == hdr->ph_ent_cnt-1){
+            qemu_log("Has been detecting...");
+            qemu_log("lP: %x\n",lastPosition);
         }
 
         memset((void*) phdr->load_to, 0, phdr->size_in_mem); // Null segment memory
         memcpy((void*) phdr->load_to, elf_file + phdr->data_offset, phdr->size_in_file);
         qemu_log("Loaded");
+
     }
 
     int(*entry_point)(int argc, char** argv) = (void*) (hdr->entry);
@@ -227,6 +239,7 @@ int32_t run_elf_file(const char *name, int32_t argc, char **argv) {
     int _result = entry_point(argc, argv);
     
     tty_printf("\n[PROGRAMM FINISHED WITH CODE <%d>]", _result);
+
     qemu_log("[PROGRAMM FINISHED WITH CODE <%d>]", _result);
     qemu_log("Cleaning VMM:");
 
@@ -235,6 +248,6 @@ int32_t run_elf_file(const char *name, int32_t argc, char **argv) {
         vmm_free_page(vmm_alloced[i]);
     }
     qemu_log("[CLEANED <%d> PAGES]", ptr_vmm_alloced);
-
+    keyboard_clean();
     return 0;
 }
