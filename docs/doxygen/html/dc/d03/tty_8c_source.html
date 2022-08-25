@@ -576,7 +576,8 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c_source.html','../../'); 
 <div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;    va_list args;</div>
 <div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;    va_start(args, text);</div>
 <div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;    <a class="code" href="../../dc/d03/tty_8c.html#a7530bec958a350d9b4708eedb734e2bf">tty_print</a>(text, args);</div>
-<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;}</div>
+<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;    va_end(args);</div>
+<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="atty_8c_html_a5ceb7bcc18bfa52de2d1ce3b69d7ef8f"><div class="ttname"><a href="../../dc/d03/tty_8c.html#a5ceb7bcc18bfa52de2d1ce3b69d7ef8f">tty_putchar</a></div><div class="ttdeci">void tty_putchar(char c)</div><div class="ttdoc">Вывод одного символа</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d03/tty_8c_source.html#l00330">tty.c:330</a></div></div>
@@ -612,7 +613,7 @@ $(document).ready(function(){initNavTree('dc/d03/tty_8c_source.html','../../'); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_3dd30a497388ee684638f120a124721c.html">src</a></li><li class="navelem"><a class="el" href="../../dir_f684e8e1ebea567db7f673c0b997cee3.html">io</a></li><li class="navelem"><a class="el" href="../../dc/d03/tty_8c.html">tty.c</a></li>
-    <li class="footer">Документация по SynapseOS. Последние изменения: Ср 24 Авг 2022 19:52:32. Создано системой
+    <li class="footer">Документация по SynapseOS. Последние изменения: Чт 25 Авг 2022 17:23:35. Создано системой
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
