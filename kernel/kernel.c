@@ -27,20 +27,6 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
 
     tty_init(mboot_info);   // Настройка графики
 
-    // Вывод информации о ядре
-    tty_printf("\t\tSynapseOS kernel version: %d.%d.%d, Built: %s\n", 
-        VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH,    // Версия ядра 
-        __TIMESTAMP__                                   // Время окончания компиляции ядра
-        );
-
-    // Проверка, является ли сборка дистрибутивом
-    if (isDistr) {
-        //Вывод информации о дистрибутиве
-        tty_printf("\tDistribution \"%s\", version %d.%d.%d\n",
-            DistrName, dVERSION_MAJOR, dVERSION_MINOR, dVERSION_PATCH
-            );
-    }
-
     gdt_init(); // \    Установка и настройка прерываний 
     idt_init(); // /
     pmm_init(mboot_info);
@@ -56,6 +42,20 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     kheap_init();                           // Инициализация кучи ядра
 
     init_vbe(mboot_info);                   // Активация графики 1024x768
+
+    // Вывод информации о ядре
+    tty_printf("\t\tSynapseOS kernel version: %d.%d.%d, Built: %s\n", 
+        VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH,    // Версия ядра 
+        __TIMESTAMP__                                   // Время окончания компиляции ядра
+        );
+
+    // Проверка, является ли сборка дистрибутивом
+    if (isDistr) {
+        //Вывод информации о дистрибутиве
+        tty_printf("\tDistribution \"%s\", version %d.%d.%d\n",
+            DistrName, dVERSION_MAJOR, dVERSION_MINOR, dVERSION_PATCH
+            );
+    }
 
     vfs_init();                             // Инициализация виртуальной файловой системы
 

@@ -12,9 +12,8 @@ void *memcpy(void *destination, const void *source, size_t n){
     char *tmp_dest = (char *)destination;
     const char *tmp_src = (const char *)source;
 
-    while (n){
+    while (n--) {
         *tmp_dest++ = *tmp_src++;
-        n--;
     }
 
     return destination;

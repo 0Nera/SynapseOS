@@ -26,6 +26,8 @@ typedef struct SynapseTTYInfo {
 #define SC_CODE_TTY_DRAW_VGA    54
 #define SC_CODE_TTY_DRAW_RECT   57
 
+#define SC_CODE_punch         	72
+
 // Фон
 #define COLOR_BACK  0x000000
 // Текст

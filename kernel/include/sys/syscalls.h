@@ -42,6 +42,8 @@
 #define SC_CODE_SHUTDOWN        60
 #define SC_CODE_REBOOT          61
 
+#define SC_CODE_punch           72
+
 
 void syscall_init();
 void syscall_handler(struct regs *r);

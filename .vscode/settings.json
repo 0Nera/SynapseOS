@@ -12,5 +12,6 @@
         "sb16.h": "c",
         "assert.h": "c"
     },
-    "C_Cpp.errorSquiggles": "Enabled"
+    "C_Cpp.errorSquiggles": "Enabled",
+    "clangd.path": "clangd-11"
 }

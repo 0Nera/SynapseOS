@@ -15,6 +15,8 @@
 #include "../fonts/font_Experimental_Font.h"
 #endif
 
+#define ENABLE_DOUBLE_BUFFERING 1
+
 #include <kernel.h>
 uint8_t *framebuffer_addr;
 uint32_t framebuffer_pitch;
@@ -41,6 +43,12 @@ SynapseTTYInfo* get_tty_info() {
     ty->x = tty_pos_x;
     ty->y = tty_pos_y;
     return ty;
+}
+
+void punch() {
+    #if ENABLE_DOUBLE_BUFFERING==1
+    memcpy(framebuffer_addr, back_framebuffer_addr, framebuffer_size);
+    #endif
 }
 
 /**
@@ -106,7 +114,7 @@ void init_vbe(multiboot_info *mboot) {
     }
    qemu_log("VBE create_back_framebuffer");
 
-    create_back_framebuffer(); // PAGE FAULT CAUSES HERE!!! 
+   create_back_framebuffer(); // PAGE FAULT CAUSES HERE!!! 
    qemu_log("^---- OKAY");
 }
 
@@ -167,7 +175,9 @@ void tty_scroll() {
     memset(write_ptr, 0, framebuffer_pitch * (num_rows * 17));
 
     // Копируем буфферы
+    #if ENABLE_DOUBLE_BUFFERING==0
     memcpy(framebuffer_addr, back_framebuffer_addr, framebuffer_size);
+    #endif
 }
 
 
@@ -187,15 +197,15 @@ void set_pixel(int32_t x, int32_t y, uint32_t color) {
 
     unsigned where = x * (framebuffer_bpp / 8) + y * framebuffer_pitch;
 
-    
+    #if ENABLE_DOUBLE_BUFFERING==0
     framebuffer_addr[where] = color;
     framebuffer_addr[where + 1] = color >> 8;
     framebuffer_addr[where + 2] = color >> 16;
-    
-    //WE'RE NOT USING IT! WHYYYYYY???
+    #else
     back_framebuffer_addr[where] = color & 255;
     back_framebuffer_addr[where + 1] = (color >> 8) & 255;
     back_framebuffer_addr[where + 2] = (color >> 16) & 255;
+    #endif
 }
 
 
@@ -299,7 +309,7 @@ void drawRect(int x,int y,int w, int h,int color){
  * @param txColor - цвет текста
  * @param bgColor - цвет фона
  */
-void tty_putchar_color(char c, uint32_t txColor, uint32_t bgColor) {
+void _tty_putchar_color(char c, uint32_t txColor, uint32_t bgColor) {
 
     if ((tty_pos_x + 8) >= (int)VESA_WIDTH || c == '\n') {
         tty_line_fill[tty_pos_y] = tty_pos_x;
@@ -320,14 +330,17 @@ void tty_putchar_color(char c, uint32_t txColor, uint32_t bgColor) {
     }
 }
 
-
+void tty_putchar_color(char c, uint32_t txColor, uint32_t bgColor) {
+    _tty_putchar_color(c, txColor, bgColor);
+    punch();
+}
 
 /**
  * @brief Вывод одного символа
  * 
  * @param c - символ
  */
-void tty_putchar(char c) {
+void _tty_putchar(char c) {
     if ((tty_pos_x + 8) >= (int)VESA_WIDTH || c == '\n') { 
         tty_line_fill[tty_pos_y] = tty_pos_x;
         tty_pos_x = 0;
@@ -345,6 +358,11 @@ void tty_putchar(char c) {
         draw_vga_character(c, tty_pos_x, tty_pos_y, tty_text_color, 0x000000, 0);
         tty_pos_x += 8;
     }
+}
+
+void tty_putchar(char c) {
+    _tty_putchar(c);
+    punch();
 }
 
 
@@ -406,6 +424,7 @@ void tty_backspace() {
         tty_pos_x -= 8;
     }
     draw_vga_character(' ', tty_pos_x, tty_pos_y, tty_text_color, 0x000000, 1);
+    punch();
 }
 
 
@@ -414,7 +433,7 @@ void tty_backspace() {
  * 
  * @param str - строка
  */
-void tty_puts(const char str[]) {
+void _tty_puts(const char str[]) {
     for (size_t i = 0; i < strlen(str); i++) {
         if (str[i] == '\033') {
             i++;
@@ -461,12 +480,17 @@ void tty_puts(const char str[]) {
                                    Experimental_Font_height, extch);
             i++;
         }else{
-            tty_putchar(str[i]);
+            _tty_putchar(str[i]);
         }
         #else
-        tty_putchar(str[i]);
+        _tty_putchar(str[i]);
         #endif
     }
+}
+
+void tty_puts(const char str[]) {
+    _tty_puts(str);
+    punch();
 }
 
 void external_draw_grapheme_override_black(int* glyphs, int width, int height, unsigned char grapheme, int bgColor) {
@@ -494,7 +518,7 @@ void external_draw_grapheme_override_black(int* glyphs, int width, int height, u
  * @param txColor - цвет текста
  * @param bgColor - цвет фона
  */
-void tty_puts_color(const char str[], uint32_t txColor, uint32_t bgColor) {
+void _tty_puts_color(const char str[], uint32_t txColor, uint32_t bgColor) {
     for (size_t i = 0; i < strlen(str); i++) {
         #ifdef EXPERIMENTAL_FONT
         if(str[i]=='\xFF' && i+1<=strlen(str)) {
@@ -503,12 +527,17 @@ void tty_puts_color(const char str[], uint32_t txColor, uint32_t bgColor) {
                                    Experimental_Font_height, extch, bgColor);
             i++;
         }else{
-            tty_putchar_color(str[i], txColor, bgColor);
+            _tty_putchar_color(str[i], txColor, bgColor);
         }
     #else
-        tty_putchar_color(str[i], txColor, bgColor);
+        _tty_putchar_color(str[i], txColor, bgColor);
     #endif
     }
+}
+
+void tty_puts_color(const char str[], uint32_t txColor, uint32_t bgColor) {
+    _tty_puts_color(str, txColor, bgColor);
+    punch();
 }
 
 
@@ -517,7 +546,7 @@ void tty_puts_color(const char str[], uint32_t txColor, uint32_t bgColor) {
  * 
  * @param i - число
  */
-void tty_putint(const int32_t i) {
+void _tty_putint(const int32_t i) {
     char res[32];
     
     if (i < 0) {
@@ -525,33 +554,41 @@ void tty_putint(const int32_t i) {
     }
 
     itoa(i, res);
-    tty_puts(res);
-    
+    _tty_puts(res);
 }
 
+void tty_putint(const int32_t i) {
+    _tty_putint(i);
+    punch();
+}
 
 /**
  * @brief Вывод HEX числа
  * 
  * @param i - число
  */
-void tty_puthex(uint32_t i) {
+void _tty_puthex(uint32_t i) {
     const unsigned char hex[16]  =  { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
     uint32_t n, d = 0x10000000;
 
-    tty_puts("0x");
+    _tty_puts("0x");
 
     while((i / d == 0) && (d >= 0x10)) d /= 0x10;
 
     n = i;
 
     while( d >= 0xF ) {
-        tty_putchar(hex[n/d]);
+        _tty_putchar(hex[n/d]);
         n = n % d;
         d /= 0x10;
     }
 
-    tty_putchar(hex[n]);
+    _tty_putchar(hex[n]);
+}
+
+void tty_puthex(uint32_t i) {
+    _tty_puthex(i);
+    punch();
 }
 
 
@@ -560,7 +597,7 @@ void tty_puthex(uint32_t i) {
  * 
  * @param i - число
  */
-void tty_puthex_v(uint32_t i) {
+void _tty_puthex_v(uint32_t i) {
     const unsigned char hex[16]  =  { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
     uint32_t n, d = 0x10000000;
 
@@ -575,6 +612,11 @@ void tty_puthex_v(uint32_t i) {
     }
 
     tty_putchar(hex[n]);
+}
+
+void tty_puthex_v(uint32_t i) {
+    _tty_puthex_v(i);
+    punch();
 }
 
 
@@ -584,7 +626,7 @@ void tty_puthex_v(uint32_t i) {
  * @param format - строка форматов
  * @param args - аргументы
  */
-void tty_print(char *format, va_list args) {
+void _tty_print(char *format, va_list args) {
     int32_t i = 0;
 
     while (format[i]) {
@@ -592,31 +634,31 @@ void tty_print(char *format, va_list args) {
             i++;
             switch (format[i]) {
                 case 's':
-                    tty_puts(va_arg(args, char*));
+                    _tty_puts(va_arg(args, char*));
                     break;
                 case 'c':
-                    tty_putchar(va_arg(args, int));
+                    _tty_putchar(va_arg(args, int));
                     break;
                 case 'f':
-                    tty_putchar(va_arg(args, float));
+                    _tty_putchar(va_arg(args, float));
                     break;
                 case 'd':
-                    tty_putint(va_arg(args, int));
+                    _tty_putint(va_arg(args, int));
                     break;
                 case 'i':
-                    tty_putint(va_arg(args, int));
+                    _tty_putint(va_arg(args, int));
                     break;
                 case 'u':
-                    tty_putint(va_arg(args, unsigned int));
+                    _tty_putint(va_arg(args, unsigned int));
                     break;
                 case 'x':
-                    tty_puthex(va_arg(args, uint32_t));
+                    _tty_puthex(va_arg(args, uint32_t));
                     break;
                 case 'v':
-                    tty_puthex_v(va_arg(args, uint32_t));
+                    _tty_puthex_v(va_arg(args, uint32_t));
                     break;
                 default:
-                    tty_putchar(format[i]);
+                    _tty_putchar(format[i]);
             }
             // \n
         } else if (format[i] == 10) {
@@ -632,10 +674,15 @@ void tty_print(char *format, va_list args) {
         } else if (format[i] == 9) {
             tty_pos_x += 4 * 17;
         } else {
-            tty_putchar(format[i]);
+            _tty_putchar(format[i]);
         }
         i++;
     }
+}
+
+void tty_print(char *format, va_list args) {
+    _tty_print(format, args);
+    punch();
 }
 
 
