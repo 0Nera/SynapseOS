@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['outb_185',['outb',['../d0/d6e/ports_8c.html#a8bf7a9af91c08e6f876aaffeccd48ff3',1,'ports.c']]],
-  ['outl_186',['outl',['../d0/d6e/ports_8c.html#a9bbef83a73fb7194de515986382bbcfc',1,'ports.c']]],
-  ['outs_187',['outs',['../d0/d6e/ports_8c.html#ad3828c4a1261f083ad091087b898057a',1,'ports.c']]],
-  ['outsl_188',['outsl',['../d0/d6e/ports_8c.html#a4e8f950edfd03bbb83a734632d8bfb54',1,'ports.c']]]
+  ['kernel_191',['kernel',['../d9/d26/kernel_8c.html#a93d13a15bbaf16e615e5627802a3b416',1,'kernel.c']]],
+  ['keyboard_5fclean_192',['keyboard_clean',['../de/dbd/keyboard_8c.html#ad89f1335412c142b5cbbdea23c804117',1,'keyboard.c']]]
 ];

@@ -1,6 +1,15 @@
 var tty_8c =
 [
+    [ "ENABLE_DOUBLE_BUFFERING", "dc/d03/tty_8c.html#a762b1ef4786d412130510c6853b9f71f", null ],
     [ "EXPERIMENTAL_FONT", "dc/d03/tty_8c.html#a6ed161eb05366ec38b42719ad6aaec64", null ],
+    [ "_tty_print", "dc/d03/tty_8c.html#aecee8be25ab3e3254eecb4fd73cb51bc", null ],
+    [ "_tty_putchar", "dc/d03/tty_8c.html#a341a9e466260ab31b65b4e5e8cd8d183", null ],
+    [ "_tty_putchar_color", "dc/d03/tty_8c.html#ad2904b8b2a79dc8c33140e2bf18b3ec7", null ],
+    [ "_tty_puthex", "dc/d03/tty_8c.html#add3fdfc5ccaa42227bad1f55a081217e", null ],
+    [ "_tty_puthex_v", "dc/d03/tty_8c.html#acb017a9c72cd3f60ea0ac6b292921768", null ],
+    [ "_tty_putint", "dc/d03/tty_8c.html#a883d34c255f127fc516eff9a5874a0f9", null ],
+    [ "_tty_puts", "dc/d03/tty_8c.html#ab19864740ff5612e289b5d30d7832bf9", null ],
+    [ "_tty_puts_color", "dc/d03/tty_8c.html#a93a3bdeb313212f4fc2d87c17dd6e8ba", null ],
     [ "clean_screen", "dc/d03/tty_8c.html#a0d199b5702695c4d7b78ef83759c32d5", null ],
     [ "create_back_framebuffer", "dc/d03/tty_8c.html#aca7637cf8ec1ea90a95d8fd4a2cce7fe", null ],
     [ "draw_vga_character", "dc/d03/tty_8c.html#ac656691800d9bd94b6c49832866015fc", null ],
@@ -13,6 +22,7 @@ var tty_8c =
     [ "getPosY", "dc/d03/tty_8c.html#ac823a1a13537c4794216969563dbb88b", null ],
     [ "getWidthScreen", "dc/d03/tty_8c.html#a28a3f902f557e9cf9c3dddd7cad609f0", null ],
     [ "init_vbe", "dc/d03/tty_8c.html#a4043472936c19169c7bd56ea50a6a99c", null ],
+    [ "punch", "dc/d03/tty_8c.html#a4f9d2c8f51d72c77e996932a3de55b62", null ],
     [ "set_line", "dc/d03/tty_8c.html#afb32d6323928e94c7c8f61953a4e1a72", null ],
     [ "set_pixel", "dc/d03/tty_8c.html#a68d5b7fc5eb1355c7a4c626d30207c29", null ],
     [ "setPosX", "dc/d03/tty_8c.html#a5f33f1945627909dccc422eeb74e131d", null ],

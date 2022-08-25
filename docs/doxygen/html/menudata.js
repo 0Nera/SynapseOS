@@ -29,6 +29,7 @@ var menudata={children:[
 {text:"Файлы",url:"files.html"},
 {text:"Список членов всех файлов",url:"globals.html",children:[
 {text:"Указатель",url:"globals.html",children:[
+{text:"_",url:"globals.html#index__5F"},
 {text:"c",url:"globals.html#index_c"},
 {text:"d",url:"globals.html#index_d"},
 {text:"g",url:"globals.html#index_g"},
@@ -42,6 +43,7 @@ var menudata={children:[
 {text:"t",url:"globals.html#index_t"},
 {text:"v",url:"globals.html#index_v"}]},
 {text:"Функции",url:"globals_func.html",children:[
+{text:"_",url:"globals_func.html#index__5F"},
 {text:"c",url:"globals_func.html#index_c"},
 {text:"d",url:"globals_func.html#index_d"},
 {text:"g",url:"globals_func.html#index_g"},
