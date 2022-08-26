@@ -55,3 +55,4 @@ enum colors  {
 void draw_pixel(int x, int y, unsigned int color);
 void clean_screen();
 SynapseTTYInfo* get_tty_info();
+void punch();

@@ -96,12 +96,10 @@ uint32_t timer_get_frequency() {
 }
 
 void print_str(char str[]) {
- 
     asm volatile("int $0x80" 
                 :: "a"(SC_CODE_puts),            // eax = SC_CODE_puts(0)
                   "b"(str)                      // ebx = str
                 );
-
 }
 
 
@@ -133,16 +131,20 @@ uint64_t srand(uint32_t seed) {
 /*
     putint - вывод числа
 */
-void putint(const int i) {
+void _putint(const int32_t i) {
     char res[32];
-
+    
     if (i < 0) {
-        //print_str("-");
+        //tty_putchar('-');
     }
 
     itoa(i, res);
     print_str(res);
-    
+}
+
+void putint(const int32_t i) {
+    _putint(i);
+    punch();
 }
 
 void puthex(unsigned int i) {
