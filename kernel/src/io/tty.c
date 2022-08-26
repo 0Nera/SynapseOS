@@ -125,10 +125,15 @@ void init_vbe(multiboot_info *mboot) {
  */
 void create_back_framebuffer() {
 	qemu_log("^---- 1. Allcoating"); // Я не знаю почему, но это предотвратило падение, но устроило его в другом месте
-    back_framebuffer_addr = kheap_malloc(framebuffer_size);
+    //back_framebuffer_addr = kheap_malloc(framebuffer_size);
+    char* backfb = kheap_malloc(framebuffer_size);
 
     qemu_log("back_framebuffer_addr = %x", back_framebuffer_addr);
-    memset(back_framebuffer_addr, 0, framebuffer_size); // Должно предотвратить падение
+    memset(backfb, 0, framebuffer_size); // Должно предотвратить падение
+
+    memcpy(backfb, framebuffer_addr, framebuffer_size);
+
+    back_framebuffer_addr = backfb;
 }
 
 
@@ -696,9 +701,7 @@ void tty_printf(char *text, ...) {
     va_list args;
     va_start(args, text);
     tty_print(text, args);
-<<<<<<< HEAD
-}
-=======
+
     va_end(args);
 }
->>>>>>> f6650a3cc7e61bd79b540e8fba5f9416b314ea0d
+
