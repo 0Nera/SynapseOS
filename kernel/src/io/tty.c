@@ -696,4 +696,9 @@ void tty_printf(char *text, ...) {
     va_list args;
     va_start(args, text);
     tty_print(text, args);
+<<<<<<< HEAD
 }
+=======
+    va_end(args);
+}
+>>>>>>> f6650a3cc7e61bd79b540e8fba5f9416b314ea0d
