@@ -360,7 +360,7 @@ $(document).ready(function(){initNavTree('de/dbd/keyboard_8c_source.html','../..
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;            <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        }</div>
 <div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        <span class="keywordflow">if</span> (enabledKeyboard == 1){</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;            <a class="code" href="../../dc/d03/tty_8c.html#a5ceb7bcc18bfa52de2d1ce3b69d7ef8f">tty_putchar</a>(last_char);</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;            tty_putchar(last_char);</div>
 <div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        }</div>
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        qemu_log(<span class="stringliteral">&quot;key = %c (index %d)&quot;</span>, keyboard_map[(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>) keycode], (<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>) keycode);</div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    }</div>
@@ -375,7 +375,7 @@ $(document).ready(function(){initNavTree('de/dbd/keyboard_8c_source.html','../..
 <div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    }</div>
 <div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160; </div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    input_type = 1;</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <a class="code" href="../../dc/d03/tty_8c.html#a5ceb7bcc18bfa52de2d1ce3b69d7ef8f">tty_putchar</a>(last_char);</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    tty_putchar(last_char);</div>
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160; </div>
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    <span class="keywordflow">return</span> last_char;</div>
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;}</div>
@@ -417,18 +417,17 @@ $(document).ready(function(){initNavTree('de/dbd/keyboard_8c_source.html','../..
 <div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="atty_8c_html_a5ceb7bcc18bfa52de2d1ce3b69d7ef8f"><div class="ttname"><a href="../../dc/d03/tty_8c.html#a5ceb7bcc18bfa52de2d1ce3b69d7ef8f">tty_putchar</a></div><div class="ttdeci">void tty_putchar(char c)</div><div class="ttdoc">Вывод одного символа</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d03/tty_8c_source.html#l00330">tty.c:330</a></div></div>
-<div class="ttc" id="atty_8c_html_a8900ce14898a55f9340b642731f8cf38"><div class="ttname"><a href="../../dc/d03/tty_8c.html#a8900ce14898a55f9340b642731f8cf38">tty_backspace</a></div><div class="ttdeci">void tty_backspace()</div><div class="ttdoc">Удаление последнего символа</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d03/tty_8c_source.html#l00399">tty.c:399</a></div></div>
+<div class="ttc" id="atty_8c_html_a8900ce14898a55f9340b642731f8cf38"><div class="ttname"><a href="../../dc/d03/tty_8c.html#a8900ce14898a55f9340b642731f8cf38">tty_backspace</a></div><div class="ttdeci">void tty_backspace()</div><div class="ttdoc">Удаление последнего символа</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d03/tty_8c_source.html#l00417">tty.c:417</a></div></div>
 <div class="ttc" id="astructregs_html"><div class="ttname"><a href="../../d3/da0/structregs.html">regs</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d35/idt_8h_source.html#l00040">idt.h:40</a></div></div>
 <div class="ttc" id="aports_8c_html_a8bf7a9af91c08e6f876aaffeccd48ff3"><div class="ttname"><a href="../../d0/d6e/ports_8c.html#a8bf7a9af91c08e6f876aaffeccd48ff3">outb</a></div><div class="ttdeci">void outb(uint16_t port, uint8_t val)</div><div class="ttdoc">Запись одного байта в порт</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d6e/ports_8c_source.html#l00020">ports.c:20</a></div></div>
 <div class="ttc" id="akeyboard_8c_html_ad89f1335412c142b5cbbdea23c804117"><div class="ttname"><a href="../../de/dbd/keyboard_8c.html#ad89f1335412c142b5cbbdea23c804117">keyboard_clean</a></div><div class="ttdeci">void keyboard_clean()</div><div class="ttdoc">Отчищает последний ввод клавиатуры</div><div class="ttdef"><b>Definition:</b> <a href="../../de/dbd/keyboard_8c_source.html#l00130">keyboard.c:130</a></div></div>
 <div class="ttc" id="aports_8c_html_a2e1e8e2c5724c1e8fd2dff2eada06479"><div class="ttname"><a href="../../d0/d6e/ports_8c.html#a2e1e8e2c5724c1e8fd2dff2eada06479">inb</a></div><div class="ttdeci">uint8_t inb(uint16_t port)</div><div class="ttdoc">Получение одного байта из порта</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d6e/ports_8c_source.html#l00031">ports.c:31</a></div></div>
-<div class="ttc" id="atty_8c_html_a3a9ec5bcc1f8f7ca830e80c491e4512f"><div class="ttname"><a href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a></div><div class="ttdeci">void tty_printf(char *text,...)</div><div class="ttdoc">Вывод форматированной строки на экран (аналог printf)</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d03/tty_8c_source.html#l00648">tty.c:648</a></div></div>
+<div class="ttc" id="atty_8c_html_a3a9ec5bcc1f8f7ca830e80c491e4512f"><div class="ttname"><a href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a></div><div class="ttdeci">void tty_printf(char *text,...)</div><div class="ttdoc">Вывод форматированной строки на экран (аналог printf)</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d03/tty_8c_source.html#l00695">tty.c:695</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_3dd30a497388ee684638f120a124721c.html">src</a></li><li class="navelem"><a class="el" href="../../dir_79cdf04718782f286da113044bf76c98.html">drivers</a></li><li class="navelem"><a class="el" href="../../de/dbd/keyboard_8c.html">keyboard.c</a></li>
-    <li class="footer">Документация по SynapseOS. Последние изменения: Чт 25 Авг 2022 01:37:59. Создано системой
+    <li class="footer">Документация по SynapseOS. Последние изменения: Чт 25 Авг 2022 12:02:04. Создано системой
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

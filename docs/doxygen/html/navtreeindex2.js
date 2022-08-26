@@ -1,5 +1,15 @@
 var NAVTREEINDEX2 =
 {
+"dc/d03/tty_8c.html#ae538acc0445eac7b4788082e65643f82":[1,0,0,2,2,3,52],
+"dc/d03/tty_8c.html#ae578eeb5d5e715c190499f66316214c5":[1,0,0,2,2,3,45],
+"dc/d03/tty_8c.html#aecee8be25ab3e3254eecb4fd73cb51bc":[1,0,0,2,2,3,2],
+"dc/d03/tty_8c.html#aef3b56cec684e22a1a8d1cf51582f3d3":[1,0,0,2,2,3,44],
+"dc/d03/tty_8c.html#af8c0878231c8d26e6bbe056752f858f8":[1,0,0,2,2,3,15],
+"dc/d03/tty_8c.html#afb32d6323928e94c7c8f61953a4e1a72":[1,0,0,2,2,3,23],
+"dc/d03/tty_8c_source.html":[1,0,0,2,2,3],
+"dc/d5a/struct_i_d_e___c_h_a_n_n_e_l_s.html":[0,0,17],
+"dc/d5a/struct_i_d_e___c_h_a_n_n_e_l_s.html#a10e251ca482543ec4f81f4006b000aed":[0,0,17,2],
+"dc/d5a/struct_i_d_e___c_h_a_n_n_e_l_s.html#a31eaecbfc5bd19c5fd7fa89eaffdd21a":[0,0,17,1],
 "dc/d5a/struct_i_d_e___c_h_a_n_n_e_l_s.html#abfd71761a6b1360dabc57c127d2c1c9d":[0,0,17,0],
 "dc/d5a/struct_i_d_e___c_h_a_n_n_e_l_s.html#ad712ebfa20b5310720875ce3eadaf101":[0,0,17,3],
 "dc/d9c/stdlib_8h_source.html":[1,0,0,1,3,7],

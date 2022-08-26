@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['draw_5fvga_5fcharacter_163',['draw_vga_character',['../dc/d03/tty_8c.html#ac656691800d9bd94b6c49832866015fc',1,'tty.c']]],
-  ['drawrect_164',['drawRect',['../dc/d03/tty_8c.html#a21e184ff24e57a682c23f8c3451df34d',1,'tty.c']]],
-  ['duke_5fdraw_5ffrom_5ffile_165',['duke_draw_from_file',['../d4/da7/imaging_8h.html#ac43168fd2c97f024521f901f29cd7de2',1,'duke_draw_from_file(char *filename, int sx, int sy):&#160;imaging.c'],['../d8/d6d/imaging_8c.html#ac43168fd2c97f024521f901f29cd7de2',1,'duke_draw_from_file(char *filename, int sx, int sy):&#160;imaging.c']]],
-  ['duke_5fget_5fimage_5fmetadata_166',['duke_get_image_metadata',['../d4/da7/imaging_8h.html#a04189c5b1bd699efb92812c7dbcbe1db',1,'duke_get_image_metadata(char *filename):&#160;imaging.c'],['../d8/d6d/imaging_8c.html#a04189c5b1bd699efb92812c7dbcbe1db',1,'duke_get_image_metadata(char *filename):&#160;imaging.c']]]
+  ['clean_5fscreen_167',['clean_screen',['../dc/d03/tty_8c.html#a0d199b5702695c4d7b78ef83759c32d5',1,'tty.c']]],
+  ['com1_5fis_5ftransmit_5fempty_168',['com1_is_transmit_empty',['../d0/d6e/ports_8c.html#ab129328817732429fa6ff116c30ad94a',1,'ports.c']]],
+  ['com1_5fwrite_5fchar_169',['com1_write_char',['../d0/d6e/ports_8c.html#ad0aeab3fed0aa6c56ef58b8df7a9fd06',1,'ports.c']]],
+  ['create_5fback_5fframebuffer_170',['create_back_framebuffer',['../dc/d03/tty_8c.html#aca7637cf8ec1ea90a95d8fd4a2cce7fe',1,'tty.c']]]
 ];
