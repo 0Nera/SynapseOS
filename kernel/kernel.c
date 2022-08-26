@@ -44,7 +44,7 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     init_vbe(mboot_info);                   // Активация графики 1024x768
 
     // Вывод информации о ядре
-    tty_printf("\t\tSynapseOS kernel version: %d.%d.%d, Built: %s\n", 
+    tty_printf("\nSynapseOS kernel version: %d.%d.%d, Built: %s\n", 
         VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH,    // Версия ядра 
         __TIMESTAMP__                                   // Время окончания компиляции ядра
         );
