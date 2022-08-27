@@ -35,6 +35,7 @@ int32_t tty_pos_x;
 int32_t tty_pos_y;
 
 uint32_t tty_text_color;
+bool stateTTY = true;
 
 SynapseTTYInfo* get_tty_info() {
     SynapseTTYInfo* ty;
@@ -49,6 +50,15 @@ void punch() {
     #if ENABLE_DOUBLE_BUFFERING==1
     memcpy(framebuffer_addr, back_framebuffer_addr, framebuffer_size);
     #endif
+}
+
+/**
+ * @brief Меняет состояние печати через printf
+ *
+ * @param bool state - Включить или выключить печать
+ */
+void tty_changeState(bool state){
+    stateTTY = state;
 }
 
 /**
@@ -126,6 +136,8 @@ void init_vbe(multiboot_info *mboot) {
 void create_back_framebuffer() {
 	qemu_log("^---- 1. Allcoating"); // Я не знаю почему, но это предотвратило падение, но устроило его в другом месте
     //back_framebuffer_addr = kheap_malloc(framebuffer_size);
+
+    qemu_log("framebuffer_size = %d", framebuffer_size);
     char* backfb = kheap_malloc(framebuffer_size);
 
     qemu_log("back_framebuffer_addr = %x", back_framebuffer_addr);
@@ -698,10 +710,11 @@ void tty_print(char *format, va_list args) {
  * @param ... - параметры
  */
 void tty_printf(char *text, ...) {
-    va_list args;
-    va_start(args, text);
-    tty_print(text, args);
-
-    va_end(args);
+    if (stateTTY){
+        va_list args;
+        va_start(args, text);
+        tty_print(text, args);
+        va_end(args);
+    }
 }
 
