@@ -7,12 +7,14 @@
 // SoundBlaster 16 работает только с ними.
 // Возьмем где-нибудь адрес с длиной 8192 байт
 
-#define LOAD        0x00100000 // This address causes the error!
+#define LOAD        0x00100000
 #define LOAD_LENGTH 8192
 
-char can_play_audio = 0;
 #include <drivers/experimental/sb16.h>
 #include <libk/string.h>
+#include <mem/mem.h>
+
+char can_play_audio = 0;
 char* driver_memory = (char*)LOAD;
 
 char sb16_init() {
@@ -20,6 +22,11 @@ char sb16_init() {
 	if(audio==0xFFFFFFFF) {
 		return 0;
 	}else{
+		for(int memp = 0; memp < 2; memp++) {
+			int addrk = LOAD+(PAGE_SIZE*memp);
+			qemu_log("SB16: Allocating at: %x\n", addrk);
+			vmm_alloc_page(addrk);
+		}
 		can_play_audio=1;
 		return 1;
 	}
