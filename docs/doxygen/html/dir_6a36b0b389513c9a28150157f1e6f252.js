@@ -1,5 +1,6 @@
 var dir_6a36b0b389513c9a28150157f1e6f252 =
 [
+    [ "bootscreen.c", "d2/d2c/bootscreen_8c_source.html", null ],
     [ "cpuinfo.c", "df/d59/cpuinfo_8c_source.html", null ],
     [ "elf.c", "d2/da6/elf_8c_source.html", null ],
     [ "gdt.c", "de/d68/gdt_8c_source.html", null ],

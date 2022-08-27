@@ -40,8 +40,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"d6/d0c/structip__packet.html#a07bf19836204bcde2b4f843aff82783e",
-"dc/d03/tty_8c.html#ae538acc0445eac7b4788082e65643f82"
+"d6/d0c/structip__packet.html",
+"dc/d03/tty_8c.html#aca7637cf8ec1ea90a95d8fd4a2cce7fe"
 ];
 
 var SYNCONMSG = 'нажмите на выключить для синхронизации панелей';
