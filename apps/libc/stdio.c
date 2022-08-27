@@ -558,10 +558,13 @@ FILE* fopen(const char* filename, const char* mode){
 /*
  * Закрыть файл после работы с ним
  */
-void fclose(FILE* stream){
+int fclose(FILE* stream){
 	if (stream->open){
 		free(stream->buf);
+		stream->open = 0;
+		return 0;
 	}
+	return -1;
 }
 
 /*
@@ -589,6 +592,11 @@ char* fread(FILE* stream){
 	(void)res;
 	stream->buf[stream->size] = '\0';
 	return stream->buf;
+}
+
+int unix_fread(void* buffer, size_t size, size_t count, FILE* fd) {
+	vfs_read(fd->path, count, size, buffer);
+	return count;
 }
 
 /*

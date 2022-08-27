@@ -230,7 +230,7 @@ local int get_byte(s)
     if (s->z_eof) return EOF;
     if (s->stream.avail_in == 0) {
 	errno = 0;
-	s->stream.avail_in = fread(s->inbuf, 1, Z_BUFSIZE, s->file);
+	s->stream.avail_in = unix_fread(s->inbuf, 1, Z_BUFSIZE, s->file);
 	if (s->stream.avail_in == 0) {
 	    s->z_eof = 1;
 	    if (ferror(s->file)) s->z_err = Z_ERRNO;
@@ -376,8 +376,7 @@ int ZEXPORT gzread (file, buf, len)
 		s->stream.avail_in  -= n;
 	    }
 	    if (s->stream.avail_out > 0) {
-		s->stream.avail_out -= fread(next_out, 1, s->stream.avail_out,
-					     s->file);
+		s->stream.avail_out -= unix_fread(next_out, 1, s->stream.avail_out, s->file);
 	    }
 	    len -= s->stream.avail_out;
 	    s->stream.total_in  += (uLong)len;
@@ -387,7 +386,7 @@ int ZEXPORT gzread (file, buf, len)
         if (s->stream.avail_in == 0 && !s->z_eof) {
 
             errno = 0;
-            s->stream.avail_in = fread(s->inbuf, 1, Z_BUFSIZE, s->file);
+            s->stream.avail_in = unix_fread(s->inbuf, 1, Z_BUFSIZE, s->file);
             if (s->stream.avail_in == 0) {
                 s->z_eof = 1;
 		if (ferror(s->file)) {

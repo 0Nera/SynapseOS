@@ -87,3 +87,15 @@ enum FileOpenMode {
 	O_TRUNC = 16,
 };
 
+uint32_t fmodecheck(const char* restrict mode);
+void fcheckerror(FILE* stream);
+uint32_t ferror(FILE* stream);
+void perror(FILE* stream,char* s);
+FILE* fopen(const char* filename, const char* mode);
+int fclose(FILE* stream);
+int32_t fsize(FILE* stream);
+int unix_fread(void* buffer, size_t size, size_t count, FILE* fd);
+char* fread(FILE* stream);
+int64_t ftell(FILE* stream);
+int64_t fseek(FILE* stream, int64_t offset, uint32_t whence);
+void rewind(FILE* stream);
