@@ -35,13 +35,13 @@ typedef struct vfs_filesystem_t {
 
 // Содержит указатели на некоторые методы файловой системы.
 typedef struct vfs_filesystem_handles_t {
-    uint32_t (*read) (char *fn, int*, int*, vfs_filesystem_t*, void*);
-    uint32_t (*write) (char *fn, int*, int*, vfs_filesystem_t*, void*);
+    uint32_t (*read) (char *fn, int, int, vfs_filesystem_t*, void*);
+    uint32_t (*write) (char *fn, int, int, vfs_filesystem_t*, void*);
 
     uint32_t (*readdir) (char*, vfs_filesystem_t*, void*);
 
-    uint32_t (*mkfile) (char *fn, char*, vfs_filesystem_t*, uint16_t*);
-    uint32_t (*mkdir) (char *fn, char*, vfs_filesystem_t*, uint16_t*);
+    uint32_t (*mkfile) (char *fn, char*, vfs_filesystem_t*, uint16_t);
+    uint32_t (*mkdir) (char *fn, char*, vfs_filesystem_t*, uint16_t);
 
     uint32_t (*rm) (char *fn, vfs_filesystem_t*);
     uint32_t (*ls) (char *fn, vfs_filesystem_t*);

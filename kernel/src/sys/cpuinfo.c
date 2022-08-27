@@ -268,7 +268,8 @@ int do_intel(bool silent) {
 /* Print Registers */
 char* printregs(int eax, int ebx, int ecx, int edx) {
     int j;
-    char string[17];
+    char *string = kheap_malloc(18);
+    memset(string, 0, 18);
     string[16] = '\0';
     for (j = 0; j < 4; j++) {
         string[j] = eax >> (8 * j);
@@ -278,7 +279,7 @@ char* printregs(int eax, int ebx, int ecx, int edx) {
     }
     //tty_printf("%s",string);
     strcat(brandAllName,string);
-    return string;
+   return string;
 }
 
 /* AMD-specific information */

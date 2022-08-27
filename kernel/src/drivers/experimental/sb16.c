@@ -20,7 +20,6 @@ char sb16_init() {
 	if(audio==0xFFFFFFFF) {
 		return 0;
 	}else{
-		vmm_alloc_page(LOAD);
 		can_play_audio=1;
 		return 1;
 	}
@@ -126,7 +125,7 @@ void sb16_play_audio(char *data, short sampling_rate, char channels, char eightb
 	// 1. Reset DSP
 	sb16_dsp_reset();
 	int loaded = 0;
-	int address = (void*)data;
+	//int address = (int)(void*)data;
 
 	// 3. Set master volume
 	sb16_set_master_volume(0xC, 0xC);
@@ -138,7 +137,7 @@ void sb16_play_audio(char *data, short sampling_rate, char channels, char eightb
 	// Load sound data to memory
 	while(loaded<length-1) {
 		memcpy(driver_memory, data, LOAD_LENGTH);
-		sb16_program_dma16(channels, driver_memory, LOAD_LENGTH);
+		sb16_program_dma16(channels, (int)driver_memory, LOAD_LENGTH);
 		loaded+=LOAD_LENGTH;
 		data+=LOAD_LENGTH;
 	}
