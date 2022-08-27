@@ -26,6 +26,8 @@ typedef struct SynapseTTYInfo {
 #define SC_CODE_TTY_DRAW_VGA    54
 #define SC_CODE_TTY_DRAW_RECT   57
 
+#define SC_CODE_punch         	72
+
 // Фон
 #define COLOR_BACK  0x000000
 // Текст
@@ -53,3 +55,4 @@ enum colors  {
 void draw_pixel(int x, int y, unsigned int color);
 void clean_screen();
 SynapseTTYInfo* get_tty_info();
+void punch();

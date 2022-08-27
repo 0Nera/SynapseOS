@@ -96,12 +96,10 @@ uint32_t timer_get_frequency() {
 }
 
 void print_str(char str[]) {
- 
     asm volatile("int $0x80" 
                 :: "a"(SC_CODE_puts),            // eax = SC_CODE_puts(0)
                   "b"(str)                      // ebx = str
                 );
-
 }
 
 
@@ -133,16 +131,20 @@ uint64_t srand(uint32_t seed) {
 /*
     putint - вывод числа
 */
-void putint(const int i) {
+void _putint(const int32_t i) {
     char res[32];
-
+    
     if (i < 0) {
-        print_str("-");
+        //tty_putchar('-');
     }
 
     itoa(i, res);
     print_str(res);
-    
+}
+
+void putint(const int32_t i) {
+    _putint(i);
+    punch();
 }
 
 void puthex(unsigned int i) {
@@ -171,7 +173,6 @@ void putchar(unsigned char ch) {
 void print(char *format, va_list args) {
     int i = 0;
 	char temp[2] = {0};
-    //char *temp = malloc(2);
 
     while (format[i]) {
         if (format[i] == '%') {
@@ -206,7 +207,6 @@ void print(char *format, va_list args) {
         }
         i++;
     }
-	//free(temp);
 }
 
 
@@ -558,10 +558,13 @@ FILE* fopen(const char* filename, const char* mode){
 /*
  * Закрыть файл после работы с ним
  */
-void fclose(FILE* stream){
+int fclose(FILE* stream){
 	if (stream->open){
 		free(stream->buf);
+		stream->open = 0;
+		return 0;
 	}
+	return -1;
 }
 
 /*
@@ -589,6 +592,11 @@ char* fread(FILE* stream){
 	(void)res;
 	stream->buf[stream->size] = '\0';
 	return stream->buf;
+}
+
+int unix_fread(void* buffer, size_t size, size_t count, FILE* fd) {
+	vfs_read(fd->path, count, size, buffer);
+	return count;
 }
 
 /*

@@ -14,7 +14,7 @@
 
 CC=clang -target i386-pc-none-elf
 
-CFLAGS=-O0 -Wno-unused-command-line-argument -mno-sse -mno-avx -ffreestanding -I ../include/
+CFLAGS=-O0 -Wno-unused-command-line-argument -mno-sse -mno-avx -ffreestanding -I ../../include/
 #CFLAGS=-O -DMAX_WBITS=14 -DMAX_MEM_LEVEL=7
 #CFLAGS=-g -DDEBUG
 #CFLAGS=-O3 -Wall -Wwrite-strings -Wpointer-arith -Wconversion \

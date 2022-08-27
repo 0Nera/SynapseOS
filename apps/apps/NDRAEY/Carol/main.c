@@ -73,7 +73,7 @@ int main() {
         rect(fbw-200, 120, fbw, 360);
         David_do_draw_current_frame(animator, ttyinfo->width-200, 120);
         David_next_frame(animator, 1);
-
+        punch();
         sleep_ms(110);
     }
 

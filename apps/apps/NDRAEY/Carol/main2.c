@@ -141,7 +141,8 @@ int main() {
         David_do_draw_current_frame(animator_idle, ttyinfo->width-SHL, 
                                     (idleshft-frames_idle->origin[i]->imgmeta->height)+20);
         David_next_frame(animator_idle, 1);
-        sleep_ms(200);
+        punch();
+        sleep_ms(100);
     }
 
     sleep_ms(4000);
@@ -165,7 +166,8 @@ int main() {
         
         David_do_draw_current_frame(animator, (ttyinfo->width-SHL+10)+hx, 55);
         David_next_frame(animator, 1);
-        sleep_ms(135);
+        punch();
+        sleep_ms(100);
 
         hx+=15;
     }

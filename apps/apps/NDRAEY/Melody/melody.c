@@ -98,12 +98,5 @@ int main(){
         sleep(2);
     }
     nosound();
-    /*
-    for (int i = 10000; i != 500; i--) {
-        play_sound(i);
-        sleep(1);
-    }
-    nosound();
-    */
     return 0;
 }

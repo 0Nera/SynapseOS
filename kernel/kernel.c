@@ -27,20 +27,6 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
 
     tty_init(mboot_info);   // Настройка графики
 
-    // Вывод информации о ядре
-    tty_printf("\t\tSynapseOS kernel version: %d.%d.%d, Built: %s\n", 
-        VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH,    // Версия ядра 
-        __TIMESTAMP__                                   // Время окончания компиляции ядра
-        );
-
-    // Проверка, является ли сборка дистрибутивом
-    if (isDistr) {
-        //Вывод информации о дистрибутиве
-        tty_printf("\tDistribution \"%s\", version %d.%d.%d\n",
-            DistrName, dVERSION_MAJOR, dVERSION_MINOR, dVERSION_PATCH
-            );
-    }
-
     gdt_init(); // \    Установка и настройка прерываний 
     idt_init(); // /
     pmm_init(mboot_info);
@@ -57,6 +43,20 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
 
     init_vbe(mboot_info);                   // Активация графики 1024x768
 
+    // Вывод информации о ядре
+    tty_printf("\nSynapseOS kernel version: %d.%d.%d, Built: %s\n", 
+        VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH,    // Версия ядра 
+        __TIMESTAMP__                                   // Время окончания компиляции ядра
+        );
+
+    // Проверка, является ли сборка дистрибутивом
+    if (isDistr) {
+        //Вывод информации о дистрибутиве
+        tty_printf("\tDistribution \"%s\", version %d.%d.%d\n",
+            DistrName, dVERSION_MAJOR, dVERSION_MINOR, dVERSION_PATCH
+            );
+    }
+
     vfs_init();                             // Инициализация виртуальной файловой системы
 
     initrd_init(initrd_beg, initrd_end);    // Инициализация ramdisk
@@ -70,9 +70,8 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     pci_init();                             // Установка драйвера PCI
 
     struct synapse_time TIME = get_time();
-    tty_printf("Current datetime is: %d/%d/%d %d:%d:%d (unix:%d)\n", TIME.day, TIME.month,
-    							TIME.year, TIME.hours, TIME.minutes, TIME.seconds,
-    							synapse_time_to_unix(TIME));
+    tty_printf("Current datetime is: %d/%d/%d %d:%d:%d\n", TIME.day, TIME.month,
+    							TIME.year, TIME.hours, TIME.minutes, TIME.seconds);
     tty_puts("Experimental font demo: \xFF\x01 \xFF\x02 \xFF\x03 \xFF\x04 \xFF\x05 \xFF\x06 \xFF\x07 \xFF\x08 \xFF\x09 \xFF\x0A \xFF\x0B \xFF\x0C\n");
     tty_puts("Colors: \xFF\x0D\xFF\x0E\xFF\x0F\n");
     tty_puts_color("Circles: [\xFF\x10][\xFF\x11]\n", 0, 0xFF0000);

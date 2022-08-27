@@ -9,7 +9,6 @@ var cmos_8c =
     [ "get_update_in_progress_flag", "df/d49/cmos_8c.html#aebccc42f394adc52cab13340c36a9b08", null ],
     [ "isleap", "df/d49/cmos_8c.html#a19efe316ef878d9aaaa70e28b4b2c670", null ],
     [ "read_rtc", "df/d49/cmos_8c.html#aaad79a36175239b5f312059932b105dd", null ],
-    [ "synapse_time_to_unix", "df/d49/cmos_8c.html#a161db75293babc3da2ce46612cd858f5", null ],
     [ "century", "df/d49/cmos_8c.html#aed706d909b6d0badafefec905257b6b8", null ],
     [ "century_register", "df/d49/cmos_8c.html#a9943413eaba9991ac0fccbae3699a097", null ],
     [ "day", "df/d49/cmos_8c.html#ab9ba6d415537c392fea1a330751865f9", null ],

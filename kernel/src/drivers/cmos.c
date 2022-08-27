@@ -150,10 +150,7 @@ struct synapse_time* get_time_pointer() {
 	return time;
 }
 
-/**
- * @brief Вычисляет время UNIX
- * @warning Через каждые 1.78 лет время отстаеь на 33555600 секунд
- */
+/*
 unsigned int synapse_time_to_unix(struct synapse_time ktime) {
 	unsigned int t = 0;
 	unsigned char cmdt = (isleap(ktime.year)?synapse_months_leap[ktime.month-1]:synapse_months[ktime.month-1]);
@@ -167,3 +164,4 @@ unsigned int synapse_time_to_unix(struct synapse_time ktime) {
 	t += (ktime.year-1970)*60*60*24*cmdt*12;
     return t;
 }
+*/

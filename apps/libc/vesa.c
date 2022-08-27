@@ -147,6 +147,9 @@ void cleanScreen(){
     drawRect(0,0,getWidthScreen(), getHeightScreen(),bgVesaColor);
 }
 
+void punch() {
+    asm volatile("int $0x80" :: "a"(SC_CODE_punch));
+}
 
 /**
  * @brief Вывод одного символа с учетом цвета фона и текста

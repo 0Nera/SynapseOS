@@ -58,7 +58,8 @@ void syscall_handler(struct regs *r) {
 
     switch (r->eax) {
         case SC_CODE_puts: // I/O
-            tty_printf("%s", (char *)(arg1));
+            //tty_printf("%s", (char *)(arg1));
+            _tty_puts((char*)arg1);
             r->eax = (uint32_t)1;
             break;
         case SC_CODE_TTY_DRAW_RECT:
@@ -188,6 +189,11 @@ void syscall_handler(struct regs *r) {
         case SC_CODE_get_time:
             r->eax = get_time_pointer();
             break;
+        case SC_CODE_punch: {
+            punch();
+            r->eax = 0;
+            break;
+        }
         default:
             qemu_log("Invalid syscall #%x", r->eax);
             qemu_log("r->idt_index = %x eax = %x  ebx = %x  "
