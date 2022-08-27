@@ -5,8 +5,9 @@ MEMORY = "64M"
 
 _CC = "clang -target i386-pc-none-elf"
 LD = "ld.lld"
+_CC = "i686-elf-gcc -lgcc -W"
+LD = _CC
 CFLAGS = " -nostdlib -mno-sse -mno-avx -ggdb -O0 -ffreestanding -I kernel/include/ -c"
-
 CC = f"{_CC} {CFLAGS}"
 
 SRC_TARGETS = []

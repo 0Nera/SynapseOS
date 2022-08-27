@@ -1,5 +1,7 @@
 #pragma once
 
+#include <libk/stdint.h>
+
 #define EOF -1
 #define SEEK_SET 1
 #define SEEK_CUR 2

@@ -27,7 +27,9 @@ jobs:
       # Установка зависимостей
       - name: Installing
         run: |
-          sudo apt install python3 grub-pc-bin xorriso mtools llvm lld fasm
+          sudo apt install python3 build-essential xorriso grub-pc-bin mtools fasm
+          wget -nv https://github.com/lordmilko/i686-elf-tools/releases/download/7.1.0/i686-elf-tools-linux.zip
+          sudo unzip i686-elf-tools-linux.zip -d /usr/local
 
           
       # Запуск сборки
