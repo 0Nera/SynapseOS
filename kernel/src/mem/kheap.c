@@ -76,6 +76,7 @@ int32_t kheap_free(void *address) {
 
 // Выделение произвольного размера памяти из кучи ядра
 void *kheap_malloc(uint32_t size) {
+    qemu_log("[Malloc] Запрос на %d ед. места",size);
     kheap_item *new_item = NULL, *temp_item;
     uint32_t total_size;
 
