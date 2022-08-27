@@ -15,13 +15,13 @@ struct synapse_time {
 static const unsigned char synapse_months[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 static const unsigned char synapse_months_leap[] = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-static const char **months_list = {"January", "February", "March", "April", "May", "June", "July",
+static const char *months_list[] = {"January", "February", "March", "April", "May", "June", "July",
 							"August", "September", "October", "November", "December"};
-static const char **months_list_short = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
+static const char *months_list_short[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
 								  "Sep", "Oct", "Nov", "Dec"};
 
-static const char **weekday_list = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-static const char **weekday_list_short = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+static const char *weekday_list[] = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+static const char *weekday_list_short[] = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
 
 void init_task_manager();
 void timer_install();

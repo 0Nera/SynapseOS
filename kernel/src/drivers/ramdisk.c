@@ -119,7 +119,7 @@ void initrd_list(int32_t argc, char **arg) {
 
     while (!memcmp(addr + 257, "ustar", 5)) {
         int32_t filesize = oct2bin(addr + 0x7c, 11);
-        ustar_file_t *file = (struct ustar_file_t*) addr;
+        ustar_file_t *file = (ustar_file_t*) addr;
 
         if (file->type == USTAR_DIRECTORY) {
             tty_printf("\n    <dir>       /initrd/%s", file->fname);

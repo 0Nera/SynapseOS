@@ -45,6 +45,7 @@ void RTL8139_read_mac_addr() {
         RTL8139_device.mac_addr[0], RTL8139_device.mac_addr[1], RTL8139_device.mac_addr[2], 
         RTL8139_device.mac_addr[3], RTL8139_device.mac_addr[4], RTL8139_device.mac_addr[5]
         );
+    punch();
 }
 
 

@@ -10,12 +10,22 @@
 #include <kernel.h>
 
 /**
+ * @brief Функция вычисления позиции по координатам
+ * @param filename - Имя файла
+ * @param sx - Координата x
+ * @param sy - Координата y
+ * @return 0 - OK, 1 - ERROR
+ */
+int pixidx(int width, int x, int y) {
+    return width*y + x;
+}
+
+/**
  * @brief Получает метаданные изображения Duke.
  * @param filename - Имя файла
  * @return Структуру с метаданными при успехе
  * @return 0 При ошибке
  */
-
 struct DukeImageMeta* duke_get_image_metadata(char *filename) {
     if(vfs_exists(filename)) {
         char* rmeta = kheap_malloc(9);
@@ -125,17 +135,6 @@ void duke_scale(char* pixels, unsigned int w1, unsigned int h1, int w2, int h2, 
         }
         y++;
     }
-}
-
-/**
- * @brief Функция вычисления позиции по координатам
- * @param filename - Имя файла
- * @param sx - Координата x
- * @param sy - Координата y
- * @return 0 - OK, 1 - ERROR
- */
-int pixidx(int width, int x, int y) {
-    return width*y + x;
 }
 
 unsigned int duke_calculate_bufsize(unsigned int width, unsigned int height, unsigned int alpha) {

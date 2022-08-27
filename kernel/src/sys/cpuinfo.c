@@ -1,7 +1,8 @@
 #include <kernel.h>
+
 char brandAllName[128] = "";
 int detect_cpu(bool silent) {
-    brandAllName[128] = "";
+    brandAllName[127] = 0;
     unsigned long ebx, unused;
     cpuid(0, unused, ebx, unused, unused);
     switch (ebx) {

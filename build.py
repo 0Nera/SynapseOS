@@ -18,8 +18,8 @@ def warn(message):
 
 def compile(binary, source, cur="--", total="--", warnings=False):
     print(f"[\x1b[32;1mBUILD\x1b[0m] [{cur}/{total}]: Compiling: {source}")
-    os.system(f"{CC}  {'' if warnings else ' -w '}  -o ./{binary} {source}")
-
+    os.system(f"{CC}  {' -Wall -Wno-macro-redefined ' if warnings else ' -w '}  -o ./{binary} {source}")
+    
 def compile_kernel(warnings=False):
     print("Compiling...")
     if not os.path.isdir("bin"):
@@ -43,7 +43,7 @@ def compile_kernel(warnings=False):
     filescount = len(updated)
 
     for i in range(filescount):
-        compile(os.path.join("bin\\" if not (sys.platform == "linux" or sys.platform == "linux2") else "bin/", os.path.basename(updated[i]) + '.o '), updated[i], i+1, filescount, warnings)
+        compile(os.path.join("bin\\" if not (sys.platform == "linux" or sys.platform == "linux2") else "bin/", os.path.basename(updated[i]) + '.o '), updated[i], i+1, filescount, warnings=warnings)
 
 def link_kernel():
     print("Linking...")
@@ -181,7 +181,7 @@ if __name__ == "__main__":
                 continue
             i+=1
 
-        if warnings: CFLAGS = CFLAGS[2:]; CC = f"{_CC} {CFLAGS}";
+        if warnings: CC = f"{_CC} {CFLAGS}";
 
         if not args:
             build_kernel(warnings)
@@ -192,7 +192,7 @@ if __name__ == "__main__":
         else:
             for i in range(1, len(sys.argv)):
                 if sys.argv[i] == "kernel":
-                    build_kernel()
+                    build_kernel(warnings)
                 elif sys.argv[i] == "apps":
                     build_apps()
                 elif sys.argv[i] == "isol":

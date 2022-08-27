@@ -229,7 +229,8 @@ uint32_t format_string_size(char *text, va_list args){
 
                 while (d >= 0xF)
                 {
-                    strcpy(res, hex[n / d]);
+                    //strcpy(res, hex[n / d]); // hex[n / d] is unsigned char, but strcpy parameter wants const char*
+                    strcpy(res, (char*)&hex[n / d]);
                     n = n % d;
                     d /= 0x10;
                 }
@@ -248,7 +249,8 @@ uint32_t format_string_size(char *text, va_list args){
 
                 while (d >= 0xF)
                 {
-                    strcpy(res, hex[n / d]);
+                    //strcpy(res, hex[n / d]);
+                    strcpy(res, (char*)&hex[n / d]);
                     n = n % d;
                     d /= 0x10;
                 }
