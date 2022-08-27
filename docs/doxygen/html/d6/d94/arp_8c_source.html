@@ -111,15 +111,16 @@ $(document).ready(function(){initNavTree('d6/d94/arp_8c_source.html','../../'); 
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;}</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">int</span> arp_lookup(uint8_t * ret_hardware_addr, uint8_t * ip_addr) {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;}</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">void</span> arp_init() {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    uint8_t broadcast_ip[4];</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    uint8_t broadcast_mac[6];</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    memset(broadcast_ip, 0xff, 4);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    memset(broadcast_mac, 0xff, 6);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;}</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;}</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keywordtype">void</span> arp_init() {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    uint8_t broadcast_ip[4];</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    uint8_t broadcast_mac[6];</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    memset(broadcast_ip, 0xff, 4);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    memset(broadcast_mac, 0xff, 6);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="astructarp__table__entry_html"><div class="ttname"><a href="../../d6/d3c/structarp__table__entry.html">arp_table_entry</a></div><div class="ttdoc">Структура точки входа ARP.</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/d97/net_8h_source.html#l00090">net.h:90</a></div></div>
@@ -128,7 +129,7 @@ $(document).ready(function(){initNavTree('d6/d94/arp_8c_source.html','../../'); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_3dd30a497388ee684638f120a124721c.html">src</a></li><li class="navelem"><a class="el" href="../../dir_79cdf04718782f286da113044bf76c98.html">drivers</a></li><li class="navelem"><a class="el" href="../../dir_306790d29fd1857c971d4d6badce611e.html">network</a></li><li class="navelem"><b>arp.c</b></li>
-    <li class="footer">Документация по SynapseOS. Последние изменения: Сб 27 Авг 2022 11:18:43. Создано системой
+    <li class="footer">Документация по SynapseOS. Последние изменения: Сб 27 Авг 2022 12:16:47. Создано системой
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
