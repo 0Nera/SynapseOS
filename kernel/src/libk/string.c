@@ -43,6 +43,22 @@ int32_t strcmp(const char *str1, const char *str2){
     return (s1 < s2) ? -1 : (s1 > s2);
 }
 
+bool strcmpn(const char *str1, const char *str2){
+    int32_t s1;
+    int32_t s2;
+
+    do{
+        s1 = *str1++;
+        s2 = *str2++;
+        if (s1 == 0)
+            break;
+    } while (s1 == s2);
+
+    return (s1 < s2) ? false : (s1 > s2);
+}
+
+
+
 char *strcpy(char *dest, const char *src){
     do{
         *dest++ = *src++;
@@ -175,6 +191,7 @@ char *strchr(const char *_s, int _c){
     }
     return (char *)_s;
 }
+
 
 uint32_t format_string_size(char *text, va_list args){
     const unsigned char hex[18] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
