@@ -7,8 +7,8 @@
 // SoundBlaster 16 работает только с ними.
 // Возьмем где-нибудь адрес с длиной 8192 байт
 
-#define LOAD        0x00100000
-#define LOAD_LENGTH 8192*2
+#define LOAD        0x100000
+#define LOAD_LENGTH 8192
 
 #include <drivers/experimental/sb16.h>
 #include <libk/string.h>
@@ -141,17 +141,11 @@ void sb16_play_audio(char *data, short sampling_rate, char channels, char eightb
 	// 6, 7, 8, 9, 10
 	sb16_program(sampling_rate, channels, eightbit, sign, LOAD_LENGTH);
 	
-	memcpy(driver_memory, data, LOAD_LENGTH);
-
-	tty_printf("DAT: %d\n", driver_memory[1]);
-	tty_printf("DAT: %d\n", data[1]);
-
-	sb16_program_dma16(channels, driver_memory, LOAD_LENGTH);
-	// // Load sound data to memory
-	// while(loaded<length-1) {
-	// 	memcpy(driver_memory, data, LOAD_LENGTH);
-	// 	sb16_program_dma16(channels, (int)driver_memory, LOAD_LENGTH);
-	// 	loaded+=LOAD_LENGTH;
-	// 	data+=LOAD_LENGTH;
-	// }
+	// Load sound data to memory
+	while(loaded<length-1) {
+		memcpy(driver_memory, data, LOAD_LENGTH);
+		sb16_program_dma16(channels, LOAD, LOAD_LENGTH);
+		loaded+=LOAD_LENGTH;
+		data+=LOAD_LENGTH;
+	}
 }

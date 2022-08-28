@@ -4,7 +4,7 @@ var structmultiboot__info =
     [ "apm_table", "df/d9f/structmultiboot__info.html#a54159585754aae2ec70f7c8bc32a4574", null ],
     [ "boot_device", "df/d9f/structmultiboot__info.html#a2aa050a4a5f45f2300cbbbee56cc8410", null ],
     [ "boot_loader_name", "df/d9f/structmultiboot__info.html#aa91e289c602df629731c300affdab2f4", null ],
-    [ "cmdline", "df/d9f/structmultiboot__info.html#a0b8f85b5256a3670365258c1c29d4708", null ],
+    [ "cmdline", "df/d9f/structmultiboot__info.html#a07d4d69e3b8a6390fe4e833851386b5b", null ],
     [ "config_table", "df/d9f/structmultiboot__info.html#afa301b4329298cc0a0ff846edf3b19b2", null ],
     [ "drives_addr", "df/d9f/structmultiboot__info.html#a7f1068d12a37a44377d4fdf6c36bcb7b", null ],
     [ "drives_length", "df/d9f/structmultiboot__info.html#a498997f92ef71679db87e9eb99e91cf5", null ],
