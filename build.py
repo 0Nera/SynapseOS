@@ -18,7 +18,7 @@ def warn(message):
 
 def compile(binary, source, cur="--", total="--", warnings=False):
     print(f"[\x1b[32;1mBUILD\x1b[0m] [{cur}/{total}]: Compiling: {source}")
-    os.system(f"{CC}  {' -Wall -Wno-macro-redefined -Wno-unused-command-line-argument ' if warnings else ' -w '}  -o ./{binary} {source}")
+    os.system(f"{CC}  {' -Wall -Wno-macro-redefined -Wno-unused-command-line-argument -Wno-implicit-function-declaration ' if warnings else ' -w '}  -o ./{binary} {source}")
     
 def compile_kernel(warnings=False):
     print("Compiling...")
