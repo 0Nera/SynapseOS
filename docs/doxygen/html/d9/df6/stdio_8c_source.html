@@ -200,13 +200,13 @@ $(document).ready(function(){initNavTree('d9/df6/stdio_8c_source.html','../../')
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="comment"> * Открыть файл для работы с ним</span></div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<a class="code" href="../../dd/d90/struct_f_i_l_e.html">FILE</a>* fopen(<span class="keyword">const</span> <span class="keywordtype">char</span>* filename, <span class="keyword">const</span> <span class="keywordtype">char</span>* mode){</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <a class="code" href="../../dd/d90/struct_f_i_l_e.html">FILE</a>* file;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <a class="code" href="../../dd/d90/struct_f_i_l_e.html">FILE</a>* file = NULL;</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="comment">// Получаем тип открытого файла</span></div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    int32_t fmode = fmodecheck(mode);</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="keywordflow">if</span> (!vfs_exists(filename) || fmode == 0){</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="comment">// Тип файла не определен или файл не найден</span></div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        file-&gt;err = (fmode == 0?2:1);</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        file-&gt;path = filename;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        file-&gt;path = (<span class="keywordtype">char</span>*)filename;</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        file-&gt;size = 0;</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        file-&gt;open = 0;</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        file-&gt;pos = -1;</div>
@@ -215,7 +215,7 @@ $(document).ready(function(){initNavTree('d9/df6/stdio_8c_source.html','../../')
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    file-&gt;open = 1;                                     <span class="comment">// Файл успешно открыт</span></div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    file-&gt;fmode = fmode;                                <span class="comment">// Режим работы с файлом</span></div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    file-&gt;size = vfs_get_size(filename);                <span class="comment">// Размер файла</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    file-&gt;path = filename;                              <span class="comment">// Полный путь к файлу</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    file-&gt;path = (<span class="keywordtype">char</span>*)filename;                               <span class="comment">// Полный путь к файлу</span></div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    file-&gt;bufSize = <span class="keyword">sizeof</span>(char) * file-&gt;size;          <span class="comment">// Размер буфера</span></div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    file-&gt;buf = (<span class="keywordtype">char</span>*) kheap_malloc(file-&gt;bufSize);    <span class="comment">// Сам буфер</span></div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    file-&gt;pos = 0;                                      <span class="comment">// Установка указателя в самое начало</span></div>
@@ -338,13 +338,14 @@ $(document).ready(function(){initNavTree('d9/df6/stdio_8c_source.html','../../')
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160; </div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<span class="keywordtype">size_t</span> fwrite ( <span class="keyword">const</span> <span class="keywordtype">void</span> * ptr, <span class="keywordtype">size_t</span> size, <span class="keywordtype">size_t</span> count, <a class="code" href="../../dd/d90/struct_f_i_l_e.html">FILE</a> * stream ){</div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="comment">// Реализуем как будет готовы ATA-драйвера и FS</span></div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;}</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; </div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;}</div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160; </div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="keywordtype">char</span>* fgets (uint32_t n, <a class="code" href="../../dd/d90/struct_f_i_l_e.html">FILE</a> *stream){</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160; </div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;}</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160; </div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="keywordtype">char</span>* fgets (uint32_t n, <a class="code" href="../../dd/d90/struct_f_i_l_e.html">FILE</a> *stream){</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;}</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="atty_8c_html_a3a9ec5bcc1f8f7ca830e80c491e4512f"><div class="ttname"><a href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a></div><div class="ttdeci">void tty_printf(char *text,...)</div><div class="ttdoc">Вывод форматированной строки на экран (аналог printf)</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d03/tty_8c_source.html#l00712">tty.c:712</a></div></div>
@@ -353,7 +354,7 @@ $(document).ready(function(){initNavTree('d9/df6/stdio_8c_source.html','../../')
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_3dd30a497388ee684638f120a124721c.html">src</a></li><li class="navelem"><a class="el" href="../../dir_1a5b85ea993c03033d57d06b4ba138d9.html">libk</a></li><li class="navelem"><b>stdio.c</b></li>
-    <li class="footer">Документация по SynapseOS. Последние изменения: Сб 27 Авг 2022 18:30:23. Создано системой
+    <li class="footer">Документация по SynapseOS. Последние изменения: Вс 28 Авг 2022 04:02:39. Создано системой
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

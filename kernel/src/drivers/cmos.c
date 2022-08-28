@@ -139,7 +139,7 @@ struct synapse_time get_time() {
 
 struct synapse_time* get_time_pointer() {
     read_rtc();
-	struct synapse_time* time;
+	struct synapse_time* time = NULL;
 	time->seconds = second;
     time->minutes = minute;
     time->hours = hour;

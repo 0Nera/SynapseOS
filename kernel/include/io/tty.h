@@ -84,3 +84,5 @@ int32_t getPosY();
 uint32_t getWidthScreen();
 uint32_t getHeightScreen();
 SynapseTTYInfo* get_tty_info();
+void tty_puts(const char str[]);
+void punch();

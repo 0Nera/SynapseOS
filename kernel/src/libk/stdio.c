@@ -112,13 +112,13 @@ void perror(FILE* stream,char* s){
  * Открыть файл для работы с ним
  */
 FILE* fopen(const char* filename, const char* mode){
-	FILE* file;
+	FILE* file = NULL;
 	// Получаем тип открытого файла
 	int32_t fmode = fmodecheck(mode);
 	if (!vfs_exists(filename) || fmode == 0){
 		// Тип файла не определен или файл не найден
 		file->err = (fmode == 0?2:1);
-		file->path = filename;
+		file->path = (char*)filename;
 		file->size = 0;
 		file->open = 0;
 		file->pos = -1;
@@ -127,7 +127,7 @@ FILE* fopen(const char* filename, const char* mode){
 	file->open = 1;										// Файл успешно открыт
 	file->fmode = fmode;								// Режим работы с файлом
 	file->size = vfs_get_size(filename);				// Размер файла
-	file->path = filename;								// Полный путь к файлу
+	file->path = (char*)filename;								// Полный путь к файлу
 	file->bufSize = sizeof(char) * file->size;			// Размер буфера
 	file->buf = (char*) kheap_malloc(file->bufSize);	// Сам буфер
 	file->pos = 0;										// Установка указателя в самое начало
@@ -250,10 +250,11 @@ void fdebuginfo(FILE* stream){
 
 size_t fwrite ( const void * ptr, size_t size, size_t count, FILE * stream ){
 	// Реализуем как будет готовы ATA-драйвера и FS
+	return -1;
 }
 
 
 char* fgets (uint32_t n, FILE *stream){
-
+	return NULL;
 }
 

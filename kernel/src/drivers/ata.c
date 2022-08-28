@@ -31,7 +31,7 @@ struct ata_dma_priv {
 
 // read register value from the given channel
 static uint8_t ide_read_register(uint8_t channel, uint8_t reg) {
-    uint8_t ret;
+    uint8_t ret = 0;
 
     // write value ata-control to tell irq is ready
     if (reg > 0x07 && reg < 0x0C)
@@ -492,7 +492,7 @@ int32_t ide_read_sectors(uint8_t drive, uint8_t num_sectors, uint32_t lba, uint3
     }
     // 3: Read in PIO Mode through Polling & IRQs:
     else {
-        uint8_t err;
+        uint8_t err = 0;
         if (g_ide_devices[drive].type == IDE_ATA)
             err = ide_ata_access(ATA_READ, drive, lba, num_sectors, buffer);
         // print32_t if any error in reading
@@ -513,7 +513,7 @@ int32_t ide_write_sectors(uint8_t drive, uint8_t num_sectors, uint32_t lba, uint
         tty_printf("IDE ERROR: LBA address(0x%x) is greater than the available drive sectors(0x%x)\n", lba, g_ide_devices[drive].size);
         return -2;
     } else {
-        uint8_t err;
+        uint8_t err = 0;
         if (g_ide_devices[drive].type == IDE_ATA)
             err = ide_ata_access(ATA_WRITE, drive, lba, num_sectors, buffer);
         // print32_t if any error in writing

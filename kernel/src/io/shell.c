@@ -51,7 +51,7 @@ void shell() {
 
     while (1) {
         tty_setcolor(COLOR_SYS_TEXT);
-        tty_printf("\nROOT ");
+        _tty_print("\nROOT ");
         tty_setcolor(COLOR_SYS_PATH);
         tty_printf("%s>", current_dir);
 

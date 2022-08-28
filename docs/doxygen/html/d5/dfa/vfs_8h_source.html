@@ -123,13 +123,13 @@ $(document).ready(function(){initNavTree('d5/dfa/vfs_8h_source.html','../../'); 
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// Содержит указатели на некоторые методы файловой системы.</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="../../d1/daa/structvfs__filesystem__handles__t.html">   37</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="../../d1/daa/structvfs__filesystem__handles__t.html">vfs_filesystem_handles_t</a> {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    uint32_t (*read) (<span class="keywordtype">char</span> *fn, <span class="keywordtype">int</span>*, <span class="keywordtype">int</span>*, <a class="code" href="../../d0/dad/structvfs__filesystem__t.html">vfs_filesystem_t</a>*, <span class="keywordtype">void</span>*);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    uint32_t (*write) (<span class="keywordtype">char</span> *fn, <span class="keywordtype">int</span>*, <span class="keywordtype">int</span>*, <a class="code" href="../../d0/dad/structvfs__filesystem__t.html">vfs_filesystem_t</a>*, <span class="keywordtype">void</span>*);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    uint32_t (*read) (<span class="keywordtype">char</span> *fn, int, int, <a class="code" href="../../d0/dad/structvfs__filesystem__t.html">vfs_filesystem_t</a>*, <span class="keywordtype">void</span>*);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    uint32_t (*write) (<span class="keywordtype">char</span> *fn, int, int, <a class="code" href="../../d0/dad/structvfs__filesystem__t.html">vfs_filesystem_t</a>*, <span class="keywordtype">void</span>*);</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    uint32_t (*readdir) (<span class="keywordtype">char</span>*, <a class="code" href="../../d0/dad/structvfs__filesystem__t.html">vfs_filesystem_t</a>*, <span class="keywordtype">void</span>*);</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    uint32_t (*mkfile) (<span class="keywordtype">char</span> *fn, <span class="keywordtype">char</span>*, <a class="code" href="../../d0/dad/structvfs__filesystem__t.html">vfs_filesystem_t</a>*, uint16_t*);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    uint32_t (*mkdir) (<span class="keywordtype">char</span> *fn, <span class="keywordtype">char</span>*, <a class="code" href="../../d0/dad/structvfs__filesystem__t.html">vfs_filesystem_t</a>*, uint16_t*);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    uint32_t (*mkfile) (<span class="keywordtype">char</span> *fn, <span class="keywordtype">char</span>*, <a class="code" href="../../d0/dad/structvfs__filesystem__t.html">vfs_filesystem_t</a>*, uint16_t);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    uint32_t (*mkdir) (<span class="keywordtype">char</span> *fn, <span class="keywordtype">char</span>*, <a class="code" href="../../d0/dad/structvfs__filesystem__t.html">vfs_filesystem_t</a>*, uint16_t);</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    uint32_t (*rm) (<span class="keywordtype">char</span> *fn, <a class="code" href="../../d0/dad/structvfs__filesystem__t.html">vfs_filesystem_t</a>*);</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    uint32_t (*ls) (<span class="keywordtype">char</span> *fn, <a class="code" href="../../d0/dad/structvfs__filesystem__t.html">vfs_filesystem_t</a>*);</div>
@@ -176,7 +176,7 @@ $(document).ready(function(){initNavTree('d5/dfa/vfs_8h_source.html','../../'); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_009f605b833ac4622acd6c3c0c26c0f0.html">include</a></li><li class="navelem"><a class="el" href="../../dir_c8660ea649945092ffc9f7148865f24e.html">drivers</a></li><li class="navelem"><b>vfs.h</b></li>
-    <li class="footer">Документация по SynapseOS. Последние изменения: Сб 27 Авг 2022 18:30:23. Создано системой
+    <li class="footer">Документация по SynapseOS. Последние изменения: Вс 28 Авг 2022 04:02:39. Создано системой
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

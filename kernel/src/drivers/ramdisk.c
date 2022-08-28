@@ -37,14 +37,14 @@ int32_t tar_lookup(unsigned char *archive, char *filename) {
     {
         int32_t filesize = oct2bin(ptr + 0x7c, 11);
         if (!memcmp(ptr, filename, strlen(filename) + 1)) {
-            return ptr + 512;
+            return (int32_t)(ptr + 512);
         }
 
         ptr += (((filesize + 511) / 512) + 1) * 512;
-        if (ptr == initrd_end) {
+        if ((uint32_t)ptr == initrd_end) {
             return 0;
         }
-        if (ptr >  initrd_end) {
+        if ((uint32_t)ptr >  initrd_end) {
             return 0;
         }
     }
@@ -56,13 +56,13 @@ uint32_t initrd_read(char *filename, int32_t offset, int32_t size, vfs_filesyste
     if (!filename) return 0;
     if (!size) return 0;
 
-    int32_t file_addr = tar_lookup(initrd_begin, filename);
+    int32_t file_addr = tar_lookup((uint8_t*)initrd_begin, filename);
     if (!file_addr) { // File not found
         return 0;
     }
 
     file_addr -= 512;
-    ustar_file_t *file = (struct ustar_file_t*) file_addr;
+    ustar_file_t *file = (ustar_file_t*) file_addr;
     file_addr += 512;
 
     if (size > oct2bin(file->size, 11)) {
@@ -97,7 +97,7 @@ uint32_t initrd_get_filesize(char *filename) {
         return 0;
     } else {
         file_addr -= 512;
-        ustar_file_t *file = (struct ustar_file_t*) file_addr;
+        ustar_file_t *file = (ustar_file_t*) file_addr;
         return oct2bin(file->size, 11);
     }
 }
@@ -109,7 +109,7 @@ uint32_t initrd_is_dir(char *filename) {
     if (!file_addr) { // file not found
         return 0;
     } else {
-        ustar_file_t *file = (struct ustar_file_t*) file_addr;
+        ustar_file_t *file = (ustar_file_t*) file_addr;
         return file->type; //(file->type == USTAR_DIRECTORY); // TODO why this comparison doenst work?? why for files file->type is 0 and for dirs id 48 aka '0' ????
     }
 }
@@ -118,8 +118,8 @@ void initrd_list(int32_t argc, char **arg) {
     int32_t addr = initrd_begin;
 
     while (!memcmp(addr + 257, "ustar", 5)) {
-        int32_t filesize = oct2bin(addr + 0x7c, 11);
-        ustar_file_t *file = (struct ustar_file_t*) addr;
+        int32_t filesize = oct2bin((uint8_t*)(addr + 0x7c), 11);
+        ustar_file_t *file = (ustar_file_t*) addr;
 
         if (file->type == USTAR_DIRECTORY) {
             tty_printf("\n    <dir>       /initrd/%s", file->fname);
@@ -146,7 +146,7 @@ void initrd_init(uint32_t phys_begin, uint32_t phys_end) {
 
 
     initrd_size = phys_end - phys_begin;
-    initrd_begin = kheap_malloc(initrd_size + 4 * PAGE_SIZE);
+    initrd_begin = (uint32_t)kheap_malloc(initrd_size + 4 * PAGE_SIZE);
 
     physical_addres_t frame;
     virtual_addr_t virt;

@@ -19,7 +19,7 @@ static uint8_t sr0 = 0;
 static uint8_t fdc_track = 0xff;
 
 typedef struct floppy_info{
-    int8_t *type_name;
+    char* type_name;
     int8_t heads;
     int8_t tracks;
     int8_t sectors;

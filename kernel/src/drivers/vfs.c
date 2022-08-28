@@ -90,13 +90,13 @@ int32_t vfs_mount_find(char *path, int32_t *filename_add) {
 
 int32_t vfs_read(const char *filename, int32_t offset, int32_t size, void *buf) {
     int32_t a = 0;
-    int32_t mntn = vfs_mount_find(filename, &a);
+    int32_t mntn = vfs_mount_find((char*)filename, &a);
     filename += a + 1;
 
     if (vfs_mount_points[mntn]->fs_handles->read == 0) {
         return 0;
     }
-    vfs_mount_points[mntn]->fs_handles->read(filename, offset, size, vfs_mount_points[mntn]->fs, buf);
+    vfs_mount_points[mntn]->fs_handles->read((char*)filename, offset, size, vfs_mount_points[mntn]->fs, buf);
 
     return 1;
 }
@@ -104,14 +104,14 @@ int32_t vfs_read(const char *filename, int32_t offset, int32_t size, void *buf) 
 
 int32_t vfs_get_size(const char *filename) {
     int32_t a = 0;
-    int32_t mntn = vfs_mount_find(filename, &a);
+    int32_t mntn = vfs_mount_find((char*)filename, &a);
     filename += a + 1; // Change the pointer (its not const, but char its pointing to is const)
 
     if (vfs_mount_points[mntn]->fs_handles->read == 0) {
         return 0;
     }
 
-    return vfs_mount_points[mntn]->fs_handles->get_size(filename, vfs_mount_points[mntn]->fs);
+    return vfs_mount_points[mntn]->fs_handles->get_size((char*)filename, vfs_mount_points[mntn]->fs);
 }
 
 
@@ -123,7 +123,7 @@ int32_t vfs_is_dir(char *filename) {
     if (vfs_mount_points[mntn]->fs_handles->is_dir == 0) {
         return 0;
     }
-    return vfs_mount_points[mntn]->fs_handles->is_dir(filename, vfs_mount_points[mntn]->fs);
+    return vfs_mount_points[mntn]->fs_handles->is_dir((char*)filename, vfs_mount_points[mntn]->fs);
 }
 
 
@@ -135,7 +135,7 @@ int32_t vfs_write(char *filename, int32_t offset, int32_t size, void *buf) {
     if (vfs_mount_points[mntn]->fs_handles->write == 0) {
         return 0;
     }
-    vfs_mount_points[mntn]->fs_handles->write(filename, offset, size, vfs_mount_points[mntn]->fs, buf);
+    vfs_mount_points[mntn]->fs_handles->write((char*)filename, offset, size, vfs_mount_points[mntn]->fs, buf);
 
     return 1;
 }
@@ -204,13 +204,13 @@ int32_t vfs_rm(char *filename) {
 
 int32_t vfs_exists(const char *filename) {
     int32_t a = 0;
-    int32_t mntn = vfs_mount_find(filename, &a);
+    int32_t mntn = vfs_mount_find((char*)filename, &a);
     filename += a + 1;
 
     if (vfs_mount_points[mntn]->fs_handles->read == 0) {
         return 0;
     }
-    return vfs_mount_points[mntn]->fs_handles->exists(filename, vfs_mount_points[mntn]->fs);
+    return vfs_mount_points[mntn]->fs_handles->exists((char*)filename, vfs_mount_points[mntn]->fs);
 }
 
 void vfs_get_file_name_from_path(char *fpath, char *buf) {

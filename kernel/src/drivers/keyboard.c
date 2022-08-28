@@ -306,7 +306,7 @@ int32_t keyboard_getchar() {
 
 
 int32_t keyboard_getscancode() {
-    struct regs *r;
+    struct regs *r = NULL;
 
     input_type = 4;
 

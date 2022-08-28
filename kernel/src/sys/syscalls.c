@@ -184,10 +184,10 @@ void syscall_handler(struct regs *r) {
         	r->eax = timer_get_frequency();
         	break;
         case SC_CODE_getttyinfo:
-        	r->eax = get_tty_info();
+        	r->eax = (uint32_t)get_tty_info();
         	break;
         case SC_CODE_get_time:
-            r->eax = get_time_pointer();
+            r->eax = (uint32_t)get_time_pointer();
             break;
         case SC_CODE_punch: {
             punch();

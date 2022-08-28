@@ -119,7 +119,7 @@ $(document).ready(function(){initNavTree('d8/d58/ata_8c_source.html','../../'); 
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// read register value from the given channel</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">static</span> uint8_t ide_read_register(uint8_t channel, uint8_t reg) {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    uint8_t ret;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    uint8_t ret = 0;</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="comment">// write value ata-control to tell irq is ready</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordflow">if</span> (reg &gt; 0x07 &amp;&amp; reg &lt; 0x0C)</div>
@@ -580,7 +580,7 @@ $(document).ready(function(){initNavTree('d8/d58/ata_8c_source.html','../../'); 
 <div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;    }</div>
 <div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;    <span class="comment">// 3: Read in PIO Mode through Polling &amp; IRQs:</span></div>
 <div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;        uint8_t err;</div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;        uint8_t err = 0;</div>
 <div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;        <span class="keywordflow">if</span> (g_ide_devices[drive].type == IDE_ATA)</div>
 <div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;            err = ide_ata_access(ATA_READ, drive, lba, num_sectors, buffer);</div>
 <div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;        <span class="comment">// print32_t if any error in reading</span></div>
@@ -601,7 +601,7 @@ $(document).ready(function(){initNavTree('d8/d58/ata_8c_source.html','../../'); 
 <div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;        <a class="code" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;IDE ERROR: LBA address(0x%x) is greater than the available drive sectors(0x%x)\n&quot;</span>, lba, g_ide_devices[drive].size);</div>
 <div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;        <span class="keywordflow">return</span> -2;</div>
 <div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;        uint8_t err;</div>
+<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;        uint8_t err = 0;</div>
 <div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;        <span class="keywordflow">if</span> (g_ide_devices[drive].type == IDE_ATA)</div>
 <div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;            err = ide_ata_access(ATA_WRITE, drive, lba, num_sectors, buffer);</div>
 <div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;        <span class="comment">// print32_t if any error in writing</span></div>
@@ -759,7 +759,7 @@ $(document).ready(function(){initNavTree('d8/d58/ata_8c_source.html','../../'); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_3dd30a497388ee684638f120a124721c.html">src</a></li><li class="navelem"><a class="el" href="../../dir_79cdf04718782f286da113044bf76c98.html">drivers</a></li><li class="navelem"><b>ata.c</b></li>
-    <li class="footer">Документация по SynapseOS. Последние изменения: Сб 27 Авг 2022 18:30:23. Создано системой
+    <li class="footer">Документация по SynapseOS. Последние изменения: Вс 28 Авг 2022 04:02:39. Создано системой
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

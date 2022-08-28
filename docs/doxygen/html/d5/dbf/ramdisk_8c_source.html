@@ -125,14 +125,14 @@ $(document).ready(function(){initNavTree('d5/dbf/ramdisk_8c_source.html','../../
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    {</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        int32_t filesize = oct2bin(ptr + 0x7c, 11);</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keywordflow">if</span> (!memcmp(ptr, filename, strlen(filename) + 1)) {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <span class="keywordflow">return</span> ptr + 512;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <span class="keywordflow">return</span> (int32_t)(ptr + 512);</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        }</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        ptr += (((filesize + 511) / 512) + 1) * 512;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keywordflow">if</span> (ptr == initrd_end) {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keywordflow">if</span> ((uint32_t)ptr == initrd_end) {</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        }</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordflow">if</span> (ptr &gt;  initrd_end) {</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordflow">if</span> ((uint32_t)ptr &gt;  initrd_end) {</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        }</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    }</div>
@@ -144,13 +144,13 @@ $(document).ready(function(){initNavTree('d5/dbf/ramdisk_8c_source.html','../../
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordflow">if</span> (!filename) <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">if</span> (!size) <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    int32_t file_addr = tar_lookup(initrd_begin, filename);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    int32_t file_addr = tar_lookup((uint8_t*)initrd_begin, filename);</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">if</span> (!file_addr) { <span class="comment">// File not found</span></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    }</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    file_addr -= 512;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    ustar_file_t *file = (<span class="keyword">struct </span>ustar_file_t*) file_addr;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    ustar_file_t *file = (ustar_file_t*) file_addr;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    file_addr += 512;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">if</span> (size &gt; oct2bin(file-&gt;size, 11)) {</div>
@@ -185,7 +185,7 @@ $(document).ready(function(){initNavTree('d5/dbf/ramdisk_8c_source.html','../../
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        file_addr -= 512;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        ustar_file_t *file = (<span class="keyword">struct </span>ustar_file_t*) file_addr;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        ustar_file_t *file = (ustar_file_t*) file_addr;</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keywordflow">return</span> oct2bin(file-&gt;size, 11);</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    }</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;}</div>
@@ -197,7 +197,7 @@ $(document).ready(function(){initNavTree('d5/dbf/ramdisk_8c_source.html','../../
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keywordflow">if</span> (!file_addr) { <span class="comment">// file not found</span></div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        ustar_file_t *file = (<span class="keyword">struct </span>ustar_file_t*) file_addr;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        ustar_file_t *file = (ustar_file_t*) file_addr;</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordflow">return</span> file-&gt;type; <span class="comment">//(file-&gt;type == USTAR_DIRECTORY); // TODO why this comparison doenst work?? why for files file-&gt;type is 0 and for dirs id 48 aka &#39;0&#39; ????</span></div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    }</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;}</div>
@@ -206,8 +206,8 @@ $(document).ready(function(){initNavTree('d5/dbf/ramdisk_8c_source.html','../../
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    int32_t addr = initrd_begin;</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keywordflow">while</span> (!memcmp(addr + 257, <span class="stringliteral">&quot;ustar&quot;</span>, 5)) {</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        int32_t filesize = oct2bin(addr + 0x7c, 11);</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        ustar_file_t *file = (<span class="keyword">struct </span>ustar_file_t*) addr;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        int32_t filesize = oct2bin((uint8_t*)(addr + 0x7c), 11);</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        ustar_file_t *file = (ustar_file_t*) addr;</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <span class="keywordflow">if</span> (file-&gt;type == USTAR_DIRECTORY) {</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            <a class="code" href="../../dc/d03/tty_8c.html#a3a9ec5bcc1f8f7ca830e80c491e4512f">tty_printf</a>(<span class="stringliteral">&quot;\n    &lt;dir&gt;       /initrd/%s&quot;</span>, file-&gt;fname);</div>
@@ -234,7 +234,7 @@ $(document).ready(function(){initNavTree('d5/dbf/ramdisk_8c_source.html','../../
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; </div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    initrd_size = phys_end - phys_begin;</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    initrd_begin = kheap_malloc(initrd_size + 4 * PAGE_SIZE);</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    initrd_begin = (uint32_t)kheap_malloc(initrd_size + 4 * PAGE_SIZE);</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    physical_addres_t frame;</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    virtual_addr_t virt;</div>
@@ -275,7 +275,7 @@ $(document).ready(function(){initNavTree('d5/dbf/ramdisk_8c_source.html','../../
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_3dd30a497388ee684638f120a124721c.html">src</a></li><li class="navelem"><a class="el" href="../../dir_79cdf04718782f286da113044bf76c98.html">drivers</a></li><li class="navelem"><b>ramdisk.c</b></li>
-    <li class="footer">Документация по SynapseOS. Последние изменения: Сб 27 Авг 2022 18:30:23. Создано системой
+    <li class="footer">Документация по SynapseOS. Последние изменения: Вс 28 Авг 2022 04:02:39. Создано системой
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

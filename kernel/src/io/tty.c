@@ -38,7 +38,7 @@ uint32_t tty_text_color;
 bool stateTTY = true;
 
 SynapseTTYInfo* get_tty_info() {
-    SynapseTTYInfo* ty;
+    SynapseTTYInfo* ty = NULL;
     ty->width = framebuffer_width;
     ty->height = framebuffer_height;
     ty->x = tty_pos_x;
@@ -136,9 +136,9 @@ void init_vbe(multiboot_info *mboot) {
 void create_back_framebuffer() {
 	qemu_log("^---- 1. Allcoating"); // Я не знаю почему, но это предотвратило падение, но устроило его в другом месте
     //back_framebuffer_addr = kheap_malloc(framebuffer_size);
+    uint8_t* backfb = kheap_malloc(framebuffer_size);
 
     qemu_log("framebuffer_size = %d", framebuffer_size);
-    char* backfb = kheap_malloc(framebuffer_size);
 
     qemu_log("back_framebuffer_addr = %x", back_framebuffer_addr);
     memset(backfb, 0, framebuffer_size); // Должно предотвратить падение
@@ -456,7 +456,7 @@ void _tty_puts(const char str[]) {
             i++;
             if(str[i] =='[') {
                 char* num = kheap_malloc(4);
-                char idx = 0;
+                unsigned int idx = 0;
                 i++;
                 while(true) {
                     if(str[i]=='m') break;
@@ -623,12 +623,12 @@ void _tty_puthex_v(uint32_t i) {
     n = i;
 
     while( d >= 0xF ) {
-        tty_putchar(hex[n/d]);
+        _tty_putchar(hex[n/d]);
         n = n % d;
         d /= 0x10;
     }
 
-    tty_putchar(hex[n]);
+    _tty_putchar(hex[n]);
 }
 
 void tty_puthex_v(uint32_t i) {

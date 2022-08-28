@@ -98,6 +98,9 @@ $(document).ready(function(){initNavTree('d8/d6d/imaging_8c.html','../../'); ini
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Функции</h2></td></tr>
+<tr class="memitem:ad63a4f5885a51dd5b1d104c22e18d91f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d6d/imaging_8c.html#ad63a4f5885a51dd5b1d104c22e18d91f">pixidx</a> (int width, int x, int y)</td></tr>
+<tr class="memdesc:ad63a4f5885a51dd5b1d104c22e18d91f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Функция вычисления позиции по координатам  <a href="../../d8/d6d/imaging_8c.html#ad63a4f5885a51dd5b1d104c22e18d91f">Подробнее...</a><br /></td></tr>
+<tr class="separator:ad63a4f5885a51dd5b1d104c22e18d91f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04189c5b1bd699efb92812c7dbcbe1db"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="../../d0/d76/struct_duke_image_meta.html">DukeImageMeta</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d6d/imaging_8c.html#a04189c5b1bd699efb92812c7dbcbe1db">duke_get_image_metadata</a> (char *filename)</td></tr>
 <tr class="memdesc:a04189c5b1bd699efb92812c7dbcbe1db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Получает метаданные изображения Duke.  <a href="../../d8/d6d/imaging_8c.html#a04189c5b1bd699efb92812c7dbcbe1db">Подробнее...</a><br /></td></tr>
 <tr class="separator:a04189c5b1bd699efb92812c7dbcbe1db"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -113,9 +116,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>duke_rawdraw</b> (cha
 <tr class="memitem:adb7c0ec51e3e084542fa585eb82861ea"><td class="memItemLeft" align="right" valign="top"><a id="adb7c0ec51e3e084542fa585eb82861ea"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>duke_scale</b> (char *pixels, unsigned int w1, unsigned int h1, int w2, int h2, char alpha, char *out)</td></tr>
 <tr class="separator:adb7c0ec51e3e084542fa585eb82861ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad63a4f5885a51dd5b1d104c22e18d91f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d6d/imaging_8c.html#ad63a4f5885a51dd5b1d104c22e18d91f">pixidx</a> (int width, int x, int y)</td></tr>
-<tr class="memdesc:ad63a4f5885a51dd5b1d104c22e18d91f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Функция вычисления позиции по координатам  <a href="../../d8/d6d/imaging_8c.html#ad63a4f5885a51dd5b1d104c22e18d91f">Подробнее...</a><br /></td></tr>
-<tr class="separator:ad63a4f5885a51dd5b1d104c22e18d91f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe73e6b32826b5fad72c85b5b9785b06"><td class="memItemLeft" align="right" valign="top"><a id="afe73e6b32826b5fad72c85b5b9785b06"></a>
 unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>duke_calculate_bufsize</b> (unsigned int width, unsigned int height, unsigned int alpha)</td></tr>
 <tr class="separator:afe73e6b32826b5fad72c85b5b9785b06"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -176,7 +176,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><b>duke_draw_scaled</b> 
 <dd>
 1 - ERROR </dd></dl>
 
-<p class="definition">См. определение в файле <a class="el" href="../../d8/d6d/imaging_8c_source.html">imaging.c</a> строка <a class="el" href="../../d8/d6d/imaging_8c_source.html#l00042">42</a></p>
+<p class="definition">См. определение в файле <a class="el" href="../../d8/d6d/imaging_8c_source.html">imaging.c</a> строка <a class="el" href="../../d8/d6d/imaging_8c_source.html#l00052">52</a></p>
 
 </div>
 </div>
@@ -207,7 +207,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><b>duke_draw_scaled</b> 
 <dd>
 0 При ошибке </dd></dl>
 
-<p class="definition">См. определение в файле <a class="el" href="../../d8/d6d/imaging_8c_source.html">imaging.c</a> строка <a class="el" href="../../d8/d6d/imaging_8c_source.html#l00019">19</a></p>
+<p class="definition">См. определение в файле <a class="el" href="../../d8/d6d/imaging_8c_source.html">imaging.c</a> строка <a class="el" href="../../d8/d6d/imaging_8c_source.html#l00029">29</a></p>
 
 </div>
 </div>
@@ -254,7 +254,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><b>duke_draw_scaled</b> 
 </dl>
 <dl class="section return"><dt>Возвращает</dt><dd>0 - OK, 1 - ERROR </dd></dl>
 
-<p class="definition">См. определение в файле <a class="el" href="../../d8/d6d/imaging_8c_source.html">imaging.c</a> строка <a class="el" href="../../d8/d6d/imaging_8c_source.html#l00137">137</a></p>
+<p class="definition">См. определение в файле <a class="el" href="../../d8/d6d/imaging_8c_source.html">imaging.c</a> строка <a class="el" href="../../d8/d6d/imaging_8c_source.html#l00019">19</a></p>
 
 </div>
 </div>
@@ -264,7 +264,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><b>duke_draw_scaled</b> 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_3dd30a497388ee684638f120a124721c.html">src</a></li><li class="navelem"><a class="el" href="../../dir_f684e8e1ebea567db7f673c0b997cee3.html">io</a></li><li class="navelem"><a class="el" href="../../d8/d6d/imaging_8c.html">imaging.c</a></li>
-    <li class="footer">Документация по SynapseOS. Последние изменения: Сб 27 Авг 2022 18:30:23. Создано системой
+    <li class="footer">Документация по SynapseOS. Последние изменения: Вс 28 Авг 2022 04:02:39. Создано системой
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
