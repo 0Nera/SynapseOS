@@ -11,6 +11,11 @@
 #include <kernel.h>
 #include <drivers/ata.h>
 
+#define kCMD_BOOTSCREEN_MINIMAL "--bootscreen=minimal"
+#define kCMD_BOOTSCREEN_LIGHT "--bootscreen=light"
+#define kCMD_BOOTSCREEN_DARK "--bootscreen=dark"
+#define kCMD_EXEC_TSHELL "--tshell"
+#define kCMD_NO_DRIVER_RTL8139 "--nortl8139"
 
 int32_t errno = 0;
 uint32_t os_mode = 1; // 0 - мало ОЗУ, 1 - обычный режим, 2 - режим повышенной производительности, 3 - сервер
@@ -19,36 +24,34 @@ bool rtl8139_load = true;
 
 void kernelCMDHandler(char* cmd){
     qemu_log("[kCMD] '%s'",cmd);
-    if (strcmpn(cmd,"--bootscreen=minimal")){
-        bootScreenChangeMode(1);
-        qemu_log("[kCMD] The minimum operating mode for BootScreen is selected.");
-    }
-    if (strcmpn(cmd,"--tshell")){
-        autotshell = true;
-        qemu_log("[kCMD] After loading the kernel, TShell will automatically start.");
-    }
-    if (strcmpn(cmd,"--nortl8139")){
-        rtl8139_load = false;
-        qemu_log("[kCMD] The Realtek RTL8139 driver will not be loaded on kernel startup.");
-    }
+    uint32_t kCMDc = str_cdsp(cmd," ");
+    char* out[128] = {0};
+    str_split(cmd,out," ");
 
-    //split(cmd, " ");
-    //debugSplit();
-    /**
-    qemu_log("[kCMD] tshell: %d",(isKeySplit("tshell") == true?1:0));
-    if (isKeySplit("--bootscreen=minimal")){
-        //qemu_log("[kCMD] The minimum operating mode for BootScreen is selected.");
-        bootScreenChangeMode(1);
+    for(int i = 0; kCMDc >= i; i++){
+        qemu_log("[kCMD] %s",out[i]);
+        if (strcmpn(out[i],kCMD_BOOTSCREEN_MINIMAL)){
+            bootScreenChangeMode(1);
+            qemu_log("[kCMD] The minimum operating mode for BootScreen is selected.");
+            continue;
+        } else if (strcmpn(out[i],kCMD_EXEC_TSHELL)){
+            autotshell = true;
+            qemu_log("[kCMD] After loading the kernel, TShell will automatically start.");
+            continue;
+        } else if (strcmpn(out[i],kCMD_NO_DRIVER_RTL8139)){
+            rtl8139_load = false;
+            qemu_log("[kCMD] The Realtek RTL8139 driver will not be loaded on kernel startup.");
+            continue;
+        } else if (strcmpn(out[i],kCMD_BOOTSCREEN_LIGHT)){
+            bootScreenChangeTheme(1);
+            qemu_log("[kCMD] The Realtek RTL8139 driver will not be loaded on kernel startup.");
+            continue;
+        } else if (strcmpn(out[i],kCMD_BOOTSCREEN_DARK)){
+            bootScreenChangeTheme(0);
+            qemu_log("[kCMD] The Realtek RTL8139 driver will not be loaded on kernel startup.");
+            continue;
+        }
     }
-    if (isKeySplit("--tshell")){
-        //qemu_log("[kCMD] After loading the kernel, TShell will automatically start.");
-        autotshell = true;
-    }
-    if (isKeySplit("--no-rtl8139")){
-        //qemu_log("[kCMD] The Realtek RTL8139 driver will not be loaded on kernel startup.");
-        rtl8139_load = false;
-    }
-    */
 }
 
 
