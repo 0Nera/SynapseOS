@@ -8,7 +8,7 @@
 // Возьмем где-нибудь адрес с длиной 8192 байт
 
 #define LOAD        0x00100000
-#define LOAD_LENGTH 8192
+#define LOAD_LENGTH 8192*2
 
 #include <drivers/experimental/sb16.h>
 #include <libk/string.h>
@@ -22,7 +22,7 @@ char sb16_init() {
 	if(audio==0xFFFFFFFF) {
 		return 0;
 	}else{
-		for(int memp = 0; memp < 2; memp++) {
+		for(int memp = 0; memp < 4; memp++) {
 			int addrk = LOAD+(PAGE_SIZE*memp);
 			qemu_log("SB16: Allocating at: %x\n", addrk);
 			vmm_alloc_page(addrk);
@@ -116,7 +116,7 @@ void sb16_program(short sampling_rate, char channels, char eightbit, char sign, 
 	// sb16_dsp_write(sb16_calculate_time_constant(channels, sampling_rate));
 	sb16_dsp_write(109);
 	sb16_dsp_write(eightbit?0xC0:0xB0);
-	sb16_dsp_write((channels>=1?0b00100000:0)|(sign>=1?0b00010000:0));
+	sb16_dsp_write((channels>1?0b00100000:0)|(sign>=1?0b00010000:0));
 	sb16_dsp_write(length&0x00FF);
 	sb16_dsp_write((length&0xFF00)>>8);
 	
@@ -135,17 +135,23 @@ void sb16_play_audio(char *data, short sampling_rate, char channels, char eightb
 	//int address = (int)(void*)data;
 
 	// 3. Set master volume
-	sb16_set_master_volume(0xC, 0xC);
+	sb16_set_master_volume(0xF, 0xF);
 	// 4. Turn speaker on
 	sb16_turn_speaker_on();
 	// 6, 7, 8, 9, 10
 	sb16_program(sampling_rate, channels, eightbit, sign, LOAD_LENGTH);
 	
-	// Load sound data to memory
-	while(loaded<length-1) {
-		memcpy(driver_memory, data, LOAD_LENGTH);
-		sb16_program_dma16(channels, (int)driver_memory, LOAD_LENGTH);
-		loaded+=LOAD_LENGTH;
-		data+=LOAD_LENGTH;
-	}
+	memcpy(driver_memory, data, LOAD_LENGTH);
+
+	tty_printf("DAT: %d\n", driver_memory[1]);
+	tty_printf("DAT: %d\n", data[1]);
+
+	sb16_program_dma16(channels, driver_memory, LOAD_LENGTH);
+	// // Load sound data to memory
+	// while(loaded<length-1) {
+	// 	memcpy(driver_memory, data, LOAD_LENGTH);
+	// 	sb16_program_dma16(channels, (int)driver_memory, LOAD_LENGTH);
+	// 	loaded+=LOAD_LENGTH;
+	// 	data+=LOAD_LENGTH;
+	// }
 }

@@ -140,7 +140,7 @@ def run_kvm():
     if not os.path.exists("ata.vhd"):
         os.system("qemu-img create -f raw ata.vhd 32M")
     
-    qemu_command = f"qemu-system-i386 -name SynapseOS -soundhw pcspk -m {MEMORY}" \
+    qemu_command = f"qemu-system-i386 -name SynapseOS -soundhw pcspk -device sb16 -m {MEMORY}" \
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
         " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log -accel kvm -d guest_errors -rtc base=localtime"
         

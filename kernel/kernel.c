@@ -85,6 +85,23 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     //ATA_Drive_t *drive;
     //ATA_Detect(&drive);
 
+    sb16_init();
+
+    if(vfs_exists("/initrd/res/sound.wav")) {
+        tty_printf("EXISTS!\n");
+
+        int fsize = vfs_get_size("/initrd/res/sound.wav");
+        char* fdat = kheap_malloc(fsize);
+        memset(fdat, 0, fsize);
+        tty_printf("FILE SIZE: %d\n", fsize);
+
+        // vfs_read("/initrd/res/sound.wav", 0, fsize, fdat);
+
+        sb16_play_audio(fdat, 44100, 1, 0, 1, fsize);
+
+        kheap_free(fdat);
+    }
+
     duke_draw_from_file("/initrd/res/SynapseOSLogo.duke", getWidthScreen()-100, 40);
     
     shell();                                // Активация терминала
