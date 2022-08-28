@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['clean_5fscreen_169',['clean_screen',['../dc/d03/tty_8c.html#a0d199b5702695c4d7b78ef83759c32d5',1,'tty.c']]],
-  ['com1_5fis_5ftransmit_5fempty_170',['com1_is_transmit_empty',['../d0/d6e/ports_8c.html#ab129328817732429fa6ff116c30ad94a',1,'ports.c']]],
-  ['com1_5fwrite_5fchar_171',['com1_write_char',['../d0/d6e/ports_8c.html#ad0aeab3fed0aa6c56ef58b8df7a9fd06',1,'ports.c']]],
-  ['create_5fback_5fframebuffer_172',['create_back_framebuffer',['../dc/d03/tty_8c.html#aca7637cf8ec1ea90a95d8fd4a2cce7fe',1,'tty.c']]]
+  ['b64d_172',['b64d',['../db/d36/base64_8c.html#a9e75ebf27b734b47a7c88031753d4820',1,'base64.c']]],
+  ['b64e_173',['b64e',['../db/d36/base64_8c.html#aed25a17df04c4adc6245fc2121835c66',1,'base64.c']]]
 ];
