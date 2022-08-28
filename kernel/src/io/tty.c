@@ -136,13 +136,9 @@ void init_vbe(multiboot_info *mboot) {
 void create_back_framebuffer() {
 	qemu_log("^---- 1. Allcoating"); // Я не знаю почему, но это предотвратило падение, но устроило его в другом месте
     //back_framebuffer_addr = kheap_malloc(framebuffer_size);
-<<<<<<< HEAD
     uint8_t* backfb = kheap_malloc(framebuffer_size);
-=======
 
     qemu_log("framebuffer_size = %d", framebuffer_size);
-    char* backfb = kheap_malloc(framebuffer_size);
->>>>>>> e79913952c783ac6c5c7dea4d4534f6f95599894
 
     qemu_log("back_framebuffer_addr = %x", back_framebuffer_addr);
     memset(backfb, 0, framebuffer_size); // Должно предотвратить падение
