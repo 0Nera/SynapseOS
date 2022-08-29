@@ -149,8 +149,6 @@ char* carol_running[] = {
     "/initrd/res/Carol/run/carol_running_9.png.duke"
 };
 
-char* framebuffer = 0;
-
 int main() {
     printf("Sovrum by NDRAEY (c)2022\n");
 
@@ -211,13 +209,14 @@ int main() {
     char tk[64] = { 0 };
 
     while(1) {
+        if(getscancode()==16) break;
         
         if(sx >= swidth) { sx = -100; }
         duke_rawdraw(bgdata, bgmeta, 0, 0);
         
         memset(tk, 0, 64);
         format_time2(tk);
-        draw_string(font, tk, 250, 90, 0xAAAAAA);
+        draw_string(font, tk, 250, 90, 0xBBBBBB);
 
         David_do_draw_current_frame(animator, sx, 520);
         David_next_frame(animator, 1);
@@ -225,23 +224,22 @@ int main() {
         
         punch();
         sleep_ms(25);
-    }
+    } 
 
-    free(framebuffer);   
+    //printf("Freeing...\n");
 
-    printf("Freeing...\n");
-
-    for(int i=0; i<10; i++) {
+    /*for(int i=0; i<10; i++) {
         free(frames->origin[i]->imgmeta);
-        free(frames->origin[i]->imgdata);
-    }
+    }*/
+    /*
+    printf("Freeing (2)...\n");
 
     David_destroy_frames_array(frames);
     David_destroy_animator(animator);
 
     printf("OKAY!\n");
-
-    //duke_draw_scaled("/initrd/res/Sovrum/background.duke", tty->width, tty->height, 0, 0);
-
+    */
+    cleanScreen();
+    
     return 0;
 }

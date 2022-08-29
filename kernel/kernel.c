@@ -11,7 +11,6 @@
 #include <kernel.h>
 #include <drivers/ata.h>
 
-
 int32_t errno = 0;
 uint32_t os_mode = 1; // 0 - мало ОЗУ, 1 - обычный режим, 2 - режим повышенной производительности, 3 - сервер
 bool autotshell = false;
@@ -154,6 +153,7 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     //ATA_Drive_t *drive;
     //ATA_Detect(&drive);
 
+    /* Перед тем как раскомментировать, хорошо подумайте, это создает громкий шум вместо звука
     sb16_init();
 
     if(vfs_exists("/initrd/res/sound.wav")) {
@@ -171,6 +171,7 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
 
         kheap_free(fdat);
     }
+    */
 
     duke_draw_from_file("/initrd/res/SynapseOSLogo.duke", getWidthScreen()-100, 40);
 
