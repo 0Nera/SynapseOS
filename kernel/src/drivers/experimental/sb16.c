@@ -22,7 +22,7 @@ char sb16_init() {
 	if(audio==0xFFFFFFFF) {
 		return 0;
 	}else{
-		for(int memp = 0; memp < 4; memp++) {
+		for(int memp = 0; memp < 2; memp++) {
 			int addrk = LOAD+(PAGE_SIZE*memp);
 			qemu_log("SB16: Allocating at: %x\n", addrk);
 			vmm_alloc_page(addrk);
@@ -43,7 +43,7 @@ char sb16_can_play_audio() {
 
 char sb16_dsp_reset() {
 	outb(DSP_RESET, 1);
-	for(char _ = 0; _<32; _++) {asm volatile("");}
+	for(char _ = 0; _<64; _++) {asm volatile("nop");}
 	outb(DSP_RESET, 0);
 
 	return inb(DSP_READ);
@@ -55,7 +55,6 @@ void sb16_set_irq(char irq) {
 }
 
 void sb16_turn_speaker_on() {
-	//outb(DSP_WRITE, 0xD1);
 	sb16_dsp_write(0xD1);
 }
 
@@ -80,10 +79,10 @@ void sb16_program_dma8(char channel, int address, short length) {
 */
 
 void sb16_program_dma16(char channel, int address, short length) {
-	length -= 1;
-	outb(0xD4, 4+(channel%4)); // Channel
+	outb(0xD4, 4+(channel)); // Channel
 	outb(0xD8, 1); // Flip-flop
-	outb(0xD6, 0b10110000); // 16-bit sound, no FIFO
+	//outb(0xD6, 0b10110000); // 16-bit sound, no FIFO
+	outb(0xD6, 0x48+(channel));
 	char page = (address&0xFF0000)>>16;  // 0x[AA]BBCC
 	char lop  = address&0x0000FF;        // 0xAABB[CC]
 	char hip  = (address&0x00FF00)>>8;   // 0xAA[BB]CC
@@ -97,11 +96,11 @@ void sb16_program_dma16(char channel, int address, short length) {
 	outb(0xD4, channel);
 }
 
-char sb16_calculate_time_constant(char channels, short sampling_rate) {
+unsigned int sb16_calculate_time_constant(char channels, int sampling_rate) {
 	return 65536-(256000000/(channels*sampling_rate));
 }
 
-void sb16_program(short sampling_rate, char channels, char eightbit, char sign, short length) {
+void sb16_program(unsigned int sampling_rate, char stereo, char eightbit, char sign, short length) {
 	length -= 1;
 	/*
 	outb(DSP_WRITE, 0x40);
@@ -114,12 +113,11 @@ void sb16_program(short sampling_rate, char channels, char eightbit, char sign, 
 
 	sb16_dsp_write(0x40);
 	// sb16_dsp_write(sb16_calculate_time_constant(channels, sampling_rate));
-	sb16_dsp_write(109);
+	sb16_dsp_write(145);
 	sb16_dsp_write(eightbit?0xC0:0xB0);
-	sb16_dsp_write((channels>1?0b00100000:0)|(sign>=1?0b00010000:0));
+	sb16_dsp_write((stereo?0b00100000:0)|(sign?0b00010000:0));
 	sb16_dsp_write(length&0x00FF);
 	sb16_dsp_write((length&0xFF00)>>8);
-	
 }
 
 void sb16_set_master_volume(char left, char right) {
@@ -127,12 +125,12 @@ void sb16_set_master_volume(char left, char right) {
 	outb(DSP_MIXER_DATA, right|(left<<4));
 }
 
-// WARNING: This causes the #PF: Page Fault!
-void sb16_play_audio(char *data, short sampling_rate, char channels, char eightbit, char sign, int length) {
+void sb16_play_audio(char *data, unsigned int sampling_rate, char channels, char eightbit, char sign, int length) {
 	// 1. Reset DSP
 	sb16_dsp_reset();
-	int loaded = 0;
-	//int address = (int)(void*)data;
+
+	// 2. Load sound data to memory
+	memcpy(driver_memory, data, LOAD_LENGTH);
 
 	// 3. Set master volume
 	sb16_set_master_volume(0xF, 0xF);
@@ -140,12 +138,16 @@ void sb16_play_audio(char *data, short sampling_rate, char channels, char eightb
 	sb16_turn_speaker_on();
 	// 6, 7, 8, 9, 10
 	sb16_program(sampling_rate, channels, eightbit, sign, LOAD_LENGTH);
+
+	tty_printf("DAT1: %d\nDAT2: %d\n", driver_memory[1], data[1]);
+
+	sb16_program_dma16(channels, LOAD, LOAD_LENGTH);
+
 	
-	// Load sound data to memory
-	while(loaded<length-1) {
+	/*while(loaded<length-1) {
 		memcpy(driver_memory, data, LOAD_LENGTH);
-		sb16_program_dma16(channels, LOAD, LOAD_LENGTH);
+		sb16_program_dma16(channels, driver_memory, LOAD_LENGTH);
 		loaded+=LOAD_LENGTH;
 		data+=LOAD_LENGTH;
-	}
+	}*/
 }
