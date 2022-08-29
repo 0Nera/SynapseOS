@@ -154,10 +154,30 @@ void kernel(uint32_t magic_number, struct multiboot_info *mboot_info) {
     tty_puts("Colors: \xFF\x0D\xFF\x0E\xFF\x0F\n");
     tty_puts_color("Circles: [\xFF\x10][\xFF\x11]\n", 0, 0xFF0000);
 
-    duke_draw_from_file("/initrd/res/SynapseOSLogo.duke", getWidthScreen()-100, 40);
-
     //ATA_Drive_t *drive;
     //ATA_Detect(&drive);
+
+    /* Перед тем как раскомментировать, хорошо подумайте, это создает громкий шум вместо звука
+    sb16_init();
+
+    if(vfs_exists("/initrd/res/sound.wav")) {
+        tty_printf("EXISTS!\n");
+
+        int fsize = vfs_get_size("/initrd/res/sound.wav");
+        char* fdat = kheap_malloc(fsize);
+        memset(fdat, 0, fsize);
+        tty_printf("FILE SIZE: %d\n", fsize);
+
+        vfs_read("/initrd/res/sound.wav", 0, fsize, fdat);
+        tty_printf("PREDATA: %d\n", fdat[1]);
+
+        sb16_play_audio(fdat, 44100, 1, 0, 0, fsize);
+
+        kheap_free(fdat);
+    }
+    */
+
+    duke_draw_from_file("/initrd/res/SynapseOSLogo.duke", getWidthScreen()-100, 40);
 
     shell();                                // Активация терминала
     // Работает, но надо доделать

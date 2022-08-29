@@ -32,11 +32,11 @@ char sb16_can_play_audio();
 char sb16_dsp_reset();
 void sb16_set_irq(char irq);
 void sb16_turn_speaker_on();
-void sb16_program_dma8(char channel, int address, short length);
+// void sb16_program_dma8(char channel, int address, short length);
 void sb16_program_dma16(char channel, int address, short length);
-char sb16_calculate_time_constant(char channels, short sampling_rate);
-void sb16_program(short sampling_rate, char channels, char eightbit, char sign, short length);
+unsigned int sb16_calculate_time_constant(char channels, int sampling_rate);
+void sb16_program(unsigned int sampling_rate, char channels, char eightbit, char sign, short length);
 void sb16_set_master_volume(char left, char right);
-void sb16_play_audio(char *data, short sampling_rate, char channels, char eightbit, char sign, int length);
+void sb16_play_audio(char *data, unsigned sampling_rate, char channels, char eightbit, char sign, int length);
 
 #endif
