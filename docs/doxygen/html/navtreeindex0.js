@@ -64,7 +64,7 @@ var NAVTREEINDEX0 =
 "d1/daa/structvfs__filesystem__handles__t.html#aae2e0c70d8777a5c920cc8a4a0b597a1":[0,0,39,6],
 "d1/daa/structvfs__filesystem__handles__t.html#aca9c552a1e164a008e9e213aae93697b":[0,0,39,2],
 "d1/daa/structvfs__filesystem__handles__t.html#af770f22a898c22d328d2a772a2109cd8":[0,0,39,7],
-"d1/db0/string_8c_source.html":[1,0,0,2,3,4],
+"d1/db0/string_8c_source.html":[1,0,0,2,3,6],
 "d1/de8/pci_8c_source.html":[1,0,0,2,0,5],
 "d2/d2c/bootscreen_8c_source.html":[1,0,0,2,5,0],
 "d2/d54/ports_8h_source.html":[1,0,0,1,2,1],

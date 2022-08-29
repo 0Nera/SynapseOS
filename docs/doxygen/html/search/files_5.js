@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['tty_2ec_160',['tty.c',['../dc/d03/tty_8c.html',1,'']]]
+  ['syscalls_2ec_162',['syscalls.c',['../d5/d87/syscalls_8c.html',1,'']]]
 ];

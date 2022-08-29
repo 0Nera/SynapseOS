@@ -39,11 +39,12 @@ void create_STFS(int device) {
 
 
 void SSFS_create_folder_raw(uint8_t folder_name[256], int block){
+/*
     char block_part_1[512];
     char block_part_2[512];
     char block_part_3[512];
     char block_part_4[512];
-
+*/
 }
 
 

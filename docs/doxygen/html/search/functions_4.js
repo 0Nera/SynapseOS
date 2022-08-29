@@ -1,12 +1,10 @@
 var searchData=
 [
-  ['inb_184',['inb',['../d0/d6e/ports_8c.html#a2e1e8e2c5724c1e8fd2dff2eada06479',1,'ports.c']]],
-  ['init_5fvbe_185',['init_vbe',['../dc/d03/tty_8c.html#a4043472936c19169c7bd56ea50a6a99c',1,'tty.c']]],
-  ['inl_186',['inl',['../d0/d6e/ports_8c.html#a952966e2341f9e573b4a002aca5bb21e',1,'ports.c']]],
-  ['ins_187',['ins',['../d0/d6e/ports_8c.html#a1523588ef57e794dedb0e3b33ca52015',1,'ports.c']]],
-  ['insl_188',['insl',['../d0/d6e/ports_8c.html#a62948b77073b9ce03d0ec4e27d28ad56',1,'ports.c']]],
-  ['io_5fwait_189',['io_wait',['../d0/d6e/ports_8c.html#aaaf4b3f918fbda500ebf08c8b17dfb46',1,'ports.c']]],
-  ['is_5fcom_5fport_190',['is_com_port',['../d0/d6e/ports_8c.html#aa5b31ff1df3faa8b9c64df97fb44b4ee',1,'ports.c']]],
-  ['isleap_191',['isleap',['../df/d49/cmos_8c.html#a19efe316ef878d9aaaa70e28b4b2c670',1,'cmos.c']]],
-  ['isprint_192',['isprint',['../d0/d6e/ports_8c.html#abf84c81bf88d95a6b4d2c9a315fa09cb',1,'ports.c']]]
+  ['get_5frtc_5fregister_182',['get_RTC_register',['../df/d49/cmos_8c.html#ad63adf5763a9bd203619a00f9ae4acd4',1,'cmos.c']]],
+  ['get_5ftime_183',['get_time',['../df/d49/cmos_8c.html#a1e5f798ee4fd32e25464ff06fda11093',1,'cmos.c']]],
+  ['get_5fupdate_5fin_5fprogress_5fflag_184',['get_update_in_progress_flag',['../df/d49/cmos_8c.html#aebccc42f394adc52cab13340c36a9b08',1,'cmos.c']]],
+  ['getheightscreen_185',['getHeightScreen',['../dc/d03/tty_8c.html#adccb23d81da461b513fcc1a8d27b94a5',1,'tty.c']]],
+  ['getposx_186',['getPosX',['../dc/d03/tty_8c.html#aa977f3cede0783956a8d0fda37f2cec9',1,'tty.c']]],
+  ['getposy_187',['getPosY',['../dc/d03/tty_8c.html#ac823a1a13537c4794216969563dbb88b',1,'tty.c']]],
+  ['getwidthscreen_188',['getWidthScreen',['../dc/d03/tty_8c.html#a28a3f902f557e9cf9c3dddd7cad609f0',1,'tty.c']]]
 ];

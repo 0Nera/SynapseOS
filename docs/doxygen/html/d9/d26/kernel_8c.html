@@ -83,6 +83,7 @@ $(document).ready(function(){initNavTree('d9/d26/kernel_8c.html','../../'); init
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Макросы</a> &#124;
 <a href="#func-members">Функции</a> &#124;
 <a href="#var-members">Переменные</a>  </div>
   <div class="headertitle">
@@ -97,9 +98,28 @@ $(document).ready(function(){initNavTree('d9/d26/kernel_8c.html','../../'); init
 </div>
 <p><a href="../../d9/d26/kernel_8c_source.html">См. исходные тексты.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Макросы</h2></td></tr>
+<tr class="memitem:a57cb76ffed8bd409d3bba474b731e213"><td class="memItemLeft" align="right" valign="top"><a id="a57cb76ffed8bd409d3bba474b731e213"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>kCMD_BOOTSCREEN_MINIMAL</b>&#160;&#160;&#160;&quot;--bootscreen=minimal&quot;</td></tr>
+<tr class="separator:a57cb76ffed8bd409d3bba474b731e213"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2dc43ef599322d8f85d5e15c17cea409"><td class="memItemLeft" align="right" valign="top"><a id="a2dc43ef599322d8f85d5e15c17cea409"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>kCMD_BOOTSCREEN_LIGHT</b>&#160;&#160;&#160;&quot;--bootscreen=light&quot;</td></tr>
+<tr class="separator:a2dc43ef599322d8f85d5e15c17cea409"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a837549578596c2aca0bad9ec9fc8e606"><td class="memItemLeft" align="right" valign="top"><a id="a837549578596c2aca0bad9ec9fc8e606"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>kCMD_BOOTSCREEN_DARK</b>&#160;&#160;&#160;&quot;--bootscreen=dark&quot;</td></tr>
+<tr class="separator:a837549578596c2aca0bad9ec9fc8e606"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98c2c27d98861dc29d647415e7679a12"><td class="memItemLeft" align="right" valign="top"><a id="a98c2c27d98861dc29d647415e7679a12"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>kCMD_EXEC_TSHELL</b>&#160;&#160;&#160;&quot;--tshell&quot;</td></tr>
+<tr class="separator:a98c2c27d98861dc29d647415e7679a12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b447ebd4602df845bb9a6bb6fec25dd"><td class="memItemLeft" align="right" valign="top"><a id="a9b447ebd4602df845bb9a6bb6fec25dd"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>kCMD_NO_DRIVER_RTL8139</b>&#160;&#160;&#160;&quot;--nortl8139&quot;</td></tr>
+<tr class="separator:a9b447ebd4602df845bb9a6bb6fec25dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Функции</h2></td></tr>
-<tr class="memitem:a95020b742469d3b2e9a438b73068622a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d26/kernel_8c.html#a95020b742469d3b2e9a438b73068622a">kernelCMDHandler</a> (char *cmd)</td></tr>
+<tr class="memitem:a95020b742469d3b2e9a438b73068622a"><td class="memItemLeft" align="right" valign="top"><a id="a95020b742469d3b2e9a438b73068622a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>kernelCMDHandler</b> (char *cmd)</td></tr>
 <tr class="separator:a95020b742469d3b2e9a438b73068622a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93d13a15bbaf16e615e5627802a3b416"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d26/kernel_8c.html#a93d13a15bbaf16e615e5627802a3b416">kernel</a> (uint32_t magic_number, struct <a class="el" href="../../df/d9f/structmultiboot__info.html">multiboot_info</a> *mboot_info)</td></tr>
 <tr class="memdesc:a93d13a15bbaf16e615e5627802a3b416"><td class="mdescLeft">&#160;</td><td class="mdescRight">Входная точка ядра SynapseOS.  <a href="../../d9/d26/kernel_8c.html#a93d13a15bbaf16e615e5627802a3b416">Подробнее...</a><br /></td></tr>
@@ -123,10 +143,20 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>rtl8139_load</b> = tr
 <a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
 <div class="textblock"><p>Входная точка ядра, инициализация драйверов </p>
 <p>BootScreen - Красивая загрузка ядра с сообщениями</p>
+<p>Содержит функции для работы с split.</p>
+<p>Входная точка консоли, Synapse Command Line Interface.</p>
 <dl class="section author"><dt>Автор</dt><dd>Арен Елчинян (<a href="#" onclick="location.href='mai'+'lto:'+'a2.'+'de'+'v@y'+'an'+'dex'+'.c'+'om'; return false;">a2.de<span style="display: none;">.nosp@m.</span>v@ya<span style="display: none;">.nosp@m.</span>ndex.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
 <dl class="section version"><dt>Версия</dt><dd>0.1.13 </dd></dl>
 <dl class="section date"><dt>Дата</dt><dd>2022-08-13 </dd></dl>
 <dl class="section copyright"><dt>Авторство</dt><dd>Copyright Арен Елчинян (c) 2022</dd></dl>
+<dl class="section author"><dt>Автор</dt><dd>Арен Елчинян (<a href="#" onclick="location.href='mai'+'lto:'+'a2.'+'de'+'v@y'+'an'+'dex'+'.c'+'om'; return false;">a2.de<span style="display: none;">.nosp@m.</span>v@ya<span style="display: none;">.nosp@m.</span>ndex.<span style="display: none;">.nosp@m.</span>com</a>), Никита Пиминов (github.com/pimnik98) </dd></dl>
+<dl class="section version"><dt>Версия</dt><dd>0.0.3 </dd></dl>
+<dl class="section date"><dt>Дата</dt><dd>2022-08-28 </dd></dl>
+<dl class="section copyright"><dt>Авторство</dt><dd>Copyright Арен Елчинян (c) 2022</dd></dl>
+<dl class="section author"><dt>Автор</dt><dd>Никита Пиминов (github.com/pimnik98) </dd></dl>
+<dl class="section version"><dt>Версия</dt><dd>0.0.3 </dd></dl>
+<dl class="section date"><dt>Дата</dt><dd>2022-08-28 </dd></dl>
+<dl class="section copyright"><dt>Авторство</dt><dd>Copyright Piminoff Nikita (c) 2022</dd></dl>
 <dl class="section author"><dt>Автор</dt><dd>Никита Пиминов (github.com/pimnik98) </dd></dl>
 <dl class="section version"><dt>Версия</dt><dd>0.1.0 </dd></dl>
 <dl class="section date"><dt>Дата</dt><dd>2022-08-27 </dd></dl>
@@ -163,30 +193,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>rtl8139_load</b> = tr
 <p>Входная точка ядра SynapseOS. </p>
 <dl class="section warning"><dt>Предупреждения</dt><dd>Отсутствует проверка multiboot! </dd></dl>
 
-<p class="definition">См. определение в файле <a class="el" href="../../d9/d26/kernel_8c_source.html">kernel.c</a> строка <a class="el" href="../../d9/d26/kernel_8c_source.html#l00059">59</a></p>
-
-</div>
-</div>
-<a id="a95020b742469d3b2e9a438b73068622a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a95020b742469d3b2e9a438b73068622a">&#9670;&nbsp;</a></span>kernelCMDHandler()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void kernelCMDHandler </td>
-          <td>(</td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>cmd</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<pre class="fragment">qemu_log("[kCMD] tshell: %d",(isKeySplit("tshell") == true?1:0));
-if (isKeySplit("--bootscreen=minimal")){
-</pre><p> qemu_log("[kCMD] The minimum operating mode for BootScreen is selected."); bootScreenChangeMode(1); } if (isKeySplit("--tshell")){ qemu_log("[kCMD] After loading the kernel, TShell will automatically start."); autotshell = true; } if (isKeySplit("--no-rtl8139")){ qemu_log("[kCMD] The Realtek RTL8139 driver will not be loaded on kernel startup."); rtl8139_load = false; }</p>
-
-<p class="definition">См. определение в файле <a class="el" href="../../d9/d26/kernel_8c_source.html">kernel.c</a> строка <a class="el" href="../../d9/d26/kernel_8c_source.html#l00020">20</a></p>
+<p class="definition">См. определение в файле <a class="el" href="../../d9/d26/kernel_8c_source.html">kernel.c</a> строка <a class="el" href="../../d9/d26/kernel_8c_source.html#l00062">62</a></p>
 
 </div>
 </div>
@@ -196,7 +203,7 @@ if (isKeySplit("--bootscreen=minimal")){
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../d9/d26/kernel_8c.html">kernel.c</a></li>
-    <li class="footer">Документация по SynapseOS. Последние изменения: Вс 28 Авг 2022 04:02:39. Создано системой
+    <li class="footer">Документация по SynapseOS. Последние изменения: Пн 29 Авг 2022 06:56:34. Создано системой
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
