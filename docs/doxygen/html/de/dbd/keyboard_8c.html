@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.17"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>SynapseOS: Файл kernel/src/drivers/keyboard.c</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">SynapseOS
+   &#160;<span id="projectnumber">0.2.12</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.17 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "../../search",false,'Поиск');
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('../../',true,false,'search.php','Поиск');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('de/dbd/keyboard_8c.html','../../'); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Функции</a> &#124;
+<a href="#var-members">Переменные</a>  </div>
+  <div class="headertitle">
+<div class="title">Файл keyboard.c</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Прослойка для работы с текстовым графическим редактором  
+<a href="#details">Подробнее...</a></p>
+<div class="textblock"><code>#include &lt;kernel.h&gt;</code><br />
+</div>
+<p><a href="../../de/dbd/keyboard_8c_source.html">См. исходные тексты.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Функции</h2></td></tr>
+<tr class="memitem:ac5da18f83968eaa621fbc873e45a2543"><td class="memItemLeft" align="right" valign="top"><a id="ac5da18f83968eaa621fbc873e45a2543"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>changeStageKeyboard</b> (int32_t s)</td></tr>
+<tr class="separator:ac5da18f83968eaa621fbc873e45a2543"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a590454459c3f5e94178b3441e9f51fe3"><td class="memItemLeft" align="right" valign="top"><a id="a590454459c3f5e94178b3441e9f51fe3"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>keyLastInset</b> ()</td></tr>
+<tr class="separator:a590454459c3f5e94178b3441e9f51fe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad89f1335412c142b5cbbdea23c804117"><td class="memItemLeft" align="right" valign="top"><a id="ad89f1335412c142b5cbbdea23c804117"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/dbd/keyboard_8c.html#ad89f1335412c142b5cbbdea23c804117">keyboard_clean</a> ()</td></tr>
+<tr class="memdesc:ad89f1335412c142b5cbbdea23c804117"><td class="mdescLeft">&#160;</td><td class="mdescRight">Отчищает последний ввод клавиатуры <br /></td></tr>
+<tr class="separator:ad89f1335412c142b5cbbdea23c804117"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac97e4f0b4aa66ca899dabf44b1450f60"><td class="memItemLeft" align="right" valign="top"><a id="ac97e4f0b4aa66ca899dabf44b1450f60"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>keyboard_install</b> (void)</td></tr>
+<tr class="separator:ac97e4f0b4aa66ca899dabf44b1450f60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abef870ab0d6599cb9c7c1768f833a7b9"><td class="memItemLeft" align="right" valign="top"><a id="abef870ab0d6599cb9c7c1768f833a7b9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>keyboard_handler_main</b> (struct <a class="el" href="../../d3/da0/structregs.html">regs</a> *r)</td></tr>
+<tr class="separator:abef870ab0d6599cb9c7c1768f833a7b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a227e1825e0a1a9a71f28c6142f2e4ebd"><td class="memItemLeft" align="right" valign="top"><a id="a227e1825e0a1a9a71f28c6142f2e4ebd"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>keyboard_getchar</b> ()</td></tr>
+<tr class="separator:a227e1825e0a1a9a71f28c6142f2e4ebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe807f8c4f35f692a36993a48a839f35"><td class="memItemLeft" align="right" valign="top"><a id="afe807f8c4f35f692a36993a48a839f35"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>keyboard_getscancode</b> ()</td></tr>
+<tr class="separator:afe807f8c4f35f692a36993a48a839f35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39e278acede0ac213abd5011040aa33c"><td class="memItemLeft" align="right" valign="top"><a id="a39e278acede0ac213abd5011040aa33c"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>keyboard_gets</b> ()</td></tr>
+<tr class="separator:a39e278acede0ac213abd5011040aa33c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Переменные</h2></td></tr>
+<tr class="memitem:aac9433f3276d2beaf3c2f6488543e536"><td class="memItemLeft" align="right" valign="top"><a id="aac9433f3276d2beaf3c2f6488543e536"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>input_type</b> = 1</td></tr>
+<tr class="separator:aac9433f3276d2beaf3c2f6488543e536"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfaa5baba996ca2d1ac972d023edef68"><td class="memItemLeft" align="right" valign="top"><a id="acfaa5baba996ca2d1ac972d023edef68"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>SHIFT</b> = 0</td></tr>
+<tr class="separator:acfaa5baba996ca2d1ac972d023edef68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9573279affa723daa0e6b338a47f5f87"><td class="memItemLeft" align="right" valign="top"><a id="a9573279affa723daa0e6b338a47f5f87"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>string_mem_counter</b> = 0</td></tr>
+<tr class="separator:a9573279affa723daa0e6b338a47f5f87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a517d57d6bcb54fbf8a99ca8ec5279383"><td class="memItemLeft" align="right" valign="top"><a id="a517d57d6bcb54fbf8a99ca8ec5279383"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>keycode</b></td></tr>
+<tr class="separator:a517d57d6bcb54fbf8a99ca8ec5279383"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58353d0395200b159f144de279d0a9b2"><td class="memItemLeft" align="right" valign="top"><a id="a58353d0395200b159f144de279d0a9b2"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>last_char</b></td></tr>
+<tr class="separator:a58353d0395200b159f144de279d0a9b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f817ff40bab264a1f29f344cc347390"><td class="memItemLeft" align="right" valign="top"><a id="a6f817ff40bab264a1f29f344cc347390"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>string_mem</b> [256]</td></tr>
+<tr class="separator:a6f817ff40bab264a1f29f344cc347390"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a464e84b8a2d54b57028e260e875d5fee"><td class="memItemLeft" align="right" valign="top"><a id="a464e84b8a2d54b57028e260e875d5fee"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>last_string</b> [256]</td></tr>
+<tr class="separator:a464e84b8a2d54b57028e260e875d5fee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32d5f1732c44142e0df57bd91d8e6c90"><td class="memItemLeft" align="right" valign="top"><a id="a32d5f1732c44142e0df57bd91d8e6c90"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>lastkey</b> = 0</td></tr>
+<tr class="separator:a32d5f1732c44142e0df57bd91d8e6c90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69bb91ee7a7e276bb814e8f8f8252510"><td class="memItemLeft" align="right" valign="top"><a id="a69bb91ee7a7e276bb814e8f8f8252510"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>lastkeyinset</b></td></tr>
+<tr class="separator:a69bb91ee7a7e276bb814e8f8f8252510"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b5c60d1ec217a678e8194d725274c1d"><td class="memItemLeft" align="right" valign="top"><a id="a6b5c60d1ec217a678e8194d725274c1d"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>enabledKeyboard</b> = 0</td></tr>
+<tr class="separator:a6b5c60d1ec217a678e8194d725274c1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a7e3711c506fa9a6deede1def57f5d6"><td class="memItemLeft" align="right" valign="top"><a id="a6a7e3711c506fa9a6deede1def57f5d6"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>keyboard_map</b> []</td></tr>
+<tr class="separator:a6a7e3711c506fa9a6deede1def57f5d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedb37616afb8ab4cafe081579e23bf31"><td class="memItemLeft" align="right" valign="top"><a id="aedb37616afb8ab4cafe081579e23bf31"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>keyboard_map_shifted</b> []</td></tr>
+<tr class="separator:aedb37616afb8ab4cafe081579e23bf31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
+<div class="textblock"><p>Прослойка для работы с текстовым графическим редактором </p>
+<dl class="section author"><dt>Авторы</dt><dd>Арен Елчинян (<a href="#" onclick="location.href='mai'+'lto:'+'a2.'+'de'+'v@y'+'an'+'dex'+'.c'+'om'; return false;">a2.de<span style="display: none;">.nosp@m.</span>v@ya<span style="display: none;">.nosp@m.</span>ndex.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
+<dl class="section version"><dt>Версия</dt><dd>0.0.2 </dd></dl>
+<dl class="section date"><dt>Дата</dt><dd>2022-08-24</dd></dl>
+<dl class="section copyright"><dt>Авторство</dt><dd></dd>
+<dd>
+Copyright SynapseOS Team (с) 2022 </dd></dl>
+
+<p class="definition">См. определение в файле <a class="el" href="../../de/dbd/keyboard_8c_source.html">keyboard.c</a></p>
+</div></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_3dd30a497388ee684638f120a124721c.html">src</a></li><li class="navelem"><a class="el" href="../../dir_79cdf04718782f286da113044bf76c98.html">drivers</a></li><li class="navelem"><a class="el" href="../../de/dbd/keyboard_8c.html">keyboard.c</a></li>
+    <li class="footer">Документация по SynapseOS. Последние изменения: Пн 29 Авг 2022 06:56:34. Создано системой
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
+  </ul>
+</div>
+</body>
+</html>
