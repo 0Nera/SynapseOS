@@ -29,7 +29,33 @@ void *memset(void *destination, int32_t c, size_t n){
     return destination;
 }
 
-int32_t strcmp(const char *str1, const char *str2){
+void* memmove(void *dest, void *src, size_t count)
+{
+	void * ret = dest;
+	if (dest <= src || (char*)dest >= ((char*)src + count))
+	{
+		while (count--)
+		{
+			*(char*)dest = *(char*)src;
+			dest = (char*)dest + 1;
+			src = (char*)src + 1;
+		}
+	}
+	else
+	{
+		dest = (char*)dest + count - 1;
+		src = (char*)src + count - 1;
+		while (count--)
+		{
+			*(char*)dest = *(char*)src;
+			dest = (char*)dest - 1;
+			src = (char*)src - 1;
+		}
+	}
+	return(ret);
+}
+
+int32_t strcmpOLD(const char *str1, const char *str2){
     int32_t s1;
     int32_t s2;
 
@@ -43,18 +69,19 @@ int32_t strcmp(const char *str1, const char *str2){
     return (s1 < s2) ? -1 : (s1 > s2);
 }
 
+
+int32_t strcmp(const char *s1, const char *s2)
+{
+    while (*s1 && *s1 == *s2)
+    {
+        ++s1;
+        ++s2;
+    }
+    return (*s1 - *s2);
+}
+
 bool strcmpn(const char *str1, const char *str2){
-    int32_t s1;
-    int32_t s2;
-
-    do{
-        s1 = *str1++;
-        s2 = *str2++;
-        if (s1 == 0)
-            break;
-    } while (s1 == s2);
-
-    return (s1 < s2) ? false : (s1 > s2);
+    return (strcmp(str1,str2) == 0 ? true : false);
 }
 
 

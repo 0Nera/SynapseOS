@@ -128,6 +128,7 @@ void bootScreenProcentPaint(){
  * @param char* title - Вывести данное сообщение
  */
 void bootScreenPaint(char* title){
+    qemu_log("[BOOT] %s",title);
     if (mode == 1){
         tty_changeState(true);
         tty_setcolor(bootScreenTheme(0));
