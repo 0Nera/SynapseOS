@@ -18,7 +18,7 @@ def warn(message):
 
 def compile(binary, source, cur="--", total="--", warnings=False):
     print(f"[\x1b[32;1mBUILD\x1b[0m] [{cur}/{total}]: Compiling: {source}")
-    os.system(f"{CC}  {' -Wall -Wno-macro-redefined -Wno-unused-command-line-argument ' if warnings else ' -w '}  -o ./{binary} {source}")
+    os.system(f"{CC}  {' -Wall -Wno-macro-redefined -Wno-unused-command-line-argument -Wno-implicit-function-declaration ' if warnings else ' -w '}  -o ./{binary} {source}")
     
 def compile_kernel(warnings=False):
     print("Compiling...")
@@ -140,7 +140,7 @@ def run_kvm():
     if not os.path.exists("ata.vhd"):
         os.system("qemu-img create -f raw ata.vhd 32M")
     
-    qemu_command = f"qemu-system-i386 -name SynapseOS -soundhw pcspk -m {MEMORY}" \
+    qemu_command = f"qemu-system-i386 -name SynapseOS -soundhw pcspk -device sb16 -m {MEMORY}" \
         " -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 " \
         " -cdrom SynapseOS.iso -hda ata.vhd -serial  file:Qemu.log -accel kvm -d guest_errors -rtc base=localtime"
         

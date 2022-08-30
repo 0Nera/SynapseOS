@@ -125,10 +125,15 @@ unsigned  char keyboard_map_shifted[] = {
 };
 
 /**
- * @brief Отчищает последний ввод клавиатуры
+ * @brief Очищает последний ввод клавиатуры
  */
 void keyboard_clean(){
     char string_mem[128];
+
+    // ndraey-warn: Example above is more correct
+    // |            (Invalid variable clean declaration!)
+    // v
+    //memset(string_mem, 0, 256);
 }
 
 void keyboard_install(void) {
