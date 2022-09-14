@@ -1,155 +1,43 @@
 # О проекте
-<!-- -->
 
-![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+SynapseOS - модульная x86/x86_64 UEFI/BIOS операционная система на языке C.
 
-SynapseOS - простая x86 операционная система на языке C с хорошо документированным ядром.
-![SynapseOS](https://raw.githubusercontent.com/0Nera/SynapseOS/master/screenshots/test.png "SynapseOS")
+## Преимущества
 
-## Имеется
+### Гибкость
 
-- PS/2 клавиатура
-- Kheap
-- VMM
-- PMM
-- VFS
-- ELF 32 формат исполняемых файлов
-- VESA графика
-- CMOS
-- PC Speaker
-- PCI
-- ~~Поддержка ATA~~
-- VFS
-- tar-fs
-- ~~SSFS - безопасная файловая система~~
-- 11 сисфункций
+Модульность системы позволяет изменять функционал системы на лету.
+Мгновенная замена и обновление модулей/драйверов позволит работать без перезагрузок системы.
+
+### Совместимость
+
+Модули совместимости и подсистемы позволяют работать с программами и драйверами для:
+- Windows;
+- Linux;
+- KolibriOS;
+- MS DOS.
+
+### Безопасность
+
+Система не передает личные данные пользователей. Даже ради статистики.
+Встроенный модуль безопасности позволяет контролировать права доступа и не позволит сломать систему.
+
+## На данный момент реализовано
+
+- Многозадачность с приоритетами;
+- RTL8139, E1000;
+- SynapseFS;
+- ATA(ATAPI, DMA);
+- VESA 1280x1024 и Legasy BIOS 80x25 видеорежимы;
+- Система модулей.
 
 ## Сборка и запуск
 
-### Универсальное решение
+Получение ISO образа системы с новым ядром осуществляется по заявкам - a2.dev@yandex.ru.
+Для работы с открытым ядром, просто соберите [это ядро](https://github.com/0nera/SynapseOS-lite).
 
-```bash
-python3 build.py
-```
-
-### [Linux Debian/Ubuntu]
-
-![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black) ![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white) ![Debian](https://img.shields.io/badge/Debian-D70A53?style=for-the-badge&logo=debian&logoColor=white)
-
-1. Установить ПО для сборки
-
-    ``` bash
-    sudo apt-get install python3 clang llvm grub-pc-bin xorriso mtools lld git fasm
-    ```
-
-2. Установить ПО для запуска ОС
-
-    ``` bash
-    sudo apt-get install libvirt-daemon libvirt-clients bridge-utils virt-manager qemu-kvm qemu virt-manager
-    ```
-
-    Или просто установите любую из поддерживаемых виртуальных машин
-
-3. Скачиваем репозиторий с гитхаба (или самому через браузер)
-
-    ```bash
-    git clone https://github.com/0Nera/SynapseOS.git
-    ```
-
-4. Переходим в проект с папкой
-
-    ```bash
-    cd SynapseOS
-    ```
-
-5. Запускаем компиляцию
-
-    Простая компиляция и запуск:
-    ```bash
-    python3 build.py
-    ```
-
-    Компиляция, без запуска:
-    ```bash
-    python3 build.py kernel apps iso
-    ```
-
-    Компиляция, без запуска, без приложений:
-    ```bash
-    python3 build.py kernel apps iso
-    ```
-
-### [Arch Linux]
-
-1. Установить ПО для сборки
-    ```bash
-    sudo pacman -S python3 clang llvm grub xorriso mtools lld git fasm
-    ```
-
-2. Установить ПО для запуска ОС
-    ```bash
-    sudo pacman -S libvirt bridge-utils virt-manager qemu virt-manager
-    ```
-
-3. Скачиваем репозиторий с гитхаба (или самому через браузер)
-    ```bash
-    git clone https://github.com/0Nera/SynapseOS.git
-    ```
-4. Переходим в проект с папкой
-    ```bash
-    cd SynapseOS
-    ```
-5. Запускаем компиляцию
-    Простая компиляция и запуск:
-    ```bash
-    python3 build.py
-    ```
-
-    Компиляция, без запуска:
-    ```bash
-    python3 build.py kernel apps iso
-    ```
-
-    Компиляция, без запуска, без приложений:
-    ```bash
-    python3 build.py kernel apps iso
-    ```
-
-### [Windows]
-
-Установите WSL или виртуальную машину с Ubuntu версии не ниже 18.
-Соберите ядро по инструкции для Linux.
-В будущем, по мере перехода на Limine, сборка упростится в разы.
-
-### [Другие ОС]
-
-Когда-нибудь будет информация...
-
-### Компилятор
-
-Рекомендуемый компилятор: Clang 14.0 (LLVM 14)
-
-Минимальная версия компилятора: Clang 11.0 (LLVM 11)
-
-## Запуск в QEMU
-
-Простой запуск:
-
-```bash
-qemu-system-i386 -name SynapseOS -cdrom SynapseOS.iso
-```
-
-С подключением устройств (Спикер, Сетевая карта RTL8139, откладочным портом в лог):
-
-```bash
-qemu-system-i386 -name SynapseOS -soundhw pcspk -m 16 -netdev socket,id=n0,listen=:2030 -device rtl8139,netdev=n0,mac=11:11:11:11:11:11 -cdrom SynapseOS.iso -serial file:Qemu.log
-```
-
-Стандартный:
-
-```bash
-python3 build.py run
-```
+ВНИМАНИЕ: Старое ядро было нестабильно и уродливо. К этому прибавились новвоведения сторонних разработчиков. Из-за чего пришлось переписать ядро.
+Проект не закрыт.
 
 ## Минимальные системные требования
 
@@ -159,44 +47,11 @@ python3 build.py run
 
 ## Благодарности
 
+- Геннадий Геннадьевич (наставник)
 - <https://vk.com/id_doczom>
 - <https://github.com/rgimad>
-- <https://vk.com/kernelmode_power>
-- <https://vk.com/piminov_remont>
-- <https://vk.com/ndraey>
-- <https://vk.com/4auka228>
-- Учитель
 
 И другие
-
-## Как внести свой вклад
-
-### Если вы программист
-
-- Сделайте форк репозитория GitHub;
-- Создайте свою ветку если требуется
-- Скачайте(склонируйте) репозиторий на своё устройство (опционально, вы можете редактировать файлы используя веб интерфейс GitHub)
-- Внесите изменения
-- (ВАЖНО) Протестируйте изменения
-- Создайте pull request в этот репозиторий
-- После проверки, ваши изменения скорее-всего примут, удачи!
-
-Также не забывайте про стиль кода и коммитов, он указан в STYLE.md
-
-### Если вы далеки от программирования
-
-Вы можете протестировать ОС, придумать новую идею, задонатить на развитие или написать статью.
-
-## Используемые ресурсы
-
-- <https://wiki.osdev.org/Main_Page>
-- <http://www.jamesmolloy.co.uk/tutorial_html/>
-- <http://www.osdever.net/bkerndev/Docs/title.htm>
-- <https://littleosbook.github.io>
-- <http://www.brokenthorn.com/Resources/>
-- <http://www.osdever.net/tutorials/>
-- <https://github.com/rgimad/EOS>
-- <https://phantomexos.blogspot.com/>
 
 ## Отказ от ответственности
 

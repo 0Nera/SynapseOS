@@ -1,9 +1,0 @@
---- ../kernel/src/libk/math.c	2022-07-27 13:02:19.932850074 +0900
-+++ libc/math.c	2022-07-27 14:18:02.082757053 +0900
-@@ -1,4 +1,5 @@
-- #include <kernel.h>
-+#include <stdint.h>
-+#include "../include/math.h"
- 
- float lerp(float v0, float v1, float t) {
-   return (1 - t) * v0 + t * v1;
