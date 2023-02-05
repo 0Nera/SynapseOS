@@ -36,7 +36,6 @@ jobs:
       - name: Check publish
         run: |
           echo "done!"
-          ls isodir/boot/
           ls
 
       # Публикация релиза
