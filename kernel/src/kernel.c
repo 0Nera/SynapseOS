@@ -11,7 +11,6 @@
  */
 
 
-#include <tasks.h>
 #include <tools.h>
 #include <libk.h>
 #include <kernel.h>
@@ -28,7 +27,7 @@ unsigned int kernel_size = 0;
  * @brief Адрес фреймбуффера ядра
  * 
  */
-uint32_t *kernel_framebuffer = NULL;
+uint8_t *kernel_framebuffer = NULL;
 
 
 /**
@@ -36,6 +35,10 @@ uint32_t *kernel_framebuffer = NULL;
  * 
  */
 canvas_t *kernel_canvas;
+
+
+extern void process_checker();
+extern void pow_worker();
 
 
 /*
@@ -54,7 +57,7 @@ canvas_t *kernel_canvas;
  * @param size Размер ядра в килобайтах
  */
 void kernel_init(kernel_info_t info, size_t size, process_t *kernel_process) {
-    struct sha256_buff buff;
+    //struct sha256_buff buff;
     char name[] = "USER1";
     char hash[65] = {0};
 
@@ -72,7 +75,8 @@ void kernel_init(kernel_info_t info, size_t size, process_t *kernel_process) {
     debug_printf("%s, %d.%d.%d. [%s]", info.name, info.version.major, info.version.minor, info.version.patch, __TIMESTAMP__);
     debug_printf("%dx%d - %x", kernel_canvas->width, kernel_canvas->height, kernel_framebuffer);
 
-    
+    // Это незачем в открытой реализации
+    #if 0
     /**
      * @brief Проверка целостности ядра
      * 
@@ -84,6 +88,7 @@ void kernel_init(kernel_info_t info, size_t size, process_t *kernel_process) {
     sha256_update(&buff, size, sizeof(size_t));
     sha256_finalize(&buff);
     sha256_read_hex(&buff, hash);
+    #endif
 
     
     kprinf("%s %u.%u.%u based on SynapseOS-core(private) loaded, build: %s. Kernel use: %ukb memory\n",
@@ -99,21 +104,22 @@ void kernel_init(kernel_info_t info, size_t size, process_t *kernel_process) {
      * @brief Запуск тестовых задач ядра
      * 
      */
-    thread_t *thread01, *thread02;
 
-    thread01 = sheduler_create_task(
+    thread_t *thread01 = sheduler_create_task(
         kernel_process,     // Поток привязан к процессу ядра
         &process_checker,   // Функция проверки работы ядра. Выводит справа сверху смайлик
         0                   // Приоритет 0 (1 раз за цикл)
     );
 
 
-    thread02 = sheduler_create_task(
+    thread_t *thread02 = sheduler_create_task(
         kernel_process,     // Поток привязан к процессу ядра
         &pow_worker,        // Тестовая нагрузка ядра. 
         1                   // Приоритет (2 раза за цикл)
     );
 
+    thread01->status = THREAD_SLEEP;
+    thread02->status = THREAD_SLEEP;
 
     // Далее возвращаем управление низкоуровневой оболочке
 }

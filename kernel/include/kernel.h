@@ -25,7 +25,7 @@
  * 
  */
 typedef struct {
-    string_utf8_t *name;                                ///< Имя дистрибутива
+    char *name;                                         ///< Имя дистрибутива
     version_t version;                                  ///< Версия дистрибутива
     void (*debug_log)(const char *format_string, ...);  ///< Функция для отправки лога
     void (*prinf)(const char *format_string, ...);      ///< Функция для отправки лога

@@ -18,6 +18,7 @@
 #define    _ARCH_H    1
 
 #include <arch/com1_log.h>
+#include <arch/tasks.h>
 
 
 #if (defined __i386__ || defined __x86_64__)
