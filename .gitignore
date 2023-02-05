@@ -23,4 +23,4 @@ iso_root/*
 .vscode
 .vscode/*
 apps/zlib-1.1.0/*.o
-
+docs/doxygen/html/
