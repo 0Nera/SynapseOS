@@ -25,11 +25,16 @@ unsigned int kernel_size = 0;
 
 
 /**
- * @brief Адресс фреймбуффера ядра
+ * @brief Адрес фреймбуффера ядра
  * 
  */
 uint32_t *kernel_framebuffer = NULL;
 
+
+/**
+ * @brief Указатель на настроенный холст ядра
+ * 
+ */
 canvas_t *kernel_canvas;
 
 
@@ -48,12 +53,15 @@ canvas_t *kernel_canvas;
  * @param framebuffer Указатель на фреймбуффер экрана
  * @param size Размер ядра в килобайтах
  */
-void kernel_init(kernel_info_t info, uint32_t size) {
-    char str[255];
+void kernel_init(kernel_info_t info, size_t size, process_t *kernel_process) {
     struct sha256_buff buff;
     char name[] = "USER1";
     char hash[65] = {0};
 
+    /**
+     * @brief Настраиваем указатели на важные функции
+     * 
+     */
     kernel_size = size;
     kernel_framebuffer = kernel_canvas->framebuffer;
     kernel_debug_log = info.debug_log;
@@ -63,17 +71,21 @@ void kernel_init(kernel_info_t info, uint32_t size) {
     debug_printf("Ядро SynapseOS запущенно, ядро потребляет: %d килобайт", kernel_size);
     debug_printf("%s, %d.%d.%d. [%s]", info.name, info.version.major, info.version.minor, info.version.patch, __TIMESTAMP__);
     debug_printf("%dx%d - %x", kernel_canvas->width, kernel_canvas->height, kernel_framebuffer);
-    //user_print();
 
     
+    /**
+     * @brief Проверка целостности ядра
+     * 
+     */
     sha256_init(&buff);
     sha256_update(&buff, name, 64);
     sha256_update(&buff, __TIMESTAMP__, sizeof(__TIMESTAMP__));
+    sha256_update(&buff, info, sizeof(kernel_info_t));
+    sha256_update(&buff, size, sizeof(size_t));
     sha256_finalize(&buff);
     sha256_read_hex(&buff, hash);
 
-
-    //memset(kernel_framebuffer, '1', 1024 * 768 * 4);
+    
     kprinf("%s %u.%u.%u based on SynapseOS-core(private) loaded, build: %s. Kernel use: %ukb memory\n",
         info.name, info.version.major, info.version.minor, info.version.patch, __TIMESTAMP__,
         kernel_size);
@@ -83,18 +95,25 @@ void kernel_init(kernel_info_t info, uint32_t size) {
     kprinf("\tModules loaded: physical %u, virtual: %u, total: %u\n", info.mod_count, info.mod_v_count, info.mod_count + info.mod_v_count);
     
 
-    process_t* proc = current_process;
-  
-
+    /**
+     * @brief Запуск тестовых задач ядра
+     * 
+     */
     thread_t *thread01, *thread02;
-    thread01 = sheduler_create_process(proc,
-                &process_checker,
-                0x4000,
-                1);
+
+    thread01 = sheduler_create_task(
+        kernel_process,     // Поток привязан к процессу ядра
+        &process_checker,   // Функция проверки работы ядра. Выводит справа сверху смайлик
+        0                   // Приоритет 0 (1 раз за цикл)
+    );
 
 
-    thread02 = sheduler_create_process(proc,
-                &pow_worker,
-                0x4000,
-                1);
+    thread02 = sheduler_create_task(
+        kernel_process,     // Поток привязан к процессу ядра
+        &pow_worker,        // Тестовая нагрузка ядра. 
+        1                   // Приоритет (2 раза за цикл)
+    );
+
+
+    // Далее возвращаем управление низкоуровневой оболочке
 }
