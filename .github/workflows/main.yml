@@ -7,11 +7,10 @@ on:
     tags:
         - "v*"
     branches: [ "master" ]
-  #pull_request:
-  #  tags:
-  #      - "v*"
-  #  branches: [ "master" ]
-  # Позволяет запускать этот рабочий процесс вручную на вкладке Actions
+
+  schedule: # Минута   Час        День       Месяц      День недели
+    - cron:   '0        4        *           *         *'
+  
   workflow_dispatch:
 
 # Выполнение рабочего процесса состоит из одного или нескольких заданий, которые могут выполняться последовательно или параллельно
@@ -24,33 +23,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Just lists all version of clang
-        run: sudo apt list "clang-*"
-
       # Установка зависимостей
       - name: Installing
         run: |
-          sudo apt install python3 build-essential xorriso grub-pc-bin mtools llvm lld fasm zip doxygen
+          sudo apt install python3 build-essential xorriso mtools fasm zip doxygen
           
       # Запуск сборки ядра
       - name: Building  kernel
-        run: python3 build.py kernel
-
-      # Запуск сборки ПО
-      - name: Building  apps
-        run: python3 build.py apps
-
-      # Создание дистрибутива
-      - name: Building  iso
-        run: python3 build.py iso isol
-      
-      # Запуск Doxygen
-      - name: Doxygen
-        run: |
-          rm -rf docs/doxygen/
-          sudo doxygen Doxyfile
-          ls docs/doxygen/
-          ls
+        run: python3 scripts/build.py
 
       # Проверка релиза
       - name: Check publish
@@ -58,15 +38,6 @@ jobs:
           echo "done!"
           ls isodir/boot/
           ls
-        
-      # Публикация документации
-      - name: Commit changes
-        uses: EndBug/add-and-commit@v9
-        with:
-          author_name: Github
-          author_email: github@example.com
-          message: 'документация: Обновление документации с помощью doxygen [Автосборка]'
-          add: 'docs/doxygen/html/*'
 
       # Публикация релиза
       - name: Publish release
@@ -79,8 +50,6 @@ jobs:
           description: "Внимание! Данный релиз собран из последних изменений в ядре! Это не окончательная версия содержит ошибки и не рекомендуется к запуску без проверки на виртуальной машине."
           files: |
             LICENSE
-            SynapseOS.iso
             SynapseOS-limine.iso
-            isodir/boot/initrd.tar
             isodir/boot/kernel.elf
-            docs/doxygen/rtf/refman.rtf
+            doxygen/rtf/refman.rtf
