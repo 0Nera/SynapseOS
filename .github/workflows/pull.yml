@@ -28,12 +28,32 @@ jobs:
       # Установка зависимостей
       - name: Installing
         run: |
-          sudo apt install python3 build-essential xorriso mtools fasm zip doxygen
+          sudo apt install python3 build-essential xorriso mtools
+          wget -nv https://github.com/lordmilko/i686-elf-tools/releases/download/7.1.0/i686-elf-tools-linux.zip
+          sudo unzip i686-elf-tools-linux.zip -d /usr/local
+          rm i686-elf-tools-linux.zip
+
+      # Сборка doxygen
+      - name: Сборка doxygen
+        run: |
+          wget https://www.doxygen.nl/files/doxygen-1.9.5.linux.bin.tar.gz
+          tar -xzf  doxygen-1.9.5.linux.bin.tar.gz>null
+          cd doxygen-1.9.5/
+          sudo make install
+          cd ..
+
+      # Установка limine
+      - name: Limine
+        run: |
+          git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1
+          make -C limine
+          make -C install
           
       # Запуск сборки ядра
       - name: Building  kernel
-        run: python3 scripts/build.py
-
+        run: | 
+          python3 scripts/build.py
+  
       # Проверка релиза
       - name: Check publish
         run: |
