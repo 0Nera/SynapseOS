@@ -13,6 +13,7 @@
 
 #include <arch.h>
 #include <libk.h>
+#include <tools.h>
 #include <versions.h>
 
 
@@ -27,7 +28,7 @@
 typedef struct {
     char *name;                                         ///< Имя дистрибутива
     version_t version;                                  ///< Версия дистрибутива
-    void (*debug_log)(const char *format_string, ...);  ///< Функция для отправки лога
+    void (*debug_printf)(const char *format_string, ...);  ///< Функция для отправки лога
     void (*prinf)(const char *format_string, ...);      ///< Функция для отправки лога
     void *(*malloc)(size_t size);                       ///< Функция для выделения памяти
     void (*free)(void *addr);                           ///< Функция для освобождения памяти
@@ -40,11 +41,11 @@ typedef struct {
  * @brief Адрес на функцию отладки
  * 
  */
-void (*kernel_debug_log)(const char *format_string, ...);
+void (*debug_log_printf)(const char *format_string, ...);
 
 
 /**
- * @brief Адрес на функцию отладки
+ * @brief Адрес на функцию отладки для ядра
  * 
  */
 void (*kprinf)(const char *format_string, ...);
@@ -56,8 +57,8 @@ void (*kprinf)(const char *format_string, ...);
  * @brief Функция для вывода в лог информации
  * 
  */
-#define debug_printf(M, ...)                        \
-    kernel_debug_log(                               \
+#define debug_log(M, ...)                        \
+    debug_log_printf(                               \
         "[DEBUG]["                                  \
         "%s:"                                       \
         "%s:%d]" M "\n",                            \
@@ -72,7 +73,7 @@ void (*kprinf)(const char *format_string, ...);
  * @brief Функция для вывода в лог информации
  * 
  */
-#define debug_printf(M, ...)
+#define debug_log(M, ...)
 
 #endif  // DEBUG
 
@@ -82,7 +83,7 @@ void (*kprinf)(const char *format_string, ...);
  * 
  */
 #define assert(condition) if (condition){                      \
-    kernel_debug_log("[ASSERT FAIL]");                                 \
+    debug_log_printf("[ASSERT FAIL]");                                 \
     for(;;) {                                                  \
         halt();                                                \
     }                                                          \
@@ -94,9 +95,9 @@ void (*kprinf)(const char *format_string, ...);
  * 
  */
 #define unit_test(condition, message) if (condition) {            \
-    kernel_debug_log("[PASS][%s]%s\n", __FUNCTION__, message);    \
+    debug_log_printf("[PASS][%s]%s\n", __FUNCTION__, message);    \
 } else {                                                          \
-    kernel_debug_log("[FAIL][%s]%s\n", __FUNCTION__, message);    \
+    debug_log_printf("[FAIL][%s]%s\n", __FUNCTION__, message);    \
 }
 
 

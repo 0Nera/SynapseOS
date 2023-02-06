@@ -41,4 +41,6 @@ typedef struct {
  */
 void text_printf(const char *format_string, size_t length, uint32_t x, uint32_t y, ...);
 
+bool text_init();
+
 #endif // draw.h

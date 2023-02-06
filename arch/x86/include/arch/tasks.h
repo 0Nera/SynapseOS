@@ -13,7 +13,7 @@
 
 #include <arch.h>
 #include <libk.h>
-#include <oxygen.h>
+#include <mm/oxygen.h>
 
 
 #ifndef	_TASKS_H
@@ -115,6 +115,15 @@ extern process_t *current_process;
  * 
  */
 void sheduler_switch();
+
+
+/**
+ * @brief Инициализация планировщика задач
+ * 
+ * @return true В случае успеха
+ * @return false В случае провала
+ */
+bool sheduler_init();
 
 
 /**

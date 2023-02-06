@@ -67,13 +67,12 @@ void kernel_init(kernel_info_t info, size_t size, process_t *kernel_process) {
      */
     kernel_size = size;
     kernel_framebuffer = kernel_canvas->framebuffer;
-    kernel_debug_log = info.debug_log;
     kprinf = info.prinf;
 
 
-    debug_printf("Ядро SynapseOS запущенно, ядро потребляет: %d килобайт", kernel_size);
-    debug_printf("%s, %d.%d.%d. [%s]", info.name, info.version.major, info.version.minor, info.version.patch, __TIMESTAMP__);
-    debug_printf("%dx%d - %x", kernel_canvas->width, kernel_canvas->height, kernel_framebuffer);
+    debug_log("Ядро SynapseOS запущенно, ядро потребляет: %d килобайт", kernel_size);
+    debug_log("%s, %d.%d.%d. [%s]", info.name, info.version.major, info.version.minor, info.version.patch, __TIMESTAMP__);
+    debug_log("%dx%d - %x", kernel_canvas->width, kernel_canvas->height, kernel_framebuffer);
 
     // Это незачем в открытой реализации
     #if 0

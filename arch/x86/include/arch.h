@@ -17,7 +17,7 @@
 #ifndef    _ARCH_H
 #define    _ARCH_H    1
 
-#include <arch/com1_log.h>
+#include <arch/ports.h>
 #include <arch/tasks.h>
 
 
