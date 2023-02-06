@@ -11,13 +11,14 @@
  */
 
 
-#include <arch.h>       // Архитектурнозависимые функции
-#include <mm/oxygen.h>  // Менеджер памяти oxygen
-#include <graf.h>  // Менеджер памяти oxygen
-#include <kernel.h>     // Информация о системе и функции ОС
-#include <libk.h>       // Библиотека ядра
-#include <versions.h>   // Версионирование
-#include <multiboot.h>  // Multiboot1
+#include <arch.h>           // Архитектурнозависимые функции
+#include <mm/oxygen.h>      // Менеджер памяти oxygen
+#include <drivers/com.h>    // COM порты
+#include <graf.h>           // Графические примитивы
+#include <kernel.h>         // Информация о системе и функции ОС
+#include <libk.h>           // Библиотека ядра
+#include <versions.h>       // Версионирование
+#include <multiboot.h>      // Multiboot1
 
 
 void *i686_malloc(size_t size) {

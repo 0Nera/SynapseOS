@@ -11,9 +11,9 @@
  */
 
 
-#include <com1_log.h>
+#include <arch.h>
+#include <drivers/com.h>
 #include <libk.h>
-#include <ports.h>
 #include <tools.h>
 
 
@@ -143,14 +143,14 @@ void com1_printhex_v(uint32_t i) {
 /**
  * @brief 
  * 
- * @param address 
+ * @param addres 
  * @param size 
  */
-void com1_log_dump(void *address, uint32_t size) {
+void com1_log_dump(void *addres, size_t size) {
     /* Преобразуем указатель в массив байт */
-    uint8_t *dump = (uint8_t*) address; 
+    uint8_t *dump = (uint8_t*) addres; 
     /* Преобразуем указатель просто в число */  
-    uint32_t addr_tmp = (uint32_t) address;
+    uint32_t addr_tmp = (uint32_t) addres;
     /* Вспомогательные переменные */
     uint32_t mark = 0;
     
