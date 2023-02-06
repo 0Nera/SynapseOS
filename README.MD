@@ -1,5 +1,7 @@
 # SynapseOS
 
+[![SynapseOS Buildbot](https://github.com/0Nera/SynapseOS/actions/workflows/main.yml/badge.svg)](https://github.com/0Nera/SynapseOS/actions/workflows/main.yml)
+
 SynapseOS - модульная операционная система на базе своего ядра SynapseOS-core.
 
 Используется полуоткрытая реализация ядра SynapseOS-core.
