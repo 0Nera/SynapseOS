@@ -23,7 +23,7 @@ static void *oxygen_mem_end;
 static size_t oxygen_mem_free;
 static size_t oxygen_mem_all;
 static oxygen_mem_entry_t *first_node;
-extern bool pit_lock;
+
 
 /**
  * @brief Инициализация менеджера памяти "Кислород"
@@ -56,6 +56,7 @@ bool oxygen_init(void *adress, size_t length) {
     oxygen_free(temp1);
     oxygen_free(temp2);
     oxygen_dump_memory();
+
     return true;
 }
 
@@ -66,6 +67,7 @@ bool oxygen_init(void *adress, size_t length) {
  * @param block Номер блока
  */
 void oxygen_free(void *ptr) {
+    sheduler_lock();
     oxygen_mem_entry_t *now = (oxygen_mem_entry_t*)ptr - 256;
     debug_log("now %x - 256", now);
     //oxygen_dump_block(now);
@@ -76,11 +78,12 @@ void oxygen_free(void *ptr) {
     last->next = next;
     next->prev = last;
     memset(now, 0, sizeof(oxygen_mem_entry_t));
+    sheduler_unlock();
 }
 
 
 void *oxygen_alloc(size_t length) {
-    pit_lock = true;
+    sheduler_lock();
     oxygen_mem_entry_t *last = oxygen_find_free(length);
 
     if (oxygen_mem_end <= (length + last->addr + last->size)) {
@@ -98,7 +101,7 @@ void *oxygen_alloc(size_t length) {
     last->next = new;
 
 
-    pit_lock = false;
+    sheduler_unlock();
     return new->addr;
 }
 

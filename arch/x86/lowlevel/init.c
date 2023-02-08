@@ -38,8 +38,7 @@ kernel_info_t kernel_info = {
     {
         0, 3, 18
     },
-    &debug_log_printf,
-    &text_printf,
+    text_printf,
     &i686_malloc,
     &i686_free,
     0,
