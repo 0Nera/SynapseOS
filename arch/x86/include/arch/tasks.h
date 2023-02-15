@@ -82,7 +82,8 @@ typedef struct {
     uint8_t     priority;    ///< Приоритет задачи
     void        *entry_point;///< Точка входа в задачу
     uint8_t     status;      ///< Состояние задачи
-    uintptr_t   esp;         ///< Указатель на стек    
+    uintptr_t   stack;        ///< Указатель на стек    
+    uintptr_t   esp;         ///< Указатель на ESP    
     size_t      stack_size;  ///< Размер стека задачи
     list_item_t list_item;   ///< Элемент списка 
     process_t   *process;    ///< Родительский процесс
@@ -144,7 +145,10 @@ bool sheduler_create_process(process_t *process);
  * @param priority Приоритет
  * @return thread_t* Указатель на структуру потока
  */
-thread_t *sheduler_create_task(process_t *process, void *entry, uint8_t priority);
+thread_t *sheduler_create_task(process_t *process,
+                        uintptr_t entry_point,
+                        uint8_t priority
+                        );
 
 
 /**

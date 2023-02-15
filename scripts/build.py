@@ -14,7 +14,7 @@ ARCH_DIR = "x86" # "x86_64", "arm", "e2k"
 
 DEBUG_FLAGS = f""
 
-CC = f"{ARCH}-elf-gcc"  #  -march=i586
+CC = f"{ARCH}-elf-gcc -w"  #  -march=i586
 
 CC_GCC = f"" # f"-finput-charset=unicode -fexec-charset=unicode -finput-charset=utf8 -fexec-charset=utf8"
 CC_OPTIM = f"-Wall -Wextra -O0"
@@ -48,7 +48,11 @@ def build_kernel():
         os.system(f"{CC} {DEBUG_FLAGS} {CC_FLAGS} {SRC_TARGETS[i]} -o {BIN_TARGETS[i]}")
         print(f"{CC} {CC_FLAGS} {SRC_TARGETS[i]} -o {BIN_TARGETS[i]}")
     
+    BIN_TARGETS.append("bin//font_psf.o")
 
+    print(f"{ARCH}-elf-ld -r -b binary -o bin//font_psf.o kernel/src/graf/font.psf")
+    os.system(f"{ARCH}-elf-ld -r -b binary -o bin//font_psf.o kernel/src/graf/font.psf")
+    
     print(f"{CC} {LD_FLAGS} -o isodir//boot//kernel.elf {' '.join(str(x) for x in BIN_TARGETS)}")
     os.system(f"{CC} {LD_FLAGS} -o isodir//boot//kernel.elf {' '.join(str(x) for x in BIN_TARGETS)}")
     
@@ -92,8 +96,10 @@ if __name__ == '__main__':
     
     build_iso_limine()
 
+    #build_docs()
+
     if ARCH == "i686":
         QEMU_DEV = f"-device rtl8139,id=nic0"
-        QEMU = f"qemu-system-i386 -m 128 -d guest_errors -no-reboot {QEMU_DEV} -cpu pentium2 "
+        QEMU = f"qemu-system-i386 -m 128 -d guest_errors -no-reboot {QEMU_DEV} -cpu 486 "
         
         os.system(f"{QEMU} -monitor stdio -cdrom SynapseOS-limine.iso -serial file:serial.log")

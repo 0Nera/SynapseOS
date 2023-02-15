@@ -117,8 +117,6 @@ void kernel_startup(unsigned int eax, unsigned int ebx, unsigned int esp) {
     
     multiboot_main(ebx);
     
-    //vesa_init();                                      - не реализовано в открытом ядре
-
     //mm_evelina_multiboot_init(ebx, 8192);
     
 
@@ -139,15 +137,14 @@ void kernel_startup(unsigned int eax, unsigned int ebx, unsigned int esp) {
     if (cpu & 0x1) {
         debug_log("Имеется FPU");
         
-        
-        com1_unit_test(fpu_init(), "Настройка FPU");
+        //com1_unit_test(fpu_init(), "Настройка FPU");
     }
 
     if ((cpu >> 25) & 0x1) {
         debug_log("Имеется SSE");
     }
     
-    vesa_init(ebx);
+    //vesa_init(ebx);
 
     kernel_canvas = oxygen_alloc(sizeof(canvas_t));
 
@@ -157,20 +154,20 @@ void kernel_startup(unsigned int eax, unsigned int ebx, unsigned int esp) {
     kernel_canvas->bpp = multiboot_framebuffer_bpp;
     kernel_canvas->framebuffer = multiboot_framebuffer;
     
-    com1_unit_test(sheduler_init(), "Настройка планировщика задач");
+    //com1_unit_test(sheduler_init(), "Настройка планировщика задач");
     
-    text_init();
+    //text_init();
 
-    graf_install();
+    //graf_install();
 
-    sti();
+    //sti();
     
-    com1_unit_test(pit_init(100), "Установка PIT");
+    //com1_unit_test(pit_init(100), "Установка PIT");
 
     
     // Вызываем ядро SynapseOS
 
-    kernel_init(kernel_info, kernel_size);
+    //kernel_init(kernel_info, kernel_size);
 
     debug_log("Ядро завершило инициализацию");
 

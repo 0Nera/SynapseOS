@@ -35,7 +35,7 @@ struct list_item {
  * 
  * @param list Указатель на структуру списка
  */
-list_item_t *list_init();
+void list_init(list_item_t *list);
 
 
 /**

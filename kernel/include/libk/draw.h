@@ -43,4 +43,7 @@ void text_printf(const char *format_string, size_t length, uint32_t x, uint32_t 
 
 bool text_init();
 
+#include <libk/draw/psf.h>
+#include <libk/draw/text.h>
+
 #endif // draw.h

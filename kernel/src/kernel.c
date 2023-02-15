@@ -103,7 +103,8 @@ void kernel_init(kernel_info_t info, size_t size, process_t *kernel_process) {
      * @brief Запуск тестовых задач ядра
      * 
      */
-
+    
+    /*
     thread_t *thread01 = sheduler_create_task(
         kernel_process,     // Поток привязан к процессу ядра
         &process_checker,   // Функция проверки работы ядра. Выводит справа сверху смайлик
@@ -119,6 +120,6 @@ void kernel_init(kernel_info_t info, size_t size, process_t *kernel_process) {
 
     thread01->status = THREAD_SLEEP;
     thread02->status = THREAD_SLEEP;
-
+    */
     // Далее возвращаем управление низкоуровневой оболочке
 }

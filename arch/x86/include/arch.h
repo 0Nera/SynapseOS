@@ -19,6 +19,8 @@
 
 #include <arch/ports.h>
 #include <arch/tasks.h>
+#include <arch/dt.h>
+#include <arch/int.h>
 
 
 #if (defined __i386__ || defined __x86_64__)
