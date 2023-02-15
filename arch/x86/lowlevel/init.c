@@ -160,7 +160,7 @@ void kernel_startup(unsigned int eax, unsigned int ebx, unsigned int esp) {
 
     //graf_install();
 
-    //sti();
+    sti();
     
     //com1_unit_test(pit_init(100), "Установка PIT");
 
