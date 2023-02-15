@@ -12,7 +12,7 @@ BIN_TARGETS = []
 ARCH = "i686" # "x86_64", "arm", "e2k"
 ARCH_DIR = "x86" # "x86_64", "arm", "e2k"
 
-DEBUG_FLAGS = f""
+DEBUG_FLAGS = f"-D DEBUG=1"
 
 CC = f"{ARCH}-elf-gcc -w"  #  -march=i586
 
@@ -100,6 +100,6 @@ if __name__ == '__main__':
 
     if ARCH == "i686":
         QEMU_DEV = f"-device rtl8139,id=nic0"
-        QEMU = f"qemu-system-i386 -m 128 -d guest_errors -no-reboot {QEMU_DEV} -cpu 486 "
+        QEMU = f"qemu-system-i386 -m 128 -d guest_errors -no-reboot {QEMU_DEV} -cpu pentium3 "
         
         os.system(f"{QEMU} -monitor stdio -cdrom SynapseOS-limine.iso -serial file:serial.log")

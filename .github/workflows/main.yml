@@ -44,9 +44,7 @@ jobs:
       - name: Limine
         run: |
           git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1
-          cd limine
-          make all
-          make install
+          cd limine & make all & make install
           cd ..
           
       # Запуск сборки ядра
