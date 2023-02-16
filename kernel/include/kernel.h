@@ -60,7 +60,7 @@ extern void (*kprinf)(const char *format_string, ...);
     debug_log_printf(                               \
         "[DEBUG]["                                  \
         "%s:"                                       \
-        "%s:%d]" M "\n",                            \
+        "%s:%u]" M "\n",                            \
         __FILE__,                                   \
         __FUNCTION__,                               \
         __LINE__,                                   \
