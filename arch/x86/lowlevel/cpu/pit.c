@@ -60,7 +60,7 @@ bool pit_init(uint32_t frequency) {
     // чтобы получить нашу требуемую частоту. 
     // Важно отметить, что делитель должен быть достаточно маленьким, 
     // чтобы поместиться в 16 бит.
-    uint32_t divisor = 1193180 / frequency;
+    uint16_t divisor = 1193180 / frequency;
 
     nanosec = rdtsc();
 
@@ -69,8 +69,8 @@ bool pit_init(uint32_t frequency) {
 
     // Делитель должен быть отправлен по байтам, 
     // поэтому делим здесь на верхние / нижние байты.
-    uint8_t l = (uint8_t)(divisor & 0xFF);
-    uint8_t h = (uint8_t)((divisor>>8) & 0xFF);
+    uint8_t l = divisor & 0xFF;
+    uint8_t h = divisor >> 8;
 
     
     // Отправляем делитель частоты
