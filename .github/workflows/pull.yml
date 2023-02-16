@@ -46,10 +46,9 @@ jobs:
       - name: Limine
         run: |
           git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1
-          cd limine
-          make all
-          make install
-          cd ..
+          make -C limine
+          cp limine/BOOTIA32.EFI limine/BOOTX64.EFI limine/limine-cd-efi.bin limine/limine.sys limine/limine-cd.bin isodir/
+      
           
       # Запуск сборки ядра
       - name: Building  kernel
