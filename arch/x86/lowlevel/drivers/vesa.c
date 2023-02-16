@@ -63,8 +63,8 @@ void vesa_init(struct multiboot_info *info) {
     multiboot_framebuffer_width = info->framebuffer_width ;
     multiboot_framebuffer_height = info->framebuffer_height;
 
-    debug_log("vbe_mode %d", info->vbe_mode);
-    debug_log("multiboot_framebuffer %x", multiboot_framebuffer);
+    debug_log("vbe_mode %u", info->vbe_mode);
+    debug_log("multiboot_framebuffer 0x%x", multiboot_framebuffer);
     debug_log("multiboot_framebuffer_pitch %u", multiboot_framebuffer_pitch);
     debug_log("multiboot_framebuffer_bpp %u", multiboot_framebuffer_bpp);
     debug_log("multiboot_framebuffer_width %u", multiboot_framebuffer_width);

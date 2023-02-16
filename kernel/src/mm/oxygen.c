@@ -35,7 +35,7 @@ static oxygen_mem_entry_t *first_node;
 bool oxygen_init(void *adress, size_t length) {
     debug_log("Инициализация менеджера динамичной памяти, %u байт на точку", sizeof(oxygen_mem_entry_t));
     debug_log("Размер области: %u килобайт", length / 1024);
-    debug_log("Адрес области: %x", adress);
+    debug_log("Адрес области: 0x%x", adress);
     oxygen_mem_start = adress;
     oxygen_mem_end = adress + length;
     oxygen_mem_all = length;
@@ -69,7 +69,7 @@ bool oxygen_init(void *adress, size_t length) {
 void oxygen_free(void *ptr) {
     sheduler_lock();
     oxygen_mem_entry_t *now = (oxygen_mem_entry_t*)ptr - 256;
-    debug_log("now %x - 256", now);
+    debug_log("now 0x%x - 256", now);
     //oxygen_dump_block(now);
 
 
@@ -120,8 +120,8 @@ oxygen_mem_entry_t *oxygen_find_free(size_t length) {
     while (true) {
         oxygen_mem_entry_t *next = i->next;
         if (i->addr + i->size + 256 != next->addr  - sizeof(oxygen_mem_entry_t)) {
-            //debug_log_printf("i->addr + i->size = %x ", i->addr + i->size + 256);
-            //debug_log_printf("%x -", next->addr - sizeof(oxygen_mem_entry_t));
+            //debug_log_printf("i->addr + i->size = 0x%x ", i->addr + i->size + 256);
+            //debug_log_printf("0x%x -", next->addr - sizeof(oxygen_mem_entry_t));
             //debug_log_printf("%d \n",i->addr + i->size  + 256 - sizeof(oxygen_mem_entry_t) - next->addr - sizeof(oxygen_mem_entry_t));
         }
         if (next == NULL) {
@@ -155,23 +155,23 @@ void oxygen_dump_memory() {
  * @return int 
  */
 int oxygen_dump_block(oxygen_mem_entry_t *entry) {
-    debug_log_printf("prev %x", 
+    debug_log_printf("prev 0x%x", 
         entry->prev);
-    debug_log_printf(" | next %x", 
+    debug_log_printf(" | next 0x%x", 
         entry->next);
-    debug_log_printf(" | addr %x", 
+    debug_log_printf(" | addr 0x%x", 
         entry->addr);
-    debug_log_printf(" | entry %x", 
+    debug_log_printf(" | entry 0x%x", 
         entry);
     debug_log_printf(" | size %u байт ", 
         entry->size);
     if (entry->next == NULL) {
         debug_log_printf("LAST ");
-        debug_log_printf("(%x)\n", 
+        debug_log_printf("(0x%x)\n", 
             entry->size);
         return -999;
     }
-    debug_log_printf("(%x)\n", 
+    debug_log_printf("(0x%x)\n", 
         entry->size);
     return 0;
 }
@@ -196,7 +196,7 @@ bool oxygen_multiboot_init(multiboot_info_t *info) {
     size_t max_len = 0;
 
     for (multiboot_memory_map_t* entry = start; entry < end; entry++) {
-        debug_log("[%x]", entry->addr);
+        debug_log("[0x%x]", entry->addr);
 
         if (max_len < entry->len) {
             max_len = entry->len;
@@ -214,7 +214,7 @@ bool oxygen_multiboot_init(multiboot_info_t *info) {
         }
 
         if ((entry->len / 1024 / 1024 / 1024) > 1) {
-            debug_log("\t   \\->%x гигабайт", entry->len / 1024 / 1024 / 1024);
+            debug_log("\t   \\->0x%x гигабайт", entry->len / 1024 / 1024 / 1024);
         }
 
         switch (entry->type) {
@@ -250,7 +250,7 @@ bool oxygen_multiboot_init(multiboot_info_t *info) {
     }
 
     if ((total_free_mem / 1024 / 1024 / 1024) > 1) {
-        debug_log("\t   \\->%x гигабайт", total_free_mem / 1024 / 1024 / 1024);
+        debug_log("\t   \\->0x%x гигабайт", total_free_mem / 1024 / 1024 / 1024);
     }
 
     debug_log("Всего памяти недоступной для использования:");
@@ -265,7 +265,7 @@ bool oxygen_multiboot_init(multiboot_info_t *info) {
     }
 
     if ((total_used_mem / 1024 / 1024 / 1024) > 1) {
-        debug_log("\t   \\->%x гигабайт", total_used_mem / 1024 / 1024 / 1024);
+        debug_log("\t   \\->0x%x гигабайт", total_used_mem / 1024 / 1024 / 1024);
     }
     
     return oxygen_init((void*)(uintptr_t)temp->addr, temp->len);

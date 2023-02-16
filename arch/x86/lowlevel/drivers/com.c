@@ -49,96 +49,39 @@ static void com1_log_putchar(char c) {
  * @param string Выводимая строка
  */
 static void com1_log_puts(const char string[]) {
-    for (uint32_t i = 0; i < strlen(string); i++) {
-        com1_log_putchar(string[i]);
-    }
+    while (*string)
+        com1_log_putchar(*string++);
 }
-
 
 /**
- * @brief Вывод шестнадцатеричного числа в COM1 порт
+ * @brief Вывод числа в COM1 порт
  * 
- * @param num Выводимое число
+ * @param i Выводимое число
+ * @param r Основание (от 2 до 16)
  */
-void com1_log_printudec(int32_t i) {
-    uint32_t n, d = 1000000000;
-    char str[255];
-    uint32_t dec_index = 0;
+void com1_log_printunum(uint32_t i, int32_t r) {
+    const unsigned char symbols[16]  =  { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+    char str[33] = "";
+    int index = sizeof(str) - 1;
 
-    while ((i / d == 0) && (d >= 10)) {
-        d /= 10;
-    }
-    n = i;
+    do {
+        str[--index] = symbols[i % r];
+        i /= r;
+    } while (i);
 
-    while (d >= 10) {
-        str[dec_index++] = ((char) ((int) '0' + n / d));
-        n = n % d;
-        d /= 10;
-    }
-
-    str[dec_index++] = ((char) ((int) '0' + n));
-    str[dec_index] = 0;
-    com1_log_puts(str);
+    com1_log_puts(str + index);
 }
-
-void com1_log_printdec(int32_t i) {
-    if (i >= 0) {
-        com1_log_printudec(i);
-    } else {
-        com1_log_putchar('-');
-        com1_log_printudec(-i);
-    }
-}
-
 
 /**
- * @brief 
+ * @brief Вывод числа в COM1 порт
  * 
- * @param i 
+ * @param i Выводимое число
+ * @param r Основание (от 2 до 16)
  */
-void com1_log_printhex(uint32_t i) {
-    const unsigned char hex[16]  =  { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
-    uint32_t n, d = 0x10000000;
-
-    com1_log_puts("0x");
-
-    while ((i / d == 0) && (d >= 0x10)) {
-        d /= 0x10;
-    }
-    n = i;
-
-    while (d >= 0xF) {
-        com1_log_putchar(hex[n / d]);
-        n = n % d;
-        d /= 0x10;
-    }
-    com1_log_putchar(hex[n]);
+void com1_log_printnum(int32_t i, int32_t r) {
+    if (i < 0) com1_log_putchar('-');
+    com1_log_printunum(-i, r);
 }
-
-
-/**
- * @brief 
- * 
- * @param i 
- */
-void com1_printhex_v(uint32_t i) {
-    const unsigned char hex[16]  =  { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
-    uint32_t n, d = 0x10000000;
-
-
-    while ((i / d == 0) && (d >= 0x10)) {
-        d /= 0x10;
-    }
-    n = i;
-
-    while (d >= 0xF) {
-        com1_log_putchar(hex[n / d]);
-        n = n % d;
-        d /= 0x10;
-    }
-    com1_log_putchar(hex[n]);
-}
-
 
 /**
  * @brief 
@@ -157,11 +100,11 @@ void com1_log_dump(void *addres, size_t size) {
     for (uint32_t i = 0; i < size; i++) {
     
         if (mark == 0) {
-            com1_log_printhex(addr_tmp);
+            com1_log_printunum(addr_tmp, 16);
             com1_log_puts(": ");
         }
     
-        com1_log_printhex(dump[i]);
+        com1_log_printunum(dump[i], 16);
     
         switch(mark) {
             case 7:
@@ -190,14 +133,14 @@ static int com1_log_powk(int x, unsigned int y) {
     else if (y%2 == 0)
         return com1_log_powk(x, y/2)*com1_log_powk(x, y/2);
     else
-        return x*com1_log_powk(x, y/2)*com1_log_powk(x, y/2);
+        return x*com1_log_powk(x, y);
  
 }
  
 
 static void com1_log_printfloat(double num, int after_point) {
     int int_float = (int) num;
-    com1_log_printdec(int_float);
+    com1_log_printnum(int_float, 10);
     com1_log_putchar('.');
     
     int mut_ab = com1_log_powk(10,after_point);
@@ -209,13 +152,11 @@ static void com1_log_printfloat(double num, int after_point) {
         int muted = (after_point_float/multiplier);
         //printf("%d\n",muted);
         muted = muted % 10;
-        com1_log_printdec(muted);
+        com1_log_printnum(muted, 10);
         
         multiplier/=10;
     }
 }
-
-
 
 /**
  * @brief Вывод в COM1 порт форматированной строки используя неопределенное количество аргументов
@@ -230,27 +171,36 @@ void com1_log_printf(const char *format_string, ...) {
     va_start(args, format_string);
 
     // Обработка и парсинг строки форматов
-    while (*format_string != '\0') {
+    while (*format_string) {
         if (*format_string == '%') {
-            format_string++;
-            if (*format_string == 'x') {
-                com1_log_printhex(va_arg(args, unsigned long long));
-            } else if (*format_string == '8') {
-                com1_log_printdec((unsigned char)va_arg(args, char*)[0]);
-            } else if (*format_string == 'd') {
-                com1_log_printdec(va_arg(args, int));
-            } else if (*format_string == 'l') {
-                com1_log_printdec(va_arg(args, long));
-            } else if (*format_string == 'f') {
+            switch (*++format_string) {
+            case 'x':
+                com1_log_printunum(va_arg(args, uint32_t), 16);
+                break;
+            case '8':
+                com1_log_printnum((unsigned char)va_arg(args, char*)[0], 10);
+                break;
+            case 'd':
+                com1_log_printnum(va_arg(args, int), 10);
+                break;
+            case 'l':
+                com1_log_printnum(va_arg(args, long), 10);
+                break;
+            case 'f':
                 com1_log_printfloat(va_arg(args, double), 7);
-            } else if (*format_string == 'u') {
-                com1_log_printudec(va_arg(args, unsigned int));
-            } else if (*format_string == 'z') {
-                com1_log_printudec(va_arg(args, size_t));
-            } else if (*format_string == 's') {
+                break;
+            case 'u':
+                com1_log_printunum(va_arg(args, unsigned int), 10);
+                break;
+            case 'z':
+                com1_log_printunum(va_arg(args, size_t), 10);
+                break;
+            case 's':
                 com1_log_puts(va_arg(args, char*));
-            } else if (*format_string == 'c') {
+                break;
+            case 'c':
                 com1_log_putchar((char)va_arg(args, int));
+                break;
             }
         } else {
             com1_log_putchar(*format_string);

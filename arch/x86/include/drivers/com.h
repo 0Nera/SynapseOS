@@ -77,9 +77,9 @@ void com1_log_printf(const char *format_string, ...);
  * 
  */
 #define com1_unit_test(condition, message) if ((condition) > 0){                                  \
-    com1_log_printf("[TEST PASSED][%s:%s:%d]%s\n", __FILE__, __FUNCTION__, __LINE__, message);    \
+    com1_log_printf("[TEST PASSED][%s:%s:%u]%s\n", __FILE__, __FUNCTION__, __LINE__, message);    \
 } else {                                                                                          \
-    com1_log_printf("[TEST FAILED][%s:%s:%d]%s\n", __FILE__, __FUNCTION__, __LINE__, message);    \
+    com1_log_printf("[TEST FAILED][%s:%s:%u]%s\n", __FILE__, __FUNCTION__, __LINE__, message);    \
 }
 
 

@@ -7,36 +7,24 @@ extern kernel_info_t kernel_info;
 
 void multiboot_main(multiboot_info_t *info) {
     debug_log("Обработка Multiboot1 заголовка: ");
-    debug_log("flags: %x", info->flags);
-    debug_log("mem_lower: %x", info->mem_lower);
-    debug_log("mem_upper: %x", info->mem_upper);
-    debug_log("boot_device: %x", info->boot_device);
+    debug_log("flags: 0x%x", info->flags);
+    debug_log("mem_lower: 0x%x", info->mem_lower);
+    debug_log("mem_upper: 0x%x", info->mem_upper);
+    debug_log("boot_device: 0x%x", info->boot_device);
     debug_log("Модулей: %u", info->mods_count);
     debug_log("Строка: %s", info->cmdline);
-    {
-        multiboot_module_t *start = (multiboot_module_t*)info->mods_addr;
-        multiboot_module_t *entry = (multiboot_module_t*)start;
-        debug_log("entry %x, end %x, start %x", 
-            entry, 
+    multiboot_module_t *start = (multiboot_module_t*)info->mods_addr;
+    if (start) {
+        debug_log("end 0x%x, start 0x%x",
             (info->mods_addr + info->mods_count), 
             start);
         debug_log("Модули:");
-        entry = start;
-        size_t i = 0;
-        do {
-            if (entry == NULL) {
-                goto pars_end;
-            }
-
-            debug_log("->%s: %x", entry->cmdline, entry);
-            debug_log("\tНачало      =%x", entry->mod_start);
-            debug_log("\tКонец       =%x", entry->mod_end);
-            debug_log("\tРазмер      =%u", entry->mod_end - entry->mod_start);
-            entry++;
-            i++;
-        } while (i != info->mods_count);
-        
+        for (int i = 0; i < info->mods_count; i++) {
+            debug_log("->%s: 0x%x", start[i].cmdline, &start[i]);
+            debug_log("\tНачало      =0x%x", start[i].mod_start);
+            debug_log("\tКонец       =0x%x", start[i].mod_end);
+            debug_log("\tРазмер      =%u", start[i].mod_end - start[i].mod_start);
+        }
     }
-    pars_end:
     debug_log("bootloader_name: %s", info->bootloader_name);
 }

@@ -90,7 +90,7 @@ void kernel_startup(unsigned int eax, unsigned int ebx, unsigned int esp) {
     ports_outb(PORTS_COM1 + 2, 0xC7);
     ports_outb(PORTS_COM1 + 4, 0x0B);
     
-    debug_log("Структура multiboot %x", ebx);
+    debug_log("Структура multiboot 0x%x", ebx);
 
     uint32_t cpu = cpu_get_features();
 
@@ -120,14 +120,14 @@ void kernel_startup(unsigned int eax, unsigned int ebx, unsigned int esp) {
     //mm_evelina_multiboot_init(ebx, 8192);
     
 
-    debug_log("cpu: %x", cpu);
+    debug_log("cpu: 0x%x", cpu);
 
     
     com1_unit_test(dt_init(), "Настройка таблиц дескрипторов");
 
     //arch_cpuid_test();
 
-    debug_log("cpu: %x", cpu);
+    debug_log("cpu: 0x%x", cpu);
 
     if (cpu & 0x1) {
         debug_log("Имеется FPU");
