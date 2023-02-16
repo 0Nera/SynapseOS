@@ -15,7 +15,7 @@
 #include <libk.h>
 
 
-static bool sheduler_busy = false;
+static bool sheduler_busy = true;
 static pid_t sheduler_pid_counter = 0;
 static uint8_t current_process_priority = 0;
 pid_t  next_thread_id = 0;

@@ -121,15 +121,10 @@ void kernel_startup(unsigned int eax, unsigned int ebx, unsigned int esp) {
     
 
     debug_log("cpu: %x", cpu);
-    //mm_init(0x100000, 0x3EE0000);
 
     
     com1_unit_test(dt_init(), "Настройка таблиц дескрипторов");
 
-    //com1_unit_test(pmm_init(), "Настройка менеджера физической памяти");
-
-    //com1_unit_test(kheap_init((uint8_t*)(0x1000000)), "Инициализация кучи ядра");
-    //com1_unit_test(kheap_init((uint8_t*)(&KERNEL_END)), "Инициализация кучи ядра");
     //arch_cpuid_test();
 
     debug_log("cpu: %x", cpu);
@@ -144,7 +139,7 @@ void kernel_startup(unsigned int eax, unsigned int ebx, unsigned int esp) {
         debug_log("Имеется SSE");
     }
     
-    //vesa_init(ebx);
+    vesa_init(ebx);
 
     kernel_canvas = oxygen_alloc(sizeof(canvas_t));
 
@@ -156,7 +151,7 @@ void kernel_startup(unsigned int eax, unsigned int ebx, unsigned int esp) {
     
     //com1_unit_test(sheduler_init(), "Настройка планировщика задач");
     
-    //text_init();
+    text_init();
 
     //graf_install();
 
@@ -167,7 +162,7 @@ void kernel_startup(unsigned int eax, unsigned int ebx, unsigned int esp) {
     
     // Вызываем ядро SynapseOS
 
-    //kernel_init(kernel_info, kernel_size);
+    kernel_init(kernel_info, kernel_size);
 
     debug_log("Ядро завершило инициализацию");
 
