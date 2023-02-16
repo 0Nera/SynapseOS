@@ -33,7 +33,7 @@ void i686_free(void *addr) {
 extern canvas_t *kernel_canvas;
 
 // Информация о дистрибутиве
-kernel_info_t kernel_info = {
+const kernel_info_t kernel_info = {
     "SynapseOS core", 
     {
         0, 3, 18
