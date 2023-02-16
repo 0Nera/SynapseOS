@@ -115,7 +115,7 @@ extern process_t *current_process;
  * @brief Функция переключение задачи
  * 
  */
-void sheduler_switch();
+void scheduler_switch();
 
 
 /**
@@ -124,7 +124,7 @@ void sheduler_switch();
  * @return true В случае успеха
  * @return false В случае провала
  */
-bool sheduler_init();
+bool scheduler_init();
 
 
 /**
@@ -134,7 +134,7 @@ bool sheduler_init();
  * @return true В случае успеха
  * @return false В случае ошибки
  */
-bool sheduler_create_process(process_t *process);
+bool scheduler_create_process(process_t *process);
 
 
 /**
@@ -145,7 +145,7 @@ bool sheduler_create_process(process_t *process);
  * @param priority Приоритет
  * @return thread_t* Указатель на структуру потока
  */
-thread_t *sheduler_create_task(process_t *process,
+thread_t *scheduler_create_task(process_t *process,
                         uintptr_t entry_point,
                         uint8_t priority
                         );

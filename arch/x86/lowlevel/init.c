@@ -149,7 +149,7 @@ void kernel_startup(unsigned int eax, unsigned int ebx, unsigned int esp) {
     kernel_canvas->bpp = multiboot_framebuffer_bpp;
     kernel_canvas->framebuffer = multiboot_framebuffer;
     
-    //com1_unit_test(sheduler_init(), "Настройка планировщика задач");
+    //com1_unit_test(scheduler_init(), "Настройка планировщика задач");
     
     text_init();
 

@@ -1,5 +1,5 @@
 /**
- * @file sheduler.c
+ * @file scheduler.c
  * @author Арен Елчинян (a2.dev@yandex.com)
  * @brief 
  * @version 0.1.0
@@ -15,8 +15,8 @@
 #include <libk.h>
 
 
-static bool sheduler_busy = true;
-static pid_t sheduler_pid_counter = 0;
+static bool scheduler_busy = true;
+static pid_t scheduler_pid_counter = 0;
 static uint8_t current_process_priority = 0;
 pid_t  next_thread_id = 0;
 extern uintptr_t *kernel_page_dir;
@@ -35,7 +35,7 @@ thread_t  *current_thread;
  * @brief Инициализация планировщика задач
  * 
  */
-bool sheduler_init() {
+bool scheduler_init() {
     uintptr_t esp;
     char *name = "GENESIS"; 
 
@@ -43,7 +43,7 @@ bool sheduler_init() {
     asm volatile("mov %%esp, %0" : "=r"(esp));
 
     asm volatile ("cli");
-    sheduler_lock();
+    scheduler_lock();
 
     list_init(&process_list);
     list_init(&thread_list);
@@ -52,7 +52,7 @@ bool sheduler_init() {
 
     memset(kernel_process, 0, sizeof(process_t));
 
-    kernel_process->pid = sheduler_pid_counter++;
+    kernel_process->pid = scheduler_pid_counter++;
     kernel_process->page_dir = kernel_page_dir;
     kernel_process->threads_count = 1;
     kernel_process->priority = 1;
@@ -74,7 +74,7 @@ bool sheduler_init() {
     current_process = kernel_process;
     current_thread = kernel_thread;
    
-    sheduler_unlock();
+    scheduler_unlock();
    
     asm volatile ("sti");
 
@@ -87,8 +87,8 @@ bool sheduler_init() {
  * @brief Смена задачи
  * 
  */
-void sheduler_switch() {
-    if (sheduler_busy) {
+void scheduler_switch() {
+    if (scheduler_busy) {
         // Если смена задач заблокированна
     } else {
         asm volatile ("pushf; cli");
@@ -116,8 +116,8 @@ void sheduler_switch() {
  * @brief Блокировка смены задач
  * 
  */
-void sheduler_lock() {
-    sheduler_busy = true;
+void scheduler_lock() {
+    scheduler_busy = true;
 }
 
 
@@ -125,17 +125,17 @@ void sheduler_lock() {
  * @brief Разблокировка смены задач
  * 
  */
-void sheduler_unlock() {
-    sheduler_busy = false;
+void scheduler_unlock() {
+    scheduler_busy = false;
 }
 
 
-pid_t sheduler_add_pid() {
-    return sheduler_pid_counter++;
+pid_t scheduler_add_pid() {
+    return scheduler_pid_counter++;
 }
 
 
-thread_t *sheduler_create_task(process_t *process,
+thread_t *scheduler_create_task(process_t *process,
                         uintptr_t entry_point,
                         uint8_t priority
                         ) {

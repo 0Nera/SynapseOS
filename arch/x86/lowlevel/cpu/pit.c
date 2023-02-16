@@ -39,7 +39,7 @@ static void timer_callback(register_t *regs) {
 
         #endif
 
-        sheduler_switch();
+        scheduler_switch();
     }
 }
 

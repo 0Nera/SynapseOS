@@ -67,7 +67,7 @@ bool oxygen_init(void *adress, size_t length) {
  * @param block Номер блока
  */
 void oxygen_free(void *ptr) {
-    sheduler_lock();
+    scheduler_lock();
     oxygen_mem_entry_t *now = (oxygen_mem_entry_t*)ptr - 256;
     debug_log("now 0x%x - 256", now);
     //oxygen_dump_block(now);
@@ -78,12 +78,12 @@ void oxygen_free(void *ptr) {
     last->next = next;
     next->prev = last;
     memset(now, 0, sizeof(oxygen_mem_entry_t));
-    sheduler_unlock();
+    scheduler_unlock();
 }
 
 
 void *oxygen_alloc(size_t length) {
-    sheduler_lock();
+    scheduler_lock();
     oxygen_mem_entry_t *last = oxygen_find_free(length);
 
     if (oxygen_mem_end <= (length + last->addr + last->size)) {
@@ -101,7 +101,7 @@ void *oxygen_alloc(size_t length) {
     last->next = new;
 
 
-    sheduler_unlock();
+    scheduler_unlock();
     return new->addr;
 }
 
