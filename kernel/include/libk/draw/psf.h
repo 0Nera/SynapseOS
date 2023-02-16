@@ -64,9 +64,7 @@ typedef struct {
     uint8_t glyphs;
 } psf2_t;
 
-//extern psf_t *_binary_files_fonts_SynapseOS_UniCyr_8x16_psf_start;
-//extern psf2_t *_binary_font_psf2_psf_start;
-extern psf_t *_binary_kernel_src_graf_font_psf_start;
+extern psf_t _binary_kernel_src_graf_font_psf_start;
 
 
 #endif // psf.h

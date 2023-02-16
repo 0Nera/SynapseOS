@@ -37,10 +37,6 @@ uint8_t *kernel_framebuffer = NULL;
 canvas_t *kernel_canvas;
 
 
-extern void process_checker();
-extern void pow_worker();
-
-
 /*
     Стоял я молча в стороне
     И пасть готов был на колени,-
@@ -58,7 +54,7 @@ extern void pow_worker();
  */
 void kernel_init(kernel_info_t info, size_t size, process_t *kernel_process) {
     char name[] = "USER1";
-    char hash[65] = {0};
+    char hash[65] = "";
 
     /**
      * @brief Настраиваем указатели на важные функции
@@ -66,18 +62,18 @@ void kernel_init(kernel_info_t info, size_t size, process_t *kernel_process) {
      */
     kernel_size = size;
     kernel_framebuffer = kernel_canvas->framebuffer;
-    kprinf = info.prinf;
+    kprintf = info.prinf;
 
 
     debug_log("Ядро SynapseOS запущенно, ядро потребляет: %u килобайт", kernel_size);
     debug_log("%s, %u.%u.%u. [%s]", info.name, info.version.major, info.version.minor, info.version.patch, __TIMESTAMP__);
     debug_log("%ux%u - 0x%x", kernel_canvas->width, kernel_canvas->height, kernel_framebuffer);
     
-    kprinf("%s %u.%u.%u based on SynapseOS-core(private) loaded, build: %s. Kernel use: %ukb memory\n",
+    kprintf("%s %u.%u.%u based on SynapseOS-core(private) loaded, build: %s. Kernel use: %ukb memory\n",
         info.name, info.version.major, info.version.minor, info.version.patch, __TIMESTAMP__,
         kernel_size);
     
-    kprinf("Username: %s\tUID: %s\n", name, hash);
-    kprinf("%ux%ux%d - 0x%x", kernel_canvas->width, kernel_canvas->height, kernel_canvas->bpp, kernel_framebuffer);
-    kprinf("\tModules loaded: physical %u, virtual: %u, total: %u\n", info.mod_count, info.mod_v_count, info.mod_count + info.mod_v_count);
+    kprintf("Username: %s\tUID: %s\n", name, hash);
+    kprintf("%ux%ux%u - 0x%x", kernel_canvas->width, kernel_canvas->height, kernel_canvas->bpp, kernel_framebuffer);
+    kprintf("\tModules loaded: physical %u, virtual: %u, total: %u\n", info.mod_count, info.mod_v_count, info.mod_count + info.mod_v_count);
 }

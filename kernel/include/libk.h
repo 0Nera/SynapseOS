@@ -177,6 +177,7 @@ int32_t strcmp(const char *string1, const char *string2);
 void* memmove(void* dst, void* src, size_t n);
 int32_t memcmp(const void *s1, const void *s2, size_t n);
 char *strcpy(char *dest, const char *src);
+int pow(int x, unsigned int y);
 bool multiboot2_init(unsigned int addr);
 
 #include <libk/draw.h>
