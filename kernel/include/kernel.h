@@ -40,14 +40,14 @@ typedef struct {
  * @brief Адрес на функцию отладки
  * 
  */
-void (*debug_log_printf)(const char *format_string, ...);
+extern void (*debug_log_printf)(const char *format_string, ...);
 
 
 /**
  * @brief Адрес на функцию отладки для ядра
  * 
  */
-void (*kprinf)(const char *format_string, ...);
+extern void (*kprinf)(const char *format_string, ...);
 
 
 #ifdef DEBUG

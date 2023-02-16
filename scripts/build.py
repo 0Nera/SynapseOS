@@ -18,10 +18,10 @@ CC = f"{ARCH}-elf-gcc -w"  #  -march=i586
 
 CC_GCC = f"" # f"-finput-charset=unicode -fexec-charset=unicode -finput-charset=utf8 -fexec-charset=utf8"
 CC_OPTIM = f"-Wall -Wextra -O0"
-CC_PROTECT = f"-mno-sse -ffreestanding"
-CC_FLAGS = f"{CC_PROTECT} {DEBUG_FLAGS} {CC_OPTIM} -I kernel//include// -I arch//{ARCH_DIR}//include// -c "
+CC_PROTECT = f"-mno-sse -ffreestanding -fno-stack-protector -nostdlib"
+CC_FLAGS = f"{CC_PROTECT} {DEBUG_FLAGS} {CC_OPTIM} -I kernel//include// -I arch//{ARCH_DIR}//include// -c -fPIE -fPIC"
 
-LD_FLAGS = f"{CC_GCC} -n -T arch//{ARCH_DIR}//link.ld -nostdlib -O0 "
+LD_FLAGS = f"{CC_GCC} {CC_PROTECT}  -T arch//{ARCH_DIR}//link.ld -nostdlib -O0 "
 
 
 ''' Сборка ядра '''

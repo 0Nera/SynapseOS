@@ -13,6 +13,19 @@
 
 #include <libk.h>
 
+/**
+ * @brief Адрес на функцию отладки
+ * 
+ */
+void (*debug_log_printf)(const char *format_string, ...);
+
+
+/**
+ * @brief Адрес на функцию отладки для ядра
+ * 
+ */
+void (*kprinf)(const char *format_string, ...);
+
 
 /**
  * @brief Вычисление длины строки
