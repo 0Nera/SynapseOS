@@ -4,7 +4,7 @@ import os
 import time
 import glob
 import shutil
-
+import argparse
 
 SRC_TARGETS = []
 BIN_TARGETS = []
@@ -14,7 +14,8 @@ ARCH_DIR = "x86" # "x86_64", "arm", "e2k"
 
 DEBUG_FLAGS = f"-D DEBUG=1"
 
-CC = f"{ARCH}-elf-gcc -w"  #  -march=i586
+CC = f"{ARCH}-elf-gcc"  #  -march=i586
+LD = f"{ARCH}-elf-gcc"  #  -march=i586
 
 CC_GCC = f"" # f"-finput-charset=unicode -fexec-charset=unicode -finput-charset=utf8 -fexec-charset=utf8"
 CC_OPTIM = f"-Wall -Wextra -O0"
@@ -50,11 +51,11 @@ def build_kernel():
     
     BIN_TARGETS.append("bin//font_psf.o")
 
-    print(f"{ARCH}-elf-ld -r -b binary -o bin//font_psf.o kernel/src/graf/font.psf")
-    os.system(f"{ARCH}-elf-ld -r -b binary -o bin//font_psf.o kernel/src/graf/font.psf")
+    print(f"{LD} -r -b binary -o bin//font_psf.o kernel/src/graf/font.psf")
+    os.system(f"{LD} -r -b binary -o bin//font_psf.o kernel/src/graf/font.psf")
     
-    print(f"{CC} {LD_FLAGS} -o isodir//boot//kernel.elf {' '.join(str(x) for x in BIN_TARGETS)}")
-    os.system(f"{CC} {LD_FLAGS} -o isodir//boot//kernel.elf {' '.join(str(x) for x in BIN_TARGETS)}")
+    print(f"{LD} {LD_FLAGS} -o isodir//boot//kernel.elf {' '.join(str(x) for x in BIN_TARGETS)}")
+    os.system(f"{LD} {LD_FLAGS} -o isodir//boot//kernel.elf {' '.join(str(x) for x in BIN_TARGETS)}")
     
 	
 ''' Генерация документации '''
@@ -86,6 +87,17 @@ def build_iso_limine():
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='SynapseOS build helper')
+    parser.add_argument('-compiler', help='build with your compiler')
+    parser.add_argument('-linker', help='build with your linker')
+    args = parser.parse_args()
+
+    if args.compiler != None:
+        CC = args.compiler
+
+    if args.linker != None:
+        CC = args.linker
+
     start_time = time.time()
     build_kernel()
     print(f"Сборка ядра заняла: {(time.time() - start_time):2f} секунд.")
