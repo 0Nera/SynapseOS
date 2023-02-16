@@ -21,7 +21,7 @@ extern uint32_t multiboot_framebuffer_pitch;
 extern uint32_t multiboot_framebuffer_bpp;
 
 void vesa_put_pixel(int x, int y, uint32_t color) {
-    uint32_t where = x * (multiboot_framebuffer_bpp / 8 - 3) + y * (multiboot_framebuffer_pitch  / 4);
+    uint32_t where = x * (multiboot_framebuffer_bpp / 8) + y * (multiboot_framebuffer_pitch);
     multiboot_framebuffer[where] = color;
 }
 

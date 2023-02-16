@@ -100,6 +100,6 @@ if __name__ == '__main__':
 
     if ARCH == "i686":
         QEMU_DEV = f"-device rtl8139,id=nic0"
-        QEMU = f"qemu-system-i386 -m 128 -d guest_errors -no-reboot {QEMU_DEV} -cpu pentium3 "
+        QEMU = f"qemu-system-i386 -m 128 -d guest_errors -no-reboot {QEMU_DEV} " # -cpu pentium3
         
         os.system(f"{QEMU} -monitor stdio -cdrom SynapseOS-limine.iso -serial file:serial.log")
