@@ -19,7 +19,7 @@
  * @brief Загрузка регистра GDT 
  * 
  */
-extern void gdt_flush(uint32_t);
+extern void gdt_flush(void*);
 
 
 /**
@@ -33,7 +33,10 @@ gdt_entry_t    gdt_entries[5];
  * @brief Структура указателей на GDT 
  * 
  */
-gdt_ptr_t      gdt_ptr;
+const gdt_ptr_t gdt_ptr = {
+    .limit = (sizeof(gdt_entries)) - 1,
+    .base = (uint32_t) &gdt_entries,
+};
 
 
 /**
@@ -47,14 +50,17 @@ idt_entry_t  idt_entries[256];
  * @brief Структура указателей размещения IDT
  * 
  */
-idt_ptr_t    idt_ptr;
+const idt_ptr_t idt_ptr = {
+    .limit = sizeof(idt_entries) - 1,
+    .base = (uint32_t) &idt_entries,
+};
 
 
 /**
  * @brief Загрузка рагистра IDTR - внешняя ассемблерная функция
  * 
  */
-extern void idt_flush(uint32_t);
+extern void idt_flush(void*);
 
 
 /**
@@ -99,10 +105,6 @@ void gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, ui
  */
 void gdt_init() {
     debug_log("[GDT]");
-    /* Определяем размер GDT */
-    gdt_ptr.limit = (sizeof(gdt_entry_t)*5) - 1;
-    /* Вычисляем адрес размещения GDT в памяти*/
-    gdt_ptr.base = (uint32_t) &gdt_entries;
         
     /* Нулевой дескриптор */
     gdt_set_gate(0, 0, 0, 0, 0);   
@@ -116,7 +118,7 @@ void gdt_init() {
     gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF);   
 
     /* Включаем сегментную адресацию  */
-    gdt_flush((uint32_t)&gdt_ptr);
+    gdt_flush(&gdt_ptr);
 }
 
 
@@ -138,19 +140,14 @@ void idt_set_gate(uint8_t num, uint32_t base, uint16_t selector, uint8_t flags) 
     idt_entries[num].flags = flags;
 }
 
-
-
 /**
  * @brief Инициализация таблицы векторов прерываний
  * 
  */
 void idt_init() {
     debug_log("[IDT]");
-
-    idt_ptr.limit = sizeof(idt_entry_t)*256 - 1;
-    idt_ptr.base = (uint32_t) &idt_entries;
     
-    memset(&idt_entries, 0, sizeof(idt_entry_t)*256);   
+    memset(&idt_entries, 0, sizeof(idt_entries));   
 
     ports_outb(0x20, PIC1_ICW1);
     ports_outb(0xA0, PIC2_ICW1);
@@ -166,6 +163,8 @@ void idt_init() {
     
     ports_outb(0x21, 0x00);
     ports_outb(0xA1, 0x00);
+
+    idt_flush(&idt_ptr);
 }
 
 
@@ -179,8 +178,6 @@ bool dt_init() {
     gdt_init();
     idt_init();
     int_init();
-
-    idt_flush((uint32_t)&idt_ptr);
     
     return true;
 }
