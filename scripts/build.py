@@ -15,7 +15,7 @@ ARCH_DIR = "x86" # "x86_64", "arm", "e2k"
 DEBUG_FLAGS = f"-D DEBUG=1"
 
 CC = f"{ARCH}-elf-gcc"  #  -march=i586
-LD = f"{ARCH}-elf-gcc"  #  -march=i586
+LD = f"{ARCH}-elf-ld"  #  -march=i586
 
 CC_GCC = f"" # f"-finput-charset=unicode -fexec-charset=unicode -finput-charset=utf8 -fexec-charset=utf8"
 CC_OPTIM = f"-Wall -Wextra -O0"
@@ -54,8 +54,8 @@ def build_kernel():
     print(f"{LD} -r -b binary -o bin//font_psf.o kernel/src/graf/font.psf")
     os.system(f"{LD} -r -b binary -o bin//font_psf.o kernel/src/graf/font.psf")
     
-    print(f"{LD} {LD_FLAGS} -o isodir//boot//kernel.elf {' '.join(str(x) for x in BIN_TARGETS)}")
-    os.system(f"{LD} {LD_FLAGS} -o isodir//boot//kernel.elf {' '.join(str(x) for x in BIN_TARGETS)}")
+    print(f"{CC} {LD_FLAGS} -o isodir//boot//kernel.elf {' '.join(str(x) for x in BIN_TARGETS)}")
+    os.system(f"{CC} {LD_FLAGS} -o isodir//boot//kernel.elf {' '.join(str(x) for x in BIN_TARGETS)}")
     
 	
 ''' Генерация документации '''
