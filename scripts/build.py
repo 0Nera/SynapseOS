@@ -26,6 +26,7 @@ CC_FLAGS = f"{CC_PROTECT} {DEBUG_FLAGS} {CC_OPTIM} -I kernel//include// -I arch/
 LD_FLAGS = f"{CC_GCC} -T arch//{ARCH_DIR}//link.ld -nostdlib -O0 "
 
 def exec_cmd(cmd):
+    print(cmd)
     if os.system(cmd) != 0:
         sys.exit(1)
 
@@ -51,14 +52,10 @@ def build_kernel():
 
     for i in range(0, len(SRC_TARGETS)):
         exec_cmd(f"{CC} {DEBUG_FLAGS} {CC_FLAGS} {SRC_TARGETS[i]} -o {BIN_TARGETS[i]}")
-        print(f"{CC} {CC_FLAGS} {SRC_TARGETS[i]} -o {BIN_TARGETS[i]}")
     
     BIN_TARGETS.append("bin//font_psf.o")
 
-    print(f"{LD} -r -b binary -o bin//font_psf.o kernel/src/graf/font.psf")
     exec_cmd(f"{LD} -r -b binary -o bin//font_psf.o kernel/src/graf/font.psf")
-    
-    print(f"{CC} {LD_FLAGS} -o isodir//boot//kernel.elf {' '.join(str(x) for x in BIN_TARGETS)}")
     exec_cmd(f"{CC} {LD_FLAGS} -o isodir//boot//kernel.elf {' '.join(str(x) for x in BIN_TARGETS)}")
     
 	
