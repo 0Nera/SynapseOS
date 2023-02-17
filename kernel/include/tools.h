@@ -11,7 +11,7 @@
  */
 
 #ifndef _TOOLS_H
-#define _TOOLS_H 1
+#define _TOOLS_H
 
 /**
  * @brief Для неиспользуемых переменных

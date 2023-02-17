@@ -11,7 +11,7 @@
  */
 
 #ifndef _LIBK_H
-#define _LIBK_H 1
+#define _LIBK_H
 
 #define MODULE(name)
 

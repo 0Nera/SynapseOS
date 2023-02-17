@@ -15,7 +15,7 @@
 #include <libk.h>
 
 #ifndef _COM1_LOG_H
-#define _COM1_LOG_H 1
+#define _COM1_LOG_H
 
 /**
  * @brief Сохранение области памяти в лог

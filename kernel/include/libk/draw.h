@@ -13,7 +13,7 @@
 #include <libk.h>
 
 #ifndef _LIBK_DRAW_H
-#define _LIBK_DRAW_H 1
+#define _LIBK_DRAW_H
 
 /**
  * @brief Структура холста

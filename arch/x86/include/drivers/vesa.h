@@ -11,7 +11,7 @@
  */
 
 #ifndef _DRIVER_VESA_H
-#define _DRIVER_VESA_H 0
+#define _DRIVER_VESA_H
 
 #include <multiboot.h>
 

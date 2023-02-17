@@ -13,7 +13,7 @@
 #include <libk.h>
 
 #ifndef _VERSIONS_H
-#define _VERSIONS_H 1
+#define _VERSIONS_H
 
 /**
  * @brief Структура для хранения версий

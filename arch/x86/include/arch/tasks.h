@@ -15,7 +15,7 @@
 #include <mm/oxygen.h>
 
 #ifndef _TASKS_H
-#define _TASKS_H 1
+#define _TASKS_H
 
 /**
  * @brief Регистры получаемые при обработке прерываний

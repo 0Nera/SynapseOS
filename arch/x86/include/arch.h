@@ -13,7 +13,7 @@
 #include <libk.h>
 
 #ifndef _ARCH_H
-#define _ARCH_H 1
+#define _ARCH_H
 
 #include <arch/dt.h>
 #include <arch/int.h>

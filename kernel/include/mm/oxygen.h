@@ -16,7 +16,7 @@
 #include <multiboot.h>
 
 #ifndef _OXYGEN_H
-#define _OXYGEN_H 1
+#define _OXYGEN_H
 
 struct oxygen_mem_entry {
     struct oxygen_mem_entry* next;

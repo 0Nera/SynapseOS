@@ -16,7 +16,7 @@
 #include <versions.h>
 
 #ifndef _KERNEL_H
-#define _KERNEL_H 1
+#define _KERNEL_H
 
 /**
  * @brief Структура для хранения информации о системе

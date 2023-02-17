@@ -11,7 +11,7 @@
  */
 
 #ifndef _GRAF_H
-#define _GRAF_H 0
+#define _GRAF_H
 
 bool graf_install();
 

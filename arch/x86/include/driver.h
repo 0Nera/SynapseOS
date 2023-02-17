@@ -15,7 +15,7 @@
 #include <libk.h>
 
 #ifndef _DRIVER_H
-#define _DRIVER_H 0
+#define _DRIVER_H
 
 typedef struct {
     bool (*init)(int argc, uintptr_t* argv);

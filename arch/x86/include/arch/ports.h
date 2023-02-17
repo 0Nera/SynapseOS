@@ -13,7 +13,7 @@
 #include <libk.h>
 
 #ifndef _PORTS_H
-#define _PORTS_H 1
+#define _PORTS_H
 
 #if (defined __i386__ || defined __x86_64__)
 

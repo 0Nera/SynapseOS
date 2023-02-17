@@ -13,7 +13,7 @@
 #include <libk.h>
 
 #ifndef _DT_H
-#define _DT_H 1
+#define _DT_H
 
 #if (defined __i386__ || defined __x86_64__)
 

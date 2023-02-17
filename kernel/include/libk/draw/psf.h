@@ -13,7 +13,7 @@
 #include <libk.h>
 
 #ifndef _PSF_DRAW_H
-#define _PSF_DRAW_H 1
+#define _PSF_DRAW_H
 
 #define PSF_V1 0x01
 #define PSF_V2 0x02
