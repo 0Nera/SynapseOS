@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import os
+import sys
 import time
 import glob
 import shutil
@@ -22,8 +23,11 @@ CC_OPTIM = f"-Wall -Wextra -O0"
 CC_PROTECT = f"-mno-sse -ffreestanding -fno-stack-protector -nostdlib"
 CC_FLAGS = f"{CC_PROTECT} {DEBUG_FLAGS} {CC_OPTIM} -I kernel//include// -I arch//{ARCH_DIR}//include// -c -fPIE -fPIC"
 
-LD_FLAGS = f"{CC_GCC} {CC_PROTECT}  -T arch//{ARCH_DIR}//link.ld -nostdlib -O0 "
+LD_FLAGS = f"{CC_GCC} -T arch//{ARCH_DIR}//link.ld -nostdlib -O0 "
 
+def exec_cmd(cmd):
+    if os.system(cmd) != 0:
+        sys.exit(1)
 
 ''' Сборка ядра '''
 def build_kernel():
@@ -46,16 +50,16 @@ def build_kernel():
         os.mkdir("bin//kernel//")
 
     for i in range(0, len(SRC_TARGETS)):
-        os.system(f"{CC} {DEBUG_FLAGS} {CC_FLAGS} {SRC_TARGETS[i]} -o {BIN_TARGETS[i]}")
+        exec_cmd(f"{CC} {DEBUG_FLAGS} {CC_FLAGS} {SRC_TARGETS[i]} -o {BIN_TARGETS[i]}")
         print(f"{CC} {CC_FLAGS} {SRC_TARGETS[i]} -o {BIN_TARGETS[i]}")
     
     BIN_TARGETS.append("bin//font_psf.o")
 
     print(f"{LD} -r -b binary -o bin//font_psf.o kernel/src/graf/font.psf")
-    os.system(f"{LD} -r -b binary -o bin//font_psf.o kernel/src/graf/font.psf")
+    exec_cmd(f"{LD} -r -b binary -o bin//font_psf.o kernel/src/graf/font.psf")
     
     print(f"{CC} {LD_FLAGS} -o isodir//boot//kernel.elf {' '.join(str(x) for x in BIN_TARGETS)}")
-    os.system(f"{CC} {LD_FLAGS} -o isodir//boot//kernel.elf {' '.join(str(x) for x in BIN_TARGETS)}")
+    exec_cmd(f"{CC} {LD_FLAGS} -o isodir//boot//kernel.elf {' '.join(str(x) for x in BIN_TARGETS)}")
     
 	
 ''' Генерация документации '''
@@ -75,13 +79,13 @@ def build_modules():
 def build_iso_limine():
     print("Сборка ISO limine")
     start_time = time.time()
-    os.system("""xorriso -as mkisofs -b limine-cd.bin \
+    exec_cmd("""xorriso -as mkisofs -b limine-cd.bin \
           -no-emul-boot -boot-load-size 4 -boot-info-table \
           --efi-boot limine-cd-efi.bin \
           -efi-boot-part --efi-boot-image --protective-msdos-label \
           isodir -o SynapseOS-limine.iso""")
     
-    os.system("limine-deploy SynapseOS-limine.iso")
+    exec_cmd("limine-deploy SynapseOS-limine.iso")
     
     print(f"Сборка ISO//Limine образа заняла: {(time.time() - start_time):2f} секунд.")
 
@@ -96,7 +100,7 @@ if __name__ == '__main__':
         CC = args.compiler
 
     if args.linker != None:
-        CC = args.linker
+        LD = args.linker
 
     start_time = time.time()
     build_kernel()
@@ -114,4 +118,4 @@ if __name__ == '__main__':
         QEMU_DEV = f"-device rtl8139,id=nic0"
         QEMU = f"qemu-system-i386 -m 128 -d guest_errors -no-reboot {QEMU_DEV} " # -cpu pentium3
         
-        os.system(f"{QEMU} -monitor stdio -cdrom SynapseOS-limine.iso -serial file:serial.log")
+        exec_cmd(f"{QEMU} -monitor stdio -cdrom SynapseOS-limine.iso -serial file:serial.log")
