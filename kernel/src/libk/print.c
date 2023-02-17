@@ -3,13 +3,15 @@
 
 static putc_ptr putc;
 
-static void puts(const char string[]) {
+static void puts(const char string[])
+{
     while (*string)
         putc(*string++);
 }
 
-static void printunum(uint32_t i, int32_t r) {
-    const unsigned char symbols[16]  =  { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+static void printunum(uint32_t i, int32_t r)
+{
+    const unsigned char symbols[16] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
     char str[33] = "";
     int index = sizeof(str) - 1;
 
@@ -21,19 +23,23 @@ static void printunum(uint32_t i, int32_t r) {
     puts(str + index);
 }
 
-static void printnum(int32_t i, int32_t r) {
-    if (i < 0) putc('-');
+static void printnum(int32_t i, int32_t r)
+{
+    if (i < 0)
+        putc('-');
     printunum(-i, r);
 }
 
-static void printfloat(double num, int after_point) {
-    int int_float = (int) num;
+static void printfloat(double num, int after_point)
+{
+    int int_float = (int)num;
     printnum(int_float, 10);
     putc('.');
     printunum(num * pow(10, after_point), 10);
 }
 
-void printf(putc_ptr f, const char *format_string, va_list args) {
+void printf(putc_ptr f, const char* format_string, va_list args)
+{
     putc = f;
     while (*format_string) {
         if (*format_string == '%') {

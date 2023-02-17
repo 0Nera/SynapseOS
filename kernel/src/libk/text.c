@@ -4,21 +4,21 @@
  * @brief Функции рисования
  * @version 0.1.0
  * @date 02-12-2022
- * 
- * @license This work is licensed under the Creative Commons  Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)  License. 
+ *
+ * @license This work is licensed under the Creative Commons  Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)  License.
  * @copyright Арен Елчинян (c) 2022 - 2023
- * 
+ *
  */
 
 #include <arch.h>
 #include <drivers/vesa.h>
-#include <libk.h>
 #include <kernel.h>
+#include <libk.h>
 #include <print.h>
 
-extern canvas_t *kernel_canvas;
+extern canvas_t* kernel_canvas;
 
-static psf_t *_font_ptr = NULL;
+static psf_t* _font_ptr = NULL;
 static bool _init = false;
 static uint8_t _width = 8;
 static uint8_t _height = 0;
@@ -26,7 +26,8 @@ static uint16_t screen_x = 0;
 static uint16_t screen_y = 0;
 static uint32_t screen_color = 0x55FFFF;
 
-bool text_init() {
+bool text_init()
+{
     _font_ptr = &_binary_kernel_src_graf_font_psf_start;
 
     if (_font_ptr->magic[0] != PSF1_MAGIC0 || _font_ptr->magic[1] != PSF1_MAGIC1) {
@@ -39,27 +40,31 @@ bool text_init() {
     return _init;
 }
 
-unsigned char *psf1_get_glyph(int16_t character) {
+unsigned char* psf1_get_glyph(int16_t character)
+{
     if ((_font_ptr->mode == 1 && character < 512) || character < 256)
         return ((unsigned char*)_font_ptr) + sizeof(psf_t) + (character * _height);
 
     return NULL;
 }
 
-void draw_vga_character(int16_t c, int pos_x, int pos_y, int color) {
-    unsigned char *glyph = psf1_get_glyph(c);
-    if (!glyph) return;
+void draw_vga_character(int16_t c, int pos_x, int pos_y, int color)
+{
+    unsigned char* glyph = psf1_get_glyph(c);
+    if (!glyph)
+        return;
 
-    for (size_t y = 0; y < _height; y++){
-        for (size_t x = 0; x < _width; x++){
-            if (glyph[y] & (1 << (_width - x))){
-                vesa_put_pixel(pos_x+x,pos_y+y,color);
+    for (size_t y = 0; y < _height; y++) {
+        for (size_t x = 0; x < _width; x++) {
+            if (glyph[y] & (1 << (_width - x))) {
+                vesa_put_pixel(pos_x + x, pos_y + y, color);
             }
         }
     }
 }
 
-void draw_text_string(const char *text, int len, int x, int y, int color) {
+void draw_text_string(const char* text, int len, int x, int y, int color)
+{
     for (int i = 0; i < len; i++) {
         if (x + 8 <= 1024) {
             draw_vga_character(text[i], x, y, color);
@@ -70,19 +75,20 @@ void draw_text_string(const char *text, int len, int x, int y, int color) {
     }
 }
 
-void text_putc(char c) {
-    switch(c) {
-        case '\n':
-            screen_x = 0;
-            screen_y += _height;
-            return;
-        case '\t':
-            screen_x += 4 * 8;
-            return;
-        default:
-            break;
+void text_putc(char c)
+{
+    switch (c) {
+    case '\n':
+        screen_x = 0;
+        screen_y += _height;
+        return;
+    case '\t':
+        screen_x += 4 * 8;
+        return;
+    default:
+        break;
     }
-    if(screen_x > kernel_canvas->width) {
+    if (screen_x > kernel_canvas->width) {
         screen_x = 0;
         screen_y += _height;
     }
@@ -92,19 +98,20 @@ void text_putc(char c) {
 
 /**
  * @brief Вывод на экран форматированной строки используя неопределенное количество аргументов
- * 
+ *
  * @param format_string Строка форматов
- * @param length 
+ * @param length
  * @param ... Аргументы
  */
-void text_printf(const char *format_string, ...) {
+void text_printf(const char* format_string, ...)
+{
     va_list args;
 
     // Ищем первый аргумент
     va_start(args, format_string);
 
     printf(text_putc, format_string, args);
-    
+
     // Освобождаем память
     va_end(args);
 }
