@@ -25,6 +25,7 @@
 
 #if (defined __i386__ || defined __x86_64__)
 
+void paging_init();
 
 /**
  * @brief Ожидание прерывания

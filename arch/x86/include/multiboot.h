@@ -269,6 +269,8 @@ struct multiboot_apm_info
   multiboot_uint16_t dseg_len;
 };
 
+void multiboot_main(multiboot_info_t *info);
+
 #endif /* ! ASM_FILE */
 
 #endif /* ! MULTIBOOT_HEADER */

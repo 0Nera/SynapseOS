@@ -19,7 +19,7 @@ void multiboot_main(multiboot_info_t *info) {
             (info->mods_addr + info->mods_count), 
             start);
         debug_log("Модули:");
-        for (int i = 0; i < info->mods_count; i++) {
+        for (uint32_t i = 0; i < info->mods_count; i++) {
             debug_log("->%s: 0x%x", start[i].cmdline, &start[i]);
             debug_log("\tНачало      =0x%x", start[i].mod_start);
             debug_log("\tКонец       =0x%x", start[i].mod_end);

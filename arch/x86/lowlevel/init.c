@@ -14,6 +14,7 @@
 #include <arch.h>           // Архитектурнозависимые функции
 #include <mm/oxygen.h>      // Менеджер памяти oxygen
 #include <drivers/com.h>    // COM порты
+#include <drivers/vesa.h>   // VESA
 #include <graf.h>           // Графические примитивы
 #include <kernel.h>         // Информация о системе и функции ОС
 #include <libk.h>           // Библиотека ядра
@@ -78,7 +79,7 @@ extern void *ui_module;
  * @param ebx Указатель на данные загрузчика
  * @param esp Стек
  */
-void kernel_startup(unsigned int eax, unsigned int ebx, unsigned int esp) {
+void kernel_startup(unsigned int eax, multiboot_info_t* ebx, unsigned int esp) {
     debug_log_printf = com1_log_printf;
     UNUSED(esp);
     

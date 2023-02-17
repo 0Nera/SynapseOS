@@ -21,7 +21,7 @@
 #define KERNEL_PAGE_TABLE       KERNEL_BASE_END             // Адрес страничной памяти (5мб)
 #define KERNEL_PAGE_TABLE_END   KERNEL_PAGE_TABLE + 0x400000// Конец страничной памяти (9мб), 
                                                             // в сумме 4мб на страницы
-uintptr_t *kernel_page_dir = KERNEL_PAGE_TABLE;    
+uintptr_t *kernel_page_dir = (uintptr_t*)KERNEL_PAGE_TABLE;    
 
 void paging_init() {
     

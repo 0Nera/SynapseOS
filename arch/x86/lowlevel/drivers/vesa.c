@@ -26,8 +26,8 @@ void vesa_put_pixel(int x, int y, uint32_t color) {
 }
 
 void vesa_put_rect(size_t x1, size_t y1, size_t x2, size_t y2, uint32_t color) {
-    for (int y = y1; y < y2; y++) {
-        for (int x = x1; x < x2; x++) {
+    for (size_t y = y1; y < y2; y++) {
+        for (size_t x = x1; x < x2; x++) {
             vesa_put_pixel(x, y, color);
         }
     }
@@ -57,7 +57,7 @@ void putLine(int x0, int y0, int x1, int y1, uint32_t color) {
 }
 
 void vesa_init(struct multiboot_info *info) {
-    multiboot_framebuffer = (uint8_t *)info->framebuffer_addr;
+    multiboot_framebuffer = (uint8_t *)(uintptr_t)info->framebuffer_addr;
     multiboot_framebuffer_pitch = info->framebuffer_pitch;
     multiboot_framebuffer_bpp=info->framebuffer_bpp;
     multiboot_framebuffer_width = info->framebuffer_width ;

@@ -63,7 +63,7 @@ void printf(putc_ptr f, const char *format_string, va_list args) {
                 puts(va_arg(args, char*));
                 break;
             case 'c':
-                putc(va_arg(args, char));
+                putc((char)va_arg(args, int));
                 break;
             }
         } else {

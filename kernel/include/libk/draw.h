@@ -39,7 +39,7 @@ typedef struct {
  * @param y Позиция по Y
  * @param ... Аргументы
  */
-void text_printf(const char *format_string, size_t length, uint32_t x, uint32_t y, ...);
+void text_printf(const char *format_string, ...);
 
 bool text_init();
 

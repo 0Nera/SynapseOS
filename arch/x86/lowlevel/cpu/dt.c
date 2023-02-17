@@ -19,7 +19,7 @@
  * @brief Загрузка регистра GDT 
  * 
  */
-extern void gdt_flush(void*);
+extern void gdt_flush(const void*);
 
 
 /**
@@ -60,7 +60,7 @@ const idt_ptr_t idt_ptr = {
  * @brief Загрузка рагистра IDTR - внешняя ассемблерная функция
  * 
  */
-extern void idt_flush(void*);
+extern void idt_flush(const void*);
 
 
 /**

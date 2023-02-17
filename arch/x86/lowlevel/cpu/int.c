@@ -233,6 +233,7 @@ static noreturn void stack_error() {
  * 
  */
 static noreturn void general_protection_error(int_registers_t *regs) {
+    UNUSED(regs);
     debug_log("[ERROR]GPT error");
 
     for(;;) {
@@ -246,6 +247,7 @@ static noreturn void general_protection_error(int_registers_t *regs) {
  * 
  */
 static noreturn void page_fault(int_registers_t *regs) {
+    UNUSED(regs);
     debug_log("[ERROR]Page fault");
 
     for(;;) {

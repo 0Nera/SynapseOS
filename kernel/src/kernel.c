@@ -53,6 +53,7 @@ canvas_t *kernel_canvas;
  * @param size Размер ядра в килобайтах
  */
 void kernel_init(kernel_info_t info, size_t size, process_t *kernel_process) {
+    UNUSED(kernel_process);
     char name[] = "USER1";
     char hash[65] = "";
 

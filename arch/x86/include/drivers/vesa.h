@@ -13,8 +13,9 @@
 #ifndef _DRIVER_VESA_H
 #define _DRIVER_VESA_H 0 
 
+#include <multiboot.h>
 
-bool vesa_init();
-
+void vesa_init(struct multiboot_info *info);
+void vesa_put_pixel(int x, int y, uint32_t color);
 
 #endif // vesa.h

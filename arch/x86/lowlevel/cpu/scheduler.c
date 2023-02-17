@@ -37,7 +37,6 @@ thread_t  *current_thread;
  */
 bool scheduler_init() {
     uintptr_t esp;
-    char *name = "GENESIS"; 
 
 
     asm volatile("mov %%esp, %0" : "=r"(esp));
@@ -136,11 +135,11 @@ pid_t scheduler_add_pid() {
 
 
 thread_t *scheduler_create_task(process_t *process,
-                        uintptr_t entry_point,
+                        void* entry_point,
                         uint8_t priority
                         ) {
     uint32_t stack_size = 4096;
-    uintptr_t    stack = NULL;
+    void*    stack = NULL;
     uintptr_t   eflags;
     
     asm volatile ("pushf; pop %0":"=r"(eflags));
@@ -153,7 +152,7 @@ thread_t *scheduler_create_task(process_t *process,
     tmp_thread->id = next_thread_id++;
     tmp_thread->process = process;
     tmp_thread->stack_size = stack_size;
-    tmp_thread->entry_point = (uintptr_t) entry_point;
+    tmp_thread->entry_point = entry_point;
 
     if (priority == 0) {
         tmp_thread->priority = process->priority;

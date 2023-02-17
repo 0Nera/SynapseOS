@@ -11,6 +11,7 @@
  */
 
 #include <arch.h>
+#include <drivers/vesa.h>
 #include <libk.h>
 #include <kernel.h>
 #include <print.h>
@@ -96,7 +97,7 @@ void text_putc(char c) {
  * @param length 
  * @param ... Аргументы
  */
-void text_printf(const char *format_string, size_t length, uint32_t x, uint32_t y, ...) {
+void text_printf(const char *format_string, ...) {
     va_list args;
 
     // Ищем первый аргумент

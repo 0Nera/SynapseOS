@@ -67,7 +67,7 @@ typedef struct {
     uint8_t     priority;       ///< Приоритет процесса
     pid_t       pid;            ///< Идентификатор процесса (PID)
     list_item_t list_item;      ///< Элемент списка
-    uintptr_t   page_dir;       ///< Каталог страниц
+    uintptr_t*  page_dir;       ///< Каталог страниц
     size_t      threads_count;  ///< Число потоков в этом процессе
     uint8_t     status;         ///< Состояние процесса
 } process_t;
@@ -80,9 +80,9 @@ typedef struct {
 typedef struct {
     pid_t       id;          ///< Идентификатор задачи
     uint8_t     priority;    ///< Приоритет задачи
-    void        *entry_point;///< Точка входа в задачу
+    void*       entry_point;///< Точка входа в задачу
     uint8_t     status;      ///< Состояние задачи
-    uintptr_t   stack;        ///< Указатель на стек    
+    void*       stack;        ///< Указатель на стек    
     uintptr_t   esp;         ///< Указатель на ESP    
     size_t      stack_size;  ///< Размер стека задачи
     list_item_t list_item;   ///< Элемент списка 
@@ -146,10 +146,21 @@ bool scheduler_create_process(process_t *process);
  * @return thread_t* Указатель на структуру потока
  */
 thread_t *scheduler_create_task(process_t *process,
-                        uintptr_t entry_point,
+                        void* entry_point,
                         uint8_t priority
                         );
 
+/**
+ * @brief Блокировка смены задач
+ * 
+ */
+void scheduler_lock();
+
+/**
+ * @brief Разблокировка смены задач
+ * 
+ */
+void scheduler_unlock();
 
 /**
  * @brief Поток неактивен

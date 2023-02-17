@@ -28,6 +28,7 @@ struct oxygen_mem_entry {
 typedef struct oxygen_mem_entry oxygen_mem_entry_t;
 
 oxygen_mem_entry_t *oxygen_find_free(size_t length);
+bool oxygen_multiboot_init(multiboot_info_t *info);
 int oxygen_dump_block(oxygen_mem_entry_t *entry);
 void oxygen_free(void *ptr);
 void *oxygen_alloc(size_t length);
