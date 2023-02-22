@@ -58,6 +58,9 @@ jobs:
         run: |
           echo "done!"
           ls
+          rm doxygen-1.9.5.linux.bin.tar.gz
+          zip -r env.zip ./
+
 
       # Публикация релиза
       - name: Publish release
@@ -72,4 +75,5 @@ jobs:
             LICENSE
             SynapseOS-limine.iso
             isodir/boot/kernel.elf
-            doxygen/rtf/refman.rtf
+            docs/doxygen/rtf/refman.rtf
+            env.zip
