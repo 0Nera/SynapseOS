@@ -17,6 +17,7 @@ DEBUG_FLAGS = f"-D DEBUG=1"
 
 CC = f"{ARCH}-elf-gcc"  #  -march=i586
 LD = f"{ARCH}-elf-ld"  #  -march=i586
+LIMINE_DEPLOY = "limine-deploy"
 
 CC_GCC = f"" # f"-finput-charset=unicode -fexec-charset=unicode -finput-charset=utf8 -fexec-charset=utf8"
 CC_OPTIM = f"-Wall -Wextra -O0"
@@ -82,7 +83,7 @@ def build_iso_limine():
           -efi-boot-part --efi-boot-image --protective-msdos-label \
           isodir -o SynapseOS-limine.iso""")
     
-    exec_cmd("limine-deploy SynapseOS-limine.iso")
+    exec_cmd(f"{LIMINE_DEPLOY} SynapseOS-limine.iso")
     
     print(f"Сборка ISO//Limine образа заняла: {(time.time() - start_time):2f} секунд.")
 
@@ -92,6 +93,7 @@ if __name__ == '__main__':
     parser.add_argument('-compiler', help='build with your compiler')
     parser.add_argument('-linker', help='build with your linker')
     parser.add_argument('-noqemu', help='Work without qemu')
+    parser.add_argument('-limine', help='build with your limine-deploy')
     args = parser.parse_args()
 
     if args.compiler != None:
@@ -99,6 +101,9 @@ if __name__ == '__main__':
 
     if args.linker != None:
         LD = args.linker
+
+    if args.limine != None:
+        LIMINE_DEPLOY = args.limine
 
     start_time = time.time()
     build_kernel()

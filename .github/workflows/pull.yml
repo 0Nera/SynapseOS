@@ -48,12 +48,13 @@ jobs:
           git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1
           make -C limine
           cp limine/BOOTIA32.EFI limine/BOOTX64.EFI limine/limine-cd-efi.bin limine/limine.sys limine/limine-cd.bin isodir/
-      
+          cp limine/limine-deploy ./
           
       # Запуск сборки ядра
       - name: Building  kernel
         run: | 
-          python3 scripts/build.py  -noqemu 1
+          python3 scripts/build.py -noqemu 1 -limine "./limine-deploy"
+          
   
       # Проверка релиза
       - name: Check publish
