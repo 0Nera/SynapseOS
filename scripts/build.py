@@ -76,7 +76,6 @@ def build_modules():
 ''' Сборка ISO limine '''
 def build_iso_limine():
     print("Сборка ISO limine")
-    start_time = time.time()
     exec_cmd("""xorriso -as mkisofs -b limine-cd.bin \
           -no-emul-boot -boot-load-size 4 -boot-info-table \
           --efi-boot limine-cd-efi.bin \
@@ -85,7 +84,6 @@ def build_iso_limine():
     
     exec_cmd(f"{LIMINE_DEPLOY} SynapseOS-limine.iso")
     
-    print(f"Сборка ISO//Limine образа заняла: {(time.time() - start_time):2f} секунд.")
 
 
 if __name__ == '__main__':
@@ -113,12 +111,16 @@ if __name__ == '__main__':
     build_modules()
     print(f"Сборка модулей заняла: {(time.time() - start_time):2f} секунд.")
     
+    start_time = time.time()
     build_iso_limine()
+    print(f"Сборка ISO//Limine образа заняла: {(time.time() - start_time):2f} секунд.")
+    
+    start_time = time.time()
+    build_docs()
+    print(f"Проверка и генерация документации заняла: {(time.time() - start_time):2f} секунд.")
 
-    #build_docs()
 
-
-    if args.noqemu != 1 and args.noqemu != None:
+    if args.noqemu == 1 and args.noqemu != None:
         if ARCH == "i686":
             QEMU_DEV = f"-device rtl8139,id=nic0"
             QEMU = f"qemu-system-i386 -m 128 -d guest_errors -no-reboot {QEMU_DEV} " # -cpu pentium3
