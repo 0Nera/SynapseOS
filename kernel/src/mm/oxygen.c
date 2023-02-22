@@ -16,11 +16,12 @@
 #include <mm/oxygen.h>
 #include <multiboot.h>
 
-static void* oxygen_mem_start;
-static void* oxygen_mem_end;
+static void *oxygen_mem_start;
+static void *oxygen_mem_end;
 static size_t oxygen_mem_free;
 static size_t oxygen_mem_all;
-static oxygen_mem_entry_t* first_node;
+static oxygen_mem_entry_t *first_node;
+
 
 /**
  * @brief Инициализация менеджера памяти "Кислород"
@@ -29,110 +30,76 @@ static oxygen_mem_entry_t* first_node;
  * @param length Размер области
  * @return bool True в случае успеха
  */
-bool oxygen_init(void* adress, size_t length)
-{
-    debug_log("Инициализация менеджера динамичной памяти, %u байт на точку", sizeof(oxygen_mem_entry_t));
-    debug_log("Размер области: %u килобайт", length / 1024);
-    debug_log("Адрес области: 0x%x", adress);
+bool oxygen_init(void *adress, size_t length) {
     oxygen_mem_start = adress;
     oxygen_mem_end = adress + length;
     oxygen_mem_all = length;
     oxygen_mem_free = length;
-    memset(oxygen_mem_start, 0, sizeof(oxygen_mem_entry_t) * 64);
-    first_node = (oxygen_mem_entry_t*)oxygen_mem_start;
 
-    first_node->next = 0;
-    first_node->prev = 0;
-    first_node->addr = (void*)oxygen_mem_start + sizeof(oxygen_mem_entry_t);
-    first_node->size = 0;
+    debug_log("Инициализация менеджера динамичной памяти, %u байт на точку", sizeof(oxygen_mem_entry_t));
+    debug_log("Размер области: %u килобайт", length / 1024);
+    debug_log("Адрес области: 0x%x", adress);
+    debug_log("Конец области: 0x%x", oxygen_mem_end);
 
-    void* temp = oxygen_alloc(10);
-    void* temp1 = oxygen_alloc(100);
-    void* temp2 = oxygen_alloc(150);
+    first_node = (oxygen_mem_entry_t*)adress;
+
+    first_node->size = length;
+    first_node->free = true;
+    first_node->next = NULL;
+
+    void *temp = oxygen_alloc(1024);
+    void *temp1 = oxygen_alloc(1024 * 1024);
+    void *temp2 = oxygen_alloc(4096);
+
+    oxygen_dump_memory();
 
     oxygen_free(temp);
     oxygen_free(temp1);
     oxygen_free(temp2);
-    oxygen_dump_memory();
 
     return true;
 }
 
-/**
- * @brief Освобождение блока памяти
- *
- * @param block Номер блока
- */
-void oxygen_free(void* ptr)
-{
-    scheduler_lock();
-    oxygen_mem_entry_t* now = (oxygen_mem_entry_t*)ptr - 256;
-    debug_log("now 0x%x - 256", now);
-    // oxygen_dump_block(now);
 
-    oxygen_mem_entry_t* last = now->prev;
-    oxygen_mem_entry_t* next = now->next;
-    last->next = next;
-    next->prev = last;
-    memset(now, 0, sizeof(oxygen_mem_entry_t));
-    scheduler_unlock();
-}
-
-void* oxygen_alloc(size_t length)
-{
-    scheduler_lock();
-    oxygen_mem_entry_t* last = oxygen_find_free(length);
-
-    if (oxygen_mem_end <= (length + last->addr + last->size)) {
-        debug_log("Нехватка памяти!");
-        return 0;
+//This function allocates a block of memory.
+void *oxygen_alloc(size_t size) {
+    oxygen_mem_entry_t *curr = first_node;
+    
+    while (curr != NULL) {
+        if (curr->free && curr->size >= size) {
+            curr->free = 0;
+            if (curr->size > size) {
+                //Split the block into two blocks.
+                oxygen_mem_entry_t *new_block = (oxygen_mem_entry_t*)((uintptr_t)curr + size);
+                new_block->size = curr->size - size;
+                new_block->free = 1;
+                new_block->next = curr->next;
+                curr->size = size;
+                curr->next = new_block;
+            }
+            return (void *)((uintptr_t)curr + sizeof(oxygen_mem_entry_t));
+        }
+        curr = curr->next;
     }
-
-    oxygen_mem_entry_t* new = (oxygen_mem_entry_t*)last->addr + last->size;
-
-    new->size = length;
-    new->addr = (void*)new + sizeof(oxygen_mem_entry_t);
-    new->prev = last;
-    new->next = NULL;
-
-    last->next = new;
-
-    scheduler_unlock();
-    return new->addr;
+    return NULL;
 }
 
-/**
- * @brief
- *
- * @param length
- * @return oxygen_mem_entry_t*
- */
-oxygen_mem_entry_t* oxygen_find_free(size_t length)
-{
-    oxygen_mem_entry_t* i = first_node;
-
-    UNUSED(length);
-
-    while (true) {
-        oxygen_mem_entry_t* next = i->next;
-        if (i->addr + i->size + 256 != next->addr - sizeof(oxygen_mem_entry_t)) {
-            // debug_log_printf("i->addr + i->size = 0x%x ", i->addr + i->size + 256);
-            // debug_log_printf("0x%x -", next->addr - sizeof(oxygen_mem_entry_t));
-            // debug_log_printf("%d \n",i->addr + i->size  + 256 - sizeof(oxygen_mem_entry_t) - next->addr - sizeof(oxygen_mem_entry_t));
+//This function releases a block of memory.
+void oxygen_free(void *ptr) {
+    oxygen_mem_entry_t *curr = first_node;
+    while (curr != NULL) {
+        if ((void *)((uintptr_t)curr + sizeof(oxygen_mem_entry_t)) == ptr) {
+            curr->free = 1;
+            break;
         }
-        if (next == NULL) {
-            return i;
-        }
-        i = next;
+        curr = curr->next;
     }
 }
 
-void oxygen_dump_memory()
-{
+void oxygen_dump_memory() {
     debug_log("Карта блоков:");
 
-    oxygen_mem_entry_t* i = first_node;
-
+    oxygen_mem_entry_t *i = first_node;
     while (true) {
         oxygen_dump_block(i);
         if (i->next == NULL) {
@@ -149,16 +116,15 @@ void oxygen_dump_memory()
  * @param entry
  * @return int
  */
-int oxygen_dump_block(oxygen_mem_entry_t* entry)
-{
-    debug_log_printf("prev 0x%x",
-        entry->prev);
+int oxygen_dump_block(oxygen_mem_entry_t *entry) {
+    debug_log_printf("free %u",
+        entry->free);
+    debug_log_printf(" | entry 0x%x",
+        entry);
     debug_log_printf(" | next 0x%x",
         entry->next);
     debug_log_printf(" | addr 0x%x",
-        entry->addr);
-    debug_log_printf(" | entry 0x%x",
-        entry);
+        entry + sizeof(oxygen_mem_entry_t));
     debug_log_printf(" | size %u байт ",
         entry->size);
     if (entry->next == NULL) {
@@ -179,8 +145,7 @@ int oxygen_dump_block(oxygen_mem_entry_t* entry)
  * @return true
  * @return false
  */
-bool oxygen_multiboot_init(multiboot_info_t* info)
-{
+bool oxygen_multiboot_init(multiboot_info_t* info) {
     multiboot_memory_map_t* start = (multiboot_memory_map_t*)info->mmap_addr;
     multiboot_memory_map_t* end = (multiboot_memory_map_t*)(info->mmap_addr + info->mmap_length);
     multiboot_memory_map_t* temp;
@@ -213,22 +178,22 @@ bool oxygen_multiboot_init(multiboot_info_t* info)
         }
 
         switch (entry->type) {
-        case 1:
-            debug_log("\tСвободно");
-            total_free_mem += entry->len;
-            break;
-        case 2:
-            debug_log("\tНе использовать");
-            total_used_mem += entry->len;
-            break;
-        case 3:
-            debug_log("\tACPI Reclaim Memory (можно использовать после чтения таблиц ACPI)");
-            total_used_mem += entry->len;
-            break;
-        case 4:
-            debug_log("\tACPI NVS");
-            total_used_mem += entry->len;
-            break;
+            case 1:
+                debug_log("\tСвободно");
+                total_free_mem += entry->len;
+                break;
+            case 2:
+                debug_log("\tНе использовать");
+                total_used_mem += entry->len;
+                break;
+            case 3:
+                debug_log("\tACPI Reclaim Memory (можно использовать после чтения таблиц ACPI)");
+                total_used_mem += entry->len;
+                break;
+            case 4:
+                debug_log("\tACPI NVS");
+                total_used_mem += entry->len;
+                break;
         }
     }
 
@@ -263,5 +228,5 @@ bool oxygen_multiboot_init(multiboot_info_t* info)
         debug_log("\t   \\->0x%x гигабайт", total_used_mem / 1024 / 1024 / 1024);
     }
 
-    return oxygen_init((void*)(uintptr_t)temp->addr, temp->len);
+    return oxygen_init((void*)(uintptr_t)KERNEL_PAGE_TABLE_END, temp->len);
 }

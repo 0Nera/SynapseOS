@@ -20,18 +20,17 @@
 
 struct oxygen_mem_entry {
     struct oxygen_mem_entry* next;
-    struct oxygen_mem_entry* prev;
-    void* addr;
+    bool free;
     size_t size;
 };
 
 typedef struct oxygen_mem_entry oxygen_mem_entry_t;
 
-oxygen_mem_entry_t* oxygen_find_free(size_t length);
+oxygen_mem_entry_t *oxygen_find_free(size_t length);
 bool oxygen_multiboot_init(multiboot_info_t* info);
-int oxygen_dump_block(oxygen_mem_entry_t* entry);
-void oxygen_free(void* ptr);
-void* oxygen_alloc(size_t length);
+int oxygen_dump_block(oxygen_mem_entry_t *entry);
+void oxygen_free(void *ptr);
+void *oxygen_alloc(size_t length);
 void oxygen_dump_memory();
 
 #endif // oxygen.h
