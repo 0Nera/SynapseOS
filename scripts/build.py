@@ -118,7 +118,7 @@ if __name__ == '__main__':
     #build_docs()
 
 
-    if args.noqemu != 1:
+    if args.noqemu != 1 and args.noqemu != None:
         if ARCH == "i686":
             QEMU_DEV = f"-device rtl8139,id=nic0"
             QEMU = f"qemu-system-i386 -m 128 -d guest_errors -no-reboot {QEMU_DEV} " # -cpu pentium3
