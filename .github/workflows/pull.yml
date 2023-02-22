@@ -53,7 +53,7 @@ jobs:
       # Запуск сборки ядра
       - name: Building  kernel
         run: | 
-          python3 scripts/build.py
+          python3 scripts/build.py  -noqemu 1
   
       # Проверка релиза
       - name: Check publish

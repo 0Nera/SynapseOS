@@ -91,6 +91,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='SynapseOS build helper')
     parser.add_argument('-compiler', help='build with your compiler')
     parser.add_argument('-linker', help='build with your linker')
+    parser.add_argument('-noqemu', help='Work without qemu')
     args = parser.parse_args()
 
     if args.compiler != None:
@@ -111,8 +112,10 @@ if __name__ == '__main__':
 
     #build_docs()
 
-    if ARCH == "i686":
-        QEMU_DEV = f"-device rtl8139,id=nic0"
-        QEMU = f"qemu-system-i386 -m 128 -d guest_errors -no-reboot {QEMU_DEV} " # -cpu pentium3
-        
-        exec_cmd(f"{QEMU} -monitor stdio -cdrom SynapseOS-limine.iso -serial file:serial.log")
+
+    if args.noqemu != 1:
+        if ARCH == "i686":
+            QEMU_DEV = f"-device rtl8139,id=nic0"
+            QEMU = f"qemu-system-i386 -m 128 -d guest_errors -no-reboot {QEMU_DEV} " # -cpu pentium3
+            
+            exec_cmd(f"{QEMU} -monitor stdio -cdrom SynapseOS-limine.iso -serial file:serial.log")

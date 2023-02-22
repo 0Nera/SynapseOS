@@ -37,7 +37,7 @@ jobs:
       # Запуск сборки ядра
       - name: Building  kernel
         run: | 
-          python3 scripts/build.py -compiler "gcc -m32" -linker "ld -m elf_i386"
+          python3 scripts/build.py -noqemu 1 -compiler "gcc -m32" -linker "ld -m elf_i386"
   
       # Проверка релиза
       - name: Check publish
