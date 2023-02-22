@@ -18,6 +18,7 @@ DEBUG_FLAGS = f"-D DEBUG=1"
 CC = f"{ARCH}-elf-gcc"  #  -march=i586
 LD = f"{ARCH}-elf-ld"  #  -march=i586
 LIMINE_DEPLOY = "limine-deploy"
+DOXYGEN = 0
 
 CC_GCC = f"" # f"-finput-charset=unicode -fexec-charset=unicode -finput-charset=utf8 -fexec-charset=utf8"
 CC_OPTIM = f"-Wall -Wextra -O0"
@@ -92,6 +93,7 @@ if __name__ == '__main__':
     parser.add_argument('-linker', help='build with your linker')
     parser.add_argument('-noqemu', help='Work without qemu')
     parser.add_argument('-limine', help='build with your limine-deploy')
+    parser.add_argument('-docs',   help='build with generate docs(doxygen)')
     args = parser.parse_args()
 
     if args.compiler != None:
@@ -102,6 +104,9 @@ if __name__ == '__main__':
 
     if args.limine != None:
         LIMINE_DEPLOY = args.limine
+
+    if args.docs != None:
+        DOXYGEN = args.docs
 
     start_time = time.time()
     build_kernel()
@@ -115,9 +120,10 @@ if __name__ == '__main__':
     build_iso_limine()
     print(f"Сборка ISO//Limine образа заняла: {(time.time() - start_time):2f} секунд.")
     
-    start_time = time.time()
-    build_docs()
-    print(f"Проверка и генерация документации заняла: {(time.time() - start_time):2f} секунд.")
+    if DOXYGEN == 1:
+        start_time = time.time()
+        build_docs()
+        print(f"Проверка и генерация документации заняла: {(time.time() - start_time):2f} секунд.")
 
 
     if args.noqemu == 1 and args.noqemu != None:

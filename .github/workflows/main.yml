@@ -39,6 +39,7 @@ jobs:
           cd doxygen-1.9.5/
           sudo make install
           cd ..
+          mkdir docs
 
       # Установка limine
       - name: Limine
@@ -51,7 +52,7 @@ jobs:
       # Запуск сборки ядра
       - name: Building  kernel
         run: | 
-          python3 scripts/build.py -noqemu 1 -limine "./limine-deploy"
+          python3 scripts/build.py -noqemu 1 -limine "./limine-deploy" -docs 1
   
       # Проверка релиза
       - name: Check publish
