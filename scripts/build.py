@@ -46,11 +46,14 @@ def build_kernel():
     
     shutil.rmtree("bin", ignore_errors=True)
 
-    if not os.path.exists("bin//"):
-        os.mkdir("bin//")
+    if not os.path.exists("isodir/modules/"):
+        os.mkdir("isodir/modules/")
 
-    if not os.path.exists("bin//kernel//"):
-        os.mkdir("bin//kernel//")
+    if not os.path.exists("bin/"):
+        os.mkdir("bin/")
+
+    if not os.path.exists("bin/kernel/"):
+        os.mkdir("bin/kernel/")
 
     for i in range(0, len(SRC_TARGETS)):
         exec_cmd(f"{CC} {DEBUG_FLAGS} {CC_FLAGS} {SRC_TARGETS[i]} -o {BIN_TARGETS[i]}")
@@ -71,6 +74,9 @@ def build_docs():
 def build_modules():
     #os.system("fasm mod/seb/test.asm isodir/modules/test.seb")
     #os.system("python3 scripts/build_modules.py")
+    MOD_FLAGS = "-m32 -O0 -ffreestanding -Wall -Wextra -nostdlib -nostartfiles"
+    os.system(f"{CC} {MOD_FLAGS} -c mod/simple/main.c -o bin/simple.o")
+    os.system(f"{CC} -T mod/simple/link.ld -nostdlib -O0 -o isodir/modules/simple.elf bin/simple.o")
     pass
 
 
@@ -126,9 +132,9 @@ if __name__ == '__main__':
         print(f"Проверка и генерация документации заняла: {(time.time() - start_time):2f} секунд.")
 
 
-    if args.noqemu == 1 and args.noqemu != None:
+    if args.noqemu == 0 or args.noqemu == None:
         if ARCH == "i686":
             QEMU_DEV = f"-device rtl8139,id=nic0"
-            QEMU = f"qemu-system-i386 -m 128 -d guest_errors -no-reboot {QEMU_DEV} " # -cpu pentium3
+            QEMU = f"qemu-system-i386 -m 256 -d guest_errors -no-reboot {QEMU_DEV} " # -cpu pentium3
             
             exec_cmd(f"{QEMU} -monitor stdio -cdrom SynapseOS-limine.iso -serial file:serial.log")

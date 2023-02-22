@@ -111,7 +111,6 @@ void kernel_startup(unsigned int eax, multiboot_info_t* ebx, unsigned int esp) {
 
     com1_unit_test(eax == MULTIBOOT_BOOTLOADER_MAGIC, "Проверка магического числа Multiboot");
 
-    multiboot_main(ebx);
 
     // mm_evelina_multiboot_init(ebx, 8192);
 
@@ -158,6 +157,8 @@ void kernel_startup(unsigned int eax, multiboot_info_t* ebx, unsigned int esp) {
     kernel_init(kernel_info, kernel_size);
 
     debug_log("Ядро завершило инициализацию");
+    
+    multiboot_main(ebx);
 
     // Уменьшаем энергопотребление процессора
     for (;;) {
