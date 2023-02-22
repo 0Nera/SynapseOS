@@ -12,10 +12,13 @@
 
 #include <libk.h>
 
+
 #ifndef _DT_H
 #define _DT_H
 
+
 #if (defined __i386__ || defined __x86_64__)
+
 
 #define PIC1_ICW1 0x11
 #define PIC1_ICW2 0x20
@@ -26,6 +29,7 @@
 #define PIC2_ICW2 0x28
 #define PIC2_ICW3 0x02
 #define PIC2_ICW4 0x01
+
 
 /**
  * @brief Запись глобальной таблицы дескрипторов (GDT)
@@ -40,6 +44,7 @@ struct PACKED gdt_entry_struct {
     uint8_t base_high; ///< Старшая часть базы
 };
 
+
 /**
  * @brief Структура с указателями на GDT
  *
@@ -48,6 +53,7 @@ struct PACKED gdt_ptr_struct {
     uint16_t limit;
     uint32_t base;
 };
+
 
 /**
  * @brief Запись в таблице дескрипторов прерываний (IDT)
@@ -61,14 +67,16 @@ struct PACKED idt_entry_struct {
     uint16_t base_high; ///< Старшее слово адреса обработчика
 };
 
+
 /**
  * @brief Структура указателей размещения IDT
  *
  */
 struct PACKED idt_ptr_struct {
     uint16_t limit; ///< Размер таблицы IDT
-    uint32_t base; ///< Адрес первой записи IDT
+    uint32_t base;  ///< Адрес первой записи IDT
 };
+
 
 typedef struct gdt_entry_struct gdt_entry_t;
 typedef struct gdt_ptr_struct gdt_ptr_t;

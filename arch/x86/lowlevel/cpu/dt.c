@@ -74,8 +74,7 @@ static void gdt_set_gate(int32_t, uint32_t, uint32_t, uint8_t, uint8_t);
  * @param access Байт доступа
  * @param gran Байт гранулярности
  */
-void gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran)
-{
+void gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran) {
     /* Заполняем поля базы */
     gdt_entries[num].base_low = (base & 0xFFFF);
     gdt_entries[num].base_middle = (base >> 16) & 0xFF;
@@ -94,8 +93,7 @@ void gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, ui
  * @brief Инициализации глобальной таблицы дескрипторов
  *
  */
-void gdt_init()
-{
+void gdt_init() {
     debug_log("[GDT]");
 
     /* Нулевой дескриптор */
@@ -121,8 +119,7 @@ void gdt_init()
  * @param selector Селектор сегмента ядра
  * @param flags Флаги доступа(0x60 для юзермода)
  */
-void idt_set_gate(uint8_t num, uint32_t base, uint16_t selector, uint8_t flags)
-{
+void idt_set_gate(uint8_t num, uint32_t base, uint16_t selector, uint8_t flags) {
     idt_entries[num].base_low = base & 0xFFFF;
     idt_entries[num].base_high = (base >> 16) & 0xFFFF;
 
@@ -136,8 +133,7 @@ void idt_set_gate(uint8_t num, uint32_t base, uint16_t selector, uint8_t flags)
  * @brief Инициализация таблицы векторов прерываний
  *
  */
-void idt_init()
-{
+void idt_init() {
     debug_log("[IDT]");
 
     memset(&idt_entries, 0, sizeof(idt_entries));
@@ -166,8 +162,7 @@ void idt_init()
  * @return true В случае успешной настройки
  * @return false В случае ошибки
  */
-bool dt_init()
-{
+bool dt_init() {
     gdt_init();
     idt_init();
     int_init();

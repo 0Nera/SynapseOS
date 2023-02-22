@@ -18,10 +18,10 @@
 #define _DRIVER_H
 
 typedef struct {
-    bool (*init)(int argc, uintptr_t* argv);
-    char* (*info)();
-    bool (*remove)(int argc, uintptr_t* argv);
-    void (*print)(const char* string, size_t length);
+    bool (*init)(int argc, uintptr_t *argv);
+    char *(*info)();
+    bool (*remove)(int argc, uintptr_t *argv);
+    void (*print)(const char *string, size_t length);
 } driver_debug_t;
 
 #endif // driver.h

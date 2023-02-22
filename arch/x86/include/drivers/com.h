@@ -14,8 +14,10 @@
 #include <kernel.h>
 #include <libk.h>
 
+
 #ifndef _COM1_LOG_H
 #define _COM1_LOG_H
+
 
 /**
  * @brief Сохранение области памяти в лог
@@ -23,7 +25,8 @@
  * @param addres Адрес области
  * @param size Размер области
  */
-void com1_log_dump(void* addres, size_t size);
+void com1_log_dump(void *addres, size_t size);
+
 
 /**
  * @brief Форматированный вывод в лог
@@ -31,13 +34,14 @@ void com1_log_dump(void* addres, size_t size);
  * @param format_string Форматированная строка
  * @param ... Аргументы
  */
-void com1_log_printf(const char* format_string, ...);
+void com1_log_printf(const char *format_string, ...);
 
 #if DEBUG
 
 #if RELEASE
 #error "С дуба рухнул? Релиз вместе с дебагом нельзя использовать"
 #endif
+
 
 /**
  * @brief Вывод сообщения в лог
@@ -52,6 +56,7 @@ void com1_log_printf(const char* format_string, ...);
         __LINE__,                     \
         ##__VA_ARGS__)
 
+
 /**
  * @brief Проверка условия
  *
@@ -63,6 +68,7 @@ void com1_log_printf(const char* format_string, ...);
             halt();              \
         }                        \
     }
+
 
 /**
  * @brief Тест функции
@@ -79,6 +85,7 @@ void com1_log_printf(const char* format_string, ...);
 
 #if RELEASE
 
+
 /**
  * @brief Вывод сообщения в лог
  *
@@ -88,6 +95,7 @@ void com1_log_printf(const char* format_string, ...);
         M "\n",          \
         ##__VA_ARGS__)
 #else
+
 
 /**
  * @brief Вывод сообщения в лог
@@ -101,6 +109,7 @@ void com1_log_printf(const char* format_string, ...);
         __LINE__,         \
         ##__VA_ARGS__)
 #endif
+
 
 /**
  * @brief Проверка условия
@@ -116,6 +125,7 @@ void com1_log_printf(const char* format_string, ...);
 
 #if RELEASE
 
+
 /**
  * @brief Тест функции
  *
@@ -129,6 +139,7 @@ void com1_log_printf(const char* format_string, ...);
 #else
 
 #endif
+
 
 /**
  * @brief Тест функции

@@ -12,8 +12,10 @@
 
 #include <libk.h>
 
+
 #ifndef _PORTS_H
 #define _PORTS_H
+
 
 #if (defined __i386__ || defined __x86_64__)
 
@@ -37,14 +39,14 @@
 #define PORTS_PIC2_COMMAND PORTS_PIC2
 #define PORTS_PIC2_DATA (PORTS_PIC2 + 1)
 
+
 /**
  * @brief Получение одного байта из порта
  *
  * @param port Порт
  * @return uint8_t Значение из порта
  */
-static inline uint8_t ports_inb(uint16_t port)
-{
+static inline uint8_t ports_inb(uint16_t port) {
     uint8_t ret;
     asm volatile("inb %1, %0"
                  : "=a"(ret)
@@ -52,14 +54,14 @@ static inline uint8_t ports_inb(uint16_t port)
     return ret;
 }
 
+
 /**
  * @brief Получение 2 байт(word) из порта
  *
  * @param port Порт
  * @return uint16_t Значение из порта
  */
-static inline uint16_t ports_inw(uint16_t port)
-{
+static inline uint16_t ports_inw(uint16_t port) {
     uint16_t ret;
     asm volatile("inw %1, %0"
                  : "=a"(ret)
@@ -67,14 +69,14 @@ static inline uint16_t ports_inw(uint16_t port)
     return ret;
 }
 
+
 /**
  * @brief Получение 4 байт из порта
  *
  * @param port Порт
  * @return uint32_t Значение из порта
  */
-static inline uint32_t ports_inl(uint16_t port)
-{
+static inline uint32_t ports_inl(uint16_t port) {
     uint32_t ret;
     asm volatile("inl %1, %0"
                  : "=a"(ret)
@@ -82,18 +84,19 @@ static inline uint32_t ports_inl(uint16_t port)
     return ret;
 }
 
+
 /**
  * @brief Ввод одного байта в порт
  *
  * @param port Порт
  * @param val Входные данные
  */
-static inline void ports_outb(uint16_t port, uint8_t val)
-{
+static inline void ports_outb(uint16_t port, uint8_t val) {
     asm volatile("outb %0, %1"
                  :
                  : "a"(val), "Nd"(port));
 }
+
 
 /**
  * @brief Ввод 2 байт (word) в порт
@@ -101,12 +104,12 @@ static inline void ports_outb(uint16_t port, uint8_t val)
  * @param port Порт
  * @param val Входные данные
  */
-static inline void ports_outw(uint16_t port, uint16_t val)
-{
+static inline void ports_outw(uint16_t port, uint16_t val) {
     asm volatile("outw %0, %1"
                  :
                  : "a"(val), "Nd"(port));
 }
+
 
 /**
  * @brief Ввод 4 байт в порт
@@ -114,12 +117,12 @@ static inline void ports_outw(uint16_t port, uint16_t val)
  * @param port Порт
  * @param val  Входные данные
  */
-static inline void ports_outl(uint16_t port, uint32_t val)
-{
+static inline void ports_outl(uint16_t port, uint32_t val) {
     asm volatile("outl %0, %1"
                  :
                  : "a"(val), "Nd"(port));
 }
+
 
 #endif
 

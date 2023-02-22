@@ -88,8 +88,7 @@ extern void irq15(void); ///< IRQ
  * @return true В случае успеха
  * @return false В случае если index вне диапазона от 0 до 1023
  */
-bool int_set_handler(uint16_t index, void* func)
-{
+bool int_set_handler(uint16_t index, void *func) {
     if (index > INTERRUPT_MAX_INDEX) {
         debug_log("index %d is more than %d", index, INTERRUPT_MAX_INDEX);
         return false;
@@ -105,8 +104,7 @@ bool int_set_handler(uint16_t index, void* func)
  *
  * @param regs Структура-указатель состояний регистров
  */
-void isr_handler(int_registers_t regs)
-{
+void isr_handler(int_registers_t regs) {
     if (interrupt_handlers[regs.int_num] != 0) {
         isr_t handler = interrupt_handlers[regs.int_num];
         handler(regs);
@@ -118,8 +116,7 @@ void isr_handler(int_registers_t regs)
  *
  * @param regs Структура-указатель состояний регистров
  */
-void irq_handler(int_registers_t regs)
-{
+void irq_handler(int_registers_t regs) {
     if (regs.int_num >= 40) {
         ports_outb(0xA0, 0x20);
     }
@@ -139,8 +136,7 @@ void irq_handler(int_registers_t regs)
  * @param id Номер прерывания
  * @param handler Обработчик прерывания
  */
-void register_interrupt_handler(uint8_t id, isr_t handler)
-{
+void register_interrupt_handler(uint8_t id, isr_t handler) {
     interrupt_handlers[id] = handler;
 }
 
@@ -148,8 +144,7 @@ void register_interrupt_handler(uint8_t id, isr_t handler)
  * @brief Ошибка при делении на ноль
  *
  */
-static noreturn void division_by_zero()
-{
+static noreturn void division_by_zero() {
     debug_log("[ERROR]Division by zero");
 
     for (;;) {
@@ -161,8 +156,7 @@ static noreturn void division_by_zero()
  * @brief Неверный код операции
  *
  */
-static noreturn void invalid_opcode()
-{
+static noreturn void invalid_opcode() {
     debug_log("[ERROR]Invalid opcode");
 
     for (;;) {
@@ -174,8 +168,7 @@ static noreturn void invalid_opcode()
  * @brief Двойная ошибка(при прерывании или обработке ошибки)
  *
  */
-static noreturn void double_fault(int_registers_t* regs)
-{
+static noreturn void double_fault(int_registers_t* regs) {
     debug_log("[ERROR]Double fault, int num: %d", regs->int_num);
 
     for (;;) {
@@ -187,8 +180,7 @@ static noreturn void double_fault(int_registers_t* regs)
  * @brief Недопустимое исключение TSS
  *
  */
-static noreturn void invalid_tss()
-{
+static noreturn void invalid_tss() {
     debug_log("[ERROR]Invalid tss");
 
     for (;;) {
@@ -200,8 +192,7 @@ static noreturn void invalid_tss()
  * @brief Сегмент недоступен
  *
  */
-static noreturn void segment_not_available()
-{
+static noreturn void segment_not_available() {
     debug_log("[ERROR]Segment not available");
 
     for (;;) {
@@ -213,8 +204,7 @@ static noreturn void segment_not_available()
  * @brief Ошибка стека
  *
  */
-static noreturn void stack_error()
-{
+static noreturn void stack_error() {
     debug_log("[ERROR]Stack error");
 
     for (;;) {
@@ -226,8 +216,7 @@ static noreturn void stack_error()
  * @brief Общая ошибка защиты
  *
  */
-static noreturn void general_protection_error(int_registers_t* regs)
-{
+static noreturn void general_protection_error(int_registers_t* regs) {
     UNUSED(regs);
     debug_log("[ERROR]GPT error");
 
@@ -240,8 +229,7 @@ static noreturn void general_protection_error(int_registers_t* regs)
  * @brief Ошибка страницы
  *
  */
-static noreturn void page_fault(int_registers_t* regs)
-{
+static noreturn void page_fault(int_registers_t* regs) {
     UNUSED(regs);
     debug_log("[ERROR]Page fault");
 
@@ -254,8 +242,7 @@ static noreturn void page_fault(int_registers_t* regs)
  * @brief Ошибка страницы
  *
  */
-static void fpu_error()
-{
+static void fpu_error() {
     debug_log("[ERROR]FPU ERROR");
 }
 
@@ -263,8 +250,7 @@ static void fpu_error()
  * @brief Инициализация векторов прерываний
  *
  */
-void int_init()
-{
+void int_init() {
 
     idt_set_gate(0, (uint32_t)isr0, 0x08, 0x8E);
     idt_set_gate(1, (uint32_t)isr1, 0x08, 0x8E);

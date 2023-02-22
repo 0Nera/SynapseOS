@@ -12,6 +12,6 @@ typedef void (*putc_ptr)(char c);
  * @param format_string Строка форматов
  * @param ... Аргументы
  */
-void printf(putc_ptr f, const char* format_string, va_list args);
+void printf(putc_ptr f, const char *format_string, va_list args);
 
 #endif

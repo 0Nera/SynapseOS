@@ -23,8 +23,7 @@ extern bool pit_lock;
  *
  * @return int Количество задач
  */
-static int com1_log_is_transmit_empty()
-{
+static int com1_log_is_transmit_empty() {
     return ports_inb(PORTS_COM1 + 5) & 0x20;
 }
 
@@ -33,8 +32,7 @@ static int com1_log_is_transmit_empty()
  *
  * @param c Выводимый символ
  */
-static void com1_log_putchar(char c)
-{
+static void com1_log_putchar(char c) {
     pit_lock = true;
     while (com1_log_is_transmit_empty() == 0)
         ;
@@ -48,8 +46,7 @@ static void com1_log_putchar(char c)
  * @param format_string Строка форматов
  * @param ... Аргументы
  */
-void com1_log_printf(const char* format_string, ...)
-{
+void com1_log_printf(const char *format_string, ...) {
     va_list args;
 
     // Ищем первый аргумент

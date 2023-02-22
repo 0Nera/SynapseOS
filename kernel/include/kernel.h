@@ -23,11 +23,11 @@
  *
  */
 typedef struct {
-    char* name; ///< Имя дистрибутива
+    char *name; ///< Имя дистрибутива
     version_t version; ///< Версия дистрибутива
-    void (*prinf)(const char* format_string, ...); ///< Функция для отправки лога
-    void* (*malloc)(size_t size); ///< Функция для выделения памяти
-    void (*free)(void* addr); ///< Функция для освобождения памяти
+    void (*prinf)(const char *format_string, ...); ///< Функция для отправки лога
+    void *(*malloc)(size_t size); ///< Функция для выделения памяти
+    void (*free)(void *addr); ///< Функция для освобождения памяти
     size_t mod_count; ///< Количество физических модулей
     size_t mod_v_count; ///< Количество виртуальных модулей
 } kernel_info_t;
@@ -36,13 +36,13 @@ typedef struct {
  * @brief Адрес на функцию отладки
  *
  */
-extern void (*debug_log_printf)(const char* format_string, ...);
+extern void (*debug_log_printf)(const char *format_string, ...);
 
 /**
  * @brief Адрес на функцию отладки для ядра
  *
  */
-extern void (*kprintf)(const char* format_string, ...);
+extern void (*kprintf)(const char *format_string, ...);
 
 #ifdef DEBUG
 

@@ -24,7 +24,7 @@ typedef struct {
     uint32_t height; ///< Высота холста
     uint32_t pitch; ///< Байт на вертикальную линию шириной в 1 пиксель от конца до начала экрана
     uint32_t bpp; ///< Байт на пиксель
-    uint8_t* framebuffer; ///< Адрес видеобуффера холста
+    uint8_t *framebuffer; ///< Адрес видеобуффера холста
 } canvas_t;
 
 /**
@@ -36,7 +36,7 @@ typedef struct {
  * @param y Позиция по Y
  * @param ... Аргументы
  */
-void text_printf(const char* format_string, ...);
+void text_printf(const char *format_string, ...);
 
 bool text_init();
 

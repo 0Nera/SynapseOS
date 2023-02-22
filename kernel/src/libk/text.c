@@ -16,9 +16,9 @@
 #include <libk.h>
 #include <print.h>
 
-extern canvas_t* kernel_canvas;
+extern canvas_t * kernel_canvas;
 
-static psf_t* _font_ptr = NULL;
+static psf_t * _font_ptr = NULL;
 static bool _init = false;
 static uint8_t _width = 8;
 static uint8_t _height = 0;
@@ -26,8 +26,8 @@ static uint16_t screen_x = 0;
 static uint16_t screen_y = 0;
 static uint32_t screen_color = 0x55FFFF;
 
-bool text_init()
-{
+
+bool text_init() {
     _font_ptr = &_binary_kernel_src_graf_font_psf_start;
 
     if (_font_ptr->magic[0] != PSF1_MAGIC0 || _font_ptr->magic[1] != PSF1_MAGIC1) {
@@ -36,21 +36,21 @@ bool text_init()
     }
     _height = _font_ptr->charheight;
     _init = true;
-    debug_log("_width %d, _height %d, mode %d", _width, _height, _font_ptr->mode);
+    debug_log("_width %u, _height %u, mode %u", _width, _height, _font_ptr->mode);
     return _init;
 }
 
-unsigned char* psf1_get_glyph(int16_t character)
-{
+
+unsigned char *psf1_get_glyph(int16_t character) {
     if ((_font_ptr->mode == 1 && character < 512) || character < 256)
         return ((unsigned char*)_font_ptr) + sizeof(psf_t) + (character * _height);
 
     return NULL;
 }
 
-void draw_vga_character(int16_t c, int pos_x, int pos_y, int color)
-{
-    unsigned char* glyph = psf1_get_glyph(c);
+
+void draw_vga_character(int16_t c, int pos_x, int pos_y, int color) {
+    unsigned char *glyph = psf1_get_glyph(c);
     if (!glyph)
         return;
 
@@ -63,8 +63,8 @@ void draw_vga_character(int16_t c, int pos_x, int pos_y, int color)
     }
 }
 
-void draw_text_string(const char* text, int len, int x, int y, int color)
-{
+
+void draw_text_string(const char *text, int len, int x, int y, int color) {
     for (int i = 0; i < len; i++) {
         if (x + 8 <= 1024) {
             draw_vga_character(text[i], x, y, color);
@@ -75,18 +75,18 @@ void draw_text_string(const char* text, int len, int x, int y, int color)
     }
 }
 
-void text_putc(char c)
-{
+
+void text_putc(char c) {
     switch (c) {
-    case '\n':
-        screen_x = 0;
-        screen_y += _height;
-        return;
-    case '\t':
-        screen_x += 4 * 8;
-        return;
-    default:
-        break;
+        case '\n':
+            screen_x = 0;
+            screen_y += _height;
+            return;
+        case '\t':
+            screen_x += 4 * 8;
+            return;
+        default:
+            break;
     }
     if (screen_x > kernel_canvas->width) {
         screen_x = 0;
@@ -96,6 +96,7 @@ void text_putc(char c)
     screen_x += _width;
 }
 
+
 /**
  * @brief Вывод на экран форматированной строки используя неопределенное количество аргументов
  *
@@ -103,8 +104,7 @@ void text_putc(char c)
  * @param length
  * @param ... Аргументы
  */
-void text_printf(const char* format_string, ...)
-{
+void text_printf(const char *format_string, ...) {
     va_list args;
 
     // Ищем первый аргумент

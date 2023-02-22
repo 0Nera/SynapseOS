@@ -3,8 +3,7 @@
 
 extern kernel_info_t kernel_info;
 
-void multiboot_main(multiboot_info_t* info)
-{
+void multiboot_main(multiboot_info_t* info) {
     debug_log("Обработка Multiboot1 заголовка: ");
     debug_log("flags: 0x%x", info->flags);
     debug_log("mem_lower: 0x%x", info->mem_lower);

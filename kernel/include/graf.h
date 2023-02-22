@@ -13,6 +13,8 @@
 #ifndef _GRAF_H
 #define _GRAF_H
 
+
 bool graf_install();
+
 
 #endif // graf.h

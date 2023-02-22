@@ -15,6 +15,7 @@
 #ifndef _VERSIONS_H
 #define _VERSIONS_H
 
+
 /**
  * @brief Структура для хранения версий
  *
@@ -24,5 +25,6 @@ typedef struct {
     uint16_t minor; ///< Подверсия
     uint16_t patch; ///< Исправление
 } version_t;
+
 
 #endif // string.h

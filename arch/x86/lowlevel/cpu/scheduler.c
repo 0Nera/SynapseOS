@@ -17,7 +17,7 @@ static bool scheduler_busy = true;
 static pid_t scheduler_pid_counter = 0;
 static uint8_t current_process_priority = 0;
 pid_t next_thread_id = 0;
-extern uintptr_t* kernel_page_dir;
+extern uintptr_t *kernel_page_dir;
 
 list_item_t process_list;
 list_item_t thread_list;
@@ -32,8 +32,7 @@ thread_t* current_thread;
  * @brief Инициализация планировщика задач
  *
  */
-bool scheduler_init()
-{
+bool scheduler_init() {
     uintptr_t esp;
 
     asm volatile("mov %%esp, %0"
@@ -82,8 +81,7 @@ bool scheduler_init()
  * @brief Смена задачи
  *
  */
-void scheduler_switch()
-{
+void scheduler_switch() {
     if (scheduler_busy) {
         // Если смена задач заблокированна
     } else {
@@ -111,8 +109,7 @@ void scheduler_switch()
  * @brief Блокировка смены задач
  *
  */
-void scheduler_lock()
-{
+void scheduler_lock() {
     scheduler_busy = true;
 }
 
@@ -120,22 +117,19 @@ void scheduler_lock()
  * @brief Разблокировка смены задач
  *
  */
-void scheduler_unlock()
-{
+void scheduler_unlock() {
     scheduler_busy = false;
 }
 
-pid_t scheduler_add_pid()
-{
+pid_t scheduler_add_pid() {
     return scheduler_pid_counter++;
 }
 
 thread_t* scheduler_create_task(process_t* process,
-    void* entry_point,
-    uint8_t priority)
-{
+    void *entry_point,
+    uint8_t priority) {
     uint32_t stack_size = 4096;
-    void* stack = NULL;
+    void *stack = NULL;
     uintptr_t eflags;
 
     asm volatile("pushf; pop %0"
@@ -166,7 +160,7 @@ thread_t* scheduler_create_task(process_t* process,
 
     process->threads_count++;
 
-    uintptr_t* esp = (uintptr_t*)(stack + stack_size);
+    uintptr_t *esp = (uintptr_t*)(stack + stack_size);
 
     esp[-1] = (uintptr_t)entry_point;
     esp[-3] = eflags | (1 << 9);

@@ -24,8 +24,7 @@ extern thread_t* current_thread;
  *
  * @param regs
  */
-static void timer_callback(register_t* regs)
-{
+static void timer_callback(register_t* regs) {
     UNUSED(regs);
     tick++;
 
@@ -51,8 +50,7 @@ static void timer_callback(register_t* regs)
  * @return true
  * @return false
  */
-bool pit_init(uint32_t frequency)
-{
+bool pit_init(uint32_t frequency) {
     // Установка вектора прерываний таймера (ЗАРАНЕЕ!!)
     int_set_handler(IRQ0, &timer_callback);
 

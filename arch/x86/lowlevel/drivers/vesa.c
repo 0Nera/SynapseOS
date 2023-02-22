@@ -14,20 +14,18 @@
 #include <libk.h>
 #include <multiboot.h>
 
-extern uint8_t* multiboot_framebuffer; ///< Адресс фреймбуффера полученный от загрузчика
+extern uint8_t *multiboot_framebuffer; ///< Адресс фреймбуффера полученный от загрузчика
 extern uint32_t multiboot_framebuffer_width;
 extern uint32_t multiboot_framebuffer_height;
 extern uint32_t multiboot_framebuffer_pitch;
 extern uint32_t multiboot_framebuffer_bpp;
 
-void vesa_put_pixel(int x, int y, uint32_t color)
-{
+void vesa_put_pixel(int x, int y, uint32_t color) {
     uint32_t where = x * (multiboot_framebuffer_bpp / 8) + y * (multiboot_framebuffer_pitch);
     multiboot_framebuffer[where] = color;
 }
 
-void vesa_put_rect(size_t x1, size_t y1, size_t x2, size_t y2, uint32_t color)
-{
+void vesa_put_rect(size_t x1, size_t y1, size_t x2, size_t y2, uint32_t color) {
     for (size_t y = y1; y < y2; y++) {
         for (size_t x = x1; x < x2; x++) {
             vesa_put_pixel(x, y, color);
@@ -35,13 +33,11 @@ void vesa_put_rect(size_t x1, size_t y1, size_t x2, size_t y2, uint32_t color)
     }
 }
 
-void vesa_draw_background(uint32_t color)
-{
+void vesa_draw_background(uint32_t color) {
     vesa_put_rect(0, 0, multiboot_framebuffer_width, multiboot_framebuffer_height, color);
 }
 
-void putLine(int x0, int y0, int x1, int y1, uint32_t color)
-{
+void putLine(int x0, int y0, int x1, int y1, uint32_t color) {
     int dx = x1 - x0;
     int dy = y1 - y0;
 
@@ -59,8 +55,7 @@ void putLine(int x0, int y0, int x1, int y1, uint32_t color)
     }
 }
 
-void vesa_init(struct multiboot_info* info)
-{
+void vesa_init(struct multiboot_info* info) {
     multiboot_framebuffer = (uint8_t*)(uintptr_t)info->framebuffer_addr;
     multiboot_framebuffer_pitch = info->framebuffer_pitch;
     multiboot_framebuffer_bpp = info->framebuffer_bpp;

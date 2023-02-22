@@ -16,13 +16,13 @@
  * @brief Адрес на функцию отладки
  *
  */
-void (*debug_log_printf)(const char* format_string, ...);
+void (*debug_log_printf)(const char *format_string, ...);
 
 /**
  * @brief Адрес на функцию отладки для ядра
  *
  */
-void (*kprintf)(const char* format_string, ...);
+void (*kprintf)(const char *format_string, ...);
 
 /**
  * @brief Вычисление длины строки
@@ -30,8 +30,7 @@ void (*kprintf)(const char* format_string, ...);
  * @param string Строка
  * @return uint32_t Длина строки
  */
-uint32_t strlen(const char* string)
-{
+uint32_t strlen(const char *string) {
     uint32_t length = 0;
 
     while (string[length]) {
@@ -48,9 +47,8 @@ uint32_t strlen(const char* string)
  * @param value Байт заполнения
  * @param length Длина области
  */
-void memset(void* address, uint8_t value, uint32_t length)
-{
-    uint8_t* array = (uint8_t*)address;
+void memset(void *address, uint8_t value, uint32_t length) {
+    uint8_t *array = (uint8_t*)address;
 
     for (uint32_t i = 0; i < length; i++) {
         array[i] = value;
@@ -64,8 +62,7 @@ void memset(void* address, uint8_t value, uint32_t length)
  * @param string2 Вторая сравниваемая строка
  * @return int 0 - в случае успеха, 1 в случае если string1 > string2 и -1 в случае если string1 < string2
  */
-int32_t strcmp(const char* string1, const char* string2)
-{
+int32_t strcmp(const char *string1, const char *string2) {
     int32_t s1;
     int32_t s2;
 
@@ -86,8 +83,7 @@ int32_t strcmp(const char* string1, const char* string2)
  * @param src
  * @return char*
  */
-char* strcpy(char* dest, const char* src)
-{
+char *strcpy(char *dest, const char *src) {
     do {
         *dest++ = *src++;
     } while (*src != 0);
@@ -103,8 +99,7 @@ char* strcpy(char* dest, const char* src)
  * @param n
  * @return int32_t
  */
-int32_t memcmp(const void* s1, const void* s2, size_t n)
-{
+int32_t memcmp(const void *s1, const void *s2, size_t n) {
     unsigned char u1, u2;
 
     for (; n--; s1++, s2++) {
@@ -125,8 +120,7 @@ int32_t memcmp(const void* s1, const void* s2, size_t n)
  * @param n
  * @return void*
  */
-void* memcpy(void* dst, void* src, size_t n)
-{
+void *memcpy(void *dst, void *src, size_t n) {
     size_t i;
     if ((uint8_t*)(dst) < (uint8_t*)(src)) {
         for (i = 0; i < n; ++i) {
@@ -148,8 +142,7 @@ void* memcpy(void* dst, void* src, size_t n)
  * @param n
  * @return void*
  */
-void* memmove(void* dst, void* src, size_t n)
-{
+void *memmove(void *dst, void *src, size_t n) {
     if (dst != src) {
         memcpy(dst, src, n);
     }
@@ -162,8 +155,7 @@ void* memmove(void* dst, void* src, size_t n)
  * @param i
  * @param str
  */
-void itoa(size_t i, char* str)
-{
+void itoa(size_t i, char *str) {
     uint32_t n, d = 1000000000;
     uint32_t dec_index = 0;
 
@@ -189,8 +181,7 @@ void itoa(size_t i, char* str)
  * @param ch
  * @return char*
  */
-char* strchr(const char* p, int ch)
-{
+char *strchr(const char *p, int ch) {
     char c;
 
     c = ch;
@@ -202,8 +193,7 @@ char* strchr(const char* p, int ch)
     }
 }
 
-int pow(int x, unsigned int y)
-{
+int pow(int x, unsigned int y) {
     if (y == 0)
         return 1;
     else if (y % 2 == 0)

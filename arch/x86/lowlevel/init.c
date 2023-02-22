@@ -20,17 +20,17 @@
 #include <multiboot.h> // Multiboot1
 #include <versions.h> // Версионирование
 
-void* i686_malloc(size_t size)
-{
+
+void *i686_malloc(size_t size) {
     return oxygen_alloc(size);
 }
 
-void i686_free(void* addr)
-{
+
+void i686_free(void *addr) {
     oxygen_free(addr);
 }
 
-extern canvas_t* kernel_canvas;
+extern canvas_t *kernel_canvas;
 
 // Информация о дистрибутиве
 const kernel_info_t kernel_info = {
@@ -43,10 +43,11 @@ const kernel_info_t kernel_info = {
     0
 };
 
+
 extern void kernel_init(kernel_info_t info, uint32_t size);
 
-static inline uint32_t cpu_get_features()
-{
+
+static inline uint32_t cpu_get_features() {
     uint32_t edx;
 
     asm volatile(
@@ -60,13 +61,13 @@ static inline uint32_t cpu_get_features()
     return edx;
 }
 
-uint8_t* multiboot_framebuffer = NULL; ///< Адресс фреймбуффера полученный от загрузчика
+uint8_t *multiboot_framebuffer = NULL; ///< Адресс фреймбуффера полученный от загрузчика
 uint32_t multiboot_framebuffer_width = 0;
 uint32_t multiboot_framebuffer_height = 0;
 uint32_t multiboot_framebuffer_pitch = 0;
 uint32_t multiboot_framebuffer_bpp = 0;
 bool pit_init(uint32_t frequency);
-extern void* ui_module;
+extern void *ui_module;
 /**
  * @brief Функция инициализации i386 ядра
  *
@@ -74,8 +75,7 @@ extern void* ui_module;
  * @param ebx Указатель на данные загрузчика
  * @param esp Стек
  */
-void kernel_startup(unsigned int eax, multiboot_info_t* ebx, unsigned int esp)
-{
+void kernel_startup(unsigned int eax, multiboot_info_t* ebx, unsigned int esp) {
     debug_log_printf = com1_log_printf;
     UNUSED(esp);
 

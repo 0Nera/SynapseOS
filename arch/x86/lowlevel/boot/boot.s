@@ -23,7 +23,7 @@
 # 4096 * 16 * 8 = 524288 байт. 
 # 524288 байт = 512 килобайт
 # 4 * 16 = 64 килобайт. 
-.set STACK_SIZE, 4096 * 64
+.set STACK_SIZE, 1024 * 4
 
 # Multiboot флаги
 # Multiboot константы
@@ -59,6 +59,8 @@ multiboot_end:
 # Входная точка
 _start:
     cli
+
+    finit
 
     mov  $stack_top, %esp
 
