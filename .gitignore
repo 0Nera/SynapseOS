@@ -4,7 +4,6 @@
 *.iso
 *.img
 *.uibak
-*.BIN
 *.qcow2
 *.tar
 *.sea
@@ -18,11 +17,12 @@ bochsout.txt
 serial.txt
 kernel/subsystems/*
 bin/apps/
-initrd/apps/
-limine/*
 limine
-iso_root/*
 .vscode
 .vscode/*
-apps/zlib-1.1.0/*.o
 docs/doxygen/html/
+*.EFI
+*.bin
+*.sys
+*.sys
+*.EFI

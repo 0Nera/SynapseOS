@@ -6,6 +6,7 @@ import time
 import glob
 import shutil
 import argparse
+import shutil
 
 SRC_TARGETS = []
 BIN_TARGETS = []
@@ -18,7 +19,6 @@ DEBUG_FLAGS = f"-D DEBUG=1"
 CC = f"{ARCH}-elf-gcc"  #  -march=i586
 LD = f"{ARCH}-elf-ld"  #  -march=i586
 LIMINE_DEPLOY = "limine-deploy"
-DOXYGEN = 0
 
 CC_GCC = f"" # f"-finput-charset=unicode -fexec-charset=unicode -finput-charset=utf8 -fexec-charset=utf8"
 CC_OPTIM = f"-Wall -Wextra -O0"
@@ -83,6 +83,19 @@ def build_modules():
 ''' Сборка ISO limine '''
 def build_iso_limine():
     print("Сборка ISO limine")
+    LIMINE_LIST = [
+        "BOOTIA32.EFI", "BOOTX64.EFI", "limine-cd-efi.bin", 
+        "limine.sys", "limine-cd.bin"
+    ]
+
+    if not os.path.exists("isodir/limine-cd.bin"):
+        os.system(
+                "git clone https://github.com/limine-bootloader/limine.git" \
+                " --branch=v3.0-branch-binary" \
+                " --depth=1")
+        for i in LIMINE_LIST:
+            shutil.copy(f"limine/{i}", "isodir/")
+    
     exec_cmd("""xorriso -as mkisofs -b limine-cd.bin \
           -no-emul-boot -boot-load-size 4 -boot-info-table \
           --efi-boot limine-cd-efi.bin \
@@ -111,9 +124,6 @@ if __name__ == '__main__':
     if args.limine != None:
         LIMINE_DEPLOY = args.limine
 
-    if args.docs != None:
-        DOXYGEN = args.docs
-
     start_time = time.time()
     build_kernel()
     print(f"Сборка ядра заняла: {(time.time() - start_time):2f} секунд.")
@@ -126,7 +136,7 @@ if __name__ == '__main__':
     build_iso_limine()
     print(f"Сборка ISO//Limine образа заняла: {(time.time() - start_time):2f} секунд.")
     
-    if DOXYGEN == 1:
+    if args.docs != None:
         start_time = time.time()
         build_docs()
         print(f"Проверка и генерация документации заняла: {(time.time() - start_time):2f} секунд.")
