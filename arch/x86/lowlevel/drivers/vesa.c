@@ -68,5 +68,6 @@ void vesa_init(struct multiboot_info* info) {
     debug_log("multiboot_framebuffer_bpp %u", multiboot_framebuffer_bpp);
     debug_log("multiboot_framebuffer_width %u", multiboot_framebuffer_width);
     debug_log("multiboot_framebuffer_height %u", multiboot_framebuffer_height);
+    paging_identity_map(info->framebuffer_addr, multiboot_framebuffer_width * multiboot_framebuffer_height * (multiboot_framebuffer_bpp / 8));
     memset(multiboot_framebuffer, '1', multiboot_framebuffer_width * multiboot_framebuffer_height * (multiboot_framebuffer_bpp / 8));
 }

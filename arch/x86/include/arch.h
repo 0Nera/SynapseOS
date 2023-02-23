@@ -33,6 +33,7 @@
 
 
 void paging_init();
+void paging_identity_map(uintptr_t addr, uint32_t size);
 
 
 /**

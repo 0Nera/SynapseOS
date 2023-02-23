@@ -91,10 +91,11 @@ void kernel_startup(unsigned int eax, multiboot_info_t* ebx, unsigned int esp) {
 
     uint32_t cpu = cpu_get_features();
 
+    com1_unit_test(dt_init(), "Настройка таблиц дескрипторов");
     if ((cpu >> 23) & 0x1) {
         debug_log("Имеется MMU");
-        oxygen_multiboot_init(ebx);
         paging_init();
+        oxygen_multiboot_init(ebx);
     } else {
         debug_log("Процессоры без MMU не поддерживаются!");
 
@@ -116,7 +117,6 @@ void kernel_startup(unsigned int eax, multiboot_info_t* ebx, unsigned int esp) {
 
     debug_log("cpu: 0x%x", cpu);
 
-    com1_unit_test(dt_init(), "Настройка таблиц дескрипторов");
 
     // arch_cpuid_test();
 
