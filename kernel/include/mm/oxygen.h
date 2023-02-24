@@ -22,13 +22,15 @@ struct oxygen_mem_entry {
     struct oxygen_mem_entry* next;
     bool free;
     size_t size;
+    uint8_t data[0];
 };
 
 typedef struct oxygen_mem_entry oxygen_mem_entry_t;
 
+void oxygen_init(uintptr_t address, size_t length);
+void oxygen_test();
 oxygen_mem_entry_t *oxygen_find_free(size_t length);
-bool oxygen_multiboot_init(multiboot_info_t* info);
-int oxygen_dump_block(oxygen_mem_entry_t *entry);
+void oxygen_dump_block(oxygen_mem_entry_t *entry);
 void oxygen_free(void *ptr);
 void *oxygen_alloc(size_t length);
 void *oxygen_alloc_align(size_t size, size_t alignment);

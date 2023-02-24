@@ -16,6 +16,7 @@
 
 uintptr_t __attribute__((aligned(4096))) kernel_page_dir[1024] = {0};
 static uint32_t __attribute__((aligned(4096))) kernel_page_table[1024] = {0};
+static uint32_t __attribute__((aligned(4096))) kernel_heap_page_table[1024] = {0};
 
 // FIXME: сломается если область памяти переходит границу 4мб
 void paging_identity_map(uintptr_t addr, uint32_t size) {
@@ -31,13 +32,18 @@ void paging_identity_map(uintptr_t addr, uint32_t size) {
     for (uint32_t i = addr; i < (addr + size); i += 4096) {
         page_table[(i >> 12) & 0x3ff] = i | 3;
     }
+    asm("mov %cr3, %eax\n"
+        "mov %eax, %cr3");
 }
 
 void paging_init() {
     for (uint32_t i = 0; i < 1024; i++) {
         kernel_page_table[i] = (i * 4096) | 3;
+        kernel_heap_page_table[i] = ((i + 1024) * 4096) | 3;
     }
+
     kernel_page_dir[0] = (uintptr_t)(kernel_page_table) | 3;
+    kernel_page_dir[1] = (uintptr_t)(kernel_heap_page_table) | 3;
 
     asm("movl %%ecx, %%cr3\n"
         "movl %%cr0, %%eax\n"

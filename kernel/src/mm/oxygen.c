@@ -16,10 +16,6 @@
 #include <mm/oxygen.h>
 #include <multiboot.h>
 
-static void *oxygen_mem_start;
-static void *oxygen_mem_end;
-static size_t oxygen_mem_free;
-static size_t oxygen_mem_all;
 static oxygen_mem_entry_t *first_node;
 
 
@@ -28,91 +24,96 @@ static oxygen_mem_entry_t *first_node;
  *
  * @param address Адрес начала памяти
  * @param length Размер области
- * @return bool True в случае успеха
  */
-bool oxygen_init(void *address, size_t length) {
-    oxygen_mem_start = address;
-    oxygen_mem_end = address + length;
-    oxygen_mem_all = length;
-    oxygen_mem_free = length;
-
-    debug_log("Инициализация менеджера динамичной памяти, %u байт на точку", sizeof(oxygen_mem_entry_t));
+void oxygen_init(uintptr_t address, size_t length) {
+    debug_log("Инициализация менеджера кучи ядра, %u байт на точку", sizeof(oxygen_mem_entry_t));
     debug_log("Размер области: %u килобайт", length / 1024);
     debug_log("Адрес области: 0x%x", address);
-    debug_log("Конец области: 0x%x", oxygen_mem_end);
+    debug_log("Конец области: 0x%x", address + length - 1);
 
     first_node = (oxygen_mem_entry_t*)address;
 
-    first_node->size = length;
+    first_node->size = length - sizeof(oxygen_mem_entry_t);
     first_node->free = true;
     first_node->next = NULL;
+}
 
+void oxygen_test() {
     void *temp = oxygen_alloc(1024);
     void *temp1 = oxygen_alloc(1024 * 1024);
     void *temp2 = oxygen_alloc(4096);
+    oxygen_dump_memory();
 
+    oxygen_free(temp1);
     oxygen_dump_memory();
 
     oxygen_free(temp);
-    oxygen_free(temp1);
-    oxygen_free(temp2);
+    oxygen_dump_memory();
 
-    return true;
+    oxygen_free(temp2);
+    oxygen_dump_memory();
 }
 
+void oxygen_merge_blocks(oxygen_mem_entry_t* start) {
+    if (!start->free) return;
+    oxygen_mem_entry_t *block = start;
+    while (block && block->next && block->next->free) {
+        block->size += block->next->size + sizeof(oxygen_mem_entry_t);
+        block->next = block->next->next;
+        block = block->next;
+    }
+}
 
 //This function allocates a block of memory.
 void *oxygen_alloc(size_t size) {
-    oxygen_mem_entry_t *curr = first_node;
-    
-    while (curr != NULL) {
-        if (curr->free && curr->size >= size) {
-            curr->free = 0;
-            if (curr->size > size) {
-                //Split the block into two blocks.
-                oxygen_mem_entry_t *new_block = (oxygen_mem_entry_t*)((uintptr_t)curr + size);
-                new_block->size = curr->size - size;
-                new_block->free = 1;
-                new_block->next = curr->next;
-                curr->size = size;
-                curr->next = new_block;
-            }
-            return (void *)((uintptr_t)curr + sizeof(oxygen_mem_entry_t));
-        }
-        curr = curr->next;
-    }
-    return NULL;
+    return oxygen_alloc_align(size, 1);
 }
 
-void *oxygen_alloc_align(size_t size, size_t alignment) {
+void* oxygen_alloc_align(size_t size, size_t alignment) {
     oxygen_mem_entry_t *curr = first_node;
-    
-    while (curr != NULL) {
-        if (curr->free && curr->size >= (size + alignment + sizeof(oxygen_mem_entry_t))) {
-            if (curr->size > size) {
-                //Split the block into two blocks.
-                oxygen_mem_entry_t *new_block = (oxygen_mem_entry_t*)((((uintptr_t)curr + alignment) - ((uintptr_t)curr % alignment)) - sizeof(oxygen_mem_entry_t));
-                new_block->size = size;
-                new_block->free = 0;
-                new_block->next = curr->next;
-                curr->size -= size;
-                curr->next = new_block;
-                return (void *)((uintptr_t)new_block + sizeof(oxygen_mem_entry_t));
+
+    while (curr) {
+        if (curr->free) {
+            void* addr = curr->data + alignment - 1;
+            addr -= (uintptr_t)addr % alignment + sizeof(oxygen_mem_entry_t);
+            oxygen_mem_entry_t *second = addr;
+            if (curr->size >= (second->data - curr->data + size)) {
+                oxygen_mem_entry_t *third = addr + size;
+
+                third->size = curr->size - (third->data - curr->data);
+                third->next = curr->next;
+                third->free = 1;
+
+                second->size = size;
+                second->next = third;
+                second->free = 0;
+
+                if (curr != second) {
+                    curr->next = second;
+                    curr->size = (uintptr_t)second - (uintptr_t)curr->data;
+                    curr->free = 1;
+                }
+
+                return second->data;
             }
         }
+
         curr = curr->next;
     }
+
     return NULL;
 }
 
 //This function releases a block of memory.
 void oxygen_free(void *ptr) {
-    oxygen_mem_entry_t *curr = first_node;
+    oxygen_mem_entry_t *curr = first_node, *prev = NULL;
     while (curr != NULL) {
-        if ((void *)((uintptr_t)curr + sizeof(oxygen_mem_entry_t)) == ptr) {
+        if (curr->data == ptr) {
             curr->free = 1;
-            break;
+            oxygen_merge_blocks(prev ? prev : curr);
+            return;
         }
+        prev = curr;
         curr = curr->next;
     }
 }
@@ -121,23 +122,19 @@ void oxygen_dump_memory() {
     debug_log("Карта блоков:");
 
     oxygen_mem_entry_t *i = first_node;
-    while (true) {
+    while (i) {
         oxygen_dump_block(i);
-        if (i->next == NULL) {
-            debug_log("Конец карты блоков");
-            return;
-        }
         i = i->next;
     }
+    debug_log("Конец карты блоков");
 }
 
 /**
  * @brief
  *
  * @param entry
- * @return int
  */
-int oxygen_dump_block(oxygen_mem_entry_t *entry) {
+void oxygen_dump_block(oxygen_mem_entry_t *entry) {
     debug_log_printf("free %u",
         entry->free);
     debug_log_printf(" | entry 0x%x",
@@ -145,111 +142,12 @@ int oxygen_dump_block(oxygen_mem_entry_t *entry) {
     debug_log_printf(" | next 0x%x",
         entry->next);
     debug_log_printf(" | addr 0x%x",
-        entry + sizeof(oxygen_mem_entry_t));
+        entry->data);
     debug_log_printf(" | size %u байт ",
         entry->size);
     if (entry->next == NULL) {
         debug_log_printf("LAST ");
-        debug_log_printf("(0x%x)\n",
-            entry->size);
-        return -999;
     }
     debug_log_printf("(0x%x)\n",
         entry->size);
-    return 0;
-}
-
-/**
- * @brief Инициализация
- *
- * @param info
- * @return true
- * @return false
- */
-bool oxygen_multiboot_init(multiboot_info_t* info) {
-    // FIXME: оно считает ядро свободной памятью!
-    multiboot_memory_map_t* start = (multiboot_memory_map_t*)info->mmap_addr;
-    multiboot_memory_map_t* end = (multiboot_memory_map_t*)(info->mmap_addr + info->mmap_length);
-    multiboot_memory_map_t* max_block;
-    debug_log("Карта памяти:");
-
-    size_t total_free_mem = 0;
-    size_t total_used_mem = 0;
-    size_t max_len = 0;
-
-    for (multiboot_memory_map_t* entry = start; entry < end; entry++) {
-        debug_log("[0x%x]", entry->addr);
-
-        if (max_len < entry->len) {
-            max_len = entry->len;
-            max_block = entry;
-        }
-
-        debug_log("\t->%u байт", entry->len);
-
-        if ((entry->len / 1024) > 1) {
-            debug_log("\t \\->%u килобайт", entry->len / 1024);
-        }
-
-        if ((entry->len / 1024 / 1024) > 1) {
-            debug_log("\t  \\->%u мегабайт", entry->len / 1024 / 1024);
-        }
-
-        if ((entry->len / 1024 / 1024 / 1024) > 1) {
-            debug_log("\t   \\->0x%x гигабайт", entry->len / 1024 / 1024 / 1024);
-        }
-
-        switch (entry->type) {
-            case 1:
-                debug_log("\tСвободно");
-                total_free_mem += entry->len;
-                break;
-            case 2:
-                debug_log("\tНе использовать");
-                total_used_mem += entry->len;
-                break;
-            case 3:
-                debug_log("\tACPI Reclaim Memory (можно использовать после чтения таблиц ACPI)");
-                total_used_mem += entry->len;
-                break;
-            case 4:
-                debug_log("\tACPI NVS");
-                total_used_mem += entry->len;
-                break;
-        }
-    }
-
-    debug_log("Самый большой регион памяти: %u килобайт", max_len / 1024);
-    debug_log("Всего памяти доступной для использования:");
-    debug_log("%u байт", total_free_mem);
-
-    if ((total_free_mem / 1024) > 1) {
-        debug_log("\t \\->%u килобайт", total_free_mem / 1024);
-    }
-
-    if ((total_free_mem / 1024 / 1024) > 1) {
-        debug_log("\t  \\->%u мегабайт", total_free_mem / 1024 / 1024);
-    }
-
-    if ((total_free_mem / 1024 / 1024 / 1024) > 1) {
-        debug_log("\t   \\->0x%x гигабайт", total_free_mem / 1024 / 1024 / 1024);
-    }
-
-    debug_log("Всего памяти недоступной для использования:");
-    debug_log("%u байт", total_used_mem);
-
-    if ((total_used_mem / 1024) > 1) {
-        debug_log("\t \\->%u килобайт", total_used_mem / 1024);
-    }
-
-    if ((total_used_mem / 1024 / 1024) > 1) {
-        debug_log("\t  \\->%u мегабайт", total_used_mem / 1024 / 1024);
-    }
-
-    if ((total_used_mem / 1024 / 1024 / 1024) > 1) {
-        debug_log("\t   \\->0x%x гигабайт", total_used_mem / 1024 / 1024 / 1024);
-    }
-
-    // FIXME: использовать данные сверху
-    return oxygen_init((void*)((uintptr_t)0x300000), 0x100000);
 }
