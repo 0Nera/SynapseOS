@@ -29,8 +29,8 @@ bool elf_is_valid(module_elf_programm_t *info) {
 
 	return (info->header->magic[0] == 0x7f
 	   && info->header->magic[1] == 'E'
-	   && info->header->magic[1] == 'L'
-	   && info->header->magic[1] == 'F');
+	   && info->header->magic[2] == 'L'
+	   && info->header->magic[3] == 'F');
 }
 
 /**
@@ -44,16 +44,15 @@ bool elf_is_valid(module_elf_programm_t *info) {
  */
 int elf_module_load(module_elf_programm_t *info/*, size_t argc, char **argv,*/) {
     kprintf("[%s] at [%x]\n", info->name, info->header->entry);
-    /*
-    if (info->header->magic[0]!=0x7f || 
-        info->header->magic[1]!='E' || 
-        info->header->magic[2]!='L' || 
-        info->header->magic[3]!='F') {
-        debug_log("ELF invalid!");
-        return -1;
-    } else {
-        debug_log("ELF valid?");
-    }*/
+    // if (info->header->magic[0]!=0x7f ||
+        // info->header->magic[1]!='E' ||
+        // info->header->magic[2]!='L' ||
+        // info->header->magic[3]!='F') {
+        // debug_log("ELF invalid!");
+        // return -1;
+    // } else {
+        // debug_log("ELF valid?");
+    // }
     if(!elf_is_valid(info)) {
     	debug_log("ELF is invalid!");
     	return -1;

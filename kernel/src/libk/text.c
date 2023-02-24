@@ -83,7 +83,7 @@ void text_putc(char c) {
             screen_y += _height;
             return;
         case '\t':
-            screen_x += 4 * 8;  // 4 * _width;
+            screen_x += 4 * _width;
             return;
         default:
             break;
