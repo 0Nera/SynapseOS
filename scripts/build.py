@@ -1,5 +1,15 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
+
+"""
+Сборщик ядра SynapseOS
+
+(c) Арен Елчинян
+"""
+
+# NOTE: Для компиляторов Clang: (где 13 - это версия, её можно изменить)
+# python3 scripts/build.py -compiler 'clang-13 -m32' -linker 'ld.lld-13 -m elf_i386'
+
 import os
 import sys
 import time
