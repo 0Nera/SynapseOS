@@ -14,14 +14,14 @@
 #include <libk.h>
 #include <multiboot.h>
 
-extern uint8_t *multiboot_framebuffer; ///< Адресс фреймбуффера полученный от загрузчика
+extern uint32_t *multiboot_framebuffer; ///< Адресс фреймбуффера полученный от загрузчика
 extern uint32_t multiboot_framebuffer_width;
 extern uint32_t multiboot_framebuffer_height;
 extern uint32_t multiboot_framebuffer_pitch;
 extern uint32_t multiboot_framebuffer_bpp;
 
 void vesa_put_pixel(int x, int y, uint32_t color) {
-    uint32_t where = x * (multiboot_framebuffer_bpp / 8) + y * (multiboot_framebuffer_pitch);
+    uint32_t where = x + y * (multiboot_framebuffer_pitch / 4);
     multiboot_framebuffer[where] = color;
 }
 
@@ -56,7 +56,7 @@ void putLine(int x0, int y0, int x1, int y1, uint32_t color) {
 }
 
 void vesa_init(struct multiboot_info* info) {
-    multiboot_framebuffer = (uint8_t*)(uintptr_t)info->framebuffer_addr;
+    multiboot_framebuffer = (uint32_t*)(uintptr_t)info->framebuffer_addr;
     multiboot_framebuffer_pitch = info->framebuffer_pitch;
     multiboot_framebuffer_bpp = info->framebuffer_bpp;
     multiboot_framebuffer_width = info->framebuffer_width;
@@ -68,5 +68,6 @@ void vesa_init(struct multiboot_info* info) {
     debug_log("multiboot_framebuffer_bpp %u", multiboot_framebuffer_bpp);
     debug_log("multiboot_framebuffer_width %u", multiboot_framebuffer_width);
     debug_log("multiboot_framebuffer_height %u", multiboot_framebuffer_height);
+    paging_identity_map(info->framebuffer_addr, multiboot_framebuffer_width * multiboot_framebuffer_height * (multiboot_framebuffer_bpp / 8));
     memset(multiboot_framebuffer, '1', multiboot_framebuffer_width * multiboot_framebuffer_height * (multiboot_framebuffer_bpp / 8));
 }

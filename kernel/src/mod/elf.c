@@ -26,20 +26,20 @@
  * @param syscalls Указатель на структуру сисфункций ядра
  * @return int Результат работы модуля
  */
-int elf_module_load(module_elf_programm_t info/*, size_t argc, char **argv,*/) {
-    kprintf("[%s] at [%x]\n", info.header->entry);
-    if (info.header->magic[0]!=0x7f || 
-        info.header->magic[1]!='E' || 
-        info.header->magic[2]!='L' || 
-        info.header->magic[3]!='F') {
+int elf_module_load(module_elf_programm_t *info/*, size_t argc, char **argv,*/) {
+    kprintf("[%s] at [%x]\n", info->name, info->header->entry);
+    if (info->header->magic[0]!=0x7f || 
+        info->header->magic[1]!='E' || 
+        info->header->magic[2]!='L' || 
+        info->header->magic[3]!='F') {
         debug_log("ELF invalid!");
         return -1;
     } else {
         debug_log("ELF valid?");
     }
     debug_log("\t\tELF file type: %s", (
-        info.header->file_type == ELF_REL) ? 
-        "relocatable" : (info.header->file_type==ELF_EXEC) ? 
+        info->header->file_type == ELF_REL) ? 
+        "relocatable" : (info->header->file_type==ELF_EXEC) ? 
         "executable" : "unknown");
     /*
     char **final_argv = oxygen_alloc(sizeof(char**) * argc);    
@@ -51,11 +51,12 @@ int elf_module_load(module_elf_programm_t info/*, size_t argc, char **argv,*/) {
     }
     */
 
-    kprintf("[%s] Loading..\n", info.name);
-    int (*entry_point)() = (void*)(info.header->entry);
+    kprintf("[%s] Loading..\n", info->name);
+    int (*entry_point)() = (void*)(info->header->entry);
+    kprintf("[%x] entry\n", entry_point);
     //int result = entry_point();
 
-    kprintf("[%s] Return [%i]\n", info.name, -1);
+    kprintf("[%s] Return [%d]\n", info->name, -1);
     //oxygen_free(final_argv);
     return -1;
 }

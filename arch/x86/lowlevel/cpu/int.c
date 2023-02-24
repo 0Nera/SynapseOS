@@ -231,7 +231,9 @@ static noreturn void general_protection_error(int_registers_t* regs) {
  */
 static noreturn void page_fault(int_registers_t* regs) {
     UNUSED(regs);
-    debug_log("[ERROR]Page fault");
+    uint32_t addr;
+    asm("movl %%cr2, %%eax": "=a"(addr));
+    debug_log("[ERROR]Page fault at %x", addr);
 
     for (;;) {
         halt();

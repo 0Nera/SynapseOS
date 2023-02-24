@@ -31,6 +31,7 @@ bool oxygen_multiboot_init(multiboot_info_t* info);
 int oxygen_dump_block(oxygen_mem_entry_t *entry);
 void oxygen_free(void *ptr);
 void *oxygen_alloc(size_t length);
+void *oxygen_alloc_align(size_t size, size_t alignment);
 void oxygen_dump_memory();
 
 #endif // oxygen.h

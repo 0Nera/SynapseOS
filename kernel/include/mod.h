@@ -61,6 +61,6 @@ typedef struct {
 	void (*debug_log_printf)(const char *format_string, ...);
 } module_syscalls_t;
 
-int elf_module_load(module_elf_programm_t info/*, size_t argc, char **argv, module_syscalls_t syscalls*/);
+int elf_module_load(module_elf_programm_t *info/*, size_t argc, char **argv, module_syscalls_t syscalls*/);
 
 #endif // mod.h

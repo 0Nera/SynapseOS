@@ -26,22 +26,22 @@ static oxygen_mem_entry_t *first_node;
 /**
  * @brief Инициализация менеджера памяти "Кислород"
  *
- * @param adress Адрес начала памяти
+ * @param address Адрес начала памяти
  * @param length Размер области
  * @return bool True в случае успеха
  */
-bool oxygen_init(void *adress, size_t length) {
-    oxygen_mem_start = adress;
-    oxygen_mem_end = adress + length;
+bool oxygen_init(void *address, size_t length) {
+    oxygen_mem_start = address;
+    oxygen_mem_end = address + length;
     oxygen_mem_all = length;
     oxygen_mem_free = length;
 
     debug_log("Инициализация менеджера динамичной памяти, %u байт на точку", sizeof(oxygen_mem_entry_t));
     debug_log("Размер области: %u килобайт", length / 1024);
-    debug_log("Адрес области: 0x%x", adress);
+    debug_log("Адрес области: 0x%x", address);
     debug_log("Конец области: 0x%x", oxygen_mem_end);
 
-    first_node = (oxygen_mem_entry_t*)adress;
+    first_node = (oxygen_mem_entry_t*)address;
 
     first_node->size = length;
     first_node->free = true;
@@ -78,6 +78,27 @@ void *oxygen_alloc(size_t size) {
                 curr->next = new_block;
             }
             return (void *)((uintptr_t)curr + sizeof(oxygen_mem_entry_t));
+        }
+        curr = curr->next;
+    }
+    return NULL;
+}
+
+void *oxygen_alloc_align(size_t size, size_t alignment) {
+    oxygen_mem_entry_t *curr = first_node;
+    
+    while (curr != NULL) {
+        if (curr->free && curr->size >= (size + alignment + sizeof(oxygen_mem_entry_t))) {
+            if (curr->size > size) {
+                //Split the block into two blocks.
+                oxygen_mem_entry_t *new_block = (oxygen_mem_entry_t*)((((uintptr_t)curr + alignment) - ((uintptr_t)curr % alignment)) - sizeof(oxygen_mem_entry_t));
+                new_block->size = size;
+                new_block->free = 0;
+                new_block->next = curr->next;
+                curr->size -= size;
+                curr->next = new_block;
+                return (void *)((uintptr_t)new_block + sizeof(oxygen_mem_entry_t));
+            }
         }
         curr = curr->next;
     }
@@ -146,9 +167,10 @@ int oxygen_dump_block(oxygen_mem_entry_t *entry) {
  * @return false
  */
 bool oxygen_multiboot_init(multiboot_info_t* info) {
+    // FIXME: оно считает ядро свободной памятью!
     multiboot_memory_map_t* start = (multiboot_memory_map_t*)info->mmap_addr;
     multiboot_memory_map_t* end = (multiboot_memory_map_t*)(info->mmap_addr + info->mmap_length);
-    multiboot_memory_map_t* temp;
+    multiboot_memory_map_t* max_block;
     debug_log("Карта памяти:");
 
     size_t total_free_mem = 0;
@@ -160,7 +182,7 @@ bool oxygen_multiboot_init(multiboot_info_t* info) {
 
         if (max_len < entry->len) {
             max_len = entry->len;
-            temp = entry;
+            max_block = entry;
         }
 
         debug_log("\t->%u байт", entry->len);
@@ -228,5 +250,6 @@ bool oxygen_multiboot_init(multiboot_info_t* info) {
         debug_log("\t   \\->0x%x гигабайт", total_used_mem / 1024 / 1024 / 1024);
     }
 
-    return oxygen_init((void*)(uintptr_t)KERNEL_PAGE_TABLE_END, temp->len);
+    // FIXME: использовать данные сверху
+    return oxygen_init((void*)((uintptr_t)0x300000), 0x100000);
 }
