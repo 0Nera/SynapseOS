@@ -16,6 +16,22 @@
 #include <libk.h>
 #include <mod.h>
 
+// Egor, this function needs to be static or inline?
+// And how to decide?
+
+/**
+ * @brief Проверка заголовка ELF на валидность
+ * 
+ * @param info Информация о модуле
+ */
+bool elf_is_valid(module_elf_programm_t *info) {
+	if(!info) return false;
+
+	return (info->header->magic[0] == 0x7f
+	   && info->header->magic[1] == 'E'
+	   && info->header->magic[1] == 'L'
+	   && info->header->magic[1] == 'F');
+}
 
 /**
  * @brief Загрузка и исполнение модуля в формате ELF
@@ -28,6 +44,7 @@
  */
 int elf_module_load(module_elf_programm_t *info/*, size_t argc, char **argv,*/) {
     kprintf("[%s] at [%x]\n", info->name, info->header->entry);
+    /*
     if (info->header->magic[0]!=0x7f || 
         info->header->magic[1]!='E' || 
         info->header->magic[2]!='L' || 
@@ -36,15 +53,24 @@ int elf_module_load(module_elf_programm_t *info/*, size_t argc, char **argv,*/) 
         return -1;
     } else {
         debug_log("ELF valid?");
+    }*/
+    if(!elf_is_valid(info)) {
+    	debug_log("ELF is invalid!");
+    	return -1;
     }
-    debug_log("\t\tELF file type: %s", (
-        info->header->file_type == ELF_REL) ? 
-        "relocatable" : (info->header->file_type==ELF_EXEC) ? 
-        "executable" : "unknown");
+    debug_log("ELF is valid!");
+    
+    debug_log("\t\tELF file type: %s",
+    		  (info->header->file_type == ELF_REL) ? 
+        		"relocatable" :
+        		(info->header->file_type==ELF_EXEC) ? 
+        		  "executable" :
+        		  "unknown"
+    );
     /*
     char **final_argv = oxygen_alloc(sizeof(char**) * argc);    
     
-    final_argv[0] = (char*)info.name;
+    final_argv[0] = (char*)info->name;
 
     for(size_t i = 1; i < argc; i++) {
         final_argv[i] = argv[i-1];
