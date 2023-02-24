@@ -24,8 +24,14 @@ SECTIONS {
         *(.bss)
         bss_phys_end = .;
     }
+
+	/DISCARD/ : {
+		*(.note.gnu.build-id)
+	}
+
     KERNEL_END_PHYS = . - 0x00200000;
     KERNEL_END = .; 
     KERNEL_SIZE_PHYS = KERNEL_END_PHYS - KERNEL_BEGIN_PHYS;
     KERNEL_SIZE = KERNEL_END - KERNEL_BEGIN;
+
 }
