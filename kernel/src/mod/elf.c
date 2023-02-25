@@ -1,7 +1,7 @@
 /**
  * @file elf.c
  * @author Арен Елчинян (a2.dev@yandex.com)
- * @brief 
+ * @brief Загрузчик модулей которые скомпилированы в формат ELF
  * @version 0.1.0
  * @date 22-02-2023
  * 
@@ -16,23 +16,6 @@
 #include <libk.h>
 #include <mod.h>
 
-// Egor, this function needs to be static or inline?
-// And how to decide?
-
-/**
- * @brief Проверка заголовка ELF на валидность
- * 
- * @param info Информация о модуле
- */
-bool elf_is_valid(module_elf_programm_t *info) {
-	if(!info) return false;
-
-	return (info->header->magic[0] == 0x7f
-	   && info->header->magic[1] == 'E'
-	   && info->header->magic[1] == 'L'
-	   && info->header->magic[1] == 'F');
-}
-
 /**
  * @brief Загрузка и исполнение модуля в формате ELF
  * 
@@ -44,17 +27,11 @@ bool elf_is_valid(module_elf_programm_t *info) {
  */
 int elf_module_load(module_elf_programm_t *info/*, size_t argc, char **argv,*/) {
     kprintf("[%s] at [%x]\n", info->name, info->header->entry);
-    /*
-    if (info->header->magic[0]!=0x7f || 
-        info->header->magic[1]!='E' || 
-        info->header->magic[2]!='L' || 
-        info->header->magic[3]!='F') {
-        debug_log("ELF invalid!");
-        return -1;
-    } else {
-        debug_log("ELF valid?");
-    }*/
-    if(!elf_is_valid(info)) {
+
+    if(!(info->header->magic[0] == 0x7f
+         && info->header->magic[1] == 'E'
+         && info->header->magic[1] == 'L'
+         && info->header->magic[1] == 'F')) {
     	debug_log("ELF is invalid!");
     	return -1;
     }
