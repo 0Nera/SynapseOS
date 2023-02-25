@@ -75,7 +75,7 @@ extern void *ui_module;
  * @param ebx Указатель на данные загрузчика
  * @param esp Стек
  */
-void kernel_startup(multiboot_info_t* ebx, unsigned int esp) {
+void kernel_startup(unsigned int eax, multiboot_info_t* ebx, unsigned int esp) {
     debug_log_printf = com1_log_printf;
     UNUSED(esp);
 
@@ -92,12 +92,14 @@ void kernel_startup(multiboot_info_t* ebx, unsigned int esp) {
     uint32_t cpu = cpu_get_features();
 
     com1_unit_test(dt_init(), "Настройка таблиц дескрипторов");
-    oxygen_init(0xc0400000, 0x400000);
+    paging_init();
+    oxygen_init(0x400000, 0x400000);
     oxygen_test();
 
     int kernel_size = ((uint32_t)&KERNEL_SIZE) >> 10; // Размер ядра делим на 1024, получая размер в килобайтах.
     debug_log("Размер ядра(вместе со стеком) %u килобайт, %u байт", kernel_size, (uint32_t)&KERNEL_SIZE);
 
+    com1_unit_test(eax == MULTIBOOT_BOOTLOADER_MAGIC, "Проверка магического числа Multiboot");
     debug_log("cpu: 0x%x", cpu);
 
     // com1_unit_test(fpu_init(), "Настройка FPU");

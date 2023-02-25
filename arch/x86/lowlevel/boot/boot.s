@@ -35,7 +35,7 @@
 # Это магические значения, которые задокументированы в стандарте мультизагрузки.
 # Загрузчик будет искать этот заголовок в первых 8 килобайтах файла ядра, выровненного по 32-битной границе.
 # Подпись находится в отдельном разделе, поэтому заголовок можно принудительно разместить в первых 8 килобайтах файла ядра.
-.section .multiboot, "aw"
+.section .multiboot
 multiboot_start:
     .align 4
     .long MB_MAGIC
@@ -52,7 +52,7 @@ multiboot_end:
         .skip STACK_SIZE 
     stack_top:
 
-.section .preinit, "a"
+.section    .text
 .global _start
 
 
@@ -62,20 +62,13 @@ _start:
 
     finit
 
-    mov  $stack_top - 0xC0000000, %esp
-
-    call    paging_init
-    jmp init
-
-.section .text
-init:
-
     mov  $stack_top, %esp
 
-    addl $0xC0000000, %ebx 
 
     push    %esp    # Стек
     push    %ebx    # Структура multiboot
+    push    %eax    # Магическое число
+    
     call    kernel_startup
     
 
