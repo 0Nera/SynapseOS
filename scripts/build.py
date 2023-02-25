@@ -24,15 +24,15 @@ BIN_TARGETS = []
 ARCH = "i686" # "x86_64", "arm", "e2k"
 ARCH_DIR = "x86" # "x86_64", "arm", "e2k"
 
-DEBUG_FLAGS = f"-D DEBUG=1"
+DEBUG_FLAGS = "-D DEBUG=1"
 
 CC = f"{ARCH}-elf-gcc"  #  -march=i586
 LD = f"{ARCH}-elf-ld"  #  -march=i586
 LIMINE_DEPLOY = "limine-deploy"
 
 CC_GCC = f"" # f"-finput-charset=unicode -fexec-charset=unicode -finput-charset=utf8 -fexec-charset=utf8"
-CC_OPTIM = f"-Wall -Wextra -O0"
-CC_PROTECT = f"-mno-sse -ffreestanding -fno-stack-protector -nostdlib"
+CC_OPTIM = "-Wall -Wextra -O0"
+CC_PROTECT = "-mno-sse -ffreestanding -fno-stack-protector -nostdlib"
 CC_FLAGS = f"{CC_PROTECT} {DEBUG_FLAGS} {CC_OPTIM} -I kernel//include// -I arch//{ARCH_DIR}//include// -c -fPIE -fPIC"
 
 LD_FLAGS = f"{CC_GCC} -T arch//{ARCH_DIR}//link.ld -nostdlib -O0 "
@@ -48,7 +48,7 @@ def build_kernel():
 
     files = glob.glob(f"arch//{ARCH_DIR}//**//*.s", recursive=True) + \
             glob.glob(f"arch//{ARCH_DIR}//**//*.c", recursive=True) + \
-            glob.glob(f"kernel//**//*.c", recursive=True)
+            glob.glob("kernel//**//*.c", recursive=True)
 
     for i in range(len(files)):
         SRC_TARGETS.append(files[i])
@@ -87,7 +87,6 @@ def build_modules():
     MOD_FLAGS = "-m32 -O0 -ffreestanding -Wall -Wextra -nostdlib -nostartfiles"
     os.system(f"{CC} {MOD_FLAGS} -c mod/simple/main.c -o bin/simple.o")
     os.system(f"{CC} -T mod/simple/link.ld -nostdlib -O0 -o isodir/modules/simple.elf bin/simple.o")
-    pass
 
 
 ''' Сборка ISO limine '''
@@ -113,7 +112,6 @@ def build_iso_limine():
           isodir -o SynapseOS-limine.iso""")
     
     exec_cmd(f"{LIMINE_DEPLOY} SynapseOS-limine.iso")
-    
 
 
 if __name__ == '__main__':
@@ -154,7 +152,7 @@ if __name__ == '__main__':
 
     if args.noqemu == 0 or args.noqemu == None:
         if ARCH == "i686":
-            QEMU_DEV = f"-device rtl8139,id=nic0"
+            QEMU_DEV = "-device rtl8139,id=nic0"
             QEMU = f"qemu-system-i386 -m 256 -d guest_errors -no-reboot {QEMU_DEV} " # -cpu pentium3
             
             exec_cmd(f"{QEMU} -monitor stdio -cdrom SynapseOS-limine.iso -serial file:serial.log")
