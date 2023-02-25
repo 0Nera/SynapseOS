@@ -14,7 +14,7 @@
 #include <libk.h>
 #include <mm/oxygen.h>
 
-uintptr_t __attribute__((aligned(4096))) kernel_page_dir[1024] = {0};
+uint32_t __attribute__((aligned(4096))) kernel_page_dir[1024] = {0};
 static uint32_t __attribute__((aligned(4096))) kernel_page_table[1024] = {0};
 static uint32_t __attribute__((aligned(4096))) kernel_heap_page_table[1024] = {0};
 
@@ -24,30 +24,38 @@ void paging_identity_map(uintptr_t addr, uint32_t size) {
     uint32_t* page_table;
     if (!kernel_page_dir[addr >> 22]) {
         page_table = oxygen_alloc_align(4096, 4096);
-        kernel_page_dir[addr >> 22] = (uintptr_t)page_table | 3;
+        kernel_page_dir[addr >> 22] = ((uintptr_t)page_table - 0xC0000000) | 3;
     }
     else {
-        page_table = (void*)(kernel_page_dir[addr >> 22] & ~3);
+        page_table = (void*)(kernel_page_dir[addr >> 22] & ~3 + 0xC0000000);
     }
     for (uint32_t i = addr; i < (addr + size); i += 4096) {
         page_table[(i >> 12) & 0x3ff] = i | 3;
     }
+    debug_log("%x", kernel_page_dir[addr >> 22]);
     asm("mov %cr3, %eax\n"
         "mov %eax, %cr3");
 }
 
-void paging_init() {
+void paging_unmap_pt(uintptr_t addr) {
+    kernel_page_dir[addr >> 22] = 0;
+    asm("mov %cr3, %eax\n"
+        "mov %eax, %cr3");
+}
+
+void __attribute__((section(".preinit"))) paging_init() {
+    uint32_t *pd = (void*)kernel_page_dir - 0xc0000000, *pt1 = (void*)kernel_page_table - 0xc0000000, *pt2 = (void*)kernel_heap_page_table - 0xc0000000;
     for (uint32_t i = 0; i < 1024; i++) {
-        kernel_page_table[i] = (i * 4096) | 3;
-        kernel_heap_page_table[i] = ((i + 1024) * 4096) | 3;
+        pt1[i] = (i * 4096) | 3;
+        pt2[i] = ((i + 1024) * 4096) | 3;
     }
 
-    kernel_page_dir[0] = (uintptr_t)(kernel_page_table) | 3;
-    kernel_page_dir[1] = (uintptr_t)(kernel_heap_page_table) | 3;
+    pd[0xc0000000 >> 22] = pd[0] = (uintptr_t)(pt1) | 3;
+    pd[0xc0400000 >> 22] = (uintptr_t)(pt2) | 3;
 
     asm("movl %%ecx, %%cr3\n"
         "movl %%cr0, %%eax\n"
         "orl $0x80000000, %%eax\n"
         "movl %%eax, %%cr0"
-        :: "c"(kernel_page_dir));
+        :: "c"(pd));
 }
