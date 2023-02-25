@@ -57,10 +57,9 @@ void oxygen_test() {
 void oxygen_merge_blocks(oxygen_mem_entry_t* start) {
     if (!start->free) return;
     oxygen_mem_entry_t *block = start;
-    while (block && block->next && block->next->free) {
+    while (block->next && block->next->free) {
         block->size += block->next->size + sizeof(oxygen_mem_entry_t);
         block->next = block->next->next;
-        block = block->next;
     }
 }
 
