@@ -16,6 +16,87 @@
 
 extern kernel_info_t kernel_info;
 
+static void multiboot_dump_mem(multiboot_info_t* info) {
+    multiboot_memory_map_t* start = (multiboot_memory_map_t*)info->mmap_addr;
+    multiboot_memory_map_t* end = (multiboot_memory_map_t*)(info->mmap_addr + info->mmap_length);
+    debug_log("Карта памяти:");
+
+    size_t total_free_mem = 0;
+    size_t total_used_mem = 0;
+    size_t max_len = 0;
+
+    for (multiboot_memory_map_t* entry = start; entry < end; entry++) {
+        debug_log("[0x%x]", entry->addr);
+
+        if (max_len < entry->len) {
+            max_len = entry->len;
+        }
+
+        debug_log("\t->%u байт", entry->len);
+
+        if ((entry->len / 1024) > 1) {
+            debug_log("\t \\->%u килобайт", entry->len / 1024);
+        }
+
+        if ((entry->len / 1024 / 1024) > 1) {
+            debug_log("\t  \\->%u мегабайт", entry->len / 1024 / 1024);
+        }
+
+        if ((entry->len / 1024 / 1024 / 1024) > 1) {
+            debug_log("\t   \\->0x%x гигабайт", entry->len / 1024 / 1024 / 1024);
+        }
+
+        switch (entry->type) {
+            case 1:
+                debug_log("\tСвободно");
+                total_free_mem += entry->len;
+                break;
+            case 2:
+                debug_log("\tНе использовать");
+                total_used_mem += entry->len;
+                break;
+            case 3:
+                debug_log("\tACPI Reclaim Memory (можно использовать после чтения таблиц ACPI)");
+                total_used_mem += entry->len;
+                break;
+            case 4:
+                debug_log("\tACPI NVS");
+                total_used_mem += entry->len;
+                break;
+        }
+    }
+
+    debug_log("Самый большой регион памяти: %u килобайт", max_len / 1024);
+    debug_log("Всего памяти доступной для использования:");
+    debug_log("%u байт", total_free_mem);
+
+    if ((total_free_mem / 1024) > 1) {
+        debug_log("\t \\->%u килобайт", total_free_mem / 1024);
+    }
+
+    if ((total_free_mem / 1024 / 1024) > 1) {
+        debug_log("\t  \\->%u мегабайт", total_free_mem / 1024 / 1024);
+    }
+
+    if ((total_free_mem / 1024 / 1024 / 1024) > 1) {
+        debug_log("\t   \\->0x%x гигабайт", total_free_mem / 1024 / 1024 / 1024);
+    }
+
+    debug_log("Всего памяти недоступной для использования:");
+    debug_log("%u байт", total_used_mem);
+
+    if ((total_used_mem / 1024) > 1) {
+        debug_log("\t \\->%u килобайт", total_used_mem / 1024);
+    }
+
+    if ((total_used_mem / 1024 / 1024) > 1) {
+        debug_log("\t  \\->%u мегабайт", total_used_mem / 1024 / 1024);
+    }
+
+    if ((total_used_mem / 1024 / 1024 / 1024) > 1) {
+        debug_log("\t   \\->0x%x гигабайт", total_used_mem / 1024 / 1024 / 1024);
+    }
+}
 
 void multiboot_main(multiboot_info_t* info) {
     debug_log("Обработка Multiboot1 заголовка: ");
@@ -29,6 +110,8 @@ void multiboot_main(multiboot_info_t* info) {
     module_syscalls_t syscalls;
     syscalls.printf = kprintf;
     syscalls.debug_log_printf = debug_log_printf;
+
+    multiboot_dump_mem(info);
 
     if (start) {
         debug_log("end 0x%x, start 0x%x",

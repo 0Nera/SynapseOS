@@ -92,41 +92,17 @@ void kernel_startup(unsigned int eax, multiboot_info_t* ebx, unsigned int esp) {
     uint32_t cpu = cpu_get_features();
 
     com1_unit_test(dt_init(), "Настройка таблиц дескрипторов");
-    if ((cpu >> 23) & 0x1) {
-        debug_log("Имеется MMU");
-        paging_init();
-        oxygen_multiboot_init(ebx);
-    } else {
-        debug_log("Процессоры без MMU не поддерживаются!");
-
-        for (;;) {
-            halt();
-        }
-    }
-
-    // ESP пока не используем, стек позже пригодится при переходе в ring3
-    // UNUSED(esp);
+    paging_init();
+    oxygen_init(0x400000, 0x400000);
+    oxygen_test();
 
     int kernel_size = ((uint32_t)&KERNEL_SIZE) >> 10; // Размер ядра делим на 1024, получая размер в килобайтах.
     debug_log("Размер ядра(вместе со стеком) %u килобайт, %u байт", kernel_size, (uint32_t)&KERNEL_SIZE);
 
     com1_unit_test(eax == MULTIBOOT_BOOTLOADER_MAGIC, "Проверка магического числа Multiboot");
-
-
-    // mm_evelina_multiboot_init(ebx, 8192);
-
     debug_log("cpu: 0x%x", cpu);
 
-
-    // arch_cpuid_test();
-
-    debug_log("cpu: 0x%x", cpu);
-
-    if (cpu & 0x1) {
-        debug_log("Имеется FPU");
-
-        // com1_unit_test(fpu_init(), "Настройка FPU");
-    }
+    // com1_unit_test(fpu_init(), "Настройка FPU");
 
     if ((cpu >> 25) & 0x1) {
         debug_log("Имеется SSE");
