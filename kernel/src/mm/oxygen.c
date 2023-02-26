@@ -80,7 +80,7 @@ void* oxygen_alloc_align(size_t size, size_t alignment) {
             addr -= (uintptr_t)addr % alignment + sizeof(oxygen_mem_entry_t);
             oxygen_mem_entry_t *second = addr;
             if (curr->size >= (second->data - curr->data + size)) {
-                oxygen_mem_entry_t *third = second->data + size;
+                oxygen_mem_entry_t *third = (oxygen_mem_entry_t*)(second->data + size);
 
                 third->size = curr->size - (third->data - curr->data);
                 third->next = curr->next;
