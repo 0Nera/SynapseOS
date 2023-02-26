@@ -84,9 +84,12 @@ def build_docs():
 def build_modules():
     #os.system("fasm mod/seb/test.asm isodir/modules/test.seb")
     #os.system("python3 scripts/build_modules.py")
-    MOD_FLAGS = "-m32 -O0 -ffreestanding -Wall -Wextra -nostdlib -nostartfiles"
+    MOD_FLAGS = "-ffreestanding -m32 -nostdlib -nostartfiles -fno-builtin -fno-stack-protector -e main"
     os.system(f"{CC} {MOD_FLAGS} -c mod/simple/main.c -o bin/simple.o")
-    os.system(f"{CC} -T mod/simple/link.ld -nostdlib -O0 -o isodir/modules/simple.elf bin/simple.o")
+    os.system(f"{CC} {MOD_FLAGS} -o isodir/modules/simple.elf bin/simple.o")
+    
+    print(f"{ARCH}-elf-readelf -hls isodir/modules/simple.elf>app.elf.txt")
+    os.system(f"{ARCH}-elf-readelf -hls isodir/modules/simple.elf>app.elf.txt")
 
 
 ''' Сборка ISO limine '''
@@ -144,6 +147,10 @@ if __name__ == '__main__':
     build_iso_limine()
     print(f"Сборка ISO//Limine образа заняла: {(time.time() - start_time):2f} секунд.")
     
+    
+    print(f"{ARCH}-elf-readelf -hls isodir/boot/kernel.elf>kernel.elf.txt")
+    os.system(f"{ARCH}-elf-readelf -hls isodir/boot/kernel.elf>kernel.elf.txt")
+
     if args.docs != None:
         start_time = time.time()
         build_docs()

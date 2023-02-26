@@ -3,8 +3,8 @@ typedef struct {
 	void (*debug_log_printf)(const char *format_string, ...);
 } module_syscalls_t;
 
-
-
-int _start() {
+unsigned int main(module_syscalls_t *syscalls) {
+	syscalls->printf("Hello from ELF!\n");
+	syscalls->debug_log_printf("Hello from ELF!\n");
     return 5;
 }

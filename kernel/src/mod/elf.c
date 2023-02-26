@@ -16,6 +16,8 @@
 #include <libk.h>
 #include <mod.h>
 
+static int (*entry_point)(module_syscalls_t *syscalls);
+
 /**
  * @brief Загрузка и исполнение модуля в формате ELF
  * 
@@ -25,25 +27,8 @@
  * @param syscalls Указатель на структуру сисфункций ядра
  * @return int Результат работы модуля
  */
-int elf_module_load(module_elf_programm_t *info/*, size_t argc, char **argv,*/) {
-    kprintf("[%s] at [%x]\n", info->name, info->header->entry);
-
-    if(!(info->header->magic[0] == 0x7f
-         && info->header->magic[1] == 'E'
-         && info->header->magic[1] == 'L'
-         && info->header->magic[1] == 'F')) {
-    	debug_log("ELF is invalid!");
-    	return -1;
-    }
-    debug_log("ELF is valid!");
-    
-    debug_log("\t\tELF file type: %s",
-    		  (info->header->file_type == ELF_REL) ? 
-        		"relocatable" :
-        		(info->header->file_type==ELF_EXEC) ? 
-        		  "executable" :
-        		  "unknown"
-    );
+int elf_module_load(module_elf_programm_t *info, module_syscalls_t *syscalls) {
+    uint8_t *data;
     /*
     char **final_argv = oxygen_alloc(sizeof(char**) * argc);    
     
@@ -52,14 +37,147 @@ int elf_module_load(module_elf_programm_t *info/*, size_t argc, char **argv,*/) 
     for(size_t i = 1; i < argc; i++) {
         final_argv[i] = argv[i-1];
     }
+    oxygen_free(final_argv);
     */
+    
+    elf_header_t *header = info->header;
+    kprintf("[%s] at [0x%x] [%s]\n", info->name, header->entry, header->magic);
+    debug_log("[%s] at [0x%x] [%s]", info->name, header->entry, header->magic);
 
+    if(header->magic[0] != 0x7f OR
+       header->magic[1] != 'E'  OR
+       header->magic[2] != 'L'  OR
+       header->magic[3] != 'F') {
+    	kprintf("ELF is invalid!\n");
+    	debug_log("ELF is invalid!");
+    	return -1;
+    }
+    
+    elf_get_info(header);
+    
+	kprintf("Type: %s%s%s\n",
+		header->arch        == 1 ? "32bit ":"64 bit",
+		header->byte_order  == 1 ? "Little Endian ":"Big endian ",
+		header->elf_version == 1 ? "True ELF":"buggy ELF");
+	if(header->type != 2) {
+		kprintf("File is not executable!\n");
+		return 0;
+	}
+    
+    kprintf("Loading 1/3\n");
+
+    paging_identity_map(0x8048000, info->size);
+    /*  НЕ РАБОТАЕТ!
+	for(size_t i = 0; i<header->program_header_entries_count; i++) {
+		kprintf("Segment [%u/%u]: ", i, header->program_header_entries_count);
+		elf_program_header_t *prog_header = elf_get_program_header(header, i);
+
+		if (prog_header->type != SEGTYPE_LOAD) {
+			kprintf("No load :(?\n");
+			continue;
+		}
+
+		kprintf("Loading 0x%x bytes to 0x%x\n", prog_header->mem_size, prog_header->virtual_addr);
+		memset((void*)prog_header->virtual_addr, 0x90, prog_header->mem_size);
+		memcpy((void*)prog_header->virtual_addr, 
+                header + prog_header->offset, 
+                prog_header->size);
+	}
+    
+    kprintf("Loading 2/3\n");
+
+	for(size_t i = 0; i < header->section_header_entries_count; i++) {
+		elf_section_t *section_header;
+        section_header = (elf_section_t*)((uint8_t*)(header) + 
+            header->section_table_position + 
+            header->section_header_entry_size * i);
+        
+		kprintf("Section [%u/%u]: ", i, header->section_header_entries_count);
+
+		if(section_header->address) {
+		    kprintf("name: %u, type: %u, address: 0x%x, offset: %u, size: %u, entry_size: %u!L\n", 
+                section_header->name, section_header->type, section_header->address,
+                section_header->offset, section_header->size, section_header->entry_size
+                );
+		    debug_log("name: %u, type: %u, address: 0x%x, offset: %u, size: %u, entry_size: %u!L", 
+                section_header->name, section_header->type, section_header->address,
+                section_header->offset, section_header->size, section_header->entry_size
+                );
+            data = &header+section_header->offset;
+            size_t max = section_header->size > 0x1000 ? 0x1000 : section_header->size;
+
+            size_t n = 0;
+            debug_log("data 0x%x, %u", data, max);
+            for (size_t i = 0; i < max; i++) {
+                if (data[i] != 0) {
+                    debug_log_printf("0x%x ", data[i]);
+                } else {
+                    n++;
+                }
+            }
+            debug_log_printf("\n0x%x, %u, %u, 0x%x\n", &header+section_header->offset,
+                section_header->size > 0x1000 ? 0x1000 : section_header->size,
+                n,
+                section_header->address
+            );
+			memcpy(&section_header->address,
+                &header+section_header->offset,
+                section_header->size > 0x1000 ? 0x1000 : section_header->size);
+            memcpy((void*)data, &header+section_header->offset, max);
+            continue;
+		}
+		kprintf("name: %u, type: %u, address: %u, offset: %u, size: %u, entry_size: %u\n", 
+                section_header->name, section_header->type, section_header->address,
+                section_header->offset, section_header->size, section_header->entry_size
+                );
+	}
+    */
     kprintf("[%s] Loading..\n", info->name);
-    int (*entry_point)() = (void*)(info->header->entry);
+    debug_log("[%s] Loading..", info->name);
+    
+    entry_point = (void*)(header->entry);
+    
     kprintf("[%x] entry\n", entry_point);
-    //int result = entry_point();
+    debug_log("[%x] entry", entry_point);
 
-    kprintf("[%s] Return [%d]\n", info->name, -1);
-    //oxygen_free(final_argv);
-    return -1;
+    data = (uint8_t*)(void*)0x8048000;
+	memcpy(data, 
+        header, 
+        info->size);
+
+    for (size_t i = 0; i < info->size; i++) {
+        debug_log_printf("0x%x ", data[i]);
+    }
+    debug_log_printf("\n");
+    int result = entry_point(syscalls);
+
+    kprintf("[%s] Return [%u]\n", info->name, result);
+    debug_log("[%s] Return [%u]", info->name, result);
+    return result;
+}
+
+
+void elf_get_info(elf_header_t *header) {
+    kprintf("ELF file type: %s\n",
+    		  (header->type == ELF_REL) ? 
+        		"relocatable" :
+        		(header->type==ELF_EXEC) ? 
+        		  "executable" :
+        		  "unknown"
+    );
+    kprintf("ELF file version: %u\n", header->elf_version);
+    kprintf("Entry point: 0x%x\n", header->entry);
+    kprintf("Program header offset: %u\n", header->header_table_position);
+    kprintf("Section header offset: %u\n", header->section_table_position);
+    kprintf("File flags: %u\n", header->flags);
+    kprintf("File header size: %u\n", header->header_size);
+    kprintf("Program header entry size: %u\n", header->program_header_entries_count);
+    kprintf("Section header entry size: %u\n", header->section_header_entry_size);
+    kprintf("Section header count: %u\n", header->section_header_entries_count);
+    kprintf("Program header count: %u\n", header->program_header_entries_count);
+}
+
+
+elf_program_header_t *elf_get_program_header(elf_header_t *header, int num) {
+	return (elf_program_header_t*)(header + header->header_table_position + header->program_header_entry_size * num);
 }

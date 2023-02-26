@@ -110,7 +110,6 @@ void multiboot_main(multiboot_info_t* info) {
     module_syscalls_t syscalls;
     syscalls.printf = kprintf;
     syscalls.debug_log_printf = debug_log_printf;
-
     multiboot_dump_mem(info);
 
     if (start) {
@@ -122,12 +121,12 @@ void multiboot_main(multiboot_info_t* info) {
             module_elf_programm_t info;
             info.name = (char*)start[i].cmdline;
             info.header = (struct elf_header*)start[i].mod_start;
-
+            info.size = start[i].mod_end - start[i].mod_start;
             debug_log("->%s: 0x%x", start[i].cmdline, &start[i]);
             debug_log("\tНачало      =0x%x", start[i].mod_start);
             debug_log("\tКонец       =0x%x", start[i].mod_end);
             debug_log("\tРазмер      =%u", start[i].mod_end - start[i].mod_start);
-            debug_log("result %d", elf_module_load(&info));
+            debug_log("result %d", elf_module_load(&info, &syscalls));
         }
     }
     debug_log("bootloader_name: %s", info->bootloader_name);
