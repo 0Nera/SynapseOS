@@ -26,24 +26,18 @@
  * @return int Результат работы модуля
  */
 int elf_module_load(module_elf_programm_t *info/*, size_t argc, char **argv,*/) {
-    kprintf("[%s] at [%x]\n", info->name, info->header->entry);
+    elf_header_t *header = info->header;
+    kprintf("[%s] at [0x%x] [%s]\n", info->name, header->entry, header->magic);
+    debug_log("[%s] at [0x%x] [%s]", info->name, header->entry, header->magic);
 
-    if(!(info->header->magic[0] == 0x7f
-         && info->header->magic[1] == 'E'
-         && info->header->magic[1] == 'L'
-         && info->header->magic[1] == 'F')) {
+    if(header->magic[0] != 0x7f OR
+       header->magic[1] != 'E'  OR
+       header->magic[2] != 'L'  OR
+       header->magic[3] != 'F') {
     	debug_log("ELF is invalid!");
     	return -1;
     }
     debug_log("ELF is valid!");
-    
-    debug_log("\t\tELF file type: %s",
-    		  (info->header->file_type == ELF_REL) ? 
-        		"relocatable" :
-        		(info->header->file_type==ELF_EXEC) ? 
-        		  "executable" :
-        		  "unknown"
-    );
     /*
     char **final_argv = oxygen_alloc(sizeof(char**) * argc);    
     
@@ -55,11 +49,32 @@ int elf_module_load(module_elf_programm_t *info/*, size_t argc, char **argv,*/) 
     */
 
     kprintf("[%s] Loading..\n", info->name);
-    int (*entry_point)() = (void*)(info->header->entry);
+    int (*entry_point)() = (void*)(header->entry);
     kprintf("[%x] entry\n", entry_point);
     //int result = entry_point();
 
     kprintf("[%s] Return [%d]\n", info->name, -1);
     //oxygen_free(final_argv);
     return -1;
+}
+
+
+void elf_get_info(elf_header_t *header) {
+    kprintf("ELF file type: %s\n",
+    		  (header->type == ELF_REL) ? 
+        		"relocatable" :
+        		(header->type==ELF_EXEC) ? 
+        		  "executable" :
+        		  "unknown"
+    );
+    kprintf("ELF file version: %u\n", header->elf_version);
+    kprintf("Entry point: 0x%x\n", header->entry);
+    kprintf("Program header offset: %u\n", header->header_table_position);
+    kprintf("Section header offset: %u\n", header->section_table_position);
+    kprintf("File flags: %u\n", header->flags);
+    kprintf("File header size: %u\n", header->header_size);
+    kprintf("Program header entry size: %u\n", header->program_header_entries_count);
+    kprintf("Section header entry size: %u\n", header->section_header_entry_size);
+    kprintf("Section header count: %u\n", header->section_header_entries_count);
+    kprintf("Program header count: %u\n", header->program_header_entries_count);
 }

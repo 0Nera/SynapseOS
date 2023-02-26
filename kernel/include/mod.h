@@ -38,7 +38,7 @@ enum elf_type {
 typedef struct elf_header {
     uint8_t magic[4];
     uint8_t arch;
-    uint8_t endian_type;
+    uint8_t byte_order;
     uint8_t elf_version;
     uint8_t os_abi;
     uint8_t reserverd[8];

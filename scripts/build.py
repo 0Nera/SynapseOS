@@ -84,9 +84,9 @@ def build_docs():
 def build_modules():
     #os.system("fasm mod/seb/test.asm isodir/modules/test.seb")
     #os.system("python3 scripts/build_modules.py")
-    MOD_FLAGS = "-m32 -O0 -ffreestanding -Wall -Wextra -nostdlib -nostartfiles"
+    MOD_FLAGS = "-m32 -O0 -ffreestanding -Wall -Wextra -nostdlib -nostartfiles "
     os.system(f"{CC} {MOD_FLAGS} -c mod/simple/main.c -o bin/simple.o")
-    os.system(f"{CC} -T mod/simple/link.ld -nostdlib -O0 -o isodir/modules/simple.elf bin/simple.o")
+    os.system(f"{CC} -T mod/simple/link.ld -nostdlib -o isodir/modules/simple.elf bin/simple.o -lgcc")
 
 
 ''' Сборка ISO limine '''
