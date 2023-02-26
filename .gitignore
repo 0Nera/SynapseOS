@@ -26,3 +26,4 @@ docs/doxygen/html/
 *.sys
 *.sys
 *.EFI
+elf-loader/
