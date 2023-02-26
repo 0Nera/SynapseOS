@@ -35,19 +35,54 @@ enum elf_type {
  * @brief 
  * 
  */
-struct elf_header {
-	uint8_t      magic[4]; ///< Сначала идет 0x7f, потов "ELF" в ASCII.
-	uint8_t           arch; ///< Архитектура 32/64
-	uint8_t     byte_order; ///< 
-	uint8_t    elf_version; ///< 
-	uint8_t         os_abi; ///< 
-	uint8_t        abi_ver; ///< 
-	uint8_t      unused[7]; ///< 
-	uint16_t     file_type; ///< 
-	uint16_t       machine; ///< 
-	uint32_t       version; ///< 
-	uint32_t         entry; ///< 
-} __attribute__((packed));
+typedef struct elf_header {
+    uint8_t magic[4];
+    uint8_t arch;
+    uint8_t endian_type;
+    uint8_t elf_version;
+    uint8_t os_abi;
+    uint8_t reserverd[8];
+    uint16_t type;
+    uint16_t instruction_set;
+    uint32_t machine;
+    uint32_t entry;
+    uint32_t header_table_position;
+    uint32_t section_table_position;
+    uint32_t flags;
+    uint16_t header_size;
+    uint16_t program_header_entry_size;
+    uint16_t program_header_entries_count;
+    uint16_t section_header_entry_size;
+    uint16_t section_header_entries_count;
+    uint16_t string_table;
+}__attribute__((packed)) elf_header_t;
+
+typedef struct elf_relocation {
+    uint32_t offset;
+    uint32_t info;
+} __attribute__((packed)) elf_relocation_t;
+
+typedef struct elf_section {
+    uint32_t name;
+    uint32_t type;
+    uint32_t flags;
+    uint32_t address;
+    uint32_t offset;
+    uint32_t size;
+    uint32_t link;
+    uint32_t info;
+    uint32_t address_align;
+    uint32_t entry_size;
+} __attribute__((packed)) elf_section_t;
+
+typedef struct elf_symbol {
+    uint32_t name;
+    uint32_t value;
+    uint32_t size;
+    uint8_t info;
+    uint8_t other;
+    uint16_t shndx;
+} __attribute__((packed)) elf_symbol_t;
 
 
 typedef struct {
