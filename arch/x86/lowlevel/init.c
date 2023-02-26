@@ -90,10 +90,9 @@ void kernel_startup(unsigned int eax, multiboot_info_t* ebx, unsigned int esp) {
     debug_log("Структура multiboot 0x%x", ebx);
 
     uint32_t cpu = cpu_get_features();
-
-    com1_unit_test(dt_init(), "Настройка таблиц дескрипторов");
+    dt_init();
     paging_init();
-    oxygen_init(0x400000, 0x400000);
+    oxygen_init(0xc0400000, 0x400000);
     oxygen_test();
 
     int kernel_size = ((uint32_t)&KERNEL_SIZE) >> 10; // Размер ядра делим на 1024, получая размер в килобайтах.
@@ -101,8 +100,6 @@ void kernel_startup(unsigned int eax, multiboot_info_t* ebx, unsigned int esp) {
 
     com1_unit_test(eax == MULTIBOOT_BOOTLOADER_MAGIC, "Проверка магического числа Multiboot");
     debug_log("cpu: 0x%x", cpu);
-
-    // com1_unit_test(fpu_init(), "Настройка FPU");
 
     if ((cpu >> 25) & 0x1) {
         debug_log("Имеется SSE");
