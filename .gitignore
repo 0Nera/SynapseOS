@@ -27,3 +27,5 @@ docs/doxygen/html/
 *.sys
 *.EFI
 elf-loader/
+*.txt
+*.zip

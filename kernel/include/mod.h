@@ -57,11 +57,7 @@ typedef struct elf_header {
     uint16_t string_table;
 }__attribute__((packed)) elf_header_t;
 
-typedef struct elf_relocation {
-    uint32_t offset;
-    uint32_t info;
-} __attribute__((packed)) elf_relocation_t;
-
+/// @brief 
 typedef struct elf_section {
     uint32_t name;
     uint32_t type;
@@ -75,17 +71,6 @@ typedef struct elf_section {
     uint32_t entry_size;
 } __attribute__((packed)) elf_section_t;
 
-typedef struct elf_symbol {
-    uint32_t name;
-    uint32_t value;
-    uint32_t size;
-    uint8_t info;
-    uint8_t other;
-    uint16_t shndx;
-} __attribute__((packed)) elf_symbol_t;
-
-
-
 typedef struct {
 	uint32_t type;
 	uint32_t offset;
@@ -97,10 +82,20 @@ typedef struct {
 	uint32_t align;
 } __attribute__((packed)) elf_program_header_t;
 
+typedef struct elf_symbol {
+    uint32_t name;
+    uint32_t value;
+    uint32_t size;
+    uint8_t info;
+    uint8_t other;
+    uint16_t shndx;
+} __attribute__((packed)) elf_symbol_t;
+
 
 typedef struct {
     char *name;
     struct elf_header *header;
+	size_t size;
 } module_elf_programm_t;
 
 
@@ -111,5 +106,6 @@ typedef struct {
 
 int elf_module_load(module_elf_programm_t *info/*, size_t argc, char **argv, module_syscalls_t syscalls*/);
 void elf_get_info(elf_header_t *header);
+elf_program_header_t *elf_get_program_header(elf_header_t *header, int num);
 
 #endif // mod.h

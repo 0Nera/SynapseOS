@@ -122,7 +122,7 @@ void multiboot_main(multiboot_info_t* info) {
             module_elf_programm_t info;
             info.name = (char*)start[i].cmdline;
             info.header = (struct elf_header*)start[i].mod_start;
-
+            info.size = start[i].mod_end - start[i].mod_start;
             debug_log("->%s: 0x%x", start[i].cmdline, &start[i]);
             debug_log("\tНачало      =0x%x", start[i].mod_start);
             debug_log("\tКонец       =0x%x", start[i].mod_end);
