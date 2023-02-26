@@ -19,6 +19,8 @@
 #ifndef _MOD_H
 #define _MOD_H 1
 
+#define SEGTYPE_LOAD 1
+
 
 /**
  * @brief Типы ELF файлов

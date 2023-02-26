@@ -28,6 +28,7 @@ static int (*entry_point)();
  * @return int Результат работы модуля
  */
 int elf_module_load(module_elf_programm_t *info/*, size_t argc, char **argv,*/) {
+    uint8_t *data;
     /*
     char **final_argv = oxygen_alloc(sizeof(char**) * argc);    
     
@@ -65,18 +66,19 @@ int elf_module_load(module_elf_programm_t *info/*, size_t argc, char **argv,*/) 
     
     kprintf("Loading 1/3\n");
 
-    paging_identity_map(header->entry, info->size);
+    paging_identity_map(0x8048000, info->size);
+    /*  НЕ РАБОТАЕТ!
 	for(size_t i = 0; i<header->program_header_entries_count; i++) {
 		kprintf("Segment [%u/%u]: ", i, header->program_header_entries_count);
 		elf_program_header_t *prog_header = elf_get_program_header(header, i);
 
-		if (prog_header->type != 1) {
+		if (prog_header->type != SEGTYPE_LOAD) {
 			kprintf("No load :(?\n");
 			continue;
 		}
 
 		kprintf("Loading 0x%x bytes to 0x%x\n", prog_header->mem_size, prog_header->virtual_addr);
-		memset((void*)prog_header->virtual_addr, 0, prog_header->mem_size);
+		memset((void*)prog_header->virtual_addr, 0x90, prog_header->mem_size);
 		memcpy((void*)prog_header->virtual_addr, 
                 header + prog_header->offset, 
                 prog_header->size);
@@ -91,18 +93,45 @@ int elf_module_load(module_elf_programm_t *info/*, size_t argc, char **argv,*/) 
             header->section_header_entry_size * i);
         
 		kprintf("Section [%u/%u]: ", i, header->section_header_entries_count);
+
+		if(section_header->address) {
+		    kprintf("name: %u, type: %u, address: 0x%x, offset: %u, size: %u, entry_size: %u!L\n", 
+                section_header->name, section_header->type, section_header->address,
+                section_header->offset, section_header->size, section_header->entry_size
+                );
+		    debug_log("name: %u, type: %u, address: 0x%x, offset: %u, size: %u, entry_size: %u!L", 
+                section_header->name, section_header->type, section_header->address,
+                section_header->offset, section_header->size, section_header->entry_size
+                );
+            data = &header+section_header->offset;
+            size_t max = section_header->size > 0x1000 ? 0x1000 : section_header->size;
+
+            size_t n = 0;
+            debug_log("data 0x%x, %u", data, max);
+            for (size_t i = 0; i < max; i++) {
+                if (data[i] != 0) {
+                    debug_log_printf("0x%x ", data[i]);
+                } else {
+                    n++;
+                }
+            }
+            debug_log_printf("\n0x%x, %u, %u, 0x%x\n", &header+section_header->offset,
+                section_header->size > 0x1000 ? 0x1000 : section_header->size,
+                n,
+                section_header->address
+            );
+			memcpy(&section_header->address,
+                &header+section_header->offset,
+                section_header->size > 0x1000 ? 0x1000 : section_header->size);
+            memcpy((void*)data, &header+section_header->offset, max);
+            continue;
+		}
 		kprintf("name: %u, type: %u, address: %u, offset: %u, size: %u, entry_size: %u\n", 
                 section_header->name, section_header->type, section_header->address,
                 section_header->offset, section_header->size, section_header->entry_size
                 );
-
-		if(section_header->address) {
-			memcpy((void*)section_header->address, 
-                header+section_header->offset, 
-                section_header->size > 0x1000 ? 0x1000 : section_header->size);
-		}
 	}
-
+    */
     kprintf("[%s] Loading..\n", info->name);
     debug_log("[%s] Loading..", info->name);
     
@@ -111,10 +140,19 @@ int elf_module_load(module_elf_programm_t *info/*, size_t argc, char **argv,*/) 
     kprintf("[%x] entry\n", entry_point);
     debug_log("[%x] entry", entry_point);
 
+    data = (uint8_t*)(void*)0x8048000;
+	memcpy(data, 
+        header, 
+        info->size);
+
+    for (size_t i = 0; i < info->size; i++) {
+        debug_log_printf("0x%x ", data[i]);
+    }
+    debug_log_printf("\n");
     int result = entry_point();
 
-    kprintf("[%s] Return [%d]\n", info->name, result);
-    debug_log("[%s] Return [%d]", info->name, result);
+    kprintf("[%s] Return [%u]\n", info->name, result);
+    debug_log("[%s] Return [%u]", info->name, result);
     return result;
 }
 

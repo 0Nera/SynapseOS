@@ -178,6 +178,7 @@ typedef __builtin_va_list va_list;
 
 uint32_t strlen(const char *string);
 void memset(void *address, uint8_t value, uint32_t length);
+void *memcpy(void *dst, void *src, size_t n);
 int32_t strcmp(const char *string1, const char *string2);
 void *memmove(void *dst, void *src, size_t n);
 int32_t memcmp(const void *s1, const void *s2, size_t n);

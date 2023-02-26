@@ -110,7 +110,7 @@ void multiboot_main(multiboot_info_t* info) {
     module_syscalls_t syscalls;
     syscalls.printf = kprintf;
     syscalls.debug_log_printf = debug_log_printf;
-
+    UNUSED(syscalls);
     multiboot_dump_mem(info);
 
     if (start) {
