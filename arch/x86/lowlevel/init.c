@@ -91,7 +91,8 @@ void kernel_startup(multiboot_info_t* ebx, unsigned int esp) {
 
     uint32_t cpu = cpu_get_features();
 
-    com1_unit_test(dt_init(), "Настройка таблиц дескрипторов");
+    dt_init();
+    paging_init();
     oxygen_init(0xc0400000, 0x400000);
     oxygen_test();
 
@@ -99,8 +100,6 @@ void kernel_startup(multiboot_info_t* ebx, unsigned int esp) {
     debug_log("Размер ядра(вместе со стеком) %u килобайт, %u байт", kernel_size, (uint32_t)&KERNEL_SIZE);
 
     debug_log("cpu: 0x%x", cpu);
-
-    // com1_unit_test(fpu_init(), "Настройка FPU");
 
     if ((cpu >> 25) & 0x1) {
         debug_log("Имеется SSE");
