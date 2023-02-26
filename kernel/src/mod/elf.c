@@ -16,7 +16,7 @@
 #include <libk.h>
 #include <mod.h>
 
-static int (*entry_point)();
+static int (*entry_point)(module_syscalls_t *syscalls);
 
 /**
  * @brief Загрузка и исполнение модуля в формате ELF
@@ -27,7 +27,7 @@ static int (*entry_point)();
  * @param syscalls Указатель на структуру сисфункций ядра
  * @return int Результат работы модуля
  */
-int elf_module_load(module_elf_programm_t *info/*, size_t argc, char **argv,*/) {
+int elf_module_load(module_elf_programm_t *info, module_syscalls_t *syscalls) {
     uint8_t *data;
     /*
     char **final_argv = oxygen_alloc(sizeof(char**) * argc);    
@@ -149,7 +149,7 @@ int elf_module_load(module_elf_programm_t *info/*, size_t argc, char **argv,*/) 
         debug_log_printf("0x%x ", data[i]);
     }
     debug_log_printf("\n");
-    int result = entry_point();
+    int result = entry_point(syscalls);
 
     kprintf("[%s] Return [%u]\n", info->name, result);
     debug_log("[%s] Return [%u]", info->name, result);

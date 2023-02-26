@@ -106,7 +106,7 @@ typedef struct {
 	void (*debug_log_printf)(const char *format_string, ...);
 } module_syscalls_t;
 
-int elf_module_load(module_elf_programm_t *info/*, size_t argc, char **argv, module_syscalls_t syscalls*/);
+int elf_module_load(module_elf_programm_t *info, module_syscalls_t *syscalls);
 void elf_get_info(elf_header_t *header);
 elf_program_header_t *elf_get_program_header(elf_header_t *header, int num);
 

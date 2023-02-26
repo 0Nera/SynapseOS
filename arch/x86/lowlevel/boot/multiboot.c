@@ -110,7 +110,6 @@ void multiboot_main(multiboot_info_t* info) {
     module_syscalls_t syscalls;
     syscalls.printf = kprintf;
     syscalls.debug_log_printf = debug_log_printf;
-    UNUSED(syscalls);
     multiboot_dump_mem(info);
 
     if (start) {
@@ -127,7 +126,7 @@ void multiboot_main(multiboot_info_t* info) {
             debug_log("\tНачало      =0x%x", start[i].mod_start);
             debug_log("\tКонец       =0x%x", start[i].mod_end);
             debug_log("\tРазмер      =%u", start[i].mod_end - start[i].mod_start);
-            debug_log("result %d", elf_module_load(&info));
+            debug_log("result %d", elf_module_load(&info, &syscalls));
         }
     }
     debug_log("bootloader_name: %s", info->bootloader_name);
