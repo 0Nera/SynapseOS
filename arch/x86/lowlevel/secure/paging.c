@@ -34,11 +34,8 @@ void paging_identity_map(uintptr_t addr, uint32_t size) {
     for (uint32_t i = addr; i < (addr + size); i += 4096) {
         page_table[(i >> 12) & 0x3ff] = i | 3;
     }
-    asm("movl %%ecx, %%cr3\n"
-        "movl %%cr0, %%eax\n"
-        "orl $0x80000000, %%eax\n"
-        "movl %%eax, %%cr0"
-        :: "c"(kernel_page_dir));
+    asm("mov %cr3, %eax\n"
+        "mov %eax, %cr3");
 }
 
 void paging_init() {
