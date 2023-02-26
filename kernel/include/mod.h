@@ -85,6 +85,19 @@ typedef struct elf_symbol {
 } __attribute__((packed)) elf_symbol_t;
 
 
+
+typedef struct {
+	uint32_t type;
+	uint32_t offset;
+	uint32_t virtual_addr;
+	uint32_t phys_addr;
+	uint32_t size;
+	uint32_t mem_size;
+	uint32_t flags;
+	uint32_t align;
+} __attribute__((packed)) elf_program_header_t;
+
+
 typedef struct {
     char *name;
     struct elf_header *header;
@@ -97,5 +110,6 @@ typedef struct {
 } module_syscalls_t;
 
 int elf_module_load(module_elf_programm_t *info/*, size_t argc, char **argv, module_syscalls_t syscalls*/);
+void elf_get_info(elf_header_t *header);
 
 #endif // mod.h
