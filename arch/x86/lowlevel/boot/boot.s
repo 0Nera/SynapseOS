@@ -62,17 +62,35 @@ _start:
 
     finit
 
-    mov  $stack_top - 0xC0000000, %esp
+    movl $(kernel_page_table - 0xC0000000), %edi
+    movl $0, %esi
+    movl $1024, %ecx
+1:
+    movl %esi, %edx
+    orl $3, %edx
+    movl %edx, (%edi)
 
-    call    paging_init
-    jmp init
+    addl $0x1000, %esi
+    addl $4, %edi
+    loop 1b
+
+    movl $(kernel_page_table - 0xC0000000 + 3), %edi 
+    movl %edi, kernel_page_dir - 0xC0000000
+    movl %edi, kernel_page_dir - 0xC0000000 + 768 * 4
+    movl $(kernel_page_dir - 0xC0000000), %ecx
+    movl %ecx, %cr3
+
+    movl %cr0, %ecx
+    orl $0x80000000, %ecx
+    movl %ecx, %cr0
+
+    lea init, %ecx
+    jmp *%ecx
 
 .section .text
 init:
 
     mov  $stack_top, %esp
-
-    addl $0xC0000000, %ebx 
 
     push    %esp    # Стек
     push    %ebx    # Структура multiboot

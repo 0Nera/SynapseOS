@@ -5,11 +5,11 @@ SECTIONS {
     KERNEL_BEGIN = . + 0xC0000000;
     KERNEL_BEGIN_PHYS = .;
     
-    .multiboot : {
+    .multiboot : ALIGN(4K) {
         text_sect_phys_addr = .;
         *(.multiboot)
     }
-    .preinit : {
+    .preinit : ALIGN(4K) {
         *(.preinit)
     }
     . += 0xC0000000;

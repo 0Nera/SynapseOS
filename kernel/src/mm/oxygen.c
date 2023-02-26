@@ -39,8 +39,11 @@ void oxygen_init(uintptr_t address, size_t length) {
 }
 
 void oxygen_test() {
+    oxygen_dump_memory();
     void *temp = oxygen_alloc(1024);
+    oxygen_dump_memory();
     void *temp1 = oxygen_alloc(1024 * 1024);
+    oxygen_dump_memory();
     void *temp2 = oxygen_alloc(4096);
     oxygen_dump_memory();
 
@@ -77,7 +80,7 @@ void* oxygen_alloc_align(size_t size, size_t alignment) {
             addr -= (uintptr_t)addr % alignment + sizeof(oxygen_mem_entry_t);
             oxygen_mem_entry_t *second = addr;
             if (curr->size >= (second->data - curr->data + size)) {
-                oxygen_mem_entry_t *third = addr + size;
+                oxygen_mem_entry_t *third = second->data + size;
 
                 third->size = curr->size - (third->data - curr->data);
                 third->next = curr->next;
