@@ -143,7 +143,7 @@ bool scheduler_create_process(process_t *process);
  * @param priority Приоритет
  * @return thread_t* Указатель на структуру потока
  */
-thread_t* scheduler_create_task(process_t *process, void *entry_point, uint8_t priority);
+thread_t *scheduler_create_task(process_t *process, void *entry_point, uint8_t priority);
 
 
 /**

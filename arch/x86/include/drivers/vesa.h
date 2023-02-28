@@ -18,7 +18,7 @@
 #include <multiboot.h>
 
 
-void vesa_init(struct multiboot_info* info);
+void vesa_init(struct multiboot_info *info);
 void vesa_put_pixel(int x, int y, uint32_t color);
 
 

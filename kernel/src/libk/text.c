@@ -16,9 +16,9 @@
 #include <libk.h>
 #include <print.h>
 
-extern canvas_t * kernel_canvas;
+extern canvas_t *kernel_canvas;
 
-static psf_t * _font_ptr = NULL;
+static psf_t *_font_ptr = NULL;
 static bool _init = false;
 static uint8_t _width = 8;
 static uint8_t _height = 0;

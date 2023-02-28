@@ -1,0 +1,12 @@
+{
+    "name": "Hello World",
+    "version": "0.1.0",
+    "author": "Арен Елчинян",
+    "permissions": [
+        "debug", "graf"
+    ],
+    "linker": "link.ld",
+    "header": "module.h",
+    "assets": "assets",
+    "output": "helloworld.sem"
+}

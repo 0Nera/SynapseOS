@@ -22,11 +22,11 @@ extern uintptr_t *kernel_page_dir;
 list_item_t process_list;
 list_item_t thread_list;
 
-process_t* kernel_process = 0;
-thread_t* kernel_thread = 0;
+process_t *kernel_process = 0;
+thread_t *kernel_thread = 0;
 
-process_t* current_process;
-thread_t* current_thread;
+process_t *current_process;
+thread_t *current_thread;
 
 /**
  * @brief Инициализация планировщика задач
@@ -125,7 +125,7 @@ pid_t scheduler_add_pid() {
     return scheduler_pid_counter++;
 }
 
-thread_t* scheduler_create_task(process_t* process,
+thread_t *scheduler_create_task(process_t *process,
     void *entry_point,
     uint8_t priority) {
     uint32_t stack_size = 4096;
@@ -136,7 +136,7 @@ thread_t* scheduler_create_task(process_t* process,
                  : "=r"(eflags));
     asm volatile("cli");
 
-    thread_t* tmp_thread = (thread_t*)oxygen_alloc(sizeof(thread_t));
+    thread_t *tmp_thread = (thread_t*)oxygen_alloc(sizeof(thread_t));
 
     memset(tmp_thread, 0, sizeof(thread_t));
 

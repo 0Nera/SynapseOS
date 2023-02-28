@@ -11,14 +11,13 @@
  */
 
 
-#include <stdint.h>
+#include <SynapseOS.h>
 
 
 #ifndef _MOD_LIB_H
 #define _MOD_LIB_H 1
 
-#define NAME(name) \
-    const char *__NAME__ = name
+const char *MOD_NAME = __NAME__;
 
  
 typedef struct {

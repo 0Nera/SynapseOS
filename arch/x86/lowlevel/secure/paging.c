@@ -25,7 +25,7 @@ uint32_t __attribute__((aligned(4096))) kernel_app2_page_table[1024] = {0};
 void paging_map(uintptr_t addr, uintptr_t vaddr, uint32_t size) {
     vaddr &= ~0x3ff;
     addr &= ~0x3ff;
-    uint32_t* page_table;
+    uint32_t *page_table;
     if (!kernel_page_dir[vaddr >> 22]) {
         page_table = oxygen_alloc_align(4096, 4096);
         kernel_page_dir[vaddr >> 22] = ((uintptr_t)page_table - 0xC0000000) | 3;

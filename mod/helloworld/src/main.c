@@ -13,9 +13,6 @@
 #include "module.h"
 
 
-NAME("Hello World");
-
-
 /**
  * @brief 
  * 
@@ -29,7 +26,7 @@ static module_syscalls_t *s;
  * @param input_data 
  * @param input_size 
  */
-static void __stdcall handler_default(void *input_data, size_t input_size) {
+static void inline handler_default(void *input_data, size_t input_size) {
 }
 
 
@@ -39,7 +36,7 @@ static void __stdcall handler_default(void *input_data, size_t input_size) {
  * @param input_data 
  * @param input_size 
  */
-static void __stdcall handler_0(void *input_data, size_t input_size) {
+static void inline handler_0(void *input_data, size_t input_size) {
 }
 
 
@@ -48,7 +45,7 @@ static void __stdcall handler_0(void *input_data, size_t input_size) {
  * 
  * @param signal 
  */
-static void __stdcall waitress(mod_signal_t *signal) {
+static void waitress(mod_signal_t *signal) {
     switch (signal->handler) {
         case 0:
             handler_0(signal->input_data, signal->input_size);
@@ -62,19 +59,19 @@ static void __stdcall waitress(mod_signal_t *signal) {
 
 
 /**
- * @brief 
+ * @brief Функция инициализации модуля
  * 
  * @param syscalls Сисфункции
  * @param head Структура в которую будет записана информация о модуле
  * @return unsigned int Код ошибки
  */
-unsigned int main(module_syscalls_t *syscalls, module_header_t *head) {
+unsigned int module_init(module_syscalls_t *syscalls, module_header_t *head) {
     s = syscalls;
 
     head->waitress    = waitress;
     head->status_code = 1;
 
-    s->printf("Module "__NAME__" loaded with %s", head->cmdline);
+    s->printf("Module %s loaded with %s", MOD_NAME, head->cmdline);
     
     return 0;
 }

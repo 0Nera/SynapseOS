@@ -12,7 +12,7 @@
 
 #include <libk.h>
 
-void list_add(list_item_t* list, list_item_t* item) {
+void list_add(list_item_t *list, list_item_t *item) {
     if (item->next == NULL) {
         if (list->next) {
             item->next = item->next;
@@ -27,7 +27,7 @@ void list_add(list_item_t* list, list_item_t* item) {
     }
 }
 
-void list_remove(list_item_t* item) {
+void list_remove(list_item_t *item) {
     if (item->next->next == item) {
         item->next->next = item->next;
 
@@ -40,6 +40,6 @@ void list_remove(list_item_t* item) {
     item->prev->next = item->next;
 }
 
-void list_init(list_item_t* list) {
+void list_init(list_item_t *list) {
     list->next = NULL;
 }

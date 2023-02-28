@@ -16,15 +16,15 @@
 static uint64_t tick = 0;
 static uint64_t nanosec = 0;
 bool pit_lock = false;
-extern process_t* current_process;
-extern thread_t* current_thread;
+extern process_t *current_process;
+extern thread_t *current_thread;
 
 /**
  * @brief
  *
  * @param regs
  */
-static void timer_callback(register_t* regs) {
+static void timer_callback(register_t *regs) {
     UNUSED(regs);
     tick++;
 

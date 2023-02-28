@@ -12,7 +12,8 @@
         "stdio.h": "c",
         "sb16.h": "c",
         "assert.h": "c",
-        "modlib.h": "c"
+        "modlib.h": "c",
+        "synapseos.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled",
     "clangd.path": "clangd-11"

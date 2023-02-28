@@ -16,16 +16,16 @@
 
 extern kernel_info_t kernel_info;
 
-static void multiboot_dump_mem(multiboot_info_t* info) {
-    multiboot_memory_map_t* start = (multiboot_memory_map_t*)info->mmap_addr;
-    multiboot_memory_map_t* end = (multiboot_memory_map_t*)(info->mmap_addr + info->mmap_length);
+static void multiboot_dump_mem(multiboot_info_t *info) {
+    multiboot_memory_map_t *start = (multiboot_memory_map_t*)info->mmap_addr;
+    multiboot_memory_map_t *end = (multiboot_memory_map_t*)(info->mmap_addr + info->mmap_length);
     debug_log("Карта памяти:");
 
     size_t total_free_mem = 0;
     size_t total_used_mem = 0;
     size_t max_len = 0;
 
-    for (multiboot_memory_map_t* entry = start; entry < end; entry++) {
+    for (multiboot_memory_map_t *entry = start; entry < end; entry++) {
         debug_log("[0x%x]", entry->addr);
 
         if (max_len < entry->len) {
@@ -98,7 +98,7 @@ static void multiboot_dump_mem(multiboot_info_t* info) {
     }
 }
 
-void multiboot_main(multiboot_info_t* info) {
+void multiboot_main(multiboot_info_t *info) {
     debug_log("Обработка Multiboot1 заголовка: ");
     debug_log("flags: 0x%x", info->flags);
     debug_log("mem_lower: 0x%x", info->mem_lower);
@@ -106,7 +106,7 @@ void multiboot_main(multiboot_info_t* info) {
     debug_log("boot_device: 0x%x", info->boot_device);
     debug_log("Модулей: %u", info->mods_count);
     debug_log("Строка: %s", info->cmdline);
-    multiboot_module_t* start = (multiboot_module_t*)info->mods_addr;
+    multiboot_module_t *start = (multiboot_module_t*)info->mods_addr;
     module_syscalls_t syscalls;
     syscalls.printf = kprintf;
     syscalls.debug_log_printf = debug_log_printf;

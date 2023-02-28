@@ -57,7 +57,7 @@ void oxygen_test() {
     oxygen_dump_memory();
 }
 
-void oxygen_merge_blocks(oxygen_mem_entry_t* start) {
+void oxygen_merge_blocks(oxygen_mem_entry_t *start) {
     if (!start->free) return;
     oxygen_mem_entry_t *block = start;
     while (block->next && block->next->free) {
@@ -71,12 +71,12 @@ void *oxygen_alloc(size_t size) {
     return oxygen_alloc_align(size, 1);
 }
 
-void* oxygen_alloc_align(size_t size, size_t alignment) {
+void *oxygen_alloc_align(size_t size, size_t alignment) {
     oxygen_mem_entry_t *curr = first_node;
 
     while (curr) {
         if (curr->free) {
-            void* addr = curr->data + alignment - 1;
+            void *addr = curr->data + alignment - 1;
             addr -= (uintptr_t)addr % alignment + sizeof(oxygen_mem_entry_t);
             oxygen_mem_entry_t *second = addr;
             if (curr->size >= (second->data - curr->data + size)) {

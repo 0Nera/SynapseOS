@@ -55,7 +55,7 @@ void putLine(int x0, int y0, int x1, int y1, uint32_t color) {
     }
 }
 
-void vesa_init(struct multiboot_info* info) {
+void vesa_init(struct multiboot_info *info) {
     multiboot_framebuffer = (uint32_t*)(uintptr_t)info->framebuffer_addr;
     multiboot_framebuffer_pitch = info->framebuffer_pitch;
     multiboot_framebuffer_bpp = info->framebuffer_bpp;

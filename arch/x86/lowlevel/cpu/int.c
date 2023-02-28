@@ -168,7 +168,7 @@ static noreturn void invalid_opcode() {
  * @brief Двойная ошибка(при прерывании или обработке ошибки)
  *
  */
-static noreturn void double_fault(int_registers_t* regs) {
+static noreturn void double_fault(int_registers_t *regs) {
     debug_log("[ERROR]Double fault, int num: %d", regs->int_num);
 
     for (;;) {
@@ -216,7 +216,7 @@ static noreturn void stack_error() {
  * @brief Общая ошибка защиты
  *
  */
-static noreturn void general_protection_error(int_registers_t* regs) {
+static noreturn void general_protection_error(int_registers_t *regs) {
     UNUSED(regs);
     debug_log("[ERROR]GPT error");
 
@@ -229,7 +229,7 @@ static noreturn void general_protection_error(int_registers_t* regs) {
  * @brief Ошибка страницы
  *
  */
-static noreturn void page_fault(int_registers_t* regs) {
+static noreturn void page_fault(int_registers_t *regs) {
     UNUSED(regs);
     uint32_t addr;
     asm("movl %%cr2, %%eax": "=a"(addr));

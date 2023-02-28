@@ -33,7 +33,7 @@ uint8_t *kernel_framebuffer = NULL;
  * @brief Указатель на настроенный холст ядра
  *
  */
-canvas_t * kernel_canvas;
+canvas_t *kernel_canvas;
 
 /*
     Стоял я молча в стороне
@@ -50,7 +50,7 @@ canvas_t * kernel_canvas;
  * @param framebuffer Указатель на фреймбуффер экрана
  * @param size Размер ядра в килобайтах
  */
-void kernel_init(kernel_info_t info, size_t size, process_t* kernel_process) {
+void kernel_init(kernel_info_t info, size_t size, process_t *kernel_process) {
     UNUSED(kernel_process);
     char name[] = "USER1";
     char hash[65] = "";
