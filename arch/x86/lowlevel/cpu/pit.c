@@ -15,6 +15,7 @@
 
 static uint64_t tick = 0;
 static uint64_t nanosec = 0;
+static uint64_t last_nanosec = 0;
 bool pit_lock = false;
 extern process_t *current_process;
 extern thread_t *current_thread;
@@ -30,11 +31,14 @@ static void timer_callback(register_t *regs) {
 
     if (!pit_lock) {
         nanosec = rdtsc();
-#if RELEASE
+#ifndef  RELEASE
 
-        debug_log("ID задачи: %u, ID процесса[%s]: %u, тик: %u, приоритет: %u, наносекунд с прошлой задачи: %u",
-            current_thread->id, current_process->name, current_process->pid,
-            tick, current_thread->priority, nanosec - last_nanosec);
+        //debug_log("ID задачи: %u, ID процесса[%s]: %u, тик: %u, приоритет: %u, наносекунд с прошлой задачи: %u",
+        //    current_thread->id, current_process->name, current_process->pid,
+        //    tick, current_thread->priority, nanosec - last_nanosec);
+
+        debug_log("ID задачи: %u, процесс[%s|%u]",
+            current_thread->id, current_process->name, current_process->pid);
         last_nanosec = nanosec;
 
 #endif
@@ -62,6 +66,7 @@ bool pit_init(uint32_t frequency) {
     uint16_t divisor = 1193180 / frequency;
 
     nanosec = rdtsc();
+    last_nanosec = rdtsc();
 
     // Отправка командного байта
     ports_outb(0x43, 0x36);

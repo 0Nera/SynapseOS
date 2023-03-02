@@ -17,9 +17,7 @@
 uint32_t __attribute__((aligned(4096))) kernel_page_dir[1024] = {0};
 uint32_t __attribute__((aligned(4096))) kernel_page_table[1024] = {0};
 uint32_t __attribute__((aligned(4096))) kernel_heap_page_table[1024] = {0};
-uint32_t __attribute__((aligned(4096))) kernel_temp_page_table[1024] = {0};
 uint32_t __attribute__((aligned(4096))) kernel_app_page_table[1024] = {0};
-uint32_t __attribute__((aligned(4096))) kernel_app2_page_table[1024] = {0};
 
 // FIXME: сломается если область памяти переходит границу 4мб
 void paging_map(uintptr_t addr, uintptr_t vaddr, uint32_t size) {

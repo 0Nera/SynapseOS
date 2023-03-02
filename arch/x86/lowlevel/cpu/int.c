@@ -156,8 +156,16 @@ static noreturn void division_by_zero() {
  * @brief Неверный код операции
  *
  */
-static noreturn void invalid_opcode() {
-    debug_log("[ERROR]Invalid opcode");
+static noreturn void invalid_opcode(int_registers_t *regs) {
+    uint32_t cr3;
+    asm("movl %%cr3, %%eax": "=a"(cr3));
+    debug_log("[ERROR]Invalid opcode, 0x%x, 0x%x, 0x%x, 0x%x at 0x%x", 
+        regs->eax,
+        regs->ebx,
+        regs->eip,
+        regs->eflags,
+        cr3
+        );
 
     for (;;) {
         halt();
@@ -231,9 +239,10 @@ static noreturn void general_protection_error(int_registers_t *regs) {
  */
 static noreturn void page_fault(int_registers_t *regs) {
     UNUSED(regs);
-    uint32_t addr;
+    uint32_t addr, cr3;
     asm("movl %%cr2, %%eax": "=a"(addr));
-    debug_log("[ERROR]Page fault at %x", addr);
+    asm("movl %%cr3, %%eax": "=a"(cr3));
+    debug_log("[ERROR]Page fault at 0x%x, 0x%x", addr, cr3);
 
     for (;;) {
         halt();

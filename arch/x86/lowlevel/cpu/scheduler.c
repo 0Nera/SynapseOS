@@ -29,16 +29,19 @@ thread_t *last_thread;
 uint16_t tmp_arg = 0;
 
 void test_task() {
-    tmp_arg++;
-    debug_log("TEST1234567876543456787654356");
-    uint8_t i = 1;
+    uint16_t my_tmp_arg = tmp_arg++;
+    debug_log("Test! %u", my_tmp_arg);
+    uint8_t x = 0;
+    uint16_t y = 1;
 
     for (;;) {
-        debug_log("%u %u", tmp_arg, i);
-        if (i) {
-            debug_log("UINT8_T LIMIT RESEARCH!");
+        if (!x) {
+            if (!y) {
+                debug_log("YEEEEEE %u", my_tmp_arg);
+            }
+            y++;
         }
-        i++;
+        x++;
     }
 }
 
@@ -56,7 +59,7 @@ bool scheduler_init() {
 
     asm volatile("mov %%cr3, %0"
                  : "=r"(cr3));
-
+    debug_log("cr3 %x", cr3);
     asm volatile("cli");
     scheduler_lock();
 
@@ -81,8 +84,8 @@ bool scheduler_init() {
     current_thread = kernel_thread;
     last_thread = kernel_thread;
     scheduler_create_task(kernel_process, test_task, 1);
-    scheduler_create_task(kernel_process, test_task, 2);
-    scheduler_create_task(kernel_process, test_task, 3);
+    scheduler_create_task(kernel_process, test_task, 1);
+    scheduler_create_task(kernel_process, test_task, 1);
     scheduler_unlock();
 
     asm volatile("sti");
@@ -104,15 +107,14 @@ void scheduler_switch() {
         if (current_process_priority--) {
             goto skip;
         }
-        
-        debug_log("current_process %s current_thread pid %u", 
-            current_process->name, current_thread->id);
 
         if (current_thread->next == NULL) {
             current_thread = kernel_thread;
             current_process = kernel_process;
-            goto skip;
         }
+        
+        /*debug_log("current_process %s current_thread pid %u", 
+            current_process->name, current_thread->id);*/
 
         asm volatile("mov %%esp, %0"
             :"=a"(current_thread->esp));
@@ -120,8 +122,8 @@ void scheduler_switch() {
         current_thread = (thread_t*)current_thread->next;
         current_process_priority = current_thread->priority;
 
-        debug_log("current_thread pid %u, page dir 0x%x", 
-            current_thread->id, current_process->page_dir);
+        /*debug_log("current_thread pid %u, page dir 0x%x", 
+            current_thread->id, current_process->page_dir);*/
 
         asm volatile("mov %0, %%cr3" ::"a"(current_process->page_dir));
         asm volatile("mov %0, %%esp" ::"a"(current_thread->esp));
