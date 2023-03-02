@@ -113,24 +113,26 @@ void kernel_startup(multiboot_info_t *ebx, unsigned int esp) {
     kernel_canvas->pitch = multiboot_framebuffer_pitch;
     kernel_canvas->bpp = multiboot_framebuffer_bpp;
     kernel_canvas->framebuffer = multiboot_framebuffer;
-
-    // com1_unit_test(scheduler_init(), "Настройка планировщика задач");
-
+    
     text_init();
 
+    com1_unit_test(scheduler_init(), "Настройка планировщика задач");
+
+
     // graf_install();
-
-    sti();
-
-    // com1_unit_test(pit_init(100), "Установка PIT");
 
     // Вызываем ядро SynapseOS
 
     kernel_init(kernel_info, kernel_size);
+    
+    multiboot_main(ebx);
+
+    sti();
+    
+    com1_unit_test(pit_init(100), "Установка PIT");
 
     debug_log("Ядро завершило инициализацию");
     
-    multiboot_main(ebx);
 
     // Уменьшаем энергопотребление процессора
     for (;;) {

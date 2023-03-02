@@ -22,8 +22,8 @@
 typedef struct list_item list_item_t;
 
 struct list_item {
-    struct list_item* prev; /* Предыдущий элемент списка */
-    struct list_item* next; /* Следующий элемент списка */
+    struct list_item *prev; /* Предыдущий элемент списка */
+    struct list_item *next; /* Следующий элемент списка */
 };
 
 /**
@@ -31,7 +31,7 @@ struct list_item {
  *
  * @param list Указатель на структуру списка
  */
-void list_init(list_item_t* list);
+void list_init(list_item_t *list);
 
 /**
  * @brief Добавление элемента в список
@@ -39,13 +39,13 @@ void list_init(list_item_t* list);
  * @param list Элемент списка
  * @param item Элемент который нужно добавить в список
  */
-void list_add(list_item_t* list, list_item_t* item);
+void list_add(list_item_t *list, list_item_t *item);
 
 /**
  * @brief Удаление элемента из списка
  *
  * @param item Элемент списка на удаление
  */
-void list_remove(list_item_t* item);
+void list_remove(list_item_t *item);
 
 #endif // list.h

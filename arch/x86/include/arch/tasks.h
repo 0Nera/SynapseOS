@@ -60,14 +60,15 @@ typedef struct {
  * @brief Структура процесса
  *
  */
-typedef struct {
+typedef struct process {
     char name[256];         ///< Имя процесса
     uint8_t priority;       ///< Приоритет процесса
     pid_t pid;              ///< Идентификатор процесса (PID)
-    list_item_t list_item;  ///< Элемент списка
     uintptr_t *page_dir;    ///< Каталог страниц
     size_t threads_count;   ///< Число потоков в этом процессе
     uint8_t status;         ///< Состояние процесса
+    struct process *next;   ///< Следующий  процесс
+    struct process *last;   ///< Предыдущий процесс
 } process_t;
 
 
@@ -75,7 +76,7 @@ typedef struct {
  * @brief Структура задачи
  *
  */
-typedef struct {
+typedef struct thread {
     pid_t id;               ///< Идентификатор задачи
     uint8_t priority;       ///< Приоритет задачи
     void *entry_point;      ///< Точка входа в задачу
@@ -83,8 +84,9 @@ typedef struct {
     void *stack;            ///< Указатель на стек
     uintptr_t esp;          ///< Указатель на ESP
     size_t stack_size;      ///< Размер стека задачи
-    list_item_t list_item;  ///< Элемент списка
     process_t *process;     ///< Родительский процесс
+    struct thread *next;    ///< Следующий поток
+    struct thread *last;    ///< Предыдущий поток
 } thread_t;
 
 

@@ -19,7 +19,7 @@
 #define _OXYGEN_H
 
 struct oxygen_mem_entry {
-    struct oxygen_mem_entry* next;
+    struct oxygen_mem_entry *next;
     bool free;
     size_t size;
     uint8_t data[0];

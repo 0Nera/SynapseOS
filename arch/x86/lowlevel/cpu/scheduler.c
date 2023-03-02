@@ -19,14 +19,29 @@ static uint8_t current_process_priority = 0;
 pid_t next_thread_id = 0;
 extern uintptr_t *kernel_page_dir;
 
-list_item_t process_list;
-list_item_t thread_list;
-
 process_t *kernel_process = 0;
 thread_t *kernel_thread = 0;
 
 process_t *current_process;
 thread_t *current_thread;
+
+thread_t *last_thread;
+uint16_t tmp_arg = 0;
+
+void test_task() {
+    tmp_arg++;
+    debug_log("TEST1234567876543456787654356");
+    uint8_t i = 1;
+
+    for (;;) {
+        debug_log("%u %u", tmp_arg, i);
+        if (i) {
+            debug_log("UINT8_T LIMIT RESEARCH!");
+        }
+        i++;
+    }
+}
+
 
 /**
  * @brief Инициализация планировщика задач
@@ -34,30 +49,27 @@ thread_t *current_thread;
  */
 bool scheduler_init() {
     uintptr_t esp;
+    uintptr_t cr3;
 
     asm volatile("mov %%esp, %0"
                  : "=r"(esp));
 
+    asm volatile("mov %%cr3, %0"
+                 : "=r"(cr3));
+
     asm volatile("cli");
     scheduler_lock();
 
-    list_init(&process_list);
-    list_init(&thread_list);
-
     kernel_process = (process_t*)oxygen_alloc(sizeof(process_t));
-
     memset(kernel_process, 0, sizeof(process_t));
 
     kernel_process->pid = scheduler_pid_counter++;
-    kernel_process->page_dir = kernel_page_dir;
+    kernel_process->page_dir = (uintptr_t*)cr3;
     kernel_process->threads_count = 1;
     kernel_process->priority = 1;
     strcpy(kernel_process->name, "CORE");
 
-    list_add(&process_list, &kernel_process->list_item);
-
     kernel_thread = (thread_t*)oxygen_alloc(sizeof(thread_t));
-
     memset(kernel_thread, 0, sizeof(thread_t));
 
     kernel_thread->process = kernel_process;
@@ -65,17 +77,19 @@ bool scheduler_init() {
     kernel_thread->stack_size = 0x4000;
     kernel_thread->esp = esp;
 
-    list_add(&thread_list, &kernel_thread->list_item);
-
     current_process = kernel_process;
     current_thread = kernel_thread;
-
+    last_thread = kernel_thread;
+    scheduler_create_task(kernel_process, test_task, 1);
+    scheduler_create_task(kernel_process, test_task, 2);
+    scheduler_create_task(kernel_process, test_task, 3);
     scheduler_unlock();
 
     asm volatile("sti");
 
     return true;
 }
+
 
 /**
  * @brief Смена задачи
@@ -90,12 +104,24 @@ void scheduler_switch() {
         if (current_process_priority--) {
             goto skip;
         }
+        
+        debug_log("current_process %s current_thread pid %u", 
+            current_process->name, current_thread->id);
+
+        if (current_thread->next == NULL) {
+            current_thread = kernel_thread;
+            current_process = kernel_process;
+            goto skip;
+        }
 
         asm volatile("mov %%esp, %0"
-                     : "=a"(current_thread->esp));
+            :"=a"(current_thread->esp));
 
-        current_thread = (thread_t*)current_thread->list_item.next;
+        current_thread = (thread_t*)current_thread->next;
         current_process_priority = current_thread->priority;
+
+        debug_log("current_thread pid %u, page dir 0x%x", 
+            current_thread->id, current_process->page_dir);
 
         asm volatile("mov %0, %%cr3" ::"a"(current_process->page_dir));
         asm volatile("mov %0, %%esp" ::"a"(current_thread->esp));
@@ -105,6 +131,7 @@ void scheduler_switch() {
     }
 }
 
+
 /**
  * @brief Блокировка смены задач
  *
@@ -112,6 +139,7 @@ void scheduler_switch() {
 void scheduler_lock() {
     scheduler_busy = true;
 }
+
 
 /**
  * @brief Разблокировка смены задач
@@ -126,8 +154,8 @@ pid_t scheduler_add_pid() {
 }
 
 thread_t *scheduler_create_task(process_t *process,
-    void *entry_point,
-    uint8_t priority) {
+        void *entry_point,
+        uint8_t priority){
     uint32_t stack_size = 4096;
     void *stack = NULL;
     uintptr_t eflags;
@@ -156,7 +184,6 @@ thread_t *scheduler_create_task(process_t *process,
     tmp_thread->stack = stack;
     tmp_thread->esp = (uintptr_t)stack + stack_size - 12;
 
-    list_add(&thread_list, &tmp_thread->list_item);
 
     process->threads_count++;
 
@@ -164,6 +191,10 @@ thread_t *scheduler_create_task(process_t *process,
 
     esp[-1] = (uintptr_t)entry_point;
     esp[-3] = eflags | (1 << 9);
+    last_thread->next = tmp_thread;
+    tmp_thread->last = last_thread;
+    tmp_thread->next = NULL;
+    last_thread = tmp_thread;
     oxygen_dump_memory();
 
     asm volatile("sti");

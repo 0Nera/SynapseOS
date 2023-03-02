@@ -114,7 +114,7 @@ def build_iso_limine():
           -efi-boot-part --efi-boot-image --protective-msdos-label \
           isodir -o SynapseOS-limine.iso""")
     
-    exec_cmd(f"{LIMINE_DEPLOY} SynapseOS-limine.iso")
+    os.system(f"{LIMINE_DEPLOY} SynapseOS-limine.iso")
 
 
 if __name__ == '__main__':
