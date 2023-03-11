@@ -11,9 +11,11 @@
 # python3 scripts/build.py -compiler 'clang-13 -m32' -linker 'ld.lld-13 -m elf_i386'
 
 import os
+import re
 import sys
 import time
 import glob
+import json
 import shutil
 import argparse
 import shutil
@@ -37,10 +39,25 @@ CC_FLAGS = f"{CC_PROTECT} {DEBUG_FLAGS} {CC_OPTIM} -I kernel//include// -I arch/
 
 LD_FLAGS = f"{CC_GCC} -T arch//{ARCH_DIR}//link.ld -nostdlib -O0 "
 
+CLANGD_PATH = None
+CLANGD_COMMANDS = []
+
+
 def exec_cmd(cmd):
     print(cmd)
     if os.system(cmd) != 0:
         sys.exit(1)
+    if CLANGD_PATH and cmd.startswith(CC):
+        regexp = re.compile(r'\.(c|cpp)$')
+        for entry in cmd.split(' '):
+            if regexp.search(entry):
+                print(entry)
+                CLANGD_COMMANDS.append({
+                    'directory': os.path.abspath('.'),
+                    'command': cmd,
+                    'file': entry
+                })
+
 
 ''' Сборка ядра '''
 def build_kernel():
@@ -124,6 +141,7 @@ if __name__ == '__main__':
     parser.add_argument('-noqemu', help='Work without qemu')
     parser.add_argument('-limine', help='build with your limine-deploy')
     parser.add_argument('-docs',   help='build with generate docs(doxygen)')
+    parser.add_argument('-clangd', help='generate clangd index database (compile_commands.json) to specified path')
     args = parser.parse_args()
 
     if args.compiler != None:
@@ -134,6 +152,8 @@ if __name__ == '__main__':
 
     if args.limine != None:
         LIMINE_DEPLOY = args.limine
+    
+    CLANGD_PATH = args.clangd
 
     start_time = time.time()
     build_kernel()
@@ -142,6 +162,12 @@ if __name__ == '__main__':
     start_time = time.time()
     build_modules()
     print(f"Сборка модулей заняла: {(time.time() - start_time):2f} секунд.")
+
+    if CLANGD_PATH:
+        start_time = time.time()
+        with open(os.path.join(CLANGD_PATH, 'compile_commands.json'), 'w') as f:
+            f.write(json.dumps(CLANGD_COMMANDS))
+        print(f'Генерация compile_commands.json заняла: {(time.time() - start_time):2f} секунд.')
     
     start_time = time.time()
     build_iso_limine()

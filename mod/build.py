@@ -9,6 +9,10 @@
 
 import os
 import json
+import re
+import sys
+import argparse
+import time
 
 
 
@@ -22,6 +26,25 @@ CC = f"{ARCH}-elf-gcc"
 
 MOD_PROTECT = "-fno-builtin -fno-stack-protector"
 MOD_FLAGS = f"-I mod/include/ -ffreestanding -m32 -nostdlib -nostartfiles {MOD_PROTECT} -e main"
+
+CLANGD_PATH = None
+CLANGD_COMMANDS = []
+
+
+def exec_cmd(cmd):
+    print(cmd)
+    if os.system(cmd) != 0:
+        sys.exit(1)
+    if CLANGD_PATH and cmd.startswith(CC):
+        regexp = re.compile(r'\.(c|cpp)$')
+        for entry in cmd.split(' '):
+            if regexp.search(entry):
+                print(entry)
+                CLANGD_COMMANDS.append({
+                    'directory': os.path.abspath('.'),
+                    'command': cmd,
+                    'file': entry
+                })
 
 
 def scan_all():
@@ -62,20 +85,30 @@ def parse_config(mod_dir):
             output = conf['output']
             TARGETS = scan_target_dir(source)
             for T in TARGETS:
-                t = T.replace('/', '_').replace('\\', '_')
-                print(f"{CC} -D__NAME__=\"{name}\" {MOD_FLAGS} -c {T} -o bin/{t}.o")
-                os.system(f"{CC} -D__NAME__=\"{name}\" {MOD_FLAGS} -c {T} -o bin/{t}.o")
-            os.system(f"{CC} {MOD_FLAGS} -o isodir/modules/{output} bin/simple.o")
-            
-            print(f"{ARCH}-elf-readelf -hls isodir/modules/{output}>debug/{output}.elf.txt")
-            os.system(f"{ARCH}-elf-readelf -hls isodir/modules/{output}>debug/{output}.elf.txt")
+                t = re.sub(r'/|\\', '_', T)
+                exec_cmd(f"{CC} -D __NAME__='\"{name}\"' {MOD_FLAGS} -c {T} -o bin/{t}.o")
+            exec_cmd(f"{CC} {MOD_FLAGS} -o isodir/modules/{output} bin/simple.o")
+            os.makedirs('debug', exist_ok=True)
+            exec_cmd(f"{ARCH}-elf-readelf -hls isodir/modules/{output} > debug/{output}.elf.txt")
             
     except Exception as E:
         print(E)
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='SynapseOS build helper for modules')
+    parser.add_argument('-clangd', help='generate clangd index database (compile_commands.json) to specified path')
+    args = parser.parse_args()
+
+    CLANGD_PATH = args.clangd
+
     LIST_DIRS = scan_all()
 
     for dir in LIST_DIRS:
         parse_config(f"{dir}")
+    
+    if CLANGD_PATH:
+        start_time = time.time()
+        with open(os.path.join(CLANGD_PATH, 'compile_commands.json'), 'w') as f:
+            f.write(json.dumps(CLANGD_COMMANDS))
+        print(f'Генерация compile_commands.json заняла: {(time.time() - start_time):2f} секунд.')

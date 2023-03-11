@@ -8,5 +8,6 @@
     "linker": "link.ld",
     "header": "module.h",
     "assets": "assets",
+    "source": ".",
     "output": "helloworld.sem"
 }
