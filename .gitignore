@@ -18,3 +18,4 @@ limine
 compile_commands.json
 docs/doxygen/html/
 elf-loader/
+__pycache__

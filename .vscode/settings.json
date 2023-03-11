@@ -16,5 +16,5 @@
         "synapseos.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled",
-    "clangd.path": "clangd-11"
+    "clangd.path": "/usr/bin/clangd"
 }

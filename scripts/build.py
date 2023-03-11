@@ -19,6 +19,8 @@ import json
 import shutil
 import argparse
 import shutil
+import importlib.util as impuitil
+
 
 SRC_TARGETS = []
 BIN_TARGETS = []
@@ -101,12 +103,17 @@ def build_docs():
 def build_modules():
     #os.system("fasm mod/seb/test.asm isodir/modules/test.seb")
     #os.system("python3 scripts/build_modules.py")
-    MOD_FLAGS = "-ffreestanding -m32 -nostdlib -nostartfiles -fno-builtin -fno-stack-protector -e main"
-    os.system(f"{CC} {MOD_FLAGS} -c mod/simple/main.c -o bin/simple.o")
-    os.system(f"{CC} {MOD_FLAGS} -o isodir/modules/simple.elf bin/simple.o")
+    # MOD_FLAGS = "-ffreestanding -m32 -nostdlib -nostartfiles -fno-builtin -fno-stack-protector -e main"
+    # os.system(f"{CC} {MOD_FLAGS} -c mod/simple/main.c -o bin/simple.o")
+    # os.system(f"{CC} {MOD_FLAGS} -o isodir/modules/simple.elf bin/simple.o")
     
-    print(f"{ARCH}-elf-readelf -hls isodir/modules/simple.elf>app.elf.txt")
-    os.system(f"{ARCH}-elf-readelf -hls isodir/modules/simple.elf>app.elf.txt")
+    # print(f"{ARCH}-elf-readelf -hls isodir/modules/simple.elf>app.elf.txt")
+    # os.system(f"{ARCH}-elf-readelf -hls isodir/modules/simple.elf>app.elf.txt")
+    spec = impuitil.spec_from_file_location('build', 'mod/build.py')
+    mod = impuitil.module_from_spec(spec)
+    sys.modules['build'] = mod
+    spec.loader.exec_module(mod)
+    CLANGD_COMMANDS.extend(mod.perform_build(CLANGD_PATH, False))
 
 
 ''' Сборка ISO limine '''
@@ -152,7 +159,7 @@ if __name__ == '__main__':
 
     if args.limine != None:
         LIMINE_DEPLOY = args.limine
-    
+
     CLANGD_PATH = args.clangd
 
     start_time = time.time()
