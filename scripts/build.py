@@ -11,12 +11,16 @@
 # python3 scripts/build.py -compiler 'clang-13 -m32' -linker 'ld.lld-13 -m elf_i386'
 
 import os
+import re
 import sys
 import time
 import glob
+import json
 import shutil
 import argparse
 import shutil
+import importlib.util as impuitil
+
 
 SRC_TARGETS = []
 BIN_TARGETS = []
@@ -37,10 +41,25 @@ CC_FLAGS = f"{CC_PROTECT} {DEBUG_FLAGS} {CC_OPTIM} -I kernel//include// -I arch/
 
 LD_FLAGS = f"{CC_GCC} -T arch//{ARCH_DIR}//link.ld -nostdlib -O0 "
 
+CLANGD_PATH = None
+CLANGD_COMMANDS = []
+
+
 def exec_cmd(cmd):
     print(cmd)
     if os.system(cmd) != 0:
         sys.exit(1)
+    if CLANGD_PATH and cmd.startswith(CC):
+        regexp = re.compile(r'\.(c|cpp)$')
+        for entry in cmd.split(' '):
+            if regexp.search(entry):
+                print(entry)
+                CLANGD_COMMANDS.append({
+                    'directory': os.path.abspath('.'),
+                    'command': cmd,
+                    'file': entry
+                })
+
 
 ''' Сборка ядра '''
 def build_kernel():
@@ -84,16 +103,23 @@ def build_docs():
 def build_modules():
     #os.system("fasm mod/seb/test.asm isodir/modules/test.seb")
     #os.system("python3 scripts/build_modules.py")
-    MOD_FLAGS = "-ffreestanding -m32 -nostdlib -nostartfiles -fno-builtin -fno-stack-protector -e main"
-    os.system(f"{CC} {MOD_FLAGS} -c mod/simple/main.c -o bin/simple.o")
-    os.system(f"{CC} {MOD_FLAGS} -o isodir/modules/simple.elf bin/simple.o")
+    # MOD_FLAGS = "-ffreestanding -m32 -nostdlib -nostartfiles -fno-builtin -fno-stack-protector -e main"
+    # os.system(f"{CC} {MOD_FLAGS} -c mod/simple/main.c -o bin/simple.o")
+    # os.system(f"{CC} {MOD_FLAGS} -o isodir/modules/simple.elf bin/simple.o")
     
-    print(f"{ARCH}-elf-readelf -hls isodir/modules/simple.elf>app.elf.txt")
-    os.system(f"{ARCH}-elf-readelf -hls isodir/modules/simple.elf>app.elf.txt")
+    # print(f"{ARCH}-elf-readelf -hls isodir/modules/simple.elf>app.elf.txt")
+    # os.system(f"{ARCH}-elf-readelf -hls isodir/modules/simple.elf>app.elf.txt")
+    spec = impuitil.spec_from_file_location('build', 'mod/build.py')
+    mod = impuitil.module_from_spec(spec)
+    sys.modules['build'] = mod
+    spec.loader.exec_module(mod)
+    cmds = mod.perform_build(CLANGD_PATH, False)
+    if CLANGD_PATH:
+        CLANGD_COMMANDS.extend(cmds)
 
 
 ''' Сборка ISO limine '''
-def build_iso_limine():
+def build_iso_limine(): 
     print("Сборка ISO limine")
     LIMINE_LIST = [
         "BOOTIA32.EFI", "BOOTX64.EFI", "limine-cd-efi.bin", 
@@ -124,6 +150,7 @@ if __name__ == '__main__':
     parser.add_argument('-noqemu', help='Work without qemu')
     parser.add_argument('-limine', help='build with your limine-deploy')
     parser.add_argument('-docs',   help='build with generate docs(doxygen)')
+    parser.add_argument('-clangd', help='generate clangd index database (compile_commands.json) to specified path')
     args = parser.parse_args()
 
     if args.compiler != None:
@@ -135,6 +162,8 @@ if __name__ == '__main__':
     if args.limine != None:
         LIMINE_DEPLOY = args.limine
 
+    CLANGD_PATH = args.clangd
+
     start_time = time.time()
     build_kernel()
     print(f"Сборка ядра заняла: {(time.time() - start_time):2f} секунд.")
@@ -142,6 +171,12 @@ if __name__ == '__main__':
     start_time = time.time()
     build_modules()
     print(f"Сборка модулей заняла: {(time.time() - start_time):2f} секунд.")
+
+    if CLANGD_PATH:
+        start_time = time.time()
+        with open(os.path.join(CLANGD_PATH, 'compile_commands.json'), 'w') as f:
+            f.write(json.dumps(CLANGD_COMMANDS))
+        print(f'Генерация compile_commands.json заняла: {(time.time() - start_time):2f} секунд.')
     
     start_time = time.time()
     build_iso_limine()
