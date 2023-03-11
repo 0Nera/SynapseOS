@@ -113,7 +113,9 @@ def build_modules():
     mod = impuitil.module_from_spec(spec)
     sys.modules['build'] = mod
     spec.loader.exec_module(mod)
-    CLANGD_COMMANDS.extend(mod.perform_build(CLANGD_PATH, False))
+    cmds = mod.perform_build(CLANGD_PATH, False)
+    if CLANGD_PATH:
+        CLANGD_COMMANDS.extend(cmds)
 
 
 ''' Сборка ISO limine '''
