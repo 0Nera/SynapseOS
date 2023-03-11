@@ -1,5 +1,5 @@
 {
-    "name": "Hello World",
+    "name": "Simple",
     "version": "0.1.0",
     "author": "Арен Елчинян",
     "permissions": [
@@ -9,5 +9,5 @@
     "header": "module.h",
     "assets": "assets",
     "source": ".",
-    "output": "helloworld.sem"
+    "output": "simple.elf"
 }

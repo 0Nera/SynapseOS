@@ -9,5 +9,5 @@
     "header": "src/module.h",
     "assets": "assets",
     "source": "src",
-    "output": "helloworld.sem"
+    "output": "helloworld.elf"
 }

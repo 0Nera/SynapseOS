@@ -119,7 +119,7 @@ def build_modules():
 
 
 ''' Сборка ISO limine '''
-def build_iso_limine():
+def build_iso_limine(): 
     print("Сборка ISO limine")
     LIMINE_LIST = [
         "BOOTIA32.EFI", "BOOTX64.EFI", "limine-cd-efi.bin", 
