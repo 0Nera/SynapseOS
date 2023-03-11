@@ -3,6 +3,7 @@ isodir/
 *.log
 *.iso
 *.txt
+*.rtf
 bin/
 debug/
 docs/files/ru/~$ководство пользователя.docx
