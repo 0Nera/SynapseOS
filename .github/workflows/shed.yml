@@ -2,11 +2,9 @@ name: SynapseOS Buildbot
 
 # Контроль событий при которых будет сборка
 on:
-  # В нашем случае это push в ветку master
-  push:
-    tags:
-        - "v*"
-    branches: [ "master" ]
+
+  schedule: # Минута   Час        День       Месяц      День недели
+    - cron:   '0        4        5           *         *'
   
   workflow_dispatch:
 

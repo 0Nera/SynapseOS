@@ -13,35 +13,33 @@
 #include <arch.h>
 #include <libk.h>
 
+
 static bool scheduler_busy = true;
 static pid_t scheduler_pid_counter = 0;
 static uint8_t current_process_priority = 0;
-pid_t next_thread_id = 0;
+
 extern uintptr_t *kernel_page_dir;
 
-process_t *kernel_process = 0;
-thread_t *kernel_thread = 0;
+pid_t next_thread_id = 0;
+
+process_t *kernel_process;
+thread_t *kernel_thread;
 
 process_t *current_process;
 thread_t *current_thread;
 
 thread_t *last_thread;
+
+
 uint16_t tmp_arg = 0;
+
 
 void test_task() {
     uint16_t my_tmp_arg = tmp_arg++;
-    debug_log("Test! %u", my_tmp_arg);
-    uint8_t x = 0;
-    uint16_t y = 1;
+    kprintf("Test! %u\n", my_tmp_arg);
 
     for (;;) {
-        if (!x) {
-            if (!y) {
-                debug_log("YEEEEEE %u", my_tmp_arg);
-            }
-            y++;
-        }
-        x++;
+        asm volatile("nop");
     }
 }
 
@@ -79,11 +77,11 @@ bool scheduler_init() {
     kernel_thread->id = next_thread_id++;
     kernel_thread->stack_size = 0x4000;
     kernel_thread->esp = esp;
+    kernel_thread->next = kernel_thread;
 
     current_process = kernel_process;
     current_thread = kernel_thread;
     last_thread = kernel_thread;
-    scheduler_create_task(kernel_process, test_task, 1);
     scheduler_create_task(kernel_process, test_task, 1);
     scheduler_create_task(kernel_process, test_task, 1);
     scheduler_unlock();
@@ -107,11 +105,13 @@ void scheduler_switch() {
         if (current_process_priority--) {
             goto skip;
         }
-
+        /*
         if (current_thread->next == NULL) {
+            //debug_log("Next!");
             current_thread = kernel_thread;
             current_process = kernel_process;
         }
+        */
         
         /*debug_log("current_process %s current_thread pid %u", 
             current_process->name, current_thread->id);*/
@@ -120,11 +120,13 @@ void scheduler_switch() {
             :"=a"(current_thread->esp));
 
         current_thread = (thread_t*)current_thread->next;
+        current_process = current_thread->process;
         current_process_priority = current_thread->priority;
 
-        /*debug_log("current_thread pid %u, page dir 0x%x", 
-            current_thread->id, current_process->page_dir);*/
-
+        #ifdef DEBUG_SHEDULER
+        debug_log("current_thread pid %u[%s], page dir 0x%x", 
+            current_thread->id, current_process->name, current_process->page_dir);
+        #endif
         asm volatile("mov %0, %%cr3" ::"a"(current_process->page_dir));
         asm volatile("mov %0, %%esp" ::"a"(current_thread->esp));
 
@@ -195,7 +197,7 @@ thread_t *scheduler_create_task(process_t *process,
     esp[-3] = eflags | (1 << 9);
     last_thread->next = tmp_thread;
     tmp_thread->last = last_thread;
-    tmp_thread->next = NULL;
+    tmp_thread->next = kernel_thread;
     last_thread = tmp_thread;
     oxygen_dump_memory();
 
